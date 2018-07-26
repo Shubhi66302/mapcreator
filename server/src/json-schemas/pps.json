@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "pps",
+  "title": "PPS schema",
+  "description": "ignoring put_docking_positions in pps for now",
+  "type": "object",
+  "required": [
+    "pick_direction",
+    "pick_position",
+    "status",
+    "queue_barcodes",
+    "location",
+    "pps_url",
+    "allowed_modes"
+  ],
+  "properties": {
+    "pick_direction": { "$ref": "definitions#/direction" },
+    "pick_position": { "$ref": "definitions#/barcodeString" },
+    "status": { "type": "string" },
+    "queue_barcodes": {
+      "type": "array",
+      "items": { "$ref": "definitions#/barcodeString" }
+    },
+    "location": { "$ref": "definitions#/barcodeString" },
+    "pps_url": { "type": "string" },
+    "allowed_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["pick", "put", "audit"]
+      }
+    }
+  }
+}

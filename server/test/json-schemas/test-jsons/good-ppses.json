@@ -1,0 +1,99 @@
+[
+  {
+    "pps_id": 1,
+    "put_docking_positions": [
+      {
+        "dock_sequence_number": 1,
+        "exit_position": "016.018",
+        "position": "015.018",
+        "pptl_frame_type": "11",
+        "wait_position": "014.018",
+        "direction": 1
+      },
+      {
+        "dock_sequence_number": 1,
+        "exit_position": "016.018",
+        "position": "015.017",
+        "pptl_frame_type": "11",
+        "wait_position": "014.018",
+        "direction": 1
+      },
+      {
+        "dock_sequence_number": 5,
+        "position": "020.017",
+        "pptl_frame_type": "11",
+        "wait_position": "014.017",
+        "direction": 3,
+        "exit_position": "014.019"
+      }
+    ],
+    "queue_barcodes": [],
+    "status": "disconnected",
+    "pick_position": "011.012",
+    "pick_direction": 0,
+    "pps_url": "http://localhost:8181/pps/1/api/",
+    "location": "011.012",
+    "allowed_modes": ["put"]
+  },
+  {
+    "pps_id": 2,
+    "put_docking_positions": [
+      {
+        "dock_sequence_number": 1,
+        "exit_position": "016.018",
+        "position": "015.018",
+        "pptl_frame_type": "11",
+        "wait_position": "014.018",
+        "direction": 1
+      },
+      {
+        "dock_sequence_number": 1,
+        "exit_position": "016.018",
+        "position": "015.017",
+        "pptl_frame_type": "11",
+        "wait_position": "014.018",
+        "direction": 1
+      }
+    ],
+    "queue_barcodes": ["011.015", "011.014"],
+    "status": "disconnected",
+    "pick_position": "011.015",
+    "pick_direction": 0,
+    "pps_url": "http://localhost:8181/pps/2/api/",
+    "location": "011.015",
+    "allowed_modes": ["put"]
+  },
+  {
+    "pps_id": 3,
+    "put_docking_positions": [],
+    "queue_barcodes": [],
+    "status": "disconnected",
+    "pick_position": "014.010",
+    "pick_direction": 1,
+    "pps_url": "http://localhost:8181/pps/3/api/",
+    "location": "014.010",
+    "allowed_modes": ["put"]
+  },
+  {
+    "pps_id": 4,
+    "put_docking_positions": [],
+    "queue_barcodes": [],
+    "allowed_modes": ["put", "pick", "audit"],
+    "status": "disconnected",
+    "pick_position": "017.017",
+    "pick_direction": 0,
+    "pps_url": "http://localhost:8181/pps/4/api/",
+    "location": "017.017"
+  },
+  {
+    "pps_id": 5,
+    "put_docking_positions": [],
+    "queue_barcodes": [],
+    "allowed_modes": ["put", "pick", "audit"],
+    "status": "disconnected",
+    "pick_position": "015.015",
+    "pick_direction": 0,
+    "pps_url": "http://localhost:8181/pps/5/api/",
+    "location": "015.015"
+  }
+]

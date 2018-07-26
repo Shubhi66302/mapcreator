@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+
+  "localdefs": {
+    "entryExitBarcodesSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["barcode", "floor_id", "boom_barrier_id"],
+        "properties": {
+          "barcode": { "$ref": "definitions#/barcodeString" },
+          "floor_id": { "type": "integer", "minimum": 1 },
+          "boom_barrier_id": { "type": "integer", "enum": [1, 2, 3, 4] }
+        }
+      }
+    }
+  },
+
+  "$id": "elevator",
+  "title": "elevator schema",
+  "type": "object",
+  "required": [
+    "coordinate_list",
+    "type",
+    "entry_barcodes",
+    "exit_barcodes",
+    "elevator_id",
+    "position"
+  ],
+  "properties": {
+    "coordinate_list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["direction", "coordinate"],
+        "properties": {
+          "direction": { "$ref": "definitions#/direction" },
+          "coordinate": { "$ref": "definitions#/coordinate" }
+        }
+      }
+    },
+    "type": { "type": "string", "enum": ["c_type", "z_type"] },
+    "entry_barcodes": { "$ref": "#/localdefs/entryExitBarcodesSchema" },
+    "exit_barcodes": { "$ref": "#/localdefs/entryExitBarcodesSchema" },
+    "elevator_id": { "type": "integer" },
+    "position": { "$ref": "definitions#/barcodeString" },
+    "reinit_barcodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["barcodes", "floor_id"],
+        "properties": {
+          "barcodes": {
+            "type": "array",
+            "items": { "$ref": "definitions#/barcodeString" }
+          },
+          "floor_id": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

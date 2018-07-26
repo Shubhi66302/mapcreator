@@ -1,0 +1,13 @@
+{
+  "$id": "definitions",
+  "coordinate": {
+    "description":
+      "storing as tuple of numbers since more convenient than string",
+    "type": "array",
+    "items": { "type": "integer" },
+    "minItems": 2,
+    "maxItems": 2
+  },
+  "barcodeString": { "type": "string", "pattern": "^\\d\\d\\d\\.\\d\\d\\d$" },
+  "direction": { "type": "integer", "enum": [0, 1, 2, 3] }
+}

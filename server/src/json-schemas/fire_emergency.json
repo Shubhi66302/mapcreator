@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fire_emergency",
+  "title": "Fire Emergency schema",
+  "type": "object",
+  "required": ["priority", "type", "group_id", "barcode"],
+  "properties": {
+    "priority": { "type": "string", "enum": ["0", "1"] },
+    "type": { "type": "string", "enum": ["escape_path", "shutter"] },
+    "group_id": { "type": "string" },
+    "barcode": { "$ref": "definitions#/barcodeString" }
+  }
+}

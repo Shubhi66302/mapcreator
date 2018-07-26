@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "dock_point",
+  "title": "Dock Point schema",
+  "description":
+    "dock_point.json doesn't seem to get downloaded when exporting map right now, so don't know value. actually this is added in pps_json maybe?",
+  "type": "object",
+  "required": [
+    "pps_list",
+    "exit_position",
+    "dock_sequence_number",
+    "pptl_frame_type",
+    "position",
+    "wait_position",
+    "direction"
+  ],
+  "properties": {
+    "pps_list": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "exit_position": { "$ref": "definitions#/barcodeString" },
+    "dock_sequence_number": { "type": "integer" },
+    "pptl_frame_type": {
+      "type": "string",
+      "description":
+        "This is indicated to be integer in UI but is stored as string only..."
+    },
+    "position": { "$ref": "definitions#/barcodeString" },
+    "wait_position": { "$ref": "definitions#/barcodeString" },
+    "direction": { "$ref": "definitions#/direction" }
+  }
+}

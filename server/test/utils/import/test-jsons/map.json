@@ -1,0 +1,2494 @@
+[
+  {
+    "map_values": [
+      {
+        "barcode": "010.010",
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.011",
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.012",
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.013",
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.014",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.015",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.016",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.017",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.018",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.019",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "010.020",
+        "zone": "safe",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,10]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.014",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.015",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.016",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.017",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.018",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.019",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "011.020",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,11]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,12]",
+        "store_status": 1
+      },
+      {
+        "barcode": "012.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,12]",
+        "store_status": 1
+      },
+      {
+        "barcode": "012.014",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,12]",
+        "store_status": 1
+      },
+      {
+        "barcode": "012.015",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.016",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.017",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 0], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.018",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.019",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "012.020",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,12]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,13]",
+        "store_status": 1
+      },
+      {
+        "barcode": "013.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 0], [1, 1, 0], [1, 1, 1], [1, 1, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,13]",
+        "store_status": 1
+      },
+      {
+        "barcode": "013.014",
+        "zone": "safe",
+        "neighbours": [[1, 1, 0], [1, 1, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,13]",
+        "store_status": 1
+      },
+      {
+        "barcode": "013.015",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.016",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.017",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.018",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.019",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.020",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.014",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.015",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.016",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.017",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.018",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.019",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "014.020",
+        "zone": "safe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,14]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.017",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.018",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.019",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "015.020",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,15]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,16]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [[11, 15], [10, 16], [11, 17], [31, 31]],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        "barcode": "016.011",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,16]",
+        "store_status": 0,
+        "size_info": [750, 750, 750, 885]
+      },
+      {
+        "adjacency": [[12, 15], [31, 31], [12, 17], [13, 16]],
+        "zone": "defzone",
+        "neighbours": [[1, 0, 0], [1, 1, 0], [1, 0, 0], [1, 0, 0]],
+        "barcode": "016.012",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,16]",
+        "store_status": 0,
+        "size_info": [750, 205, 750, 750]
+      },
+      {
+        "barcode": "016.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.017",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.018",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.019",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "016.020",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,16]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.012",
+        "zone": "defzone",
+        "neighbours": [[1, 0, 0], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.017",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.018",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.019",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "017.020",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,17]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,18]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [[12, 17], [11, 18], [12, 19], [30, 30]],
+        "zone": "defzone",
+        "neighbours": [[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 0]],
+        "barcode": "018.012",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,18]",
+        "store_status": 0,
+        "size_info": [750, 750, 750, 205]
+      },
+      {
+        "adjacency": [[13, 17], [30, 30], [13, 19], [14, 18]],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "018.013",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,18]",
+        "store_status": 0,
+        "size_info": [750, 885, 750, 750]
+      },
+      {
+        "barcode": "018.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.017",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.018",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.019",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "018.020",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,18]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.012",
+        "zone": "defzone",
+        "neighbours": [[1, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.017",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.018",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.019",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "019.020",
+        "zone": "unsafe",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,19]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.010",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[10,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.011",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[11,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.012",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[12,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.013",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[13,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.014",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[14,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.015",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[15,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.016",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[16,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.017",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[17,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.018",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[18,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.019",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[19,20]",
+        "store_status": 0
+      },
+      {
+        "barcode": "020.020",
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
+        "size_info": [750, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[20,20]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [null, [12, 18], null, [13, 18]],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
+        "barcode": "030.030",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[30, 30]",
+        "store_status": 0,
+        "size_info": [1000, 205, 1000, 205],
+        "special": true
+      },
+      {
+        "adjacency": [null, [11, 16], null, [12, 16]],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
+        "barcode": "031.031",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[31, 31]",
+        "store_status": 0,
+        "size_info": [1000, 205, 1000, 205],
+        "special": true
+      },
+      {
+        "barcode": "013.021",
+        "zone": "defzone",
+        "neighbours": [null, null, null, null],
+        "size_info": [750, 750, 750, 750],
+        "botid": null,
+        "blocked": false,
+        "coordinate": "[21,13]",
+        "store_status": 0
+      },
+      {
+        "barcode": "013.023",
+        "zone": "defzone",
+        "neighbours": [null, null, null, null],
+        "size_info": [750, 750, 750, 750],
+        "botid": null,
+        "blocked": false,
+        "coordinate": "[23,13]",
+        "store_status": 0
+      }
+    ],
+    "floor_id": 1
+  },
+  {
+    "map_values": [
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,40]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [null, [42, 40], [60, 60], [44, 40]],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+        "size_info": [750, 750, 885, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,40]",
+        "store_status": 0,
+        "barcode": "040.043"
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "040.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "040.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,40]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 0, 0]],
+        "barcode": "041.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,41]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [[60, 60], [42, 41], [43, 42], [44, 41]],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0]],
+        "size_info": [205, 750, 750, 750],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,41]",
+        "store_status": 0,
+        "barcode": "041.043"
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "041.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "041.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,41]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "012.011",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "042.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "042.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,42]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "043.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "043.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,43]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "044.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "044.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,44]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "045.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "045.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,45]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "046.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "046.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,46]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "047.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "016.019",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "047.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,47]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "048.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "048.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,48]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        "barcode": "049.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+        "barcode": "049.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,49]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.040",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[40,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.041",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[41,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.042",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[42,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.043",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[43,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.044",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[44,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.045",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[45,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.046",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[46,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.047",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[47,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.048",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[48,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "barcode": "050.049",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[49,50]",
+        "store_status": 0
+      },
+      {
+        "size_info": [750, 750, 750, 750],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
+        "barcode": "050.050",
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[50,50]",
+        "store_status": 0
+      },
+      {
+        "adjacency": [[43, 40], null, [43, 41], null],
+        "zone": "defzone",
+        "neighbours": [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
+        "size_info": [205, 1000, 205, 1000],
+        "botid": "null",
+        "blocked": false,
+        "coordinate": "[60, 60]",
+        "store_status": 0,
+        "barcode": "060.060",
+        "special": true
+      }
+    ],
+    "floor_id": 2
+  }
+]
