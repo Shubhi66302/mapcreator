@@ -3,6 +3,23 @@ import definitions from "server/src/json-schemas/definitions.json";
 var Ajv = require("ajv");
 var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
 
+describe("coordinate string", () => {
+  var schema = definitions.coordinateString;
+  describe("valid coordinate string", () => {
+    test("non space separated", () => {
+      expect(ajv.validate(schema, "[32,32]")).toBe(true);
+    });
+    test("space separated", () => {
+      expect(ajv.validate(schema, "[32, 32]")).toBe(true);
+    });
+  });
+  describe("invalid coordinate string", () => {
+    test("some invalid coordinate string", () => {
+      expect(ajv.validate(schema, "[a,b]")).toBe(false);
+    });
+  });
+});
+
 describe("coordinate", () => {
   var schema = definitions.coordinate;
   test("valid coordinate", () => {
@@ -39,5 +56,96 @@ describe("direction", () => {
     expect(ajv.validate(schema, 4)).toBe(false);
     expect(ajv.validate(schema, "1")).toBe(false);
     expect(ajv.validate(schema, "a")).toBe(false);
+  });
+});
+
+describe("barcodeWithoutCoordinate", () => {
+  var ajv = new Ajv({
+    schemas: [definitions]
+  }); // options can be passed, e.g. {allErrors: true}
+  var validate = ajv.getSchema("definitions#/barcodeWithoutCoordinate");
+  describe("valid barcodes", () => {
+    test("barcode without adjacency", () => {
+      // TODO: probably should print error messages on failure through validate.errors
+      var barcode = {
+        blocked: false,
+        zone: "defzone",
+        store_status: 0,
+        barcode: "012.015",
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        size_info: [750, 750, 750, 750],
+        botid: "null"
+      };
+      expect(validate(barcode)).toBe(true);
+    });
+
+    test("barcode with adjacency", () => {
+      var barcode = {
+        botid: "null",
+        blocked: false,
+        store_status: 0,
+        zone: "defzone",
+        adjacency: [[11, 15], [10, 16], [11, 17], [31, 31]],
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        barcode: "016.011",
+        size_info: [750, 750, 750, 885]
+      };
+      expect(validate(barcode)).toBe(true);
+    });
+
+    test("barcode with special", () => {
+      var barcode = {
+        botid: "null",
+        blocked: false,
+        store_status: 0,
+        zone: "defzone",
+        adjacency: [[11, 15], [10, 16], [11, 17], [31, 31]],
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
+        barcode: "016.011",
+        size_info: [750, 750, 750, 885],
+        special: true
+      };
+      expect(validate(barcode)).toBe(true);
+    });
+
+    test("no barcode coordiante", () => {
+      var barcode = {
+        blocked: false,
+        zone: "defzone",
+        barcode: "016.011",
+        store_status: 0,
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        size_info: [750, 750, 750, 750],
+        botid: "null"
+      };
+      expect(validate(barcode)).toBe(true);
+    });
+  });
+
+  describe("invalid barcodes", () => {
+    // maybe test for no neighbours also
+    test("no barcode string", () => {
+      var barcode = {
+        blocked: false,
+        zone: "defzone",
+        store_status: 0,
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        size_info: [750, 750, 750, 750],
+        botid: "null"
+      };
+      expect(validate(barcode)).toBe(false);
+    });
+    test("wrong type for size info", () => {
+      var barcode = {
+        blocked: false,
+        zone: "defzone",
+        barcode: "016.011",
+        store_status: 0,
+        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+        size_info: [750, 750, 750, "a", "b"],
+        botid: "null"
+      };
+      expect(validate(barcode)).toBe(false);
+    });
   });
 });

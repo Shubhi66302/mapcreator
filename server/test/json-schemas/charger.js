@@ -27,6 +27,26 @@ describe("valid chargers", () => {
 });
 
 describe("invalid chargers", () => {
+  test("invalid charger_type", () => {
+    var charger = {
+      charger_direction: 3,
+      entry_point_direction: 3,
+      charger_id: 1,
+      mode: "manual",
+      charger_type: "invalidtype",
+      reinit_point_direction: 3,
+      entry_point_location: "030.030",
+      status: "disconnected",
+      charger_location: "018.012",
+      reinit_point_location: "030.030"
+    };
+    var result = validate(charger);
+    expect(result).toBe(false);
+    expect(validate.errors).toHaveLength(1);
+    expect(validate.errors[0].message).toBe(
+      "should be equal to one of the allowed values"
+    );
+  });
   test("missing charger_type", () => {
     var charger = {
       charger_direction: 3,

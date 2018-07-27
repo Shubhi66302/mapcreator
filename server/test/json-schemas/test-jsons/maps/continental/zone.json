@@ -1,0 +1,136 @@
+  {
+    "header": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "data": [
+      
+	  
+	  {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "defzone",
+          "paused": false
+        }
+      },
+	  
+	  
+	  
+	  
+	  
+	  {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-1",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-2",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-3",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-4",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-5",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-6",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-7",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-8",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-9",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-10",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-11",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-12",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-13",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-14",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-15",
+          "paused": false
+        }
+      },
+      {
+        "zonerec": {
+          "blocked": false,
+          "zone_id": "zone-16",
+          "paused": false
+        }
+      }
+    ],
+    "type": "POST",
+    "url": "/api/zonerec"
+  }

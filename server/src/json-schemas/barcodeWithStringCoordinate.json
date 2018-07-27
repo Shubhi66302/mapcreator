@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "barcodeWithStringCoordinate",
+  "title": "Barcode string coordinate schema",
+  "description": "represents barcode as present in map.json file",
+  "allOf": [
+    { "$ref": "definitions#/barcodeWithoutCoordinate" },
+    {
+      "properties": {
+        "coordinate": { "$ref": "definitions#/coordinateString" }
+      },
+      "required": ["coordinate"]
+    }
+  ]
+}

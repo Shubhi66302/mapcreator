@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "manual",
+    "charger_location": "018.012",
+    "charger_id": 1,
+    "reinit_point_location": "030.030",
+    "reinit_point_direction": 3,
+    "status": "disconnected",
+    "entry_point_location": "030.030",
+    "charger_type": "rectangular_plate_charger",
+    "entry_point_direction": 3,
+    "charger_direction": 3
+  },
+  {
+    "mode": "manual",
+    "charger_location": "016.012",
+    "charger_id": 2,
+    "reinit_point_location": "031.031",
+    "reinit_point_direction": 1,
+    "status": "disconnected",
+    "entry_point_location": "031.031",
+    "charger_type": "rectangular_plate_charger",
+    "entry_point_direction": 1,
+    "charger_direction": 1
+  },
+  {
+    "reinit_point_direction": 0,
+    "charger_location": "041.043",
+    "charger_id": 3,
+    "charger_type": "rectangular_plate_charger",
+    "mode": "manual",
+    "status": "disconnected",
+    "reinit_point_location": "060.060",
+    "entry_point_location": "060.060",
+    "entry_point_direction": 0,
+    "charger_direction": 0
+  }
+]

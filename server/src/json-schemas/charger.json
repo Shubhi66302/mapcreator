@@ -23,6 +23,14 @@
     "status": { "type": "string" },
     "charger_location": { "$ref": "definitions#/barcodeString" },
     "reinit_point_location": { "$ref": "definitions#/barcodeString" },
-    "charger_type": { "type": "string" }
+    "charger_type": {
+      "type": "string",
+      "enum": [
+        "rectangular_plate_charger",
+        "circular_plate_charger",
+        "side_dock",
+        "normal"
+      ]
+    }
   }
 }

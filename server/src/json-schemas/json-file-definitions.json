@@ -1,0 +1,98 @@
+{
+  "$id": "json-file-definitions",
+  "map_json": {
+    "$id": "map_json",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": ["map_values", "floor_id"],
+      "properties": {
+        "map_values": {
+          "type": "array",
+          "items": { "$ref": "barcodeWithStringCoordinate" }
+        },
+        "floor_id": { "type": "integer", "minimum": 1 }
+      }
+    }
+  },
+  "single_floor_map_json": {
+    "$id": "single_floor_map_json",
+    "type": "array",
+    "items": {
+      "$ref": "barcodeWithStringCoordinate"
+    }
+  },
+  "pps_json": {
+    "$id": "pps_json",
+    "type": "array",
+    "items": { "$ref": "pps" }
+  },
+  "charger_json": {
+    "$id": "charger_json",
+    "type": "array",
+    "items": { "$ref": "charger" }
+  },
+  "queue_data_json": {
+    "$id": "queue_data_json",
+    "type": "array",
+    "items": { "$ref": "queueData" }
+  },
+  "dock_point_json": {
+    "$id": "dock_point_json",
+    "type": "array",
+    "items": { "$ref": "dockPoint" }
+  },
+  "zone_json": {
+    "$id": "zone_json",
+    "description": "Weird http data fields",
+    "type": "object",
+    "required": ["header", "url", "data", "type"],
+    "properties": {
+      "header": {
+        "type": "object",
+        "required": ["content-type", "accept"],
+        "properties": {
+          "content-type": { "type": "string" },
+          "accept": { "type": "string" }
+        }
+      },
+      "url": { "type": "string" },
+      "data": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["zonerec"],
+          "properties": {
+            "zonerec": {
+              "$ref": "zone"
+            }
+          }
+        }
+      },
+      "type": { "type": "string" }
+    }
+  },
+  "fire_emergency_json": {
+    "$id": "fire_emergency_json",
+    "type": "array",
+    "items": {
+      "$ref": "fireEmergency"
+    }
+  },
+  "elevator_json": {
+    "$id": "elevator_json",
+    "type": "array",
+    "items": { "$ref": "elevator" }
+  },
+  "ods_excluded_json": {
+    "$id": "ods_excluded_json",
+    "type": "object",
+    "required": ["ods_excluded_list"],
+    "properties": {
+      "ods_excluded_list": {
+        "type": "array",
+        "items": { "$ref": "ods" }
+      }
+    }
+  }
+}

@@ -1,0 +1,713 @@
+[
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 1,
+    "pps_url": "http://localhost:8181/pps/1/api/",
+    "location": "111.017",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.017",
+      "111.016",
+      "111.015",
+      "110.015"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.017"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 2,
+    "pps_url": "http://localhost:8181/pps/2/api/",
+    "location": "111.028",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.028",
+      "111.027",
+      "111.026",
+      "110.026"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.028"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 3,
+    "pps_url": "http://localhost:8181/pps/3/api/",
+    "location": "111.039",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.039",
+      "111.038",
+      "111.037",
+      "110.037"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.039"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 4,
+    "pps_url": "http://localhost:8181/pps/4/api/",
+    "location": "111.050",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.050",
+      "111.049",
+      "111.048",
+      "110.048"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.050"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 5,
+    "pps_url": "http://localhost:8181/pps/5/api/",
+    "location": "111.061",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.061",
+      "111.060",
+      "111.059",
+      "110.059"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.061"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 6,
+    "pps_url": "http://localhost:8181/pps/6/api/",
+    "location": "111.072",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.072",
+      "111.071",
+      "111.070",
+      "110.070"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.072"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 7,
+    "pps_url": "http://localhost:8181/pps/7/api/",
+    "location": "111.083",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.083",
+      "111.082",
+      "111.081",
+      "110.081"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.083"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 8,
+    "pps_url": "http://localhost:8181/pps/8/api/",
+    "location": "111.094",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.094",
+      "111.093",
+      "111.092",
+      "110.092"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.094"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 2,
+    "pps_id": 9,
+    "pps_url": "http://localhost:8181/pps/9/api/",
+    "location": "111.105",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "111.105",
+      "111.104",
+      "111.103",
+      "110.103"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "111.105"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 10,
+    "pps_url": "http://localhost:8181/pps/10/api/",
+    "location": "094.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "094.141",
+      "093.141",
+      "092.141",
+      "092.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "094.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 11,
+    "pps_url": "http://localhost:8181/pps/11/api/",
+    "location": "083.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "083.141",
+      "084.141",
+      "085.141",
+      "085.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "083.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 12,
+    "pps_url": "http://localhost:8181/pps/12/api/",
+    "location": "074.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "074.141",
+      "073.141",
+      "072.141",
+      "072.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "074.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 13,
+    "pps_url": "http://localhost:8181/pps/13/api/",
+    "location": "063.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "063.141",
+      "064.141",
+      "065.141",
+      "065.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "063.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 14,
+    "pps_url": "http://localhost:8181/pps/14/api/",
+    "location": "054.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "054.141",
+      "053.141",
+      "052.141",
+      "052.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "054.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 15,
+    "pps_url": "http://localhost:8181/pps/15/api/",
+    "location": "043.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "043.141",
+      "044.141",
+      "045.141",
+      "045.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "043.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 16,
+    "pps_url": "http://localhost:8181/pps/16/api/",
+    "location": "034.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "034.141",
+      "033.141",
+      "032.141",
+      "032.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "034.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 3,
+    "pps_id": 17,
+    "pps_url": "http://localhost:8181/pps/17/api/",
+    "location": "023.141",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "023.141",
+      "024.141",
+      "025.141",
+      "025.140"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "023.141"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 18,
+    "pps_url": "http://localhost:8181/pps/18/api/",
+    "location": "015.137",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "015.137",
+      "015.136",
+      "015.135",
+      "016.135"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "015.137"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 19,
+    "pps_url": "http://localhost:8181/pps/19/api/",
+    "location": "015.126",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "015.126",
+      "015.127",
+      "015.128",
+      "016.128"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "015.126"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 20,
+    "pps_url": "http://localhost:8181/pps/20/api/",
+    "location": "001.114",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.114",
+      "001.113",
+      "002.113"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.114"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 21,
+    "pps_url": "http://localhost:8181/pps/21/api/",
+    "location": "001.105",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.105",
+      "001.106",
+      "002.106"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.105"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 22,
+    "pps_url": "http://localhost:8181/pps/22/api/",
+    "location": "001.097",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.097",
+      "001.096",
+      "001.095",
+      "002.095"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.097"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 23,
+    "pps_url": "http://localhost:8181/pps/23/api/",
+    "location": "001.086",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.086",
+      "001.087",
+      "001.088",
+      "002.088"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.086"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 24,
+    "pps_url": "http://localhost:8181/pps/24/api/",
+    "location": "001.078",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.078",
+      "001.077",
+      "001.076",
+      "002.076"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.078"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 25,
+    "pps_url": "http://localhost:8181/pps/25/api/",
+    "location": "001.067",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.067",
+      "001.068",
+      "001.069",
+      "002.069"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.067"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 26,
+    "pps_url": "http://localhost:8181/pps/26/api/",
+    "location": "001.059",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.059",
+      "001.058",
+      "001.057",
+      "002.057"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.059"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 27,
+    "pps_url": "http://localhost:8181/pps/27/api/",
+    "location": "001.048",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.048",
+      "001.049",
+      "001.050",
+      "002.050"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.048"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 28,
+    "pps_url": "http://localhost:8181/pps/28/api/",
+    "location": "001.039",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.039",
+      "001.038",
+      "001.037",
+      "002.037"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.039"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 29,
+    "pps_url": "http://localhost:8181/pps/29/api/",
+    "location": "001.028",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.028",
+      "001.029",
+      "001.030",
+      "002.030"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.028"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 30,
+    "pps_url": "http://localhost:8181/pps/30/api/",
+    "location": "001.019",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.019",
+      "001.018",
+      "002.018"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.019"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 31,
+    "pps_url": "http://localhost:8181/pps/31/api/",
+    "location": "001.008",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.008",
+      "001.007",
+      "002.007"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.008"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 0,
+    "pps_id": 32,
+    "pps_url": "http://localhost:8181/pps/32/api/",
+    "location": "001.003",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "001.003",
+      "001.002",
+      "002.002"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "001.003"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 1,
+    "pps_id": 33,
+    "pps_url": "http://localhost:8181/pps/33/api/",
+    "location": "009.001",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "009.001",
+      "010.001",
+      "010.002"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "009.001"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 1,
+    "pps_id": 34,
+    "pps_url": "http://localhost:8181/pps/34/api/",
+    "location": "016.001",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "016.001",
+      "017.001",
+      "017.002"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "016.001"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 1,
+    "pps_id": 35,
+    "pps_url": "http://localhost:8181/pps/35/api/",
+    "location": "022.001",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "022.001",
+      "023.001",
+      "023.002"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "022.001"
+  },
+  {
+    "status": "disconnected",
+    "pick_direction": 1,
+    "pps_id": 36,
+    "pps_url": "http://localhost:8181/pps/36/api/",
+    "location": "029.001",
+    "put_docking_positions": [],
+    "queue_barcodes": [
+      "029.001",
+      "030.001",
+      "030.002"
+    ],
+    "allowed_modes": [
+            "put",
+            "pick",
+            "audit"
+        ],
+    "pick_position": "029.001"
+  }
+]

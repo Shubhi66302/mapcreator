@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "queueData",
+  "title": "Single Queue Data schema",
+  "description": "Currently queue_data is not downloaded with map",
+  "type": "array",
+  "items": {
+    "type": "array",
+    "items": [
+      { "$ref": "definitions#/barcodeString" },
+      { "type": "integer", "enum": [0, 1, 2, 3, 4] }
+    ]
+  },
+  "minItems": 1
+}

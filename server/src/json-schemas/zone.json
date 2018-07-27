@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "zone",
+  "title": "Zone schema",
+  "description":
+    "Describes single zone only. zone.json file schema is different",
+  "type": "object",
+  "required": ["zone_id", "blocked", "paused"],
+  "properties": {
+    "zone_id": { "type": "string" },
+    "blocked": { "type": "boolean" },
+    "paused": { "type": "boolean" }
+  }
+}
