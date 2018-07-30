@@ -7,6 +7,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SavedMaps from "./containers/SavedMaps";
 import Home from "./containers/Home";
 import Guidelines from "./containers/Guidelines";
+import Map from "./containers/Map";
+import ImportMap from "./containers/ImportMap";
+
 class App extends Component {
   state = {
     fetched: null
@@ -28,13 +31,15 @@ class App extends Component {
             <li>
               <Link to="/version">About</Link>
             </li>
-          </ul>
+            </ul>
 
           <hr />*/}
 
           <Route exact path="/" component={Home} />
           <Route path="/version" component={SavedMaps} />
           <Route path="/guidelines" component={Guidelines} />
+          <Route path="/map/:id" component={Map} />
+          <Route path="/import" component={ImportMap} />
         </div>
       </Router>
     );

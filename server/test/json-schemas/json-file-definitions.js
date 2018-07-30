@@ -27,7 +27,6 @@ var ajv = new Ajv({
     jsonFileDefinitions
   ]
 }); // options can be passed, e.g. {allErrors: true}
-// var validate = ajv.getSchema("fireEmergency");
 
 describe("map.json", () => {
   var validate = ajv.getSchema("map_json");
