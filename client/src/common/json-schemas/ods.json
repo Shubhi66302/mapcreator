@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "ods",
+  "title": "ODS schema",
+  "type": "object",
+  "required": ["excluded", "ods_tuple"],
+  "properties": {
+    "excluded": { "type": "boolean" },
+    "ods_tuple": {
+      "type": "string",
+      "pattern": "^\\d\\d\\d\\.\\d\\d\\d\\-\\-[0,1,2,3]$"
+    }
+  }
+}

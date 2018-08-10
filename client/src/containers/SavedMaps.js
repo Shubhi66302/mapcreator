@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { handleErrors } from "utils/util";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 class SavedMaps extends Component {
   state = {
@@ -7,32 +10,40 @@ class SavedMaps extends Component {
   };
   componentDidMount() {
     // fetch maps
-    // TODO: handle errors in all fetch responses
     fetch(`/api/maps`)
+      .then(handleErrors)
       .then(res => res.json())
-      .then(maps => this.setState({ maps }));
+      .then(maps => this.setState({ maps }))
+      // TODO: not doing anything with error right now
+      .catch(e => console.log(e));
   }
   render() {
     const { maps, loading } = this.state;
+
     return (
       <div className="container">
-        <h3 className="display-5">Choose from existing versions</h3>
+        <h3 className="display-5">Choose from existing maps</h3>
         <table className="table">
           <thead>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Created on</th>
-            <th scope="col">Updated on</th>
-          </thead>
-
-          {maps.map(({ id, name, createdAt, updatedAt }) => (
             <tr>
-              <th scope="row">{id}</th>
-              <td>{name}</td>
-              <td>{createdAt}</td>
-              <td>{updatedAt}</td>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Created on</th>
+              <th scope="col">Updated on</th>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {maps.map(({ id, name, createdAt, updatedAt }, idx) => (
+              <tr key={idx}>
+                <th scope="row">{id}</th>
+                <td>
+                  <Link to={`/map/${id}`}>{name}</Link>
+                </td>
+                <td>{moment(createdAt).format("lll")}</td>
+                <td>{moment(updatedAt).format("lll")}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     );

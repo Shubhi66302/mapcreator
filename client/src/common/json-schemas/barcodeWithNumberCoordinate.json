@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "barcodeWithNumberCoordinate",
+  "title": "Barcode with number coordinate schema",
+  "description":
+    "represents barcode as definition#/coordinateKey. this used to be tuple of numbers but changed for normalization reasons.",
+  "allOf": [
+    { "$ref": "definitions#/barcodeWithoutCoordinate" },
+    {
+      "properties": {
+        "coordinate": { "$ref": "definitions#/coordinateKey" }
+      },
+      "required": ["coordinate"]
+    }
+  ]
+}

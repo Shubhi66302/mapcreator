@@ -7,7 +7,7 @@ class Map extends Component {
   state = {
     // mapObj has id, name, createdAt, updatedAt, map
     mapObj: null,
-    loading: true
+    status: "Loading"
   };
   componentDidMount() {
     const {
@@ -21,18 +21,25 @@ class Map extends Component {
         if (!res.ok) throw Error(res.statusText);
         return res;
       })
+      .then(res => {
+        this.setState({ status: "Converting..." });
+        return res;
+      })
       .then(res => res.json())
-      .then(mapObj => this.setState({ mapObj, loading: false }))
+      .then(mapObj => {
+        this.setState({ mapObj, status: "Got map." });
+        console.log(JSON.stringify(mapObj));
+      })
       .catch(error => console.log(error));
   }
 
   render() {
-    const { mapObj, error } = this.state;
+    const { mapObj, error, status } = this.state;
     return (
       <div className="container">
-        <h3 className="display-5">
-          {mapObj ? `Got map '${mapObj.name}'` : "Loading..."}
-        </h3>
+        <h3 className="display-5">{status}</h3>
+        {mapObj && `Num barcodes: ${mapObj.map.floors[0].map_values.length}`}
+        {mapObj && <pre>{}</pre>}
       </div>
     );
   }

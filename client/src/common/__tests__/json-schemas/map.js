@@ -1,0 +1,3 @@
+// TODO: write tests for map.json schema.
+// should ideally test for each field separately...
+test("empty", () => {});

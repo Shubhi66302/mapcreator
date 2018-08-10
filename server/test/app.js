@@ -26,16 +26,11 @@ describe("/api/createMap", () => {
     var response = await request(app)
       .post("/api/createMap")
       .send({ map: dummyGoodMap, name: "dummy" });
+    expect(response.error).not.toBeTruthy();
     expect(response.statusCode).toBe(200);
-    const responseMap = response.body;
-    expect(responseMap.id).toBeTruthy();
-    var dbMap = await Map.findById(responseMap.id);
-    // response has dates encoded as strings, convert them first
-    expect(dbMap.dataValues).toMatchObject({
-      ...responseMap,
-      createdAt: new Date(responseMap.createdAt),
-      updatedAt: new Date(responseMap.updatedAt)
-    });
+    const responseId = response.body;
+    expect(responseId).toBeTruthy();
+    var dbMap = await Map.findById(responseId);
     const { id, createdAt, updatedAt, map: mapObj } = dbMap.dataValues;
     expect(id).toBeTruthy();
     expect(createdAt).toBeTruthy();
@@ -63,11 +58,11 @@ describe("/api/createMap", () => {
 
 describe("/api/map", () => {
   test("valid map id", async () => {
-    const {
-      body: { id }
-    } = await request(app)
+    const { body: id } = await request(app)
       .post("/api/createMap")
-      .send({ map: dummyGoodMap, name: "dummy" });
+      .send({ map: dummyGoodMap, name: "dummy-get-map" });
+    expect(id).toBeTruthy();
+    expect(typeof id).toBe("number");
     var response = await request(app)
       .get(`/api/map/${id}`)
       .expect(200);
@@ -98,12 +93,13 @@ describe("/api/maps", () => {
     await Map.destroy({ where: {}, truncate: true });
   });
 
-  test("get all maps", async () => {
+  test("get all maps in descending order of insertion", async () => {
     // add two maps
     var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
     var map2 = await Map.create({ map: dummyGoodMap, name: "map2" });
     // delete the map attrs since they are not present, also convert date to strings
-    var expectedMaps = [map1, map2]
+    // reverse order since sorted in descending order of updatedAt
+    var expectedMaps = [map2, map1]
       .map(map => map.toJSON())
       .map(({ map, ...rest }) => ({
         ...rest,
@@ -117,7 +113,31 @@ describe("/api/maps", () => {
       .expect(200);
     var maps = response.body;
     expect(maps).toHaveLength(2);
-    expect(_.sortBy(maps, ["id"])).toEqual(expectedMaps);
+    expect(maps).toEqual(expectedMaps);
+  });
+
+  test("get all maps when older map is touched in correct order", async () => {
+    // add three maps
+    var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
+    var map2 = await Map.create({ map: dummyGoodMap, name: "map2" });
+    var map3 = await Map.create({ map: dummyGoodMap, name: "map3" });
+    // touch the first map
+    await map1.update({ name: "i-changed-the-name" });
+    var expectedMaps = [map1, map3, map2]
+      .map(map => map.toJSON())
+      .map(({ map, ...rest }) => ({
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString()
+      }));
+
+    // test
+    var response = await request(app)
+      .get("/api/maps")
+      .expect(200);
+    var maps = response.body;
+    expect(maps).toHaveLength(3);
+    expect(maps).toEqual(expectedMaps);
   });
 
   test("get empty array of maps", async () => {
@@ -128,6 +148,8 @@ describe("/api/maps", () => {
     expect(maps).toHaveLength(0);
   });
 });
+
+// TODO: add tests for POST '/api/map/:'
 
 afterAll(async () => {
   // drop all maps

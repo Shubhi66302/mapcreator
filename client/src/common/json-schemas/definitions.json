@@ -1,0 +1,73 @@
+{
+  "$id": "definitions",
+  "coordinateString": {
+    "description": "string representation of coordinate as present in map.json",
+    "type": "string",
+    "pattern": "^\\[\\d*, *\\d*\\]$"
+  },
+  "coordinate": {
+    "description":
+      "storing as tuple of numbers since more convenient than string",
+    "type": "array",
+    "items": [{ "type": "integer" }, { "type": "integer" }]
+  },
+  "coordinateKey": {
+    "description":
+      "storing as comma separated unique string, for keying barcodes in normalized map. coordinateString is ambiguous as it allows spaces.",
+    "type": "string",
+    "pattern": "^\\d*,\\d*$"
+  },
+  "barcodeString": { "type": "string", "pattern": "^\\d\\d\\d\\.\\d\\d\\d$" },
+  "direction": { "type": "integer", "enum": [0, 1, 2, 3] },
+  "barcodeWithoutCoordinate": {
+    "title": "Barcode without coordinate schema",
+    "description":
+      "Extend this with either string coordinate or array of numbers coordinate",
+    "type": "object",
+    "required": ["barcode", "neighbours"],
+    "properties": {
+      "blocked": { "type": "boolean" },
+      "zone": { "type": "string" },
+      "store_status": { "type": "integer" },
+      "barcode": { "$ref": "definitions#/barcodeString" },
+      "neighbours": {
+        "description": "eg. [[1,1,1], [1,1,0], [0,0,0], null]",
+        "type": "array",
+        "items": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "array",
+              "items": { "type": "integer", "enum": [0, 1] },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        },
+        "minItems": 4,
+        "maxItems": 4
+      },
+      "size_info": {
+        "type": "array",
+        "items": { "type": "integer" },
+        "minItems": 4,
+        "maxItems": 4
+      },
+      "botid": {
+        "description": "why is it both null and \"null\"?",
+        "anyOf": [{ "type": "null" }, { "type": "string" }]
+      },
+      "adjacency": {
+        "type": "array",
+        "items": {
+          "anyOf": [{ "type": "null" }, { "$ref": "definitions#/coordinate" }]
+        },
+        "minItems": 4,
+        "maxItems": 4
+      },
+      "special": {
+        "type": "boolean"
+      }
+    }
+  }
+}

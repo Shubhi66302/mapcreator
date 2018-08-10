@@ -1,0 +1,168 @@
+{
+  "id": 23,
+  "name": "3x3-with-actually-all-things",
+  "map": {
+    "floors": [
+      {
+        "floor_id": 1,
+        "map_values": [
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "barcode": "000.001",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "1,0"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+            "barcode": "000.002",
+            "store_status": 1,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "2,0"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "barcode": "001.000",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "0,1"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            "barcode": "001.001",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "1,1"
+          },
+          {
+            "size_info": [750, 750, 885, 750],
+            "zone": "defzone",
+            "adjacency": [[2, 0], [1, 1], [12, 12], null],
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 0], [0, 0, 0]],
+            "barcode": "001.002",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "2,1"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+            "barcode": "002.000",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "0,2"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 0, 0]],
+            "barcode": "002.001",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "1,2"
+          },
+          {
+            "size_info": [205, 750, 750, 750],
+            "zone": "defzone",
+            "adjacency": [[12, 12], [1, 2], null, null],
+            "neighbours": [[1, 1, 0], [1, 0, 0], [0, 0, 0], [0, 0, 0]],
+            "barcode": "002.002",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "2,2"
+          },
+          {
+            "size_info": [205, 1000, 205, 1000],
+            "zone": "defzone",
+            "adjacency": [[2, 1], null, [2, 2], null],
+            "neighbours": [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
+            "store_status": 0,
+            "barcode": "012.012",
+            "blocked": false,
+            "botid": "null",
+            "special": true,
+            "coordinate": "12,12"
+          }
+        ],
+        "chargers": [
+          {
+            "charger_id": 1,
+            "charger_location": "002.002",
+            "entry_point_location": "012.012",
+            "charger_type": "rectangular_plate_charger",
+            "status": "disconnected",
+            "mode": "manual",
+            "reinit_point_direction": 0,
+            "entry_point_direction": 0,
+            "reinit_point_location": "012.012",
+            "charger_direction": 0
+          }
+        ],
+        "fireEmergencies": [
+          {
+            "group_id": "1",
+            "type": "shutter",
+            "priority": "0",
+            "barcode": "002.000",
+            "fire_emergency_id": 1
+          },
+          {
+            "group_id": "1",
+            "type": "escape_path",
+            "priority": "1",
+            "barcode": "001.000",
+            "fire_emergency_id": 2
+          }
+        ],
+        "odses": [],
+        "ppses": [
+          {
+            "location": "000.001",
+            "pick_direction": 0,
+            "allowed_modes": ["put", "pick", "audit"],
+            "pps_id": 1,
+            "pick_position": "000.001",
+            "status": "disconnected",
+            "put_docking_positions": [],
+            "pps_url": "http://localhost:8181/pps/1/api/",
+            "queue_barcodes": []
+          },
+          {
+            "location": "001.001",
+            "pick_direction": 0,
+            "allowed_modes": ["put", "pick", "audit"],
+            "pps_id": 2,
+            "pick_position": "001.001",
+            "status": "disconnected",
+            "put_docking_positions": [],
+            "pps_url": "http://localhost:8181/pps/2/api/",
+            "queue_barcodes": []
+          }
+        ],
+        "dockPoints": []
+      }
+    ],
+    "elevators": [],
+    "zones": [],
+    "queueDatas": []
+  },
+  "createdAt": "2018-08-06T08:46:44.635Z",
+  "updatedAt": "2018-08-06T08:46:44.635Z"
+}

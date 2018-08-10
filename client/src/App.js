@@ -9,6 +9,7 @@ import Home from "./containers/Home";
 import Guidelines from "./containers/Guidelines";
 import Map from "./containers/Map";
 import ImportMap from "./containers/ImportMap";
+import CreateMap from "./containers/CreateMap";
 
 class App extends Component {
   state = {
@@ -39,7 +40,8 @@ class App extends Component {
           <Route path="/version" component={SavedMaps} />
           <Route path="/guidelines" component={Guidelines} />
           <Route path="/map/:id" component={Map} />
-          <Route path="/import" component={ImportMap} />
+          <Route path="/existing" component={ImportMap} />
+          <Route path="/new" component={CreateMap} />
         </div>
       </Router>
     );

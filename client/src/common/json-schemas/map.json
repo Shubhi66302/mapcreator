@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "map",
+  "title":
+    "mapcreator's internal representation of map. TODO: normalize this schema?",
+  "type": "object",
+  "required": ["elevators", "zones", "queueDatas", "floors"],
+  "additionalProperties": false,
+  "properties": {
+    "elevators": {
+      "type": "array",
+      "items": {
+        "$ref": "elevator"
+      }
+    },
+    "zones": {
+      "type": "array",
+      "items": { "$ref": "zone" }
+    },
+    "queueDatas": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["queue_data_id"],
+            "properties": { "queue_data_id": { "type": "integer" } }
+          },
+          { "$ref": "queueData" }
+        ]
+      }
+    },
+    "floors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "floor_id",
+          "map_values",
+          "chargers",
+          "ppses",
+          "odses",
+          "dockPoints",
+          "fireEmergencies"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "floor_id": { "type": "integer", "minimum": 1 },
+          "map_values": {
+            "type": "array",
+            "items": { "$ref": "barcodeWithNumberCoordinate" }
+          },
+          "chargers": {
+            "type": "array",
+
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["charger_id"],
+                  "properties": { "charger_id": { "type": "integer" } }
+                },
+                { "$ref": "charger" }
+              ]
+            }
+          },
+          "ppses": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["pps_id"],
+                  "properties": { "pss_id": { "type": "integer" } }
+                },
+                { "$ref": "pps" }
+              ]
+            }
+          },
+          "odses": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["ods_id"],
+                  "properties": { "ods_id": { "type": "integer" } }
+                },
+                { "$ref": "ods" }
+              ]
+            }
+          },
+          "dockPoints": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["dock_point_id"],
+                  "properties": { "dock_point_id": { "type": "integer" } }
+                },
+                { "$ref": "dockPoint" }
+              ]
+            }
+          },
+          "fireEmergencies": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["fire_emergency_id"],
+                  "properties": {
+                    "fire_emergency_id": { "type": "integer" }
+                  }
+                },
+                { "$ref": "fireEmergency" }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

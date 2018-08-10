@@ -1,17 +1,21 @@
 import express from "express";
-import getLoadedAjv from "server/src/utils/get-loaded-ajv";
+import getLoadedAjv from "client/src/common/utils/get-loaded-ajv";
 import { Map } from "server/models/index";
 import wrap from "express-async-handler";
-
+import _ from "lodash";
+// HACK: adding cors to fetch data from storybook. should remove this later.
+import cors from "cors";
 const app = express();
+app.use(cors());
 
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.get("/api/test", (req, res) => res.json("test api response"));
 
+// should only return the id of the map
 app.post(
   "/api/createMap",
   wrap(async (req, res) => {
@@ -27,8 +31,8 @@ app.post(
     }
     // store in db
     var created = await Map.create({ map, name });
-    // send
-    res.json(created);
+    // send only id
+    res.json(created.id);
   })
 );
 
@@ -49,7 +53,32 @@ app.get(
     var maps = await Map.findAll({
       attributes: ["id", "name", "createdAt", "updatedAt"]
     });
-    res.json(maps.map(map => map.toJSON()));
+    // sort by descending updatedAt
+    var sortedMaps = _.sortBy(maps.map(map => map.toJSON()), [
+      o => Date(o.updatedAt)
+    ]).reverse();
+
+    res.json(sortedMaps);
+  })
+);
+
+// update map
+app.post(
+  "/api/map/:id",
+  wrap(async (req, res) => {
+    const { id } = req.params;
+    const { map: reqMap } = req.body;
+    var map = await Map.findById(id);
+    if (!map) throw new Error(`could not find map for id ${id}`);
+    // TODO: run validation here?
+    var validate = getLoadedAjv().getSchema("map");
+    if (!validate(reqMap)) {
+      throw new Error(JSON.stringify(validate.errors));
+    }
+    await map.update({ map: reqMap });
+    // send back the new map?
+    var newMap = await Map.findById(id);
+    res.json(newMap.toJSON());
   })
 );
 
