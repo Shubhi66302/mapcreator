@@ -16,7 +16,7 @@ import {
 } from "@inlet/react-pixi";
 import Viewport from "pixi-viewport";
 import barcodeSprite from "sprites/barcode.png";
-import store from "../store";
+import store, { dummyState } from "../store";
 import { connect, Provider } from "react-redux";
 import { TILE_WIDTH, TILE_HEIGHT, SCALE, MAX_SPRITES } from "../constants";
 import {
@@ -29,10 +29,14 @@ import {
   tileRenderCoordinateSelector,
   spriteRenderCoordinateSelector,
   tileSpriteNamesWithoutEntityData,
+  tileNameWithoutEntityDataSelector,
+  tileEntitySpritesMapSelector,
+  specialTileSpritesMapSelector,
   tileBoundsSelector,
   tileSpriteDataSelector,
   tileDataSelector,
-  tileIdsSelector
+  tileIdsSelector,
+  getBarcodes
 } from "../utils/selectors";
 import { coordinateKeyToTupleOfIntegers } from "../utils/util";
 
@@ -265,46 +269,157 @@ class RectWithSprite extends Component {
     return ret;
   }
 }
-var resetContainer = (container, state, tileIds) => {
-  console.log("resetting ParticleContainerWithAllSprites");
-  var { randomSpriteName } = state;
-  // delete existing sprites if any
-  // don't delet! instead only add sprites for tiles that don't exist
-  // if (container.spriteMap) {
-  //   Object.entries(container.spriteMap).forEach(([key, sprite]) =>
-  //     sprite.destroy()
-  //   );
-  // }
-  var spriteMap = container.spriteMap || {};
-  for (let tileId of tileIds) {
-    var spriteNames = tileSpriteNamesWithoutEntityData(state, { tileId });
-    for (var idx = 0; idx < 8; idx++) {
-      var { x, y } = spriteRenderCoordinateSelector(state, {
-        tileId,
-        spriteIdx: idx
-      });
-      let sprite = spriteMap[`${tileId}-${idx}`];
-      if (!sprite) {
-        // make new sprite.
-        sprite = new PIXI.Sprite(
-          PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]
-        );
-        container.addChild(sprite);
-        spriteMap[`${tileId}-${idx}`] = sprite;
-      } else {
-        sprite.texture =
-          PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
+
+var createOrUpdateAllSprites = (container, state, tileId) => {
+  var spriteNames = tileSpriteNamesWithoutEntityData(state, { tileId });
+  for (var idx = 0; idx < 8; idx++) {
+    var { x, y } = spriteRenderCoordinateSelector(state, {
+      tileId,
+      spriteIdx: idx
+    });
+    let sprite = container.spriteMap[`${tileId}-${idx}`];
+    if (!sprite) {
+      // make new sprite.
+      sprite = new PIXI.Sprite(
+        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]
+      );
+      container.addChild(sprite);
+      container.spriteMap[`${tileId}-${idx}`] = sprite;
+    } else {
+      sprite.texture =
+        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
+      sprite.visible = true;
+    }
+    sprite.x = x;
+    sprite.y = y;
+  }
+};
+
+// will define selectors 3 cases:
+// 1. tileIds update (use tileIds selector twice) -> re render everything O(n)
+// 2. barcode entity updates: re-render tiles. also re-render barcode sprites if changed.
+// 2. Other entity updates (charger, pps, selectedTiles etc. etc.) -> diff render entity, maybe just re-render all every time.
+
+// called whenever tileIds change.
+var tileIdsUpdate = (container, state, prevState) => {
+  var prevTileIds = tileIdsSelector(prevState);
+  var tileIds = tileIdsSelector(state);
+  if (prevTileIds === tileIds) return; // nothing to do.
+  console.log("tile ids changed, re-rendering everything.");
+  container.spriteMap = container.spriteMap || {};
+  // hide all sprites in the beginning
+  for (let prevTileId in prevTileIds) {
+    if (container.spriteMap[`${prevTileId}-0`]) {
+      // hide all sprites for this tile
+      for (var idx = 0; idx < 8; idx++) {
+        let sprite = container.spriteMap[`${prevTileId}-${idx}`];
+        if (sprite) sprite.visible = false;
       }
-      // TODO: add logic to find spriteName etc.
-      sprite.x = x;
-      sprite.y = y;
     }
   }
-  // TODO: hide sprites that are not in tileIds
-  container.spriteMap = spriteMap;
-  // console.log(container.spriteMap);
+  for (let tileId of tileIds) {
+    createOrUpdateAllSprites(container, state, tileId);
+    // the entity data and selected data will be updated later.
+  }
   return container;
 };
+
+var barcodeUpdate = (container, state, prevState) => {
+  var prevBarcodes = getBarcodes(prevState);
+  var barcodes = getBarcodes(state);
+  if (prevBarcodes === barcodes) return; // since barcodes are same this was not needed.
+  console.log("need to update barcode entities!");
+  var tileIds = tileIdsSelector(state);
+  // var specialTileSpritesMap = specialTileSpritesMapSelector(state);
+  for (let tileId of tileIds) {
+    if (prevBarcodes[tileId]) {
+      if (prevBarcodes[tileId].barcode !== barcodes[tileId].barcode) {
+        // re render everything for this tile
+        createOrUpdateAllSprites(container, state, tileId);
+      }
+    }
+    // special tile sprites are not done here.
+    var tileName = tileNameWithoutEntityDataSelector(state, { tileId });
+    container.spriteMap[`${tileId}-0`].texture =
+      PIXI.loader.resources["mySpritesheet"].textures[tileName];
+  }
+};
+
+// updater that does all the entity (pps, charger, queue etc.) and selected tile rendering.
+// almost always run...
+var tileSpriteUpdate = (container, state, prevState) => {
+  if (
+    state.normalizedMap.entities === prevState.normalizedMap.entities &&
+    state.selectedTiles === prevState.selectedTiles
+  )
+    return;
+  console.log("tileSpriteUpdate happening!");
+  var prevSpecial = specialTileSpritesMapSelector(prevState);
+  var special = specialTileSpritesMapSelector(state);
+  // need to correct both previous and current special
+  Object.entries(prevSpecial).forEach(([tileId]) => {
+    var spriteName = tileNameWithoutEntityDataSelector(state, { tileId });
+    container.spriteMap[`${tileId}-0`].texture =
+      PIXI.loader.resources["mySpritesheet"].textures[
+        special[tileId] || spriteName
+      ];
+  });
+  Object.entries(special).forEach(([tileId, spriteName]) => {
+    // prevSpecial's are already corrected.
+    if (!prevSpecial[tileId])
+      container.spriteMap[`${tileId}-0`].texture =
+        PIXI.loader.resources["mySpritesheet"].textures[spriteName];
+  });
+};
+
+var allUpdates = (container, state) => {
+  var prevState = container.prevState || dummyState;
+  tileIdsUpdate(container, state, prevState);
+  barcodeUpdate(container, state, prevState);
+  tileSpriteUpdate(container, state, prevState);
+  container.prevState = state;
+};
+
+// var resetContainer = (container, state, tileIds) => {
+//   console.log("resetting ParticleContainerWithAllSprites");
+//   var { randomSpriteName } = state;
+//   // delete existing sprites if any
+//   // don't delet! instead only add sprites for tiles that don't exist
+//   // if (container.spriteMap) {
+//   //   Object.entries(container.spriteMap).forEach(([key, sprite]) =>
+//   //     sprite.destroy()
+//   //   );
+//   // }
+//   var spriteMap = container.spriteMap || {};
+//   for (let tileId of tileIds) {
+//     var spriteNames = tileSpriteNamesWithoutEntityData(state, { tileId });
+//     for (var idx = 0; idx < 8; idx++) {
+//       var { x, y } = spriteRenderCoordinateSelector(state, {
+//         tileId,
+//         spriteIdx: idx
+//       });
+//       let sprite = spriteMap[`${tileId}-${idx}`];
+//       if (!sprite) {
+//         // make new sprite.
+//         sprite = new PIXI.Sprite(
+//           PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]
+//         );
+//         container.addChild(sprite);
+//         spriteMap[`${tileId}-${idx}`] = sprite;
+//       } else {
+//         sprite.texture =
+//           PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
+//       }
+//       // TODO: add logic to find spriteName etc.
+//       sprite.x = x;
+//       sprite.y = y;
+//     }
+//   }
+//   // TODO: hide sprites that are not in tileIds
+//   container.spriteMap = spriteMap;
+//   // console.log(container.spriteMap);
+//   return container;
+// };
 // Testing if we can just re-render every sprite while optimizing tile updates
 var ParticleContainerWithAllSprites = PixiComponent(
   "ParticleContainerWithAllSprites",
@@ -316,47 +431,49 @@ var ParticleContainerWithAllSprites = PixiComponent(
       });
       var state = store.getState();
       // store prevstate in container?
-      container.prevState = state;
-      var tileIds = tileIdsSelector(state);
-      resetContainer(container, state, tileIds);
+      // container.prevState = state;
+      // var tileIds = tileIdsSelector(state);
+      // resetContainer(container, state, tileIds);
+      allUpdates(container, state);
       // add event to change spriteName for all sprites
       // do not rely applyProps since it might be called AFTER this method.
       // instead do everything related to state here only.
       container.unsubscribe = store.subscribe(() => {
         // check if tileIds have changed. if yes, then reset container.
         var state = store.getState();
-        var tileIds = tileIdsSelector(state);
-        const { randomSpriteName } = state;
-        // console.log(tileIds);
-        // just checking length for now... that's probably good enough even.
-        // if (Object.keys(container.spriteMap).length !== tileIds.length * 8)
-        var { prevState } = container;
-        container.prevState = state;
-        if (
-          prevState.normalizedMap !== state.normalizedMap ||
-          prevState.randomSpriteName !== state.randomSpriteName
-        )
-          resetContainer(container, state, tileIds);
-        else if (prevState.selectedTiles !== state.selectedTiles) {
-          console.log("Re-rendering tiles becaues of selection");
-          // re render tiles?
-          tileIds.forEach(tileId => {
-            var spriteNames = tileSpriteNamesWithoutEntityData(state, {
-              tileId
-            });
-
-            var spriteId = `${tileId}-0`;
-            var sprite = container.spriteMap[spriteId];
-            if (state.selectedTiles[tileId] !== undefined) {
-              // just randomly assign sprites for now, we're only testing time complexity
-              sprite.texture =
-                PIXI.loader.resources["mySpritesheet"].textures["3.png"];
-            } else {
-              sprite.texture =
-                PIXI.loader.resources["mySpritesheet"].textures[spriteNames[0]];
-            }
-          });
-        }
+        allUpdates(container, state);
+        // var tileIds = tileIdsSelector(state);
+        // const { randomSpriteName } = state;
+        // // console.log(tileIds);
+        // // just checking length for now... that's probably good enough even.
+        // // if (Object.keys(container.spriteMap).length !== tileIds.length * 8)
+        // var { prevState } = container;
+        // container.prevState = state;
+        // if (
+        //   prevState.normalizedMap !== state.normalizedMap ||
+        //   prevState.randomSpriteName !== state.randomSpriteName
+        // )
+        //   resetContainer(container, state, tileIds);
+        // else if (prevState.selectedTiles !== state.selectedTiles) {
+        //   console.log("Re-rendering tiles becaues of selection");
+        //   // re render tiles?
+        //   tileIds.forEach(tileId => {
+        //     var spriteNames = tileSpriteNamesWithoutEntityData(state, {
+        //       tileId
+        //     });
+        //
+        //     var spriteId = `${tileId}-0`;
+        //     var sprite = container.spriteMap[spriteId];
+        //     if (state.selectedTiles[tileId] !== undefined) {
+        //       // just randomly assign sprites for now, we're only testing time complexity
+        //       sprite.texture =
+        //         PIXI.loader.resources["mySpritesheet"].textures["3.png"];
+        //     } else {
+        //       sprite.texture =
+        //         PIXI.loader.resources["mySpritesheet"].textures[spriteNames[0]];
+        //     }
+        //   });
+        // }
         // else {
         //   // change texture of every sprite.
         //   console.log(

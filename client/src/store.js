@@ -43,6 +43,29 @@ const logger = createLogger({
   // options
   // diff: true
 });
+
+export const dummyState = {
+  normalizedMap: normalizeMap({
+    id: "1",
+    name: "dummy",
+    map: {
+      floors: [
+        {
+          floor_id: 1,
+          map_values: []
+        }
+      ],
+      elevators: [],
+      zones: [],
+      queueDatas: []
+    }
+  }),
+  currentFloor: 1,
+  selectedTiles: {},
+  zoneView: false,
+  randomSpriteName: "0.png"
+};
+
 export default createStore(
   reducer,
   {
