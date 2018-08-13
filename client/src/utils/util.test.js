@@ -4,7 +4,9 @@ import {
   barcodeToCoordinateKey,
   coordinateKeyToTupleOfIntegers,
   tileToWorldCoordinate,
-  worldToTileCoordinate
+  worldToTileCoordinate,
+  coordinateKeyToBarcode,
+  getIdsForEntities
 } from "./util";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
 import * as constants from "../constants";
@@ -51,6 +53,27 @@ describe("coordinateKeyToTupleOfIntegers", () => {
     expect(() => coordinateKeyToTupleOfIntegers("001.002")).toThrow();
     expect(() => coordinateKeyToTupleOfIntegers("15, 12")).toThrow();
     expect(() => coordinateKeyToTupleOfIntegers("[15,12]")).toThrow();
+  });
+});
+
+describe("coordinateKeyToBarcode", () => {
+  test("good stuff", () => {
+    expect(coordinateKeyToBarcode("5,10")).toBe("010.005");
+    expect(coordinateKeyToBarcode("10,10")).toBe("010.010");
+  });
+  test("bad stuff", () => {
+    expect(() => coordinateKeyToBarcode("[10,5]")).toThrow();
+  });
+});
+
+describe("getIdsForEntities", () => {
+  test("good entitiees", () => {
+    expect(
+      getIdsForEntities(5, { "1": "someting", "2": "somehting else" })
+    ).toEqual([3, 4, 5, 6, 7]);
+  });
+  test("empty entities", () => {
+    expect(getIdsForEntities(5, undefined)).toEqual([1, 2, 3, 4, 5]);
   });
 });
 

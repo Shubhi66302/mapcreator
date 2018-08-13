@@ -129,63 +129,75 @@ describe("tileRenderCoordinateSelector", () => {
   });
 });
 
-// remember, 000.001 => 1,0
-describe("findTileIdInObj helper", () => {
-  const findTileIdInObj = selectors.findTileIdInObj;
-  var aPPSMap = { "1": { location: "000.001" }, "2": { location: "002.004" } };
-  var aODSExcludedMap = {
-    "1": { ods_tuple: "000.001--2" },
-    "2": { ods_tuple: "002.004--1" }
-  };
-  test("should get tileId from a pps obj", () => {
-    var found = findTileIdInObj(aPPSMap, e => e.location, "1,0");
-    expect(found).toBe(true);
-  });
-  test("should not file tileId in pps obj", () => {
-    var found = findTileIdInObj(aPPSMap, e => e.location, "5,6");
-    expect(found).toBe(false);
-  });
-  test("should not find tileId in undefined obj", () => {
-    var found = findTileIdInObj(undefined, e => e.location, "0,1");
-  });
-  test("should find tileId in ods map", () => {
-    var found = findTileIdInObj(
-      aODSExcludedMap,
-      e => e.ods_tuple.slice(0, 7),
-      "4,2"
-    );
-    expect(found).toBe(true);
-  });
-});
-
-describe("findTileIdInQueueData helper", () => {
-  const findTileIdInQueueData = selectors.findTileIdInQueueData;
-  var aQueueDataMap = {
-    "1": [["000.001", 0], ["002.004", 1]],
-    "2": [["003.004", 1], ["005.006", 3]]
-  };
-  test("should find tileId in queue data", () => {
-    var found = findTileIdInQueueData(aQueueDataMap, "4,2");
-    expect(found).toBe(true);
-    found = findTileIdInQueueData(aQueueDataMap, "4,3");
-    expect(found).toBe(true);
-  });
-  test("should not find tileId in queue data", () => {
-    var found = findTileIdInQueueData(aQueueDataMap, "0,2");
-    expect(found).toBe(false);
-  });
-  test("should not find tileId in undefined obj", () => {
-    var found = findTileIdInQueueData(undefined, "0,0");
-    expect(found).toBe(false);
-  });
-});
-
-// hard to test
-describe("tileSpritesSelector", () => {
-  const tileSpritesSelector = selectors.tileSpritesSelector;
-  test("should give normal tile", () => {
+describe("spriteRenderCoordinateSelector", () => {
+  const {
+    spriteRenderCoordinateSelector,
+    tileRenderCoordinateSelector
+  } = selectors;
+  test("should give correct render coordinate for main sprite of floor 1", () => {
     var state = makeState(twoFloors, 1);
-    var sprites = tileSpritesSelector(state, { tileId: "1,2" });
+    var coordinates = spriteRenderCoordinateSelector(state, {
+      tileId: "0,0",
+      spriteIdx: 0
+    });
+    expect(coordinates).toEqual({ x: -0, y: 0 });
+    coordinates = spriteRenderCoordinateSelector(state, {
+      tileId: "2,2",
+      spriteIdx: 0
+    });
+    expect(coordinates).toEqual(
+      tileRenderCoordinateSelector(state, { tileId: "2,2" })
+    );
+    coordinates = spriteRenderCoordinateSelector(state, {
+      tileId: "1,2",
+      spriteIdx: 0
+    });
+    expect(coordinates).toEqual(
+      tileRenderCoordinateSelector(state, { tileId: "1,2" })
+    );
+  });
+  test("should give correct coordinate for a barcode sprite", () => {
+    var state = makeState(twoFloors, 1);
+    var coordinates = spriteRenderCoordinateSelector(state, {
+      tileId: "0,0",
+      spriteIdx: 1
+    });
+    expect(coordinates).toEqual({
+      x: 0,
+      y: constants.BARCODE_SPRITE_Y_OFFSET
+    });
+    coordinates = spriteRenderCoordinateSelector(state, {
+      tileId: "2,2",
+      spriteIdx: 4
+    });
+    expect(coordinates).toEqual({
+      x: -2 * constants.TILE_WIDTH + 3 * constants.BARCODE_SPRITE_X_OFFSET,
+      y: 2 * constants.TILE_HEIGHT + constants.BARCODE_SPRITE_Y_OFFSET
+    });
+  });
+});
+
+describe("tileNameWithoutEntityDataSelector", () => {
+  const { tileNameWithoutEntityDataSelector } = selectors;
+  test("should give correct tile name without entity info", () => {
+    var state = makeState(twoFloors, 1);
+    expect(tileNameWithoutEntityDataSelector(state, { tileId: "2,0" })).toBe(
+      constants.STORABLE
+    );
+    expect(tileNameWithoutEntityDataSelector(state, { tileId: "1,0" })).toBe(
+      constants.NORMAL
+    );
+    expect(tileNameWithoutEntityDataSelector(state, { tileId: "1,2" })).toBe(
+      constants.NORMAL
+    );
+  });
+});
+
+describe("tileSpriteNamesWithoutEntityData", () => {
+  const { tileSpriteNamesWithoutEntityData } = selectors;
+  test("should give correct barcode sprite names for normal tile", () => {
+    var state = makeState(twoFloors, 1);
+    var sprites = tileSpriteNamesWithoutEntityData(state, { tileId: "1,2" });
     expect(sprites).toEqual([
       constants.NORMAL,
       "0.png",
@@ -197,128 +209,112 @@ describe("tileSpritesSelector", () => {
       "1.png"
     ]);
   });
-  test("should give pps tile", () => {
+  test("should give correct barcode sprite names for storable tile", () => {
     var state = makeState(twoFloors, 1);
-    var sprites = tileSpritesSelector(state, { tileId: "1,0" });
+    var sprites = tileSpriteNamesWithoutEntityData(state, { tileId: "2,0" });
     expect(sprites).toEqual([
-      constants.PPS,
+      constants.STORABLE,
       "0.png",
       "0.png",
       "0.png",
-      "dot.png",
-      "0.png",
-      "0.png",
-      "1.png"
-    ]);
-  });
-  test("should give charger tile", () => {
-    var state = makeState(twoFloors, 1);
-    var sprites = tileSpritesSelector(state, { tileId: "2,2" });
-    expect(sprites).toEqual([
-      constants.CHARGER,
-      "0.png",
-      "0.png",
-      "2.png",
       "dot.png",
       "0.png",
       "0.png",
       "2.png"
-    ]);
-  });
-  test("should give selected tile", () => {
-    var state = makeState(twoFloors, 1, {
-      "2,1": {},
-      "1,0": {}
-    });
-    var sprites = tileSpritesSelector(state, { tileId: "2,1" });
-    expect(sprites).toEqual([
-      constants.SELECTED,
-      "0.png",
-      "0.png",
-      "1.png",
-      "dot.png",
-      "0.png",
-      "0.png",
-      "2.png"
-    ]);
-    sprites = tileSpritesSelector(state, { tileId: "1,0" });
-    expect(sprites).toEqual([
-      constants.SELECTED,
-      "0.png",
-      "0.png",
-      "0.png",
-      "dot.png",
-      "0.png",
-      "0.png",
-      "1.png"
     ]);
   });
 });
 
-describe("tileDataSelector", () => {
-  const tileDataSelector = selectors.tileDataSelector;
-  test("should give correct tile data in shallow check", () => {
-    // shallow checking this method
-    var result = tileDataSelector.resultFunc(
-      ["0.png", "0.png", "0.png", "dot.png", "0.png", "1.png", "2.png"],
-      { x: 10, y: 20 }
+describe("getParticularEntityMap", () => {
+  const { getParticularEntityMap } = selectors;
+  test("should get correct entity map for ppses", () => {
+    var state = makeState(twoFloors, 1);
+    var entityMap = getParticularEntityMap(state, { entityName: "pps" });
+    expect(entityMap).toMatchObject({
+      "1,0": constants.PPS,
+      "1,1": constants.PPS
+    });
+  });
+  test("should get correct entity map for fire emergency", () => {
+    var state = makeState(twoFloors, 1);
+    var entityMap = getParticularEntityMap(state, {
+      entityName: "fireEmergency"
+    });
+    expect(entityMap).toMatchObject({
+      "0,2": constants.EMERGENCY_EXIT,
+      "0,1": constants.EMERGENCY_EXIT
+    });
+  });
+  test("should not recompute entities even alternating betweeen them", () => {
+    // using re-reselect so shouldn't recompute
+    var state = makeState(twoFloors, 1);
+    var ppsSelector = getParticularEntityMap.getMatchingSelector(state, {
+      entityName: "pps"
+    });
+    var fireEmergencySelector = getParticularEntityMap.getMatchingSelector(
+      state,
+      { entityName: "fireEmergency" }
     );
-    expect(result).toMatchObject({
-      spriteNames: [
-        "0.png",
-        "0.png",
-        "0.png",
-        "dot.png",
-        "0.png",
-        "1.png",
-        "2.png"
-      ],
-      x: 10,
-      y: 20
-    });
+    ppsSelector.resetRecomputations();
+    fireEmergencySelector.resetRecomputations();
+    getParticularEntityMap(state, { entityName: "pps" });
+    getParticularEntityMap(state, { entityName: "pps" });
+    getParticularEntityMap(state, { entityName: "pps" });
+    getParticularEntityMap(state, { entityName: "pps" });
+    getParticularEntityMap(state, { entityName: "fireEmergency" });
+    getParticularEntityMap(state, { entityName: "pps" });
+    getParticularEntityMap(state, { entityName: "fireEmergency" });
+    expect(ppsSelector.recomputations()).toBe(1);
+    expect(fireEmergencySelector.recomputations()).toBe(1);
   });
 });
+// TODO: test getQueueMap
 
-describe("makeTileSpriteDataSelector", () => {
-  const {
-    makeTileSpriteDataSelector,
-    tileRenderCoordinateSelector
-  } = selectors;
-  test("should give correct coords for main sprite", () => {
+describe("specialTileSpritesMapSelector", () => {
+  const { specialTileSpritesMapSelector } = selectors;
+  test("should give correct map for 3x3 test map with no selected tiles", () => {
     var state = makeState(twoFloors, 1);
-    var result = makeTileSpriteDataSelector()(state, {
-      tileId: "1,2",
-      spriteIdx: 0
-    });
-    expect(result).toMatchObject({
-      spriteName: constants.NORMAL,
-      ...tileRenderCoordinateSelector(state, { tileId: "1,2" })
+    var specialMap = specialTileSpritesMapSelector(state);
+    expect(specialMap).toMatchObject({
+      "2,2": constants.CHARGER,
+      "0,2": constants.EMERGENCY_EXIT,
+      "0,1": constants.EMERGENCY_EXIT,
+      "1,0": constants.PPS,
+      "1,1": constants.PPS
     });
   });
-  test("should give correct coords for dot sprite", () => {
-    var state = makeState(twoFloors, 1);
-    var result = makeTileSpriteDataSelector()(state, {
-      tileId: "1,2",
-      spriteIdx: 4
+  test("should give correct map for 3x3 test map with some selected tiles", () => {
+    var state = makeState(twoFloors, 1, { "2,2": {}, "2,0": {} });
+    var specialMap = specialTileSpritesMapSelector(state);
+    expect(specialMap).toMatchObject({
+      "2,2": constants.SELECTED,
+      "0,2": constants.EMERGENCY_EXIT,
+      "0,1": constants.EMERGENCY_EXIT,
+      "1,0": constants.PPS,
+      "1,1": constants.PPS,
+      "2,0": constants.SELECTED
     });
-    var { x: tileX, y: tileY } = tileRenderCoordinateSelector(state, {
-      tileId: "1,2"
-    });
-    expect(result).toMatchObject({
-      spriteName: "dot.png",
-      x: tileX + constants.BARCODE_SPRITE_X_OFFSET * 3,
-      y: tileY + constants.BARCODE_SPRITE_Y_OFFSET
-    });
-  });
-  test("make 2 instances with diff props and ensure they are not recomputed", () => {
-    var state = makeState(twoFloors, 1);
-    var selector1 = makeTileSpriteDataSelector();
-    var selector2 = makeTileSpriteDataSelector();
-    selector1(state, { tileId: "1,2", spriteIdx: 4 });
-    selector2(state, { tileId: "1,2", spriteIdx: 0 });
-    selector1(state, { tileId: "1,2", spriteIdx: 4 });
-    selector2(state, { tileId: "1,2", spriteIdx: 0 });
-    expect(selector1.recomputations()).toBe(1);
-    expect(selector2.recomputations()).toBe(1);
   });
 });
+//
+// describe("findTileIdInQueueData helper", () => {
+//   const findTileIdInQueueData = selectors.findTileIdInQueueData;
+//   var aQueueDataMap = {
+//     "1": [["000.001", 0], ["002.004", 1]],
+//     "2": [["003.004", 1], ["005.006", 3]]
+//   };
+//   test("should find tileId in queue data", () => {
+//     var found = findTileIdInQueueData(aQueueDataMap, "4,2");
+//     expect(found).toBe(true);
+//     found = findTileIdInQueueData(aQueueDataMap, "4,3");
+//     expect(found).toBe(true);
+//   });
+//   test("should not find tileId in queue data", () => {
+//     var found = findTileIdInQueueData(aQueueDataMap, "0,2");
+//     expect(found).toBe(false);
+//   });
+//   test("should not find tileId in undefined obj", () => {
+//     var found = findTileIdInQueueData(undefined, "0,0");
+//     expect(found).toBe(false);
+//   });
+// });

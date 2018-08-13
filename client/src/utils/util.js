@@ -42,6 +42,11 @@ export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   return coordinateKey.split(",").map(val => parseInt(val));
 };
 
+export var coordinateKeyToBarcode = coordinateKey => {
+  var [x, y] = coordinateKeyToTupleOfIntegers(coordinateKey);
+  return encode_barcode(y, x);
+};
+
 export var tileToWorldCoordinate = (tileId, { minX, minY }) => {
   const coordinate = coordinateKeyToTupleOfIntegers(tileId);
   var xCoord = -(coordinate[0] - minX) * constants.TILE_WIDTH;
@@ -57,6 +62,14 @@ export var worldToTileCoordinate = ({ x, y }, { minX, minY }) => {
   var yTile = y / constants.TILE_HEIGHT + minY;
   // need to ceil xTile since tile is actually to the left of the coordinate
   return `${Math.ceil(xTile)},${parseInt(yTile)}`;
+};
+
+// gets unique ids for number of entities
+//  existingEntities is map!
+export const getIdsForEntities = (numEntities = 0, existingEntities = {}) => {
+  var startId = Object.keys(existingEntities).length + 1;
+  // https://stackoverflow.com/questions/36947847/how-to-generate-range-of-numbers-from-0-to-n-in-es2015-only
+  return [...Array(numEntities).keys()].map(idx => idx + startId);
 };
 
 export var createMapFromCoordinateData = (

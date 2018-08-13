@@ -83,10 +83,10 @@ class ImportMap extends Component {
             ["ods", "ods_excluded.json", "odsJson"],
             ["fire_emergency", "fire_emergency.json", "fireEmergencyJson"],
             ["elevator", "elevator.json", "elevatorJson"]
-          ].map(([idField, label, stateKey], idx) => (
-            <JSONFileInput
-              onClear={this.onClear(stateKey)}
-              onRead={this.onRead(stateKey)}
+            ].map(([idField, label, stateKey], idx) => (
+              <JSONFileInput
+                onClear={this.onClear(stateKey)}
+                onRead={this.onRead(stateKey)}
               onError={this.onError}
               idField={idField}
               label={label}
