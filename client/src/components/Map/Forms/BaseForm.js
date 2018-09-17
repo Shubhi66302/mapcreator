@@ -10,9 +10,10 @@ class BaseForm extends Component {
     const {
       schema,
       onSubmit,
-      onError,
+      onError = () => {},
       buttonText = "Submit",
-      disabled = false
+      disabled = false,
+      validate = null
     } = this.props;
     return [
       <button
@@ -36,6 +37,7 @@ class BaseForm extends Component {
               onSubmit(formData);
             }}
             onError={onError}
+            validate={validate}
           />
         </FormModal>
       </div>

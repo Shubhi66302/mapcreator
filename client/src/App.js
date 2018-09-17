@@ -15,11 +15,6 @@ class App extends Component {
   state = {
     fetched: null
   };
-  async componentDidMount() {
-    // var response = await fetch("/api/test");
-    // var fetched = await response.json();
-    // this.setState({ fetched });
-  }
   render() {
     const { fetched } = this.state;
     return (

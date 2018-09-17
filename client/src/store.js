@@ -13,28 +13,6 @@ const logger = createLogger({
   // diff: true
 });
 
-export const dummyState = {
-  normalizedMap: normalizeMap({
-    id: "1",
-    name: "loading...",
-    map: {
-      id: "1",
-      floors: [
-        {
-          floor_id: 1,
-          map_values: []
-        }
-      ],
-      elevators: [],
-      zones: [],
-      queueDatas: []
-    }
-  }),
-  currentFloor: 1,
-  selectedTiles: {},
-  zoneView: false
-};
-
 export default createStore(
   reducer,
   {

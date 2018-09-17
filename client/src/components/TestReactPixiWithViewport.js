@@ -5,9 +5,8 @@
 // make it slow
 import React, { Component, PureComponent } from "react";
 import barcodeSprite from "sprites/barcode.png";
-import store, { dummyState } from "../store";
+import store, { dummyState } from "reducers/reducer";
 import { connect, Provider } from "react-redux";
-// import Provider from "./ReduxProvider";
 import { TILE_WIDTH, TILE_HEIGHT, SCALE, MAX_SPRITES } from "../constants";
 import {
   clickOnViewport,

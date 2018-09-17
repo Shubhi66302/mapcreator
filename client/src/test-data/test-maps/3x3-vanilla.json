@@ -1,0 +1,113 @@
+{
+  "id": "21",
+  "name": "3x3-vanilla",
+  "map": {
+    "elevators": [],
+    "zones": [],
+    "queueDatas": [],
+    "floors": [
+      {
+        "floor_id": 1,
+        "chargers": [],
+        "ppses": [],
+        "odses": [],
+        "dockPoints": [],
+        "fireEmergencies": [],
+        "map_values": [
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "000.000",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "0,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "000.001",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "1,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "000.002",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+            "coordinate": "2,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "001.000",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "0,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "001.001",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "1,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "001.002",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+            "coordinate": "2,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "002.000",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+            "coordinate": "0,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "002.001",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+            "coordinate": "1,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "barcode": "002.002",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
+            "coordinate": "2,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          }
+        ]
+      }
+    ]
+  },
+  "createdAt": "2018-08-06T08:46:44.635Z",
+  "updatedAt": "2018-08-06T08:46:44.635Z"
+}

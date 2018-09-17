@@ -24,6 +24,48 @@ export const tileIdsSelector = createSelector(
   getBarcodes,
   (barcodeIds, barcodes) => [...barcodeIds.filter(id => !barcodes[id].special)]
 );
+// just a map of tileIds instead of array. useful to key if tileId is good or not
+export const tileIdsMapSelector = createSelector(tileIdsSelector, tileIds => {
+  var ret = {};
+  for (var tileId of tileIds) {
+    ret[tileId] = true;
+  }
+  return ret;
+});
+
+// since barcodes =/= coordinate sometimes
+export const coordinateKeyToBarcode = createSelector(
+  getBarcode,
+  barcode => barcode.barcode
+);
+
+// assumed that there is one-to-one relationship b/w barcode string and coordinate on a floor
+export const currentFloorBarcodeToCoordinateMap = createSelector(
+  getCurrentFloorBarcodeIds,
+  getBarcodes,
+  (tileIds, barcodes) => {
+    var ret = {};
+    for (var tileId of tileIds) {
+      const barcodeString = barcodes[tileId].barcode;
+      if (ret[barcodeString]) {
+        throw Error(
+          `duplicate barcodes on current floor: ${barcodeString}, tile ids ${
+            ret[barcodeString]
+          }, ${tileId}`
+        );
+      }
+      ret[barcodeString] = tileId;
+    }
+    return ret;
+  }
+);
+
+// export const barcodeToCoordinateKey = createSelector(
+//   currentFloorBarcodeToCoordinateMap,
+//   (_state, { barcode }) => barcode,
+//   (barcodeCoordinateMap, barcode) => barcodeCoordinateMap[barcode]
+// );
+
 // get max and min coordinates for current floor. don't need barcode data since
 // tileId is already the encoded coordinate
 export const tileBoundsSelector = createSelector(tileIdsSelector, tileIds => {
@@ -39,6 +81,19 @@ export const tileBoundsSelector = createSelector(tileIdsSelector, tileIds => {
     minY: _.min(ys)
   };
 });
+
+// max coordinate including special points. used to generate the new special point.
+export const getCurrentFloorMaxCoordinate = createSelector(
+  getCurrentFloorBarcodeIds,
+  tileIds => {
+    var coordinates = tileIds.map(tileId =>
+      coordinateKeyToTupleOfIntegers(tileId)
+    );
+    // just take max in x and y independently...
+    var [xs, ys] = _.unzip(coordinates);
+    return [_.max(xs), _.max(ys)];
+  }
+);
 
 export const tileRenderCoordinateSelector = createSelector(
   tileBoundsSelector,
@@ -87,7 +142,7 @@ const getQueueData = state => state.normalizedMap.entities.queueData || {};
 export const entitySelectorHelperData = {
   pps: ["pps", constants.PPS, e => e.location],
   charger: ["charger", constants.CHARGER, e => e.charger_location],
-  dockpoint: ["dockPoint", constants.DOCK_POINT, e => e.position],
+  dockPoint: ["dockPoint", constants.DOCK_POINT, e => e.position],
   ods: ["ods", constants.ODS_EXCLUDED, e => e.ods_tuple.slice(0, 7)],
   fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT, e => e.barcode]
 };
@@ -114,8 +169,6 @@ export const getQueueMap = createSelector(getQueueData, queueData => {
   queueCoordinateKeys.forEach(key => (ret[key] = constants.QUEUE));
   return ret;
 });
-// forget everything, just make a selectors that give out updates which will be
-// applied to the ParticleContainer.
 
 // creates map of tileId -> spriteName for all special tiles i.e. tile which
 // have some entity (charger, pps, queue etc.)

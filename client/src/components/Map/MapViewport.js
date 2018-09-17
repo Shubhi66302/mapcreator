@@ -25,8 +25,8 @@ class MapViewport extends Component {
           this.setState({ metaKey: e.metaKey });
         }}
         onKeyUp={e => this.setState({ metaKey: e.metaKey })}
-        id="bigdiv"
-        style={{ height: 100, width: 100 }}
+        id="mapdiv"
+        style={{ height: 600, width: 800 }}
       >
         <PixiStage
           metaKey={this.state.metaKey}

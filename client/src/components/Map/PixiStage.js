@@ -15,7 +15,12 @@ class PixiStage extends Component {
     const { store } = this.context;
     const { metaKey, spriteSheetLoaded, isMapLoaded } = this.props;
     return (
-      <Stage options={{ antialias: false, transparent: true }}>
+      <Stage
+        options={{
+          antialias: false,
+          transparent: true
+        }}
+      >
         {/* <Container> */}
         <PixiViewport metaKey={metaKey} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
@@ -27,10 +32,10 @@ class PixiStage extends Component {
                 fontFamily: "Arial",
                 fontSize: 40,
                 fill: 0xff1010,
-                align: "center",
-                resolution: 2
+                align: "center"
+                // resolution: 2
               }}
-              resolution={2}
+              // resolution={2}
             />
           )}
         </PixiViewport>

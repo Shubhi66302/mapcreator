@@ -6,26 +6,25 @@ import { connect } from "react-redux";
 // import { addEntities } from "actions/actions";
 import { getIdsForEntities, coordinateKeyToBarcode } from "utils/util";
 import _ from "lodash";
-import { directionSchema } from "utils/forms";
 
 const schema = {
-  title: "Add Charger",
+  title: "Assign Zone",
   type: "object",
-  required: ["charger_direction"],
+  required: ["zone"],
   properties: {
-    charger_direction: {
-      ...directionSchema,
-      title: "Pick Direction"
+    zone: {
+      type: "string",
+      title: "Zone name"
     }
   }
 };
 
-const AddCharger = ({ onSubmit, disabled }) => (
+const AssignZone = ({ onSubmit, disabled }) => (
   <BaseForm
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}
-    buttonText={"Assign Charger"}
+    buttonText={"Assign Zone"}
   />
 );
 
@@ -34,18 +33,9 @@ export default connect(
     disabled: Object.keys(state.selectedTiles).length === 0
   }),
   dispatch => ({
-    onSubmit: ({ formData }) => {
+    onSubmit: formData => {
       // state is not accessible here so using a workaround to access it in action creator...
       // TODO: define what needs to be done
-      // dispatch(
-      //   addEntities({
-      //     reducerKey: "PPS",
-      //     entityKey: "pps",
-      //     floorKey: "ppses",
-      //     idField: "pps_id",
-      //     createEntities: createPPSEntities(formData)
-      //   })
-      // );
     }
   })
-)(AddCharger);
+)(AssignZone);

@@ -28,3 +28,6 @@ export var DISTANCE_TILE = "0.png";
 export var ZONE_BASE = "not_implemented.png";
 export var ODS_EXCLUDED = "8.png";
 export var EMERGENCY_EXIT = "9.png";
+
+// Constants for map charger_location
+export var CHARGER_DISTANCE = 205;

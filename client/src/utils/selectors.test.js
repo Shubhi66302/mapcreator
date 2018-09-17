@@ -1,47 +1,7 @@
 import * as selectors from "./selectors";
 import * as constants from "../constants";
-import { normalizeMap } from "./normalizr";
-import sampleMapObj from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
-// using immutable to correctly mutate mapJson
-// we're not actually using mutation in state/main code, it's quite complicated to use
-// https://redux.js.org/recipes/usingimmutablejs#what-are-the-issues-with-using-immutable-js
-import { fromJS } from "immutable";
-var makeState = (immutableMap, currentFloor = 1, selectedTiles = {}) => ({
-  normalizedMap: normalizeMap(immutableMap.toJS()),
-  currentFloor,
-  selectedTiles,
-  zoneView: false
-});
-
-var singleFloor = fromJS(sampleMapObj);
-var twoFloors = singleFloor.updateIn(["map", "floors"], floors => [
-  ...floors,
-  {
-    floor_id: 2,
-    map_values: [
-      {
-        blocked: false,
-        zone: "defzone",
-        coordinate: "15,12",
-        store_status: 0,
-        barcode: "012.015",
-        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        size_info: [750, 750, 750, 750],
-        botid: "null"
-      },
-      {
-        blocked: false,
-        zone: "defzone",
-        coordinate: "11,17",
-        store_status: 0,
-        barcode: "017.013",
-        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        size_info: [750, 750, 750, 750],
-        botid: "null"
-      }
-    ]
-  }
-]);
+import { tileToWorldCoordinate } from "./util";
+import { makeState, singleFloor, twoFloors } from "./test-helper";
 
 describe("tileIdsSelector", () => {
   test("should get 8 out of 9 barcodes since sampleMapJson has one special", () => {
@@ -69,6 +29,54 @@ describe("tileIdsSelector", () => {
     expect(selectors.tileIdsSelector.recomputations()).toBe(1);
     selectors.tileIdsSelector(state);
     expect(selectors.tileIdsSelector.recomputations()).toBe(1);
+  });
+});
+
+describe("tileIdsMapSelector", () => {
+  const { tileIdsMapSelector } = selectors;
+  test("should get 8 out of 9 barcodes for first floor", () => {
+    var state = makeState(twoFloors);
+    var tileIdsMap = tileIdsMapSelector(state);
+    expect(tileIdsMap).toMatchObject({
+      "1,0": true,
+      "1,1": true,
+      "1,2": true,
+      "0,1": true,
+      "0,2": true,
+      "2,0": true,
+      "2,1": true,
+      "2,2": true
+    });
+  });
+  test("should get both barcodes of second floor", () => {
+    var state = makeState(twoFloors, 2);
+    var tileIdsMap = tileIdsMapSelector(state);
+    expect(tileIdsMap).toMatchObject({
+      "15,12": true,
+      "11,17": true
+    });
+  });
+  test("should not recopute when called twice", () => {
+    var state = makeState(twoFloors, 1);
+    tileIdsMapSelector.resetRecomputations();
+    tileIdsMapSelector(state);
+    tileIdsMapSelector(state);
+    tileIdsMapSelector(state);
+    expect(tileIdsMapSelector.recomputations()).toBe(1);
+  });
+});
+
+describe("coordinateKeyToBarcode", () => {
+  const { coordinateKeyToBarcode } = selectors;
+  test("should give correct barcode for a tile id", () => {
+    var state = makeState(twoFloors, 2);
+    var barcodeString = coordinateKeyToBarcode(state, { tileId: "15,12" });
+    expect(barcodeString).toEqual("012.015");
+  });
+  test("should give correct barcode for tile id when barcode string != tile id", () => {
+    var state = makeState(twoFloors, 2);
+    var barcodeString = coordinateKeyToBarcode(state, { tileId: "11,17" });
+    expect(barcodeString).toEqual("017.013");
   });
 });
 
@@ -107,25 +115,21 @@ describe("tileRenderCoordinateSelector", () => {
   const { tileRenderCoordinateSelector } = selectors;
   test("should give correct render coordinate for a floor 1 tile", () => {
     var state = makeState(twoFloors, 1);
+    var tileBounds = selectors.tileBoundsSelector(state);
     var coordinates = tileRenderCoordinateSelector(state, { tileId: "0,0" });
-    expect(coordinates).toEqual({ x: -0, y: 0 });
+    expect(coordinates).toEqual(tileToWorldCoordinate("0,0", tileBounds));
     coordinates = tileRenderCoordinateSelector(state, { tileId: "2,2" });
-    expect(coordinates).toEqual({
-      x: -2 * constants.TILE_WIDTH,
-      y: 2 * constants.TILE_HEIGHT
-    });
+    expect(coordinates).toEqual(tileToWorldCoordinate("2,2", tileBounds));
     coordinates = tileRenderCoordinateSelector(state, { tileId: "1,2" });
-    expect(coordinates).toEqual({
-      x: -1 * constants.TILE_WIDTH,
-      y: 2 * constants.TILE_HEIGHT
-    });
+    expect(coordinates).toEqual(tileToWorldCoordinate("1,2", tileBounds));
   });
   test("should give correct render coordinates for a 2nd floor tile", () => {
     var state = makeState(twoFloors, 2);
+    var tileBounds = selectors.tileBoundsSelector(state);
     var coordinates = tileRenderCoordinateSelector(state, { tileId: "11,17" });
-    expect(coordinates).toEqual({ x: -0, y: 5 * constants.TILE_HEIGHT });
+    expect(coordinates).toEqual(tileToWorldCoordinate("11,17", tileBounds));
     coordinates = tileRenderCoordinateSelector(state, { tileId: "15,12" });
-    expect(coordinates).toEqual({ x: -4 * constants.TILE_WIDTH, y: 0 });
+    expect(coordinates).toEqual(tileToWorldCoordinate("15,12", tileBounds));
   });
 });
 
@@ -140,7 +144,9 @@ describe("spriteRenderCoordinateSelector", () => {
       tileId: "0,0",
       spriteIdx: 0
     });
-    expect(coordinates).toEqual({ x: -0, y: 0 });
+    expect(coordinates).toEqual(
+      tileRenderCoordinateSelector(state, { tileId: "0,0" })
+    );
     coordinates = spriteRenderCoordinateSelector(state, {
       tileId: "2,2",
       spriteIdx: 0
@@ -156,25 +162,7 @@ describe("spriteRenderCoordinateSelector", () => {
       tileRenderCoordinateSelector(state, { tileId: "1,2" })
     );
   });
-  test("should give correct coordinate for a barcode sprite", () => {
-    var state = makeState(twoFloors, 1);
-    var coordinates = spriteRenderCoordinateSelector(state, {
-      tileId: "0,0",
-      spriteIdx: 1
-    });
-    expect(coordinates).toEqual({
-      x: 0,
-      y: constants.BARCODE_SPRITE_Y_OFFSET
-    });
-    coordinates = spriteRenderCoordinateSelector(state, {
-      tileId: "2,2",
-      spriteIdx: 4
-    });
-    expect(coordinates).toEqual({
-      x: -2 * constants.TILE_WIDTH + 3 * constants.BARCODE_SPRITE_X_OFFSET,
-      y: 2 * constants.TILE_HEIGHT + constants.BARCODE_SPRITE_Y_OFFSET
-    });
-  });
+  // TODO: write a good test for checking barcode string sprites positions
 });
 
 describe("tileNameWithoutEntityDataSelector", () => {
@@ -294,6 +282,29 @@ describe("specialTileSpritesMapSelector", () => {
       "1,1": constants.PPS,
       "2,0": constants.SELECTED
     });
+  });
+});
+
+describe("getCurrentFloorMaxCoordinate", () => {
+  const { getCurrentFloorMaxCoordinate } = selectors;
+  test("should give correct max coordinate when no special barcode", () => {
+    // 2nd floor does not have special barcode
+    var state = makeState(twoFloors, 2);
+    var maxTileCoordinate = getCurrentFloorMaxCoordinate(state);
+    expect(maxTileCoordinate).toEqual([15, 17]);
+  });
+  test("should give correct max coordinate when there is special barcode", () => {
+    var state = makeState(twoFloors, 1);
+    var maxTileCoordinate = getCurrentFloorMaxCoordinate(state);
+    expect(maxTileCoordinate).toEqual([12, 12]);
+  });
+  test("should not recompute", () => {
+    var state = makeState(twoFloors, 1);
+    getCurrentFloorMaxCoordinate.resetRecomputations();
+    getCurrentFloorMaxCoordinate(state);
+    getCurrentFloorMaxCoordinate(state);
+    getCurrentFloorMaxCoordinate(state);
+    expect(getCurrentFloorMaxCoordinate.recomputations()).toBe(1);
   });
 });
 //

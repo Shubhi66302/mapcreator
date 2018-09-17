@@ -9,23 +9,23 @@ import _ from "lodash";
 import { directionSchema } from "utils/forms";
 
 const schema = {
-  title: "Add Charger",
+  title: "Assign ODS Excluded",
   type: "object",
-  required: ["charger_direction"],
+  required: ["excludeddr"],
   properties: {
-    charger_direction: {
+    excludeddr: {
       ...directionSchema,
-      title: "Pick Direction"
+      title: "ODS Excluded direction"
     }
   }
 };
 
-const AddCharger = ({ onSubmit, disabled }) => (
+const AssignODSExcluded = ({ onSubmit, disabled }) => (
   <BaseForm
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}
-    buttonText={"Assign Charger"}
+    buttonText={"ODS Excluded"}
   />
 );
 
@@ -34,18 +34,9 @@ export default connect(
     disabled: Object.keys(state.selectedTiles).length === 0
   }),
   dispatch => ({
-    onSubmit: ({ formData }) => {
+    onSubmit: formData => {
       // state is not accessible here so using a workaround to access it in action creator...
       // TODO: define what needs to be done
-      // dispatch(
-      //   addEntities({
-      //     reducerKey: "PPS",
-      //     entityKey: "pps",
-      //     floorKey: "ppses",
-      //     idField: "pps_id",
-      //     createEntities: createPPSEntities(formData)
-      //   })
-      // );
     }
   })
-)(AddCharger);
+)(AssignODSExcluded);

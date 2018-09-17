@@ -1,27 +1,30 @@
 import Viewport from "pixi-viewport";
 import { clickOnViewport } from "actions/actions";
-import { tileBoundsSelector } from "utils/selectors";
-import { PixiComponent } from "@inlet/react-pixi";
+import { PixiComponent, withPixiApp } from "@inlet/react-pixi";
 
 // TODO: add drag support
 var PixiViewport = PixiComponent("PixiViewport", {
   create: props => {
     var instance = new Viewport({
+      // without this zoom in happens to wrong coordinate
+      // https://github.com/davidfig/pixi-viewport/issues/74
+      interaction: props.app.renderer.plugins.interaction,
       // TODO: find correct values for these, right now just copy pasted
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
       worldWidth: 10000,
       worldHeight: 10000
     });
+    window.addEventListener("resize", () =>
+      instance.resize(window.innerWidth, window.innerHeight)
+    );
     const { store } = props;
     instance
       .drag()
       .pinch()
       .wheel();
     instance.on("clicked", e => {
-      var tileBounds = store.dispatch(
-        clickOnViewport(e.world, tileBoundsSelector(store.getState()))
-      );
+      var tileBounds = store.dispatch(clickOnViewport(e.world));
     });
     return instance;
   },
@@ -35,4 +38,4 @@ var PixiViewport = PixiComponent("PixiViewport", {
   }
 });
 
-export default PixiViewport;
+export default withPixiApp(PixiViewport);

@@ -10,7 +10,7 @@ import {
   getBarcodes
 } from "../utils/selectors";
 import { coordinateKeyToTupleOfIntegers } from "../utils/util";
-import { dummyState } from "../store";
+import { dummyState } from "reducers/reducer";
 import * as PIXI from "pixi.js";
 
 // some exports are for testing

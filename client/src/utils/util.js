@@ -1,6 +1,5 @@
 import assert from "assert";
 import * as constants from "../constants";
-
 export var handleErrors = response => {
   if (!response.ok) {
     return response.text().then(text => Promise.reject(text));
@@ -26,6 +25,35 @@ export function encode_barcode(row, column) {
   return row_string.concat(".").concat(column_string);
 }
 
+// ordered array (top, right, left, down) of neighbour tiles
+export const getNeighbourTiles = tileId => {
+  var tileCoordinate = coordinateKeyToTupleOfIntegers(tileId);
+  var neighbours = [];
+  for (var delta of [[0, -1], [-1, 0], [0, 1], [1, 0]]) {
+    var neighbour = [
+      tileCoordinate[0] + delta[0],
+      tileCoordinate[1] + delta[1]
+    ];
+    neighbours.push(tupleOfIntegersToCoordinateKey(neighbour));
+  }
+  return neighbours;
+};
+
+export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
+  // barcodesDict is state.normalizedMap.entities.barcode
+  var curBarcode = barcodesDict[coordinateKey];
+  if (!curBarcode) return null;
+  // if adjacency is present, use that instead.
+  if (curBarcode.adjacency) {
+    return curBarcode.adjacency.map(val => {
+      if (!val) return val;
+      return barcodesDict[tupleOfIntegersToCoordinateKey(val)];
+    });
+  }
+  var neighbourTileKeys = getNeighbourTiles(coordinateKey);
+  return neighbourTileKeys.map(tileKey => barcodesDict[tileKey]);
+};
+
 export var barcodeToCoordinateKey = barcode => {
   // 002.013 => 13,2
   assert(/^\d\d\d\.\d\d\d$/.test(barcode));
@@ -42,9 +70,8 @@ export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   return coordinateKey.split(",").map(val => parseInt(val));
 };
 
-export var coordinateKeyToBarcode = coordinateKey => {
-  var [x, y] = coordinateKeyToTupleOfIntegers(coordinateKey);
-  return encode_barcode(y, x);
+export var tupleOfIntegersToCoordinateKey = tuple => {
+  return `${tuple[0]},${tuple[1]}`;
 };
 
 export var tileToWorldCoordinate = (tileId, { minX, minY }) => {

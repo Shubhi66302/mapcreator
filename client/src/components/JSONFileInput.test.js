@@ -1,5 +1,6 @@
 import React from "react";
 import { shallow, mount, render } from "enzyme";
+import jest from "jest";
 import JSONFileInput from "./JSONFileInput";
 
 describe("JSONFileInput Component", () => {
@@ -17,4 +18,10 @@ describe("JSONFileInput Component", () => {
         .exists()
     ).toBe(true);
   });
+
+  // TODO: remove this if not going to write tests
+  // test("onChange called on file change event", () => {
+  //   const onChange = jest.fn();
+  //   wrapper = shallow(<JSONFileInput onRead={() => {}} onChange=/>)
+  // })
 });

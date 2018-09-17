@@ -150,6 +150,38 @@ describe("/api/maps", () => {
 });
 
 // TODO: add tests for POST '/api/map/:'
+describe("/api/map:id (save map)", () => {
+  beforeEach(async () => {
+    // clear maps
+    await Map.destroy({ where: {}, truncate: true });
+  });
+  test("update an existing map", async () => {
+    // add a map
+    var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
+    var map1JSON = map1.toJSON();
+    var response = await request(app)
+      .post(`/api/map/${map1JSON.id}`)
+      .send({ map: map1JSON.map });
+    expect(response.body.map).toMatchObject(map1JSON.map);
+    expect(response.body.name).toBe(map1JSON.name);
+    expect(response.body.id).toBe(map1JSON.id);
+  });
+  test("should throw when trying to update non-existing map", async () => {
+    var response = await request(app)
+      .post(`/api/map/221`)
+      .send({ map: dummyGoodMap })
+      .expect(500);
+    expect(response.error.text).toMatch(/could not find map for id/);
+  });
+  test("should throw when trying to update with invalid map", async () => {
+    var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
+    var response = await request(app)
+      .post(`/api/map/${map1.toJSON().id}`)
+      .send({ map: {} })
+      .expect(500);
+    expect(response.error.text).toMatch(/should have required property/);
+  });
+});
 
 afterAll(async () => {
   // drop all maps
