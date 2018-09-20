@@ -225,3 +225,19 @@ export const specialTileSpritesMapSelector = createSelector(
     return { ...entitySpritesMap, ...ret };
   }
 );
+
+export const getIdsForNewEntities = createSelector(
+  getParticularEntity,
+  (_state, { newEntities }) => newEntities,
+  (entitiesObj, newEntities) => {
+    var nextId =
+      Object.keys(entitiesObj).reduce((prev, key) => Math.max(prev, key), 0) +
+      1;
+    // entity already exists if coordinate is same as of an existing entity. so return old id only
+    return newEntities.map(
+      entity =>
+        parseInt(_.findKey(entitiesObj, { coordinate: entity.coordinate })) ||
+        nextId++
+    );
+  }
+);

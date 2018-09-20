@@ -1,10 +1,8 @@
 // technically components should not be connected to app state but it's ok for our case.
 import React, { Component } from "react";
-import Form from "react-jsonschema-form";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 import { addChargers } from "actions/charger";
-import { getIdsForEntities } from "utils/util";
 import _ from "lodash";
 import { directionSchema } from "utils/forms";
 
@@ -35,18 +33,7 @@ export default connect(
   }),
   dispatch => ({
     onSubmit: ({ formData }) => {
-      // state is not accessible here so using a workaround to access it in action creator...
-      // TODO: define what needs to be done
       dispatch(addChargers(formData));
-      // dispatch(
-      //   addEntities({
-      //     reducerKey: "PPS",
-      //     entityKey: "pps",
-      //     floorKey: "ppses",
-      //     idField: "pps_id",
-      //     createEntities: createPPSEntities(formData)
-      //   })
-      // );
     }
   })
 )(AddCharger);

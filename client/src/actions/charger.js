@@ -7,7 +7,8 @@ import {
 } from "utils/util";
 import {
   getCurrentFloorMaxCoordinate,
-  coordinateKeyToBarcodeSelector
+  coordinateKeyToBarcodeSelector,
+  getIdsForNewEntities
 } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import { CHARGER_DISTANCE } from "../constants";
@@ -31,7 +32,8 @@ export const createNewCharger = (
   charger_type: "rectangular_plate_charger"
 });
 
-// TODO: test and fixes
+// TODO: test and fixes as explained below
+// should also split this into smaller functions
 // actual charger barcode, entry point special, barcode in direction of charger direction, and all other neighbours of charger barcode as well
 export const createAllChargerBarcodes = (
   { charger_direction },
@@ -142,14 +144,25 @@ export const addChargers = formData => (dispatch, getState) => {
     );
     newChargers.push(createNewCharger(formData, tileId, specialTileId, state));
   });
+  // get ids for chargers
+  var ids = getIdsForNewEntities(state, {
+    entityName: "charger",
+    newEntities: newChargers
+  });
+  var newChargersWithIds = _.zip(ids, newChargers).map(
+    ([charger_id, charger]) => ({
+      ...charger,
+      charger_id
+    })
+  );
   // add chargers
   dispatch({
     type: "ADD-MULTIPLE-CHARGER",
-    value: newChargers
+    value: newChargersWithIds
   });
   // add barcodes
   dispatch({
-    type: "ADD-MULTIPLE-BARCODE-WITH-ID",
+    type: "ADD-MULTIPLE-BARCODE",
     value: newBarcodes
   });
   // add entities to floor (charger)
@@ -157,12 +170,11 @@ export const addChargers = formData => (dispatch, getState) => {
     addEntitiesToFloor({
       currentFloor,
       floorKey: "chargers",
-      entities: newChargers,
+      entities: newChargersWithIds,
       idField: "charger_id"
     })
   );
   // add entities to floor (barcode)
-  // TODO: Fix
   dispatch(
     addEntitiesToFloor({
       currentFloor,
@@ -173,5 +185,3 @@ export const addChargers = formData => (dispatch, getState) => {
   );
   return dispatch(clearTiles);
 };
-
-// export const createChargerSpecialBarcodes({})

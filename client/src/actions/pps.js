@@ -1,6 +1,9 @@
 import { getIdsForEntities } from "utils/util";
 import { addEntitiesToFloor, clearTiles } from "./actions";
-import { coordinateKeyToBarcodeSelector } from "utils/selectors";
+import {
+  coordinateKeyToBarcodeSelector,
+  getIdsForNewEntities
+} from "utils/selectors";
 import _ from "lodash";
 
 // exported for testing
@@ -19,7 +22,15 @@ export const createNewPPSes = ({ pick_direction }, state) => {
       allowed_modes: ["put", "pick", "audit"]
     };
   });
-  return ppses;
+  var ids = getIdsForNewEntities(state, {
+    entityName: "pps",
+    newEntities: ppses
+  });
+  return _.zip(ids, ppses).map(([pps_id, pps]) => ({
+    ...pps,
+    pps_id,
+    pps_url: `http://localhost:8181/pps/${pps_id}/api/`
+  }));
 };
 
 export const addPPSes = formData => (dispatch, getState) => {

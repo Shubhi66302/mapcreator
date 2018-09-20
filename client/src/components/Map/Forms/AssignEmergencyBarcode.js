@@ -1,11 +1,9 @@
 // technically components should not be connected to app state but it's ok for our case.
 import React, { Component } from "react";
-import Form from "react-jsonschema-form";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 // import { addEntities } from "actions/actions";
 import { addFireEmergencies } from "actions/fireEmergency";
-import { getIdsForEntities } from "utils/util";
 import _ from "lodash";
 
 const schema = {
@@ -38,9 +36,7 @@ export default connect(
     disabled: Object.keys(state.selectedTiles).length === 0
   }),
   dispatch => ({
-    onSubmit: formData => {
-      // state is not accessible here so using a workaround to access it in action creator...
-      // TODO: define what needs to be done
+    onSubmit: ({ formData }) => {
       dispatch(addFireEmergencies(formData));
     }
   })

@@ -10,8 +10,8 @@ describe("createEntityReducer", () => {
   describe("ADD-MULTIPLE-X", () => {
     test("adds all entities when list of entities provided", () => {
       var newDummyEntities = [
-        { content: "four", coordinate: "3,4" },
-        { content: "five", coordinate: "5,6" }
+        { dummy_id: 4, content: "four", coordinate: "3,4" },
+        { dummy_id: 5, content: "five", coordinate: "5,6" }
       ];
       expect(
         dummyEntityReducer(someEntities, {
@@ -26,9 +26,9 @@ describe("createEntityReducer", () => {
     });
     test("updates entities that already existed and also adds new ones", () => {
       var newDummyEntities = [
-        { content: "newTwo", coordinate: "2,2" },
-        { content: "newThree", coordinate: "7,7" },
-        { content: "another", coordinate: "5,6" }
+        { dummy_id: 2, content: "newTwo", coordinate: "2,2" },
+        { dummy_id: 3, content: "newThree", coordinate: "7,7" },
+        { dummy_id: 4, content: "another", coordinate: "5,6" }
       ];
       expect(
         dummyEntityReducer(someEntities, {
@@ -40,23 +40,6 @@ describe("createEntityReducer", () => {
         "2": { ...newDummyEntities[0], dummy_id: 2 },
         "3": { ...newDummyEntities[1], dummy_id: 3 },
         "4": { ...newDummyEntities[3], dummy_id: 4 }
-      });
-    });
-  });
-  describe("ADD-MULTIPLE-X-WITH-ID", () => {
-    test("should work even when idField is coordinate only (i.e. barcode reducer)", () => {
-      var newBarcodeEntities = [{ content: "new1", coordinate: "2,2" }];
-      var someEntities = {
-        "2,2": { coordinate: "2,2", content: "original1" }
-      };
-      var barcodeEntityReducer = createEntityReducer("BARCODE", "coordinate");
-      expect(
-        barcodeEntityReducer(someEntities, {
-          type: "ADD-MULTIPLE-BARCODE-WITH-ID",
-          value: newBarcodeEntities
-        })
-      ).toMatchObject({
-        "2,2": newBarcodeEntities[0]
       });
     });
   });

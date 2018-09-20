@@ -35,12 +35,7 @@ export const entitiesReducer = combineReducers({
   elevator: createEntityReducer("ELEVATOR", "elevator_id"),
   queueData: createEntityReducer("QUEUE-DATA", "queue_data_id"),
   charger: createEntityReducer("CHARGER", "charger_id"),
-  // pps_url is a field that is based on id
-  pps: createEntityReducer("PPS", "pps_id", ({ pps_id, ...rest }) => ({
-    pps_id,
-    ...rest,
-    pps_url: `http://localhost:8181/pps/${pps_id}/api/`
-  })),
+  pps: createEntityReducer("PPS", "pps_id"),
   ods: createEntityReducer("ODS", "ods_id"),
   dockPoint: createEntityReducer("DOCK-POINT", "dock_point_id"),
   fireEmergency: createEntityReducer("FIRE-EMERGENCY", "fire_emergency_id"),

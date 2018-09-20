@@ -1,7 +1,12 @@
 import * as selectors from "./selectors";
 import * as constants from "../constants";
 import { tileToWorldCoordinate } from "./util";
-import { makeState, singleFloor, twoFloors } from "./test-helper";
+import {
+  makeState,
+  singleFloor,
+  twoFloors,
+  singleFloorVanilla
+} from "./test-helper";
 
 describe("tileIdsSelector", () => {
   test("should get 8 out of 9 barcodes since sampleMapJson has one special", () => {
@@ -394,3 +399,84 @@ describe("getCurrentFloorMaxCoordinate", () => {
 });
 
 // TODO: test for getChargerEntryMap
+
+describe("getIdsForNewEntities", () => {
+  const { getIdsForNewEntities } = selectors;
+  test("should give new ids for entities when no entity exists before", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var newEntities = [
+      {
+        coordinate: "1,1",
+        data: "hello"
+      },
+      {
+        coordinate: "2,2",
+        data: "world"
+      }
+    ];
+    var ids = getIdsForNewEntities(state, { entityName: "pps", newEntities });
+    expect(ids).toEqual([1, 2]);
+  });
+  test("should give new ids for entities when some entities with no common coordinates existed before", () => {
+    var singleFloorVanillaWithPPSes = singleFloorVanilla.updateIn(
+      ["map", "floors", 0, "ppses"],
+      (ppses = []) => [
+        ...ppses,
+        {
+          pps_id: 1,
+          coordinate: "1,1",
+          data: "hello"
+        }
+      ]
+    );
+    var state = makeState(singleFloorVanillaWithPPSes, 1);
+    var newEntities = [
+      {
+        coordinate: "2,2",
+        data: "world"
+      },
+      {
+        coordinate: "3,3",
+        data: "world2"
+      }
+    ];
+    var ids = getIdsForNewEntities(state, { entityName: "pps", newEntities });
+    expect(ids).toEqual([2, 3]);
+  });
+  test("should give correct some new and some old ids for entities when an entity with common coordinate existed before", () => {
+    var singleFloorVanillaWithPPSes = singleFloorVanilla.updateIn(
+      ["map", "floors", 0, "ppses"],
+      (ppses = []) => [
+        ...ppses,
+        {
+          pps_id: 1,
+          coordinate: "1,1",
+          data: "hello"
+        },
+        {
+          pps_id: 2,
+          coordinate: "2,3",
+          data: "world"
+        }
+      ]
+    );
+    var state = makeState(singleFloorVanillaWithPPSes, 1);
+    var newEntities = [
+      {
+        coordinate: "4,5",
+        data: "newdata2"
+      },
+      {
+        coordinate: "5,6",
+        data: "newdata3"
+      },
+      {
+        coordinate: "1,1",
+        data: "newdata4"
+      }
+    ];
+    // order is important
+    var ids = getIdsForNewEntities(state, { entityName: "pps", newEntities });
+    expect(ids).toEqual([3, 4, 1]);
+  });
+});
