@@ -1,5 +1,6 @@
 import { normalizeMap } from "./normalizr";
 import sampleMapObj from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
+import sampleVanillaMapObj from "test-data/test-maps/3x3-vanilla.json";
 // using immutable to correctly mutate mapJson for testing
 // we're not actually using immutable in state/main code, it's quite complicated to use
 // https://redux.js.org/recipes/usingimmutablejs#what-are-the-issues-with-using-immutable-js
@@ -45,3 +46,4 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors => [
     ]
   }
 ]);
+export var singleFloorVanilla = fromJS(sampleVanillaMapObj);

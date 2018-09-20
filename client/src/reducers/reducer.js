@@ -33,12 +33,17 @@ export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 
 export const entitiesReducer = combineReducers({
   elevator: createEntityReducer("ELEVATOR", "elevator_id"),
-  queueData: createEntityReducer("QUEUE_DATA", "queue_data_id"),
+  queueData: createEntityReducer("QUEUE-DATA", "queue_data_id"),
   charger: createEntityReducer("CHARGER", "charger_id"),
-  pps: createEntityReducer("PPS", "pps_id"),
+  // pps_url is a field that is based on id
+  pps: createEntityReducer("PPS", "pps_id", ({ pps_id, ...rest }) => ({
+    pps_id,
+    ...rest,
+    pps_url: `http://localhost:8181/pps/${pps_id}/api/`
+  })),
   ods: createEntityReducer("ODS", "ods_id"),
-  dockPoint: createEntityReducer("DOCK_POINT", "dock_point_id"),
-  fireEmergency: createEntityReducer("FIRE_EMERGENCY", "fire_emergency_id"),
+  dockPoint: createEntityReducer("DOCK-POINT", "dock_point_id"),
+  fireEmergency: createEntityReducer("FIRE-EMERGENCY", "fire_emergency_id"),
   barcode: reduceReducers(barcodeReducer, baseBarcodeReducer),
   floor: floorReducer,
   // TODO: make reducers for these

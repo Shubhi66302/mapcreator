@@ -54,20 +54,18 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   return neighbourTileKeys.map(tileKey => barcodesDict[tileKey]);
 };
 
-export var barcodeToCoordinateKey = barcode => {
-  // 002.013 => 13,2
-  assert(/^\d\d\d\.\d\d\d$/.test(barcode));
-  var row = parseInt(barcode.slice(0, 3));
-  var col = parseInt(barcode.slice(4, 7));
-  return `${col},${row}`;
-};
-
 export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   // '12,3' => [12, 3]
   if (!/^\d*,\d*$/.test(coordinateKey)) {
     throw new Error(`${coordinateKey} does not match coordinateKey pattern.`);
   }
   return coordinateKey.split(",").map(val => parseInt(val));
+};
+
+// implicit conversion. used for eg. getting new barcode's barcode
+export var implicitCoordinateKeyToBarcode = coordinateKey => {
+  var [x, y] = coordinateKeyToTupleOfIntegers(coordinateKey);
+  return encode_barcode(y, x);
 };
 
 export var tupleOfIntegersToCoordinateKey = tuple => {
@@ -81,14 +79,31 @@ export var tileToWorldCoordinate = (tileId, { minX, minY }) => {
   return { x: xCoord, y: yCoord };
 };
 
-// TODO: should make it so clicks between tiles are not registed as 'clicked'
-// this would required actual dimensions of the sprite
+// clicks between tiles are not registed as 'clicked'
 export var worldToTileCoordinate = ({ x, y }, { minX, minY }) => {
-  // need to match tileToWorldCoordinate exactly!
-  var xTile = -x / constants.TILE_WIDTH + minX;
-  var yTile = y / constants.TILE_HEIGHT + minY;
   // need to ceil xTile since tile is actually to the left of the coordinate
-  return `${Math.ceil(xTile)},${parseInt(yTile)}`;
+  var xTile = Math.ceil(-x / constants.TILE_WIDTH + minX);
+  var yTile = parseInt(y / constants.TILE_HEIGHT + minY);
+  var tileId = `${xTile},${yTile}`;
+  // make sure valid coordinates
+  try {
+    var { x: tileTopLeftX, y: tileTopLeftY } = tileToWorldCoordinate(tileId, {
+      minX,
+      minY
+    });
+  } catch (error) {
+    // not a valid coordinate
+    return undefined;
+  }
+  // check if the world coordinate is within [TILE_SPRITE_WIDTH, TILE_SPRITE_HEIGHT] of the top left coordinate
+  if (
+    x <= tileTopLeftX + constants.TILE_SPRITE_WIDTH &&
+    x >= tileTopLeftX &&
+    y <= tileTopLeftY + constants.TILE_SPRITE_HEIGHT &&
+    y >= tileTopLeftY
+  )
+    return tileId;
+  return undefined;
 };
 
 // gets unique ids for number of entities

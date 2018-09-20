@@ -1,6 +1,6 @@
 {
-  "id": 23,
-  "name": "3x3-with-actually-all-things",
+  "id": 29,
+  "name": "3x3-with-lots-of-things",
   "map": {
     "floors": [
       {
@@ -112,7 +112,8 @@
             "reinit_point_direction": 0,
             "entry_point_direction": 0,
             "reinit_point_location": "012.012",
-            "charger_direction": 0
+            "charger_direction": 0,
+            "coordinate": "2,2"
           }
         ],
         "fireEmergencies": [
@@ -121,6 +122,7 @@
             "type": "shutter",
             "priority": "0",
             "barcode": "002.000",
+            "coordinate": "0,2",
             "fire_emergency_id": 1
           },
           {
@@ -128,6 +130,7 @@
             "type": "escape_path",
             "priority": "1",
             "barcode": "001.000",
+            "coordinate": "0,1",
             "fire_emergency_id": 2
           }
         ],
@@ -142,7 +145,8 @@
             "status": "disconnected",
             "put_docking_positions": [],
             "pps_url": "http://localhost:8181/pps/1/api/",
-            "queue_barcodes": []
+            "queue_barcodes": [],
+            "coordinate": "1,0"
           },
           {
             "location": "001.001",
@@ -153,7 +157,8 @@
             "status": "disconnected",
             "put_docking_positions": [],
             "pps_url": "http://localhost:8181/pps/2/api/",
-            "queue_barcodes": []
+            "queue_barcodes": [],
+            "coordinate": "1,1"
           }
         ],
         "dockPoints": []
@@ -163,6 +168,6 @@
     "zones": [],
     "queueDatas": []
   },
-  "createdAt": "2018-08-06T08:46:44.635Z",
-  "updatedAt": "2018-08-06T08:46:44.635Z"
+  "createdAt": "2018-09-17T11:01:26.022Z",
+  "updatedAt": "2018-09-17T11:01:26.022Z"
 }

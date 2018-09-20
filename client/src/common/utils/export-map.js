@@ -14,7 +14,7 @@ export default map => {
     data: map.zones.map(zone => ({ zonerec: zone })),
     url: "/api/zonerec"
   };
-  ret.queue_data = map.queueDatas;
+  ret.queue_data = map.queueDatas.map(({ data }) => data);
   // convert coordinates to strings first!
   ret.map = map.floors.map(({ floor_id, map_values }) => ({
     floor_id,
@@ -47,6 +47,11 @@ export default map => {
           return thing;
         });
       }
+      // remove 'coordinate' field which was just used internally for mapcreator for indexing.
+      things = things.map(thing => {
+        delete thing.coordinate;
+        return thing;
+      });
       list = [...list, ...things];
     });
     ret[outKey] = convert(list);

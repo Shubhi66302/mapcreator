@@ -4,6 +4,7 @@ import { createLogger } from "redux-logger";
 import reducer from "reducers/reducer";
 import { TILE_WIDTH, TILE_HEIGHT } from "./constants";
 import { normalizeMap } from "utils/normalizr";
+import entityMiddleware from "actions/entity-middleware";
 // TEST: using sampleMap from test-data to initialize store.
 import sampleMapObj from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
 
@@ -24,6 +25,6 @@ export default createStore(
     zoneView: false,
     spritesheetLoaded: false
   },
-  applyMiddleware(thunk, logger)
+  applyMiddleware(thunk, entityMiddleware, logger)
   // applyMiddleware(logger)
 );

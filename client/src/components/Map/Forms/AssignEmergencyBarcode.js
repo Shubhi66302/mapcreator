@@ -4,7 +4,8 @@ import Form from "react-jsonschema-form";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 // import { addEntities } from "actions/actions";
-import { getIdsForEntities, coordinateKeyToBarcode } from "utils/util";
+import { addFireEmergencies } from "actions/fireEmergency";
+import { getIdsForEntities } from "utils/util";
 import _ from "lodash";
 
 const schema = {
@@ -40,6 +41,7 @@ export default connect(
     onSubmit: formData => {
       // state is not accessible here so using a workaround to access it in action creator...
       // TODO: define what needs to be done
+      dispatch(addFireEmergencies(formData));
     }
   })
 )(AssignEmergencyBarcode);

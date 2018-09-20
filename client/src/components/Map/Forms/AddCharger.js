@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import Form from "react-jsonschema-form";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
-// import { addEntities } from "actions/actions";
-import { getIdsForEntities, coordinateKeyToBarcode } from "utils/util";
+import { addChargers } from "actions/charger";
+import { getIdsForEntities } from "utils/util";
 import _ from "lodash";
 import { directionSchema } from "utils/forms";
 
@@ -37,6 +37,7 @@ export default connect(
     onSubmit: ({ formData }) => {
       // state is not accessible here so using a workaround to access it in action creator...
       // TODO: define what needs to be done
+      dispatch(addChargers(formData));
       // dispatch(
       //   addEntities({
       //     reducerKey: "PPS",

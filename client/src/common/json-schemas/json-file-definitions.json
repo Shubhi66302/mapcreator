@@ -74,8 +74,7 @@
   },
   "single_array_zone_json": {
     "$id": "single_array_zone_json",
-    "description":
-      "legacy for importing zone.json that are array instead of objects",
+    "description": "legacy for importing zone.json that are array instead of objects",
     "type": "array",
     "items": [
       {

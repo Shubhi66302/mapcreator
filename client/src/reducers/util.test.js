@@ -3,25 +3,15 @@ import { createEntityReducer } from "./util";
 describe("createEntityReducer", () => {
   var dummyEntityReducer = createEntityReducer("DUMMY", "dummy_id");
   var someEntities = {
-    "1": { dummy_id: 1, content: "hello" },
-    "2": { dummy_id: 2, content: "world" }
+    "1": { dummy_id: 1, content: "hello", coordinate: "1,1" },
+    "2": { dummy_id: 2, content: "world", coordinate: "2,2" },
+    "3": { dummy_id: 3, content: "world2", coordinate: "7,7" }
   };
-  describe("ADD-X", () => {
-    test("works correctly when ADD-X action provided", () => {
-      var newDummyEntity = { dummy_id: 3, content: "new content" };
-      expect(
-        dummyEntityReducer(someEntities, {
-          type: "ADD-DUMMY",
-          value: newDummyEntity
-        })
-      ).toMatchObject({ ...someEntities, "3": newDummyEntity });
-    });
-  });
   describe("ADD-MULTIPLE-X", () => {
     test("adds all entities when list of entities provided", () => {
       var newDummyEntities = [
-        { dummy_id: 3, content: "three" },
-        { dummy_id: 5, content: "five" }
+        { content: "four", coordinate: "3,4" },
+        { content: "five", coordinate: "5,6" }
       ];
       expect(
         dummyEntityReducer(someEntities, {
@@ -30,14 +20,15 @@ describe("createEntityReducer", () => {
         })
       ).toMatchObject({
         ...someEntities,
-        "3": newDummyEntities[0],
-        "5": newDummyEntities[1]
+        "4": { ...newDummyEntities[0], dummy_id: 4 },
+        "5": { ...newDummyEntities[1], dummy_id: 5 }
       });
     });
-    test("updates entities that already existed", () => {
+    test("updates entities that already existed and also adds new ones", () => {
       var newDummyEntities = [
-        { dummy_id: 2, content: "newTwo" },
-        { dummy_id: 5, content: "five" }
+        { content: "newTwo", coordinate: "2,2" },
+        { content: "newThree", coordinate: "7,7" },
+        { content: "another", coordinate: "5,6" }
       ];
       expect(
         dummyEntityReducer(someEntities, {
@@ -46,8 +37,26 @@ describe("createEntityReducer", () => {
         })
       ).toMatchObject({
         ...someEntities,
-        "2": newDummyEntities[0],
-        "5": newDummyEntities[1]
+        "2": { ...newDummyEntities[0], dummy_id: 2 },
+        "3": { ...newDummyEntities[1], dummy_id: 3 },
+        "4": { ...newDummyEntities[3], dummy_id: 4 }
+      });
+    });
+  });
+  describe("ADD-MULTIPLE-X-WITH-ID", () => {
+    test("should work even when idField is coordinate only (i.e. barcode reducer)", () => {
+      var newBarcodeEntities = [{ content: "new1", coordinate: "2,2" }];
+      var someEntities = {
+        "2,2": { coordinate: "2,2", content: "original1" }
+      };
+      var barcodeEntityReducer = createEntityReducer("BARCODE", "coordinate");
+      expect(
+        barcodeEntityReducer(someEntities, {
+          type: "ADD-MULTIPLE-BARCODE-WITH-ID",
+          value: newBarcodeEntities
+        })
+      ).toMatchObject({
+        "2,2": newBarcodeEntities[0]
       });
     });
   });

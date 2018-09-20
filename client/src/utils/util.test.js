@@ -1,11 +1,10 @@
 import {
   createMapFromCoordinateData,
   encode_barcode,
-  barcodeToCoordinateKey,
   coordinateKeyToTupleOfIntegers,
+  implicitCoordinateKeyToBarcode,
   tileToWorldCoordinate,
   worldToTileCoordinate,
-  coordinateKeyToBarcode,
   getIdsForEntities,
   getNeighbouringBarcodes,
   getNeighbourTiles,
@@ -35,18 +34,6 @@ describe("createMapFromCoordinateData", () => {
   });
 });
 
-describe("barcodeToCoordinateKey", () => {
-  test("good barcodes", () => {
-    expect(barcodeToCoordinateKey("001.002")).toBe("2,1");
-    expect(barcodeToCoordinateKey("001.002")).toBe("2,1");
-    expect(barcodeToCoordinateKey("023.012")).toBe("12,23");
-  });
-  test("bad barcodes", () => {
-    expect(() => barcodeToCoordinateKey("dumbo")).toThrow();
-    expect(() => barcodeToCoordinateKey("[15,12]")).toThrow();
-  });
-});
-
 describe("coordinateKeyToTupleOfIntegers", () => {
   test("good coordinateKey", () => {
     expect(coordinateKeyToTupleOfIntegers("12,15")).toEqual([12, 15]);
@@ -56,6 +43,16 @@ describe("coordinateKeyToTupleOfIntegers", () => {
     expect(() => coordinateKeyToTupleOfIntegers("001.002")).toThrow();
     expect(() => coordinateKeyToTupleOfIntegers("15, 12")).toThrow();
     expect(() => coordinateKeyToTupleOfIntegers("[15,12]")).toThrow();
+  });
+});
+
+describe("implicitCoordinateKeyToBarcode", () => {
+  test("good stuff", () => {
+    expect(implicitCoordinateKeyToBarcode("5,10")).toBe("010.005");
+    expect(implicitCoordinateKeyToBarcode("10,10")).toBe("010.010");
+  });
+  test("bad stuff", () => {
+    expect(() => implicitCoordinateKeyToBarcode("[10,5]")).toThrow();
   });
 });
 
@@ -89,6 +86,26 @@ describe("worldToTileCoordinate", () => {
         { maxX: 5, maxY: 5, minX: 0, minY: 1 }
       )
     ).toBe("2,4");
+  });
+  test("should be undefined if coordinate is between some tiles", () => {
+    var { x: topLeftX, y: topLeftY } = tileToWorldCoordinate("2,4", {
+      maxX: 5,
+      maxY: 5,
+      minX: 0,
+      minY: 1
+    });
+    expect(
+      worldToTileCoordinate(
+        {
+          x:
+            topLeftX +
+            (constants.TILE_WIDTH - constants.TILE_SPRITE_WIDTH) / 2 +
+            constants.TILE_SPRITE_WIDTH,
+          y: topLeftY
+        },
+        { maxX: 5, maxY: 5, minX: 0, minY: 1 }
+      )
+    ).toBeUndefined();
   });
 });
 

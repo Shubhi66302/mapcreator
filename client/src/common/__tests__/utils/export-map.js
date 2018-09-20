@@ -33,11 +33,17 @@ describe("export good maps", () => {
     expect(exported.fire_emergency).toHaveLength(6);
     expect(exported.ods_excluded).toMatchObject({ ods_excluded_list: [] });
     expect(exported.pps).toHaveLength(6);
+    // coordinate was a mapcreator internal field, shouldn't be present in exported files
     for (let ppsInstance of exported.pps) {
       expect(ppsInstance).toHaveProperty("pps_id");
+      expect(ppsInstance).not.toHaveProperty("coordinate");
     }
     for (let chargerInstance of exported.charger) {
       expect(chargerInstance).toHaveProperty("charger_id");
+      expect(chargerInstance).not.toHaveProperty("coordinate");
+    }
+    for (let fireEmergencyInstance of exported.fire_emergency) {
+      expect(fireEmergencyInstance).not.toHaveProperty("coordinate");
     }
     expect(exported.zone).toMatchObject({
       header: {
@@ -60,6 +66,26 @@ describe("export good maps", () => {
     var result = mapValidate(importedAgain);
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
+  });
+
+  test("queue_data.json should be exported correctly for 3-7 map", () => {
+    var ajv = getLoadedAjv();
+    expect(threeSevenJsons.mapJson).toBeTruthy();
+    var map = importMap(threeSevenJsons);
+    var exported = exportMap({
+      ...map,
+      queueDatas: [
+        {
+          queue_data_id: 1,
+          coordinates: ["12,12", "13,12", "14,12"],
+          data: [["012.012", 0], ["012.013", 0], ["012.014", 4]]
+        }
+      ]
+    });
+    expect(exported.queue_data).toBeTruthy();
+    expect(exported.queue_data).toMatchObject([
+      [["012.012", 0], ["012.013", 0], ["012.014", 4]]
+    ]);
   });
 
   test("continental", () => {

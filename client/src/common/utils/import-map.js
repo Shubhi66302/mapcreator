@@ -2,7 +2,11 @@
 // represention of the map in mapcreator. schema for this is defined in json-schemas/map.json
 
 import getLoadedAjv from "common/utils/get-loaded-ajv";
-import { parseCoordinateString, findFloorIndex } from "common/utils/util";
+import {
+  parseCoordinateString,
+  findFloorIndex,
+  findCoordinateForBarcode
+} from "common/utils/util";
 
 const prettyAjvError = errors => JSON.stringify(errors[0], undefined, 2);
 
@@ -79,7 +83,10 @@ export default ({
         uniqueCoordinateSet.size
       }, num barcodes ${concated.length}`
     );
-
+  // all map_values concated
+  const allMapValues = [].concat(
+    ...map.floors.map(({ map_values }) => map_values)
+  );
   // validate zone_json separately, since we expect single array zone jsons also
   if (validate("single_array_zone_json", zoneJson, false)) {
     zoneJson = zoneJson[0];
@@ -100,7 +107,21 @@ export default ({
   ].forEach(([jsonFile, schemaName, key, convert, idField]) => {
     validate(schemaName, jsonFile);
     var elms = convert(jsonFile);
-    if (idField)
+    // in case of queues also add coordinate for each queue thingy
+    if (schemaName == "queue_data_json") {
+      if (elms.length != 0) {
+        console.warn(
+          "WARNING: queue_data.json has queues in it. Inconsistency might arise if two floors have same barcode strings"
+        );
+      }
+      elms = elms.map((elm, idx) => ({
+        [idField]: idx + 1,
+        data: elm,
+        coordinates: elm.map(([barcode, _direction]) =>
+          findCoordinateForBarcode(allMapValues, barcode)
+        )
+      }));
+    } else if (idField)
       elms = elms.map((elm, idx) => ({ ...elm, [idField]: idx + 1 }));
     map[key] = elms;
   });
@@ -136,7 +157,7 @@ export default ({
       "ods_id"
     ],
     [ppsJson, "pps_json", "ppses", e => e, "location", "pps_id"],
-    // TODO: not tested queue_data and dock_point jsons, should probably do that
+    // TODO: not tested dock_point jsons, should probably do that
     [
       dockPointJson,
       "dock_point_json",
@@ -159,6 +180,11 @@ export default ({
               listOfThings[barcodeStringField]
             } referenced in ${schemaName}`
           );
+        // assign coordinate to thing. this will be used throughout mapcreator to find its position instead of barcode
+        thing.coordinate = findCoordinateForBarcode(
+          map.floors[floorIdx].map_values,
+          thing[barcodeStringField]
+        );
         // pps, charger already have ids i think
         if (idField && !thing[idField]) thing[idField] = idx + 1;
         map.floors[floorIdx][key].push(thing);

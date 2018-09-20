@@ -1,26 +1,30 @@
 import {
-  getIdsForEntities,
-  coordinateKeyToBarcode,
   getNeighbourTiles,
-  getNeighbouringBarcodes
+  getNeighbouringBarcodes,
+  implicitCoordinateKeyToBarcode,
+  coordinateKeyToTupleOfIntegers,
+  tupleOfIntegersToCoordinateKey
 } from "utils/util";
-import { getCurrentFloorMaxCoordinate } from "utils/selectors";
+import {
+  getCurrentFloorMaxCoordinate,
+  coordinateKeyToBarcodeSelector
+} from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
-import { CHARGER_DISTANCE } from "constants";
+import { CHARGER_DISTANCE } from "../constants";
 import _ from "lodash";
 // exported for testing
 export const createNewCharger = (
   { charger_direction },
-  charger_id,
   tileId,
-  specialTileId
+  specialTileId,
+  state
 ) => ({
-  charger_id,
-  charger_location: coordinateKeyToBarcode(tileId),
+  coordinate: tileId,
+  charger_location: coordinateKeyToBarcodeSelector(state, { tileId }),
   charger_direction: charger_direction,
-  entry_point_location: coordinateKeyToBarcode(specialTileId),
+  entry_point_location: implicitCoordinateKeyToBarcode(specialTileId),
   entry_point_direction: charger_direction,
-  reinit_point_location: coordinateKeyToBarcode(specialTileId),
+  reinit_point_location: implicitCoordinateKeyToBarcode(specialTileId),
   reinit_point_direction: charger_direction,
   status: "disconnected",
   mode: "manual",
@@ -28,8 +32,8 @@ export const createNewCharger = (
 });
 
 // TODO: test and fixes
-// actual charger barcode, entry point special, and barcode in direction of charger direction
-export const createAllThreeChargerBarcodes = (
+// actual charger barcode, entry point special, barcode in direction of charger direction, and all other neighbours of charger barcode as well
+export const createAllChargerBarcodes = (
   { charger_direction },
   tileId,
   specialTileId,
@@ -48,7 +52,7 @@ export const createAllThreeChargerBarcodes = (
   var specialBarcode = {
     store_status: 0,
     zone: "defzone",
-    barcode: coordinateKeyToBarcode(specialTileId),
+    barcode: implicitCoordinateKeyToBarcode(specialTileId),
     botid: "null",
     neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
     coordinate: specialTileId,
@@ -69,8 +73,8 @@ export const createAllThreeChargerBarcodes = (
   specialBarcode.size_info[(charger_direction + 2) % 4] = CHARGER_DISTANCE;
 
   // charger barcode
-  // TODO: some other neighbour changes
-  var chargerBarcode = { ...barcodesDict[tileId] };
+  // TODO: some other neighbour changes to .neighbours; is this even required though since adjacency will now be used for this?
+  var chargerBarcode = _.cloneDeep(barcodesDict[tileId]);
   chargerBarcode.neighbours[charger_direction][2] = 0;
   chargerBarcode.adjacency = getNeighbouringBarcodes(tileId, barcodesDict).map(
     x => (x ? coordinateKeyToTupleOfIntegers(x.coordinate) : null)
@@ -78,10 +82,12 @@ export const createAllThreeChargerBarcodes = (
   chargerBarcode.adjacency[charger_direction] = coordinateKeyToTupleOfIntegers(
     specialTileId
   );
+  var originalChargerBarcodeSizeInfoInChargerDirection =
+    chargerBarcode.size_info[charger_direction];
   chargerBarcode.size_info[charger_direction] = CHARGER_DISTANCE;
 
   // entry barcode
-  var entryBarcode = { ...barcodesDict[entryTileId] };
+  var entryBarcode = _.cloneDeep(barcodesDict[entryTileId]);
   entryBarcode.neighbours[(charger_direction + 2) % 4][2] = 0;
   entryBarcode.adjacency = getNeighbouringBarcodes(
     entryTileId,
@@ -92,42 +98,49 @@ export const createAllThreeChargerBarcodes = (
   ] = coordinateKeyToTupleOfIntegers(specialTileId);
   entryBarcode.size_info[(charger_direction + 2) % 4] =
     entryBarcode.size_info[(charger_direction + 2) % 4] +
-    chargerBarcode.size_info[charger_direction] -
+    originalChargerBarcodeSizeInfoInChargerDirection -
     3 * CHARGER_DISTANCE;
 
+  // other neighbour barcodes of charger barcode
+  var chargerNeighboursExceptEntry = getNeighbouringBarcodes(
+    tileId,
+    barcodesDict
+  )
+    .map((nb, idx) => {
+      if (!nb || nb.coordinate == entryTileId) return null;
+      var nbClone = _.cloneDeep(nb);
+      nbClone.neighbours[(idx + 2) % 4][1] = 0;
+      nbClone.neighbours[(idx + 2) % 4][2] = 0;
+      return nbClone;
+    })
+    .filter(e => e != null);
+
   // return {[tileId]: chargerBarcode, [specialTileId] : specialBarcode, [entryTileId]: entryBarcode}
-  return [chargerBarcode, specialBarcode, entryBarcode];
+  return [
+    ...chargerNeighboursExceptEntry,
+    chargerBarcode,
+    specialBarcode,
+    entryBarcode
+  ];
 };
 
-export const addChargers = (formData, state) => {
+export const addChargers = formData => (dispatch, getState) => {
+  const state = getState();
   const { selectedTiles, currentFloor } = state;
-  const existingChargers = state.normalizedMap.entities["charger"] || {};
   const barcodesDict = state.normalizedMap.entities["barcode"] || {};
-  const numEntities = Object.keys(selectedTiles).length;
-  var charger_ids = getIdsForEntities(numEntities, existingChargers);
   var newBarcodes = [];
   var newChargers = [];
   var [maxx, maxy] = getCurrentFloorMaxCoordinate(state);
-  _.zip(charger_ids, selectedTiles).forEach(([charger_id, tileId], idx) => {
+  Object.keys(selectedTiles).forEach((tileId, idx) => {
     var specialTileId = tupleOfIntegersToCoordinateKey([
       maxx + idx + 1,
       maxy + idx + 1
     ]);
     // newBarcodesDict = {...newBarcodesDict, createAllThreeChargerBarcodes(formData, tileId, specialTileId, barcodesDict)}
     newBarcodes = newBarcodes.concat(
-      createAllThreeChargerBarcodes(
-        formData,
-        tileId,
-        specialTileId,
-        barcodesDict
-      )
+      createAllChargerBarcodes(formData, tileId, specialTileId, barcodesDict)
     );
-    newChargers.append = createNewCharger(
-      formData,
-      charger_id,
-      tileId,
-      specialTileId
-    );
+    newChargers.push(createNewCharger(formData, tileId, specialTileId, state));
   });
   // add chargers
   dispatch({
@@ -136,7 +149,7 @@ export const addChargers = (formData, state) => {
   });
   // add barcodes
   dispatch({
-    type: "ADD-MULTIPLE-BARCODE",
+    type: "ADD-MULTIPLE-BARCODE-WITH-ID",
     value: newBarcodes
   });
   // add entities to floor (charger)
@@ -144,7 +157,7 @@ export const addChargers = (formData, state) => {
     addEntitiesToFloor({
       currentFloor,
       floorKey: "chargers",
-      entities: newChargers.map(charger => charger.charger_id),
+      entities: newChargers,
       idField: "charger_id"
     })
   );
@@ -154,7 +167,7 @@ export const addChargers = (formData, state) => {
     addEntitiesToFloor({
       currentFloor,
       floorKey: "map_values",
-      entities: newBarcodes.map(barcode => barcode.coordinate),
+      entities: newBarcodes,
       idField: "coordinate"
     })
   );

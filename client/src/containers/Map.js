@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import MapViewport from "components/Map/MapViewport";
 import { connect } from "react-redux";
-import { fetchMap, saveMap } from "actions/actions";
+import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
 
@@ -71,14 +71,23 @@ class Map extends Component {
                   saveMap(
                     error => this.setState({ error }),
                     () =>
-                    this.setState({
+                      this.setState({
                         successMessage: "Successfully saved map."
-                    })
+                      })
                   )
                 )
               }
             >
               Save
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              type="button"
+              onClick={() => {
+                dispatch(downloadMap());
+              }}
+            >
+              Download
             </button>
           </div>
         </div>

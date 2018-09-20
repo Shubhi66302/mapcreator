@@ -12,3 +12,6 @@ export var findFloorIndex = (floors, barcodeString) =>
   _.findIndex(floors, ({ map_values }) =>
     map_values.some(barcode => barcode.barcode == barcodeString)
   );
+
+export var findCoordinateForBarcode = (map_values, barcodeString) =>
+  _.find(map_values, ({ barcode }) => barcode == barcodeString).coordinate;

@@ -1,15 +1,15 @@
-// TODO: write tests
 import { tileToWorldCoordinate } from "utils/util";
 import thunk from "redux-thunk";
 import { tileBoundsSelector } from "utils/selectors";
 import configureStore from "redux-mock-store";
-import { makeState, singleFloor, twoFloors } from "utils/test-helper";
+import { makeState, singleFloor } from "utils/test-helper";
 import * as actions from "./actions";
 import fetchMock, * as fetch from "fetch-mock";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
+// TODO: test click-between-tiles functionality more thoroughly
 describe("clickOnViewport", () => {
   const { clickOnViewport, tileClick, outsideTileClick } = actions;
   test("dispatches click on tile action when an existing tile is clicked", async () => {

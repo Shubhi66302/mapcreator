@@ -66,17 +66,68 @@ describe("tileIdsMapSelector", () => {
   });
 });
 
-describe("coordinateKeyToBarcode", () => {
-  const { coordinateKeyToBarcode } = selectors;
+describe("coordinateKeyToBarcodeSelector", () => {
+  const { coordinateKeyToBarcodeSelector } = selectors;
   test("should give correct barcode for a tile id", () => {
     var state = makeState(twoFloors, 2);
-    var barcodeString = coordinateKeyToBarcode(state, { tileId: "15,12" });
-    expect(barcodeString).toEqual("012.015");
+    var barcodeString = coordinateKeyToBarcodeSelector(state, {
+      tileId: "15,12"
+    });
+    expect(barcodeString).toBe("012.015");
   });
   test("should give correct barcode for tile id when barcode string != tile id", () => {
     var state = makeState(twoFloors, 2);
-    var barcodeString = coordinateKeyToBarcode(state, { tileId: "11,17" });
-    expect(barcodeString).toEqual("017.013");
+    var barcodeString = coordinateKeyToBarcodeSelector(state, {
+      tileId: "11,17"
+    });
+    expect(barcodeString).toBe("017.013");
+  });
+});
+
+describe("currentFloorBarcodeToCoordinateMap", () => {
+  const { currentFloorBarcodeToCoordinateMap } = selectors;
+  test("should compute a correct map for current floor barcodes", () => {
+    var state = makeState(twoFloors, 2);
+    var barcodeToCoordinateMap = currentFloorBarcodeToCoordinateMap(state);
+    expect(barcodeToCoordinateMap).toMatchObject({
+      "012.015": "15,12",
+      "017.013": "11,17"
+    });
+  });
+  test("should not recompute on repeated calls", () => {
+    var state = makeState(twoFloors, 2);
+    currentFloorBarcodeToCoordinateMap.resetRecomputations();
+    // it's a single argument call, but adding a second argument shouldn't change things
+    currentFloorBarcodeToCoordinateMap(state);
+    currentFloorBarcodeToCoordinateMap(state, { barcode: "something" });
+    currentFloorBarcodeToCoordinateMap(state, { barcode: "somethingelse" });
+    currentFloorBarcodeToCoordinateMap(state, { notused: "ok" });
+    expect(currentFloorBarcodeToCoordinateMap.recomputations()).toBe(1);
+  });
+});
+
+describe("barcodeToCoordinateKeySelector", () => {
+  const { barcodeToCoordinateKeySelector } = selectors;
+  test("should give correct coordinate for a barcode string", () => {
+    var state = makeState(twoFloors, 2);
+    var coordinate = barcodeToCoordinateKeySelector(state, {
+      barcode: "012.015"
+    });
+    expect(coordinate).toBe("15,12");
+  });
+  test("should give correct coordinate when barcode does not match coordinate", () => {
+    var state = makeState(twoFloors, 2);
+    var coordinate = barcodeToCoordinateKeySelector(state, {
+      barcode: "017.013"
+    });
+    expect(coordinate).toBe("11,17");
+  });
+  test("should return undefined when querying for a barcode that doesn't exist on current floor", () => {
+    var state = makeState(twoFloors, 1);
+    var coordinate = barcodeToCoordinateKeySelector(state, {
+      barcode: "012.015"
+    });
+    expect(coordinate).toBeUndefined();
   });
 });
 
@@ -233,7 +284,7 @@ describe("getParticularEntityMap", () => {
       "0,1": constants.EMERGENCY_EXIT
     });
   });
-  test("should not recompute entities even alternating betweeen them", () => {
+  test("should not recompute entities even when alternating betweeen them", () => {
     // using re-reselect so shouldn't recompute
     var state = makeState(twoFloors, 1);
     var ppsSelector = getParticularEntityMap.getMatchingSelector(state, {
@@ -256,7 +307,41 @@ describe("getParticularEntityMap", () => {
     expect(fireEmergencySelector.recomputations()).toBe(1);
   });
 });
-// TODO: test getQueueMap
+
+describe("getQueueMap", () => {
+  const { getQueueMap } = selectors;
+  var twoFloorsWithQueueData = twoFloors.setIn(
+    ["map", "queueDatas"],
+    [
+      {
+        queue_data_id: 1,
+        coordinates: ["1,0", "2,0"],
+        data: [["001.000", 0], ["000.002", 4]]
+      }
+    ]
+  );
+  test("should get correct queue map for queues", () => {
+    var state = makeState(twoFloorsWithQueueData, 1);
+    var queueMap = getQueueMap(state);
+    expect(queueMap).toMatchObject({
+      "1,0": constants.QUEUE,
+      "2,0": constants.QUEUE
+    });
+  });
+  test("should be empty map when there is no queue data", () => {
+    var state = makeState(twoFloors, 1);
+    var queueMap = getQueueMap(state);
+    expect(queueMap).toMatchObject({});
+  });
+  test("should not recompute on multiple calls with same state", () => {
+    var state = makeState(twoFloorsWithQueueData, 1);
+    getQueueMap.resetRecomputations();
+    getQueueMap(state);
+    getQueueMap(state);
+    getQueueMap(state);
+    expect(getQueueMap.recomputations()).toBe(1);
+  });
+});
 
 describe("specialTileSpritesMapSelector", () => {
   const { specialTileSpritesMapSelector } = selectors;
@@ -307,25 +392,5 @@ describe("getCurrentFloorMaxCoordinate", () => {
     expect(getCurrentFloorMaxCoordinate.recomputations()).toBe(1);
   });
 });
-//
-// describe("findTileIdInQueueData helper", () => {
-//   const findTileIdInQueueData = selectors.findTileIdInQueueData;
-//   var aQueueDataMap = {
-//     "1": [["000.001", 0], ["002.004", 1]],
-//     "2": [["003.004", 1], ["005.006", 3]]
-//   };
-//   test("should find tileId in queue data", () => {
-//     var found = findTileIdInQueueData(aQueueDataMap, "4,2");
-//     expect(found).toBe(true);
-//     found = findTileIdInQueueData(aQueueDataMap, "4,3");
-//     expect(found).toBe(true);
-//   });
-//   test("should not find tileId in queue data", () => {
-//     var found = findTileIdInQueueData(aQueueDataMap, "0,2");
-//     expect(found).toBe(false);
-//   });
-//   test("should not find tileId in undefined obj", () => {
-//     var found = findTileIdInQueueData(undefined, "0,0");
-//     expect(found).toBe(false);
-//   });
-// });
+
+// TODO: test for getChargerEntryMap

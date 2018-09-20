@@ -4,7 +4,7 @@ import Form from "react-jsonschema-form";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 // import { addEntities } from "actions/actions";
-import { getIdsForEntities, coordinateKeyToBarcode } from "utils/util";
+import { getIdsForEntities } from "utils/util";
 import _ from "lodash";
 import { directionSchema, barcodeStringSchema } from "utils/forms";
 

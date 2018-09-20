@@ -3,7 +3,10 @@ import { worldToTileCoordinate, handleErrors } from "utils/util";
 import { tileBoundsSelector, tileIdsMapSelector } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
-
+import JSZip from "jszip";
+import { saveAs } from "file-saver/FileSaver";
+import exportMap from "common/utils/export-map";
+import { SPRITESHEET_PATH } from "../constants";
 // always good idea to return promises from async action creators
 
 export const tileClick = tileId => ({
@@ -21,7 +24,7 @@ export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
   const tileBounds = tileBoundsSelector(state);
   var tileId = worldToTileCoordinate(worldCoordinate, tileBounds);
   // make sure the tileId is actually part of current floor's tiles
-  if (tileIdsMap[tileId]) {
+  if (tileId && tileIdsMap[tileId]) {
     return dispatch(tileClick(tileId));
   } else {
     return dispatch(outsideTileClick);
@@ -33,10 +36,7 @@ const newSpritesheet = {
 };
 
 export const loadSpritesheet = () => dispatch => {
-  PIXILoader.add(
-    "mySpritesheet",
-    `${process.env.PUBLIC_URL}/arial-bitmap-sparrow.json`
-  ).load((loader, resource) => {
+  PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load((loader, resource) => {
     dispatch(newSpritesheet);
   });
 };
@@ -56,7 +56,7 @@ export const fetchMap = mapId => dispatch => {
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
-    .catch(error => console.log(error));
+    .catch(error => console.warn(error));
 };
 
 export const clearTiles = {
@@ -109,4 +109,18 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
     .then(map => dispatch(newMap(map)))
     .then(onSuccess)
     .catch(onError);
+};
+
+export const downloadMap = () => (dispatch, getState) => {
+  const { normalizedMap } = getState();
+  // denormalize it
+  const mapObj = denormalizeMap(normalizedMap);
+  const exportedJson = exportMap(mapObj.map);
+  var zip = new JSZip();
+  Object.keys(exportedJson).forEach(fileName => {
+    zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
+  });
+  return zip.generateAsync({ type: "blob" }).then(content => {
+    saveAs(content, mapObj.id + ".zip");
+  });
 };

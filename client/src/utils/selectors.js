@@ -4,8 +4,8 @@ import { createSelector } from "reselect";
 import createCachedSelector from "re-reselect";
 import {
   coordinateKeyToTupleOfIntegers,
-  barcodeToCoordinateKey,
-  tileToWorldCoordinate
+  tileToWorldCoordinate,
+  getNeighbouringBarcodes
 } from "./util";
 import _ from "lodash";
 import * as constants from "../constants";
@@ -34,7 +34,7 @@ export const tileIdsMapSelector = createSelector(tileIdsSelector, tileIds => {
 });
 
 // since barcodes =/= coordinate sometimes
-export const coordinateKeyToBarcode = createSelector(
+export const coordinateKeyToBarcodeSelector = createSelector(
   getBarcode,
   barcode => barcode.barcode
 );
@@ -60,11 +60,11 @@ export const currentFloorBarcodeToCoordinateMap = createSelector(
   }
 );
 
-// export const barcodeToCoordinateKey = createSelector(
-//   currentFloorBarcodeToCoordinateMap,
-//   (_state, { barcode }) => barcode,
-//   (barcodeCoordinateMap, barcode) => barcodeCoordinateMap[barcode]
-// );
+export const barcodeToCoordinateKeySelector = createSelector(
+  currentFloorBarcodeToCoordinateMap,
+  (_state, { barcode }) => barcode,
+  (barcodeCoordinateMap, barcode) => barcodeCoordinateMap[barcode]
+);
 
 // get max and min coordinates for current floor. don't need barcode data since
 // tileId is already the encoded coordinate
@@ -108,9 +108,16 @@ export const spriteRenderCoordinateSelector = createSelector(
   (state_, { tileId, spriteIdx }) => ({ tileId, spriteIdx }),
   ({ x, y }, { tileId, spriteIdx }) => {
     if (spriteIdx === 0) return { x, y };
+    // need to offset dot sprite to correct height
     return {
-      x: x + (spriteIdx - 1) * constants.BARCODE_SPRITE_X_OFFSET,
-      y: y + constants.BARCODE_SPRITE_Y_OFFSET
+      x:
+        x +
+        (spriteIdx - 1) * constants.BARCODE_SPRITE_X_OFFSET +
+        (spriteIdx > 4 ? constants.AFTER_DOT_SPRITE_X_OFFSET : 0),
+      y:
+        y +
+        constants.BARCODE_SPRITE_Y_OFFSET +
+        (spriteIdx == 4 ? constants.DOT_SPRITE_Y_OFFSET : 0)
     };
   }
 );
@@ -140,11 +147,11 @@ const getParticularEntity = (state, { entityName }) =>
 const getQueueData = state => state.normalizedMap.entities.queueData || {};
 
 export const entitySelectorHelperData = {
-  pps: ["pps", constants.PPS, e => e.location],
-  charger: ["charger", constants.CHARGER, e => e.charger_location],
-  dockPoint: ["dockPoint", constants.DOCK_POINT, e => e.position],
-  ods: ["ods", constants.ODS_EXCLUDED, e => e.ods_tuple.slice(0, 7)],
-  fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT, e => e.barcode]
+  pps: ["pps", constants.PPS],
+  charger: ["charger", constants.CHARGER],
+  dockPoint: ["dockPoint", constants.DOCK_POINT],
+  ods: ["ods", constants.ODS_EXCLUDED],
+  fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT]
 };
 
 export const getParticularEntityMap = createCachedSelector(
@@ -152,9 +159,9 @@ export const getParticularEntityMap = createCachedSelector(
   (state_, { entityName }) => entityName,
   (particularEntities, entityName) => {
     var ret = {};
-    const [, entitySprite, getBarcodeFn] = entitySelectorHelperData[entityName];
+    const [, entitySprite] = entitySelectorHelperData[entityName];
     var list = Object.entries(particularEntities).map(([key, val]) => val);
-    var coordinateKeys = list.map(e => barcodeToCoordinateKey(getBarcodeFn(e)));
+    var coordinateKeys = list.map(e => e.coordinate);
     coordinateKeys.forEach(key => (ret[key] = entitySprite));
     return ret;
   }
@@ -162,13 +169,37 @@ export const getParticularEntityMap = createCachedSelector(
 
 export const getQueueMap = createSelector(getQueueData, queueData => {
   var ret = {};
-  var queues = Object.entries(queueData).map(([key, queue]) => queue);
-  var queueCoordinateKeys = []
-    .concat(...queues)
-    .map(([barcode, someNumber]) => barcodeToCoordinateKey(barcode));
-  queueCoordinateKeys.forEach(key => (ret[key] = constants.QUEUE));
+  var queueCoordinates = [].concat(
+    ...Object.entries(queueData).map(([key, { coordinates }]) => coordinates)
+  );
+  // make unique
+  var queueCoordinatesWithoutDuplicates = new Set(queueCoordinates);
+  queueCoordinatesWithoutDuplicates.forEach(
+    (v1, _v2, _set) => (ret[v1] = constants.QUEUE)
+  );
   return ret;
 });
+
+export const getChargerEntryMap = state => {
+  var chargerEntities = getParticularEntity(state, { entityName: "charger" });
+  var barcodesDict = getBarcodes(state);
+  var ret = {};
+  Object.entries(chargerEntities).forEach(
+    ([_key, { charger_direction, coordinate }]) => {
+      var nb = getNeighbouringBarcodes(coordinate, barcodesDict)[
+        charger_direction
+      ];
+      if (nb) {
+        // charger -> special barcode -> charger entry barcode
+        var eb = getNeighbouringBarcodes(nb.coordinate, barcodesDict)[
+          charger_direction
+        ];
+        if (eb) ret[eb.coordinate] = constants.CHARGER_ENTRY;
+      }
+    }
+  );
+  return ret;
+};
 
 // creates map of tileId -> spriteName for all special tiles i.e. tile which
 // have some entity (charger, pps, queue etc.)
@@ -178,9 +209,10 @@ export const tileEntitySpritesMapSelector = state => {
     ret = { ...ret, ...getParticularEntityMap(state, { entityName: key }) };
   });
   // queue also
+  // charger entry points also
+  ret = { ...ret, ...getChargerEntryMap(state) };
   // selected also
   ret = { ...ret, ...getQueueMap(state) };
-
   return ret;
 };
 
