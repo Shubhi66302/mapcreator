@@ -7,38 +7,39 @@ import { connect } from "react-redux";
 // TODO: handle drag etc.
 class MapViewport extends Component {
   // metaKey decides if drag behaviour should be disabled
-  state = {
-    metaKey: false,
-    spriteSheetLoaded: false
-  };
+  customKeydownListener = ({ key, repeat }) =>
+    key == "Meta" && !repeat
+      ? this.props.dispatch({ type: "META-KEY-DOWN" })
+      : null;
+  customKeyupListener = ({ key, repeat }) =>
+    key == "Meta" && !repeat
+      ? this.props.dispatch({ type: "META-KEY-UP" })
+      : null;
+
   componentDidMount() {
-    const { loadSpritesheet, loaded } = this.props;
-    if (!loaded) loadSpritesheet();
+    const { dispatch, loaded } = this.props;
+    if (!loaded) dispatch(loadSpritesheet());
+    document.addEventListener("keydown", this.customKeydownListener);
+    document.addEventListener("keyup", this.customKeyupListener);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.customKeydownListener);
+    document.removeEventListener("keyup", this.customKeyupListener);
   }
   render() {
     // HACK: using tabindex=0 to make div accept keyboard events, should figure
     // out a better method
     return (
-      <div
-        tabIndex="0"
-        onKeyDown={e => {
-          this.setState({ metaKey: e.metaKey });
-        }}
-        onKeyUp={e => this.setState({ metaKey: e.metaKey })}
-        id="mapdiv"
-        style={{ height: 600, width: 800 }}
-      >
+      <div id="mapdiv" style={{ height: 600, width: 800 }}>
         <PixiStage
-          metaKey={this.state.metaKey}
+          shouldProcessDrag={this.props.shouldProcessDrag}
           spriteSheetLoaded={this.props.loaded}
         />
       </div>
     );
   }
 }
-export default connect(
-  state => ({ loaded: state.spritesheetLoaded }),
-  dispatch => ({
-    loadSpritesheet: () => dispatch(loadSpritesheet())
-  })
-)(MapViewport);
+export default connect(state => ({
+  loaded: state.spritesheetLoaded,
+  shouldProcessDrag: state.selectedArea || state.metaKey ? true : false
+}))(MapViewport);

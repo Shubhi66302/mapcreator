@@ -5,7 +5,8 @@ import createCachedSelector from "re-reselect";
 import {
   coordinateKeyToTupleOfIntegers,
   tileToWorldCoordinate,
-  getNeighbouringBarcodes
+  getNeighbouringBarcodes,
+  intersectRect
 } from "./util";
 import _ from "lodash";
 import * as constants from "../constants";
@@ -239,5 +240,31 @@ export const getIdsForNewEntities = createSelector(
         parseInt(_.findKey(entitiesObj, { coordinate: entity.coordinate })) ||
         nextId++
     );
+  }
+);
+
+export const getDragSelectedTileIds = createSelector(
+  tileIdsSelector,
+  tileBoundsSelector,
+  state => state.selectedArea,
+  (tileIds, tileBounds, selectedArea) => {
+    if (!selectedArea) return [];
+    const { startPoint, endPoint } = selectedArea;
+    const selectionRect = {
+      left: Math.min(startPoint.x, endPoint.x),
+      right: Math.max(startPoint.x, endPoint.x),
+      top: Math.min(startPoint.y, endPoint.y),
+      bottom: Math.max(startPoint.y, endPoint.y)
+    };
+    return tileIds.filter(tileId => {
+      const { x: left, y: top } = tileToWorldCoordinate(tileId, tileBounds);
+      var rect = {
+        left,
+        right: left + constants.TILE_SPRITE_WIDTH,
+        top,
+        bottom: top + constants.TILE_SPRITE_HEIGHT
+      };
+      return intersectRect(selectionRect, rect);
+    });
   }
 );

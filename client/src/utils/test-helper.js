@@ -14,7 +14,8 @@ export var makeState = (
   normalizedMap: normalizeMap(immutableMap.toJS()),
   currentFloor,
   selectedTiles,
-  zoneView: false
+  zoneView: false,
+  selectedArea: undefined
 });
 
 export var singleFloor = fromJS(sampleMapObj);

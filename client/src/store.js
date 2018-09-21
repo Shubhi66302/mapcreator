@@ -11,7 +11,9 @@ import sampleMapObj from "test-data/test-maps/3x3-with-pps-charger-fireemergenci
 // using mapObj as source of truth in store. tiles etc. will be derived from it.
 const logger = createLogger({
   // options
-  // diff: true
+  // diff: true,
+  // do not log drag-move messages
+  predicate: (_getState, { type }) => !/DRAG-MOVE/.test(type)
 });
 
 export default createStore(
@@ -23,7 +25,9 @@ export default createStore(
     selectedTiles: {},
     // TODO: implement zone view
     zoneView: false,
-    spritesheetLoaded: false
+    spritesheetLoaded: false,
+    selectedArea: null,
+    metaKey: false
   },
   applyMiddleware(thunk, entityMiddleware, floorMiddleware, logger)
 );

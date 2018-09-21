@@ -1,6 +1,10 @@
 // action creator to make clicked-on-tile action from clicked-on-viewport action
 import { worldToTileCoordinate, handleErrors } from "utils/util";
-import { tileBoundsSelector, tileIdsMapSelector } from "utils/selectors";
+import {
+  tileBoundsSelector,
+  tileIdsMapSelector,
+  getDragSelectedTileIds
+} from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
 import JSZip from "jszip";
@@ -30,6 +34,36 @@ export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
     return dispatch(outsideTileClick);
   }
 };
+
+export const dragStart = worldCoordinate => (dispatch, getState) => {
+  const { selectedArea } = getState();
+  if (!selectedArea) {
+    // drag not already started
+    dispatch({
+      type: "DRAG-START",
+      value: worldCoordinate
+    });
+  }
+  return Promise.resolve();
+};
+
+export const dragEnd = worldCoordinate => (dispatch, getState) => {
+  const state = getState();
+  if (state.selectedArea) {
+    // calculate tiles that were selected.
+    const selectedTiles = getDragSelectedTileIds(state);
+    dispatch({
+      type: "DRAG-END",
+      value: selectedTiles
+    });
+  }
+  return Promise.resolve();
+};
+
+export const dragMove = worldCoordinate => ({
+  type: "DRAG-MOVE",
+  value: worldCoordinate
+});
 
 const newSpritesheet = {
   type: "LOADED-SPRITESHEET"

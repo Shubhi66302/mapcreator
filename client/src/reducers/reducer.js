@@ -5,6 +5,7 @@ import { createEntityReducer } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
+import _ from "lodash";
 
 export const dummyState = {
   normalizedMap: normalizeMap({
@@ -25,7 +26,9 @@ export const dummyState = {
   }),
   currentFloor: 1,
   selectedTiles: {},
-  zoneView: false
+  zoneView: false,
+  selectedArea: null,
+  metaKey: false
 };
 
 // exporting reducers for testing
@@ -94,6 +97,13 @@ export const selectedTilesReducer = (state = {}, action) => {
         // the value is, just interested in the key
         return { ...state, [tileId]: true };
       }
+    case "DRAG-END":
+      const selectedTiles = action.value;
+      if (selectedTiles) {
+        // calculate symmetric difference
+        const xored = _.xor(Object.keys(state), selectedTiles);
+        return _.fromPairs(xored.map(x => [x, true]));
+      }
   }
   return state;
 };
@@ -106,10 +116,46 @@ export const spritesheetLoadedReducer = (state = false, action) => {
   return state;
 };
 
+export const metaKeyReducer = (state = false, action) => {
+  switch (action.type) {
+    case "META-KEY-DOWN":
+      return true;
+    case "META-KEY-UP":
+      return false;
+  }
+  return state;
+};
+
+export const selectedAreaReducer = (state = null, action) => {
+  switch (action.type) {
+    case "DRAG-START": {
+      if (state) {
+        // duplicate event, already processing a drag
+        return state;
+      }
+      let { x, y } = action.value;
+      return { startPoint: { x, y }, endPoint: { x, y } };
+    }
+    case "DRAG-MOVE": {
+      if (!state) {
+        // drag not started yet?
+        return state;
+      }
+      let { x, y } = action.value;
+      return { ...state, endPoint: { x, y } };
+    }
+    case "DRAG-END":
+      return null;
+  }
+  return state;
+};
+
 export default combineReducers({
   normalizedMap: mapReducer,
   currentFloor: currentFloorReducer,
   selectedTiles: selectedTilesReducer,
   zoneView: z => z || false,
-  spritesheetLoaded: spritesheetLoadedReducer
+  spritesheetLoaded: spritesheetLoadedReducer,
+  metaKey: metaKeyReducer,
+  selectedArea: selectedAreaReducer
 });

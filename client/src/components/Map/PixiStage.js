@@ -13,7 +13,7 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 class PixiStage extends Component {
   render() {
     const { store } = this.context;
-    const { metaKey, spriteSheetLoaded, isMapLoaded } = this.props;
+    const { spriteSheetLoaded, isMapLoaded, ...rest } = this.props;
     return (
       <Stage
         options={{
@@ -22,7 +22,7 @@ class PixiStage extends Component {
         }}
       >
         {/* <Container> */}
-        <PixiViewport metaKey={metaKey} store={store}>
+        <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
             <PixiMapContainer store={store} />
           ) : (
