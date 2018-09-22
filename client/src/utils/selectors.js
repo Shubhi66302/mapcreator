@@ -243,19 +243,20 @@ export const getIdsForNewEntities = createSelector(
   }
 );
 
+export const getRectFromDiagonalPoints = ({ startPoint, endPoint }) => ({
+  left: Math.min(startPoint.x, endPoint.x),
+  right: Math.max(startPoint.x, endPoint.x),
+  top: Math.min(startPoint.y, endPoint.y),
+  bottom: Math.max(startPoint.y, endPoint.y)
+});
+
 export const getDragSelectedTileIds = createSelector(
   tileIdsSelector,
   tileBoundsSelector,
   state => state.selectedArea,
   (tileIds, tileBounds, selectedArea) => {
     if (!selectedArea) return [];
-    const { startPoint, endPoint } = selectedArea;
-    const selectionRect = {
-      left: Math.min(startPoint.x, endPoint.x),
-      right: Math.max(startPoint.x, endPoint.x),
-      top: Math.min(startPoint.y, endPoint.y),
-      bottom: Math.max(startPoint.y, endPoint.y)
-    };
+    const selectionRect = getRectFromDiagonalPoints(selectedArea);
     return tileIds.filter(tileId => {
       const { x: left, y: top } = tileToWorldCoordinate(tileId, tileBounds);
       var rect = {
