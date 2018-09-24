@@ -8,7 +8,7 @@ import { getBarcodes } from "../../../utils/selectors";
 
 const baseSchema = {
   title: "Add Barcode",
-  type: "object",
+  type: "object"
 };
 
 // exported for testing
@@ -47,11 +47,11 @@ class AddBarcode extends Component {
           buttonText={"Add Barcode"}
         />
       );
-    
+
     const schema = {
       ...baseSchema,
-      properties: ['top']
-    }
+      properties: ["top"]
+    };
   }
 }
 
