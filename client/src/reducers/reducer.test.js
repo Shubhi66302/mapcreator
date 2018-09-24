@@ -28,7 +28,7 @@ describe("selectedTilesReducer", () => {
       var state = { "1,1": true, "2,2": true };
       var newState = selectedTilesReducer(state, {
         type: "DRAG-END",
-        value: {}
+        value: []
       });
       expect(newState).toMatchObject(state);
     });
@@ -36,9 +36,7 @@ describe("selectedTilesReducer", () => {
       var state = { "1,1": true, "2,2": true, "2,3": true };
       var newState = selectedTilesReducer(state, {
         type: "DRAG-END",
-        value: {
-          selectedTiles: ["2,2", "4,4"]
-        }
+        value: ["2,2", "4,4"]
       });
       expect(newState).toMatchObject({
         "1,1": true,

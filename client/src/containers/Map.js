@@ -13,6 +13,7 @@ import AssignStorable from "components/Map/Forms/AssignStorable";
 import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
+import AddBarcode from "components/Map/Forms/AddBarcode";
 
 class Map extends Component {
   state = {
@@ -59,6 +60,7 @@ class Map extends Component {
             <AssignZone />
             <AssignODSExcluded />
             <AssignEmergencyBarcode />
+            <AddBarcode onError={e => this.setStaet({ e })} />
           </div>
         </div>
         <div className="row py-1">

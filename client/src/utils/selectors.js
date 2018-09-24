@@ -269,3 +269,26 @@ export const getDragSelectedTileIds = createSelector(
     });
   }
 );
+
+// all floors considered
+export const specialBarcodesCoordinateSelector = createSelector(
+  getBarcodes,
+  barcodes =>
+    Object.keys(barcodes).filter(coordinate => barcodes[coordinate].special)
+);
+
+// initializes with 500,500 for first special barcode
+export const getNextSpecialCoordinate = createSelector(
+  specialBarcodesCoordinateSelector,
+  coordinateKeys => {
+    if (coordinateKeys.length == 0) return "500,500";
+    const maxCoordinateKey = _.sortBy(
+      coordinateKeys,
+      coordinateKey => -Math.max(coordinateKeyToTupleOfIntegers(coordinateKey))
+    )[0];
+    const [newMaxX, _newMaxY] = coordinateKeyToTupleOfIntegers(
+      maxCoordinateKey
+    );
+    return `${newMaxX + 1},${newMaxX + 1}`;
+  }
+);

@@ -7,6 +7,7 @@ import {
   twoFloors,
   singleFloorVanilla
 } from "./test-helper";
+import { fromJS } from "immutable";
 
 describe("tileIdsSelector", () => {
   test("should get 8 out of 9 barcodes since sampleMapJson has one special", () => {
@@ -420,14 +421,15 @@ describe("getIdsForNewEntities", () => {
   test("should give new ids for entities when some entities with no common coordinates existed before", () => {
     var singleFloorVanillaWithPPSes = singleFloorVanilla.updateIn(
       ["map", "floors", 0, "ppses"],
-      (ppses = []) => [
-        ...ppses,
-        {
-          pps_id: 1,
-          coordinate: "1,1",
-          data: "hello"
-        }
-      ]
+      (ppses = []) =>
+        fromJS([
+          ...ppses,
+          {
+            pps_id: 1,
+            coordinate: "1,1",
+            data: "hello"
+          }
+        ])
     );
     var state = makeState(singleFloorVanillaWithPPSes, 1);
     var newEntities = [
@@ -478,5 +480,46 @@ describe("getIdsForNewEntities", () => {
     // order is important
     var ids = getIdsForNewEntities(state, { entityName: "pps", newEntities });
     expect(ids).toEqual([3, 4, 1]);
+  });
+});
+
+describe("specialBarcodesCoordinateSelector", () => {
+  const { specialBarcodesCoordinateSelector } = selectors;
+  test("should give empty array if no specialc coordinates", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var coordinateKeys = specialBarcodesCoordinateSelector(state);
+    expect(coordinateKeys).toHaveLength(0);
+  });
+  test("should give special barcodes even if special barcodes are on different floor", () => {
+    var twoFloorsWithMoreSpecialCoordinates = twoFloors.updateIn(
+      ["map", "floors", 1, "map_values"],
+      (map_values = []) =>
+        fromJS([
+          ...map_values,
+          {
+            coordinate: "500,500",
+            special: true
+          }
+        ])
+    );
+    var state = makeState(twoFloorsWithMoreSpecialCoordinates, 2);
+    var coordinateKeys = specialBarcodesCoordinateSelector(state);
+    expect(coordinateKeys).toEqual(["12,12", "500,500"]);
+  });
+});
+
+describe("getNextSpecialCoordinate", () => {
+  const { getNextSpecialCoordinate } = selectors;
+  test("shoudl give 500,500 if no special barcode yet", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var maxCoordinate = getNextSpecialCoordinate(state);
+    expect(maxCoordinate).toBe("500,500");
+  });
+  // this singleFloor map is incorrect as special barcode coordinate was calculate with old logic
+  // still using it for testing
+  test("should give correct special max coordinate if some special barcodes already exist", () => {
+    var state = makeState(singleFloor, 1);
+    var maxCoordinate = getNextSpecialCoordinate(state);
+    expect(maxCoordinate).toBe("13,13");
   });
 });

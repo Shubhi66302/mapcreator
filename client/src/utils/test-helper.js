@@ -19,32 +19,34 @@ export var makeState = (
 });
 
 export var singleFloor = fromJS(sampleMapObj);
-export var twoFloors = singleFloor.updateIn(["map", "floors"], floors => [
-  ...floors,
-  {
-    floor_id: 2,
-    map_values: [
-      {
-        blocked: false,
-        zone: "defzone",
-        coordinate: "15,12",
-        store_status: 0,
-        barcode: "012.015",
-        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        size_info: [750, 750, 750, 750],
-        botid: "null"
-      },
-      {
-        blocked: false,
-        zone: "defzone",
-        coordinate: "11,17",
-        store_status: 0,
-        barcode: "017.013",
-        neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        size_info: [750, 750, 750, 750],
-        botid: "null"
-      }
-    ]
-  }
-]);
+export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
+  fromJS([
+    ...floors,
+    {
+      floor_id: 2,
+      map_values: [
+        {
+          blocked: false,
+          zone: "defzone",
+          coordinate: "15,12",
+          store_status: 0,
+          barcode: "012.015",
+          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          size_info: [750, 750, 750, 750],
+          botid: "null"
+        },
+        {
+          blocked: false,
+          zone: "defzone",
+          coordinate: "11,17",
+          store_status: 0,
+          barcode: "017.013",
+          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          size_info: [750, 750, 750, 750],
+          botid: "null"
+        }
+      ]
+    }
+  ])
+);
 export var singleFloorVanilla = fromJS(sampleVanillaMapObj);
