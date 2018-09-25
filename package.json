@@ -39,7 +39,7 @@
   "scripts": {
     "start": "nodemon server/index.js --exec babel-node --ignore client/",
     "babel-client": "babel client/src/common -d dist/client/src/common --copy-files",
-    "babel-server": "babel server -d dist/server",
+    "babel-server": "babel server -d dist/server --copy-files",
     "copy-client-build": "cp -r client/build dist/client/build",
     "build-client": "cd client && yarn install && npm run build",
     "build": "npm run build-client && npm run babel-server && npm run babel-client && npm run copy-client-build",
