@@ -1,4 +1,3 @@
-require("dotenv").config({ path: ".env.test" });
 import request from "supertest";
 import app from "server/src/app";
 import { Map, sequelize } from "server/models/index";

@@ -11,6 +11,7 @@
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "normalize": "^0.3.1",
     "normalizr": "^3.2.4",
     "prop-types": "^15.6.2",
