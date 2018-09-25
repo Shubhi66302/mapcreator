@@ -24,7 +24,7 @@ TODO: write complete readme.
 - Build
     - `npm run build`
 - Run
-    - `npm run serve`
+    - `npm start`
 
 Open 192.168.x.x:3001/ for mapcreator
 
