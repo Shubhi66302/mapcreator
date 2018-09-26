@@ -1,4 +1,4 @@
-import { getNeighbouringBarcodes, getNeighbourTiles } from "utils/util";
+import { getNeighbourTiles } from "utils/util";
 
 export default (state = {}, action) => {
   switch (action.type) {

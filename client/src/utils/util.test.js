@@ -8,8 +8,10 @@ import {
   getIdsForEntities,
   getNeighbouringBarcodes,
   getNeighbourTiles,
-  tupleOfIntegersToCoordinateKey
+  tupleOfIntegersToCoordinateKey,
+  addNeighbourToBarcode
 } from "./util";
+import { singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
 import * as constants from "../constants";
 
@@ -135,10 +137,72 @@ describe("getNeighbourTiles", () => {
 });
 
 describe("getNeighbouringBarcodes", () => {
-  test("should give correct neighbour barcodes even with a missing neighbour", () => {
-    var barcodesDict = { "2,0": "a", "1,1": "b", "2,2": "c", "2,1": "d" };
-    var neighbourBarcodes = getNeighbouringBarcodes("2,1", barcodesDict);
-    expect(neighbourBarcodes).toEqual(["a", "b", "c", undefined]);
+  test("should give correct neighbour barcodes for a corner barcode", () => {
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    var neighbourBarcodes = getNeighbouringBarcodes("0,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      {
+        store_status: 0,
+        zone: "defzone",
+        barcode: "001.000",
+        botid: "null",
+        neighbours: [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+        coordinate: "0,1",
+        blocked: false,
+        size_info: [750, 750, 750, 750]
+      },
+      null,
+      null,
+      {
+        store_status: 0,
+        zone: "defzone",
+        barcode: "002.001",
+        botid: "null",
+        neighbours: [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        coordinate: "1,2",
+        blocked: false,
+        size_info: [750, 750, 750, 750]
+      }
+    ]);
+  });
+  test("should give correct neighbour barcodes when neighbour is there but edge is [0,0,0]", () => {
+    var barcodesDict = {
+      // map is:
+      // -      1,1    -
+      //         x
+      // 2,2 .. 1,2 .. 0,2
+      // this one will be tested
+      "1,2": {
+        coordinate: "1,2",
+        neighbours: [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]]
+      },
+      "1,1": {
+        coordinate: "1,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]]
+      },
+      "0,2": {
+        coordinate: "0,2",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]]
+      },
+      "2,2": {
+        coordinate: "2,2",
+        neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]]
+      }
+    };
+    var neighbourBarcodes = getNeighbouringBarcodes("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      null,
+      {
+        coordinate: "0,2",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]]
+      },
+      null,
+      {
+        coordinate: "2,2",
+        neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]]
+      }
+    ]);
   });
   test("should give correct neighbours if adjacency is present", () => {
     var barcodesDict = {
@@ -148,5 +212,58 @@ describe("getNeighbouringBarcodes", () => {
     };
     var neighbourBarcodes = getNeighbouringBarcodes("2,2", barcodesDict);
     expect(neighbourBarcodes).toEqual(["a", undefined, null, null]);
+  });
+});
+
+describe("addNeighbourToBarcode", () => {
+  test("should add to only neighbours array when no adjacency is present", () => {
+    var barcode = {
+      blocked: false,
+      zone: "defzone",
+      coordinate: "15,12",
+      store_status: 0,
+      barcode: "012.015",
+      neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [1, 1, 0]],
+      size_info: [750, 750, 750, 750],
+      botid: "null"
+    };
+    var newBarcode = addNeighbourToBarcode(barcode, 1, "15,11");
+    expect(newBarcode).toMatchObject({
+      blocked: false,
+      zone: "defzone",
+      coordinate: "15,12",
+      store_status: 0,
+      barcode: "012.015",
+      neighbours: [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
+      size_info: [750, 750, 750, 750],
+      botid: "null"
+    });
+  });
+  test("should add to both neighbours and adjacency when adjacency is present", () => {
+    var barcode = {
+      size_info: [205, 1000, 205, 1000],
+      zone: "defzone",
+      adjacency: [[2, 1], null, [2, 2], null],
+      neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
+      store_status: 0,
+      barcode: "012.012",
+      blocked: false,
+      botid: "null",
+      special: true,
+      coordinate: "12,12"
+    };
+    var newBarcode = addNeighbourToBarcode(barcode, 3, "3,2");
+    expect(newBarcode).toMatchObject({
+      size_info: [205, 1000, 205, 1000],
+      zone: "defzone",
+      adjacency: [[2, 1], null, [2, 2], [3, 2]],
+      neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [1, 1, 1]],
+      store_status: 0,
+      barcode: "012.012",
+      blocked: false,
+      botid: "null",
+      special: true,
+      coordinate: "12,12"
+    });
   });
 });

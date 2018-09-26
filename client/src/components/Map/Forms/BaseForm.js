@@ -13,7 +13,8 @@ class BaseForm extends Component {
       onError = () => {},
       buttonText = "Submit",
       disabled = false,
-      validate = null
+      validate = null,
+      uiSchema = undefined
     } = this.props;
     return [
       <button
@@ -32,6 +33,7 @@ class BaseForm extends Component {
         >
           <Form
             schema={schema}
+            uiSchema={uiSchema}
             onSubmit={formData => {
               this.setState({ show: false });
               onSubmit(formData);

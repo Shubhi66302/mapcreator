@@ -1,5 +1,7 @@
 import assert from "assert";
 import * as constants from "../constants";
+import _ from "lodash";
+
 export var handleErrors = response => {
   if (!response.ok) {
     return response.text().then(text => Promise.reject(text));
@@ -39,6 +41,7 @@ export const getNeighbourTiles = tileId => {
   return neighbours;
 };
 
+// NOTE: only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
 export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   // barcodesDict is state.normalizedMap.entities.barcode
   var curBarcode = barcodesDict[coordinateKey];
@@ -51,8 +54,15 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
     });
   }
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
-  return neighbourTileKeys.map(tileKey => barcodesDict[tileKey]);
+  return neighbourTileKeys.map(
+    (tileKey, idx) =>
+      _.isEqual(curBarcode.neighbours[idx], [0, 0, 0])
+        ? null
+        : barcodesDict[tileKey]
+  );
 };
+
+// export const getValidNeighbouringTiles = (coordinateKey, barcodesDict) => getNeighbouringBarcodes(coordinateKey, barcodesDict).map(barcode => )
 
 export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   // '12,3' => [12, 3]
@@ -174,3 +184,22 @@ export const intersectRect = (r1, r2) =>
     r2.top > r1.bottom ||
     r2.bottom < r1.top
   );
+
+export const addNeighbourToBarcode = (barcode, direction, nbCoordinate) => {
+  const withoutAdjacency = {
+    ...barcode,
+    // https://medium.com/@giltayar/immutably-setting-a-value-in-a-js-array-or-how-an-array-is-also-an-object-55337f4d6702
+    neighbours: Object.assign([...barcode.neighbours], {
+      [direction]: [1, 1, 1]
+    })
+  };
+  if (barcode.adjacency) {
+    return {
+      ...withoutAdjacency,
+      adjacency: Object.assign([...barcode.adjacency], {
+        [direction]: coordinateKeyToTupleOfIntegers(nbCoordinate)
+      })
+    };
+  }
+  return withoutAdjacency;
+};

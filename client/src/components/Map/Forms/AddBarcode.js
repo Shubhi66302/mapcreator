@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
-import { getNeighbourTiles } from "utils/util";
+import { getNeighbourTiles, implicitCoordinateKeyToBarcode } from "utils/util";
 import _ from "lodash";
-import { directionSchema } from "utils/forms";
+import { addNewBarcode } from "actions/barcode";
 import { getBarcodes } from "../../../utils/selectors";
+import titleCase from "title-case";
 
 const baseSchema = {
   title: "Add Barcode",
@@ -34,6 +35,8 @@ const shouldBeDisabled = (selectedTiles, barcodes) => {
   );
 };
 
+// TODO: support negative tile id i.e. when trying to go above 0,0 etc.
+// TODO: support adding multiple edges to new barcode
 class AddBarcode extends Component {
   render() {
     const { selectedTiles, barcodes, onSubmit, onError } = this.props;
@@ -47,11 +50,47 @@ class AddBarcode extends Component {
           buttonText={"Add Barcode"}
         />
       );
-
+    const coordinate = Object.keys(selectedTiles)[0];
+    const nbTileIds = getNeighbourTiles(coordinate, barcodes);
+    const dirStrs = ["top", "right", "bottom", "left"];
+    const emptyDirTileIdList = _.zip([0, 1, 2, 3], nbTileIds).filter(
+      ([_dir, nbTileId]) => !barcodes[nbTileId]
+    );
+    const keys = _.unzip(emptyDirTileIdList)[0];
     const schema = {
       ...baseSchema,
-      properties: ["top"]
+      required: ["direction", "tileId"],
+      properties: {
+        direction: {
+          type: "integer",
+          title: "Direction",
+          enum: keys,
+          enumNames: emptyDirTileIdList.map(
+            ([dir, tileId]) =>
+              `${titleCase(dirStrs[dir])} (${implicitCoordinateKeyToBarcode(
+                tileId
+              )})`
+          ),
+          default: keys[0]
+        },
+        tileId: {
+          type: "string",
+          default: coordinate
+        }
+      }
     };
+    const uiSchema = {
+      tileId: { "ui:widget": "hidden" }
+    };
+    return (
+      <BaseForm
+        disabled={disabled}
+        schema={schema}
+        onSubmit={onSubmit}
+        buttonText={"Add Barcode"}
+        uiSchema={uiSchema}
+      />
+    );
   }
 }
 
@@ -61,6 +100,8 @@ export default connect(
     barcodes: getBarcodes(state)
   }),
   dispatch => ({
-    onSubmit: ({ formData }) => {}
+    onSubmit: ({ formData }) => {
+      dispatch(addNewBarcode(formData));
+    }
   })
 )(AddBarcode);
