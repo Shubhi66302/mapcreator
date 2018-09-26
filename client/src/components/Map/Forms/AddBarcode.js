@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
-import { getNeighbourTiles, implicitCoordinateKeyToBarcode } from "utils/util";
+import {
+  getNeighbourTiles,
+  implicitCoordinateKeyToBarcode,
+  isValidCoordinateKey
+} from "utils/util";
 import _ from "lodash";
 import { addNewBarcode } from "actions/barcode";
 import { getBarcodes } from "../../../utils/selectors";
@@ -19,19 +23,20 @@ export const onlyOneTileSelected = selectedTiles =>
 export const hasBarcodeForTile = (selectedTiles, barcodes) =>
   barcodes[Object.keys(selectedTiles)[0]];
 
-export const hasLessThanFourNeighbours = (selectedTiles, barcodes) => {
-  const neighbourTileIds = getNeighbourTiles(Object.keys(selectedTiles)[0]);
-  return (
-    neighbourTileIds.map(tileId => barcodes[tileId]).filter(barcode => barcode)
-      .length < 4
+export const getValidEmptyNeighbours = (selectedTiles, barcodes) => {
+  const coordinate = Object.keys(selectedTiles)[0];
+  const nbTileIds = getNeighbourTiles(coordinate, barcodes);
+  const emptyDirTileIdList = _.zip([0, 1, 2, 3], nbTileIds).filter(
+    ([_dir, nbTileId]) => !barcodes[nbTileId] && isValidCoordinateKey(nbTileId)
   );
+  return emptyDirTileIdList;
 };
 
 const shouldBeDisabled = (selectedTiles, barcodes) => {
   return (
     !onlyOneTileSelected(selectedTiles) ||
     !hasBarcodeForTile(selectedTiles, barcodes) ||
-    !hasLessThanFourNeighbours(selectedTiles, barcodes)
+    getValidEmptyNeighbours(selectedTiles, barcodes).length == 0
   );
 };
 
@@ -51,11 +56,8 @@ class AddBarcode extends Component {
         />
       );
     const coordinate = Object.keys(selectedTiles)[0];
-    const nbTileIds = getNeighbourTiles(coordinate, barcodes);
     const dirStrs = ["top", "right", "bottom", "left"];
-    const emptyDirTileIdList = _.zip([0, 1, 2, 3], nbTileIds).filter(
-      ([_dir, nbTileId]) => !barcodes[nbTileId]
-    );
+    const emptyDirTileIdList = getValidEmptyNeighbours(selectedTiles, barcodes);
     const keys = _.unzip(emptyDirTileIdList)[0];
     const schema = {
       ...baseSchema,

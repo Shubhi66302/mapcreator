@@ -62,11 +62,12 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   );
 };
 
-// export const getValidNeighbouringTiles = (coordinateKey, barcodesDict) => getNeighbouringBarcodes(coordinateKey, barcodesDict).map(barcode => )
+export var isValidCoordinateKey = coordinateKey =>
+  /^\d*,\d*$/.test(coordinateKey);
 
 export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   // '12,3' => [12, 3]
-  if (!/^\d*,\d*$/.test(coordinateKey)) {
+  if (!isValidCoordinateKey(coordinateKey)) {
     throw new Error(`${coordinateKey} does not match coordinateKey pattern.`);
   }
   return coordinateKey.split(",").map(val => parseInt(val));
