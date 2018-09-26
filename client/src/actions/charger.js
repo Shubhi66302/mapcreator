@@ -9,7 +9,7 @@ import {
   getCurrentFloorMaxCoordinate,
   coordinateKeyToBarcodeSelector,
   getIdsForNewEntities,
-  getNextSpecialCoordinate
+  getNewSpecialCoordinates
 } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import { CHARGER_DISTANCE } from "../constants";
@@ -132,9 +132,11 @@ export const addChargers = formData => (dispatch, getState) => {
   const barcodesDict = state.normalizedMap.entities["barcode"] || {};
   var newBarcodes = [];
   var newChargers = [];
-  var [maxx, maxy] = getCurrentFloorMaxCoordinate(state);
+  var specialTileIds = getNewSpecialCoordinates(state, {
+    n: Object.keys(selectedTiles).length
+  });
   Object.keys(selectedTiles).forEach((tileId, idx) => {
-    var specialTileId = getNextSpecialCoordinate(state);
+    var specialTileId = specialTileIds[idx];
     newBarcodes = newBarcodes.concat(
       createAllChargerBarcodes(formData, tileId, specialTileId, barcodesDict)
     );

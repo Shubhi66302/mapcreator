@@ -508,18 +508,18 @@ describe("specialBarcodesCoordinateSelector", () => {
   });
 });
 
-describe("getNextSpecialCoordinate", () => {
-  const { getNextSpecialCoordinate } = selectors;
+describe("getNewSpecialCoordinates", () => {
+  const { getNewSpecialCoordinates } = selectors;
   test("shoudl give 500,500 if no special barcode yet", () => {
     var state = makeState(singleFloorVanilla, 1);
-    var maxCoordinate = getNextSpecialCoordinate(state);
-    expect(maxCoordinate).toBe("500,500");
+    var maxCoordinate = getNewSpecialCoordinates(state, { n: 3 });
+    expect(maxCoordinate).toEqual(["500,500", "501,501", "502,502"]);
   });
   // this singleFloor map is incorrect as special barcode coordinate was calculate with old logic
   // still using it for testing
   test("should give correct special max coordinate if some special barcodes already exist", () => {
     var state = makeState(singleFloor, 1);
-    var maxCoordinate = getNextSpecialCoordinate(state);
-    expect(maxCoordinate).toBe("13,13");
+    var maxCoordinate = getNewSpecialCoordinates(state, { n: 2 });
+    expect(maxCoordinate).toEqual(["13,13", "14,14"]);
   });
 });

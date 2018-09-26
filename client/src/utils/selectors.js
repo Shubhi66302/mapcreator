@@ -278,17 +278,23 @@ export const specialBarcodesCoordinateSelector = createSelector(
 );
 
 // initializes with 500,500 for first special barcode
-export const getNextSpecialCoordinate = createSelector(
+export const getNewSpecialCoordinates = createSelector(
   specialBarcodesCoordinateSelector,
-  coordinateKeys => {
-    if (coordinateKeys.length == 0) return "500,500";
-    const maxCoordinateKey = _.sortBy(
-      coordinateKeys,
-      coordinateKey => -Math.max(coordinateKeyToTupleOfIntegers(coordinateKey))
-    )[0];
-    const [newMaxX, _newMaxY] = coordinateKeyToTupleOfIntegers(
-      maxCoordinateKey
-    );
-    return `${newMaxX + 1},${newMaxX + 1}`;
+  (_state, { n }) => n,
+  (coordinateKeys, n) => {
+    const start =
+      coordinateKeys.length == 0
+        ? 500
+        : coordinateKeys
+            .map(coordinateKey =>
+              Math.max(...coordinateKeyToTupleOfIntegers(coordinateKey))
+            )
+            .sort()
+            .reverse()[0] + 1;
+    var ret = [];
+    for (var i = 0; i < n; i++) {
+      ret.push(`${start + i},${start + i}`);
+    }
+    return ret;
   }
 );

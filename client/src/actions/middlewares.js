@@ -9,6 +9,7 @@ export const entityMiddleware = store => next => action => {
           action.type
         } action.`
       );
+      console.warn(action.value);
       return store.getState();
     }
   }
@@ -24,6 +25,7 @@ export const floorMiddleware = store => next => action => {
           action.type
         } action.`
       );
+      console.warn(action.value);
       return store.getState();
     }
   }
