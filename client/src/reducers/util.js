@@ -30,6 +30,8 @@ export const createEntityReducer = (reducerKey, idField) => (
       return {
         ...rest
       };
+    case `DELETE-MULTIPLE-${reducerKey}-BY-ID`:
+      return _.omit(state, action.value);
   }
   return state;
 };

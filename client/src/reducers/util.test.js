@@ -81,4 +81,16 @@ describe("createEntityReducer", () => {
       ).toMatchObject(someEntities);
     });
   });
+  describe("DELETE-MULTIPLE-X-BY-ID", () => {
+    test("delete multple entities", () => {
+      expect(
+        dummyEntityReducer(someEntities, {
+          type: "DELETE-MULTIPLE-DUMMY-BY-ID",
+          value: ["2", "3", "4"]
+        })
+      ).toMatchObject({
+        "1": { dummy_id: 1, content: "hello", coordinate: "1,1" }
+      });
+    });
+  });
 });

@@ -25,7 +25,6 @@ export const createNewBarcode = ({
 export const addNewBarcode = formData => (dispatch, getState) => {
   const state = getState();
   const { tileId, direction } = formData;
-  console.log(formData);
   const nbTileId = getNeighbourTiles(tileId)[direction];
   // new barcode will be connected to all neighbour barcodes that it has
   const nbNeighboursTileIds = getNeighbourTiles(nbTileId);
@@ -64,5 +63,26 @@ export const addNewBarcode = formData => (dispatch, getState) => {
     })
   );
   // clear selection
+  dispatch(clearTiles);
+};
+
+// NOTE: fix remove barcode so taht neighbour structures are updated
+export const removeBarcodes = (dispatch, getState) => {
+  const { selectedTiles, currentFloor } = getState();
+  // remove from floor
+  dispatch({
+    type: "REMOVE-ENTITIES-FROM-FLOOR",
+    value: {
+      currentFloor,
+      floorKey: "map_values",
+      ids: Object.keys(selectedTiles) || []
+    }
+  });
+  // remove barcodes
+  dispatch({
+    type: "DELETE-MULTIPLE-BARCODE-BY-ID",
+    value: Object.keys(selectedTiles) || []
+  });
+  // clear tiles
   dispatch(clearTiles);
 };

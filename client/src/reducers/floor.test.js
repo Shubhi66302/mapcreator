@@ -61,3 +61,36 @@ describe("ADD-ENTITIES-TO-FLOOR", () => {
     expect(newState).toEqual({ "1": { chargers: [1, 2], ppses: [1, 2, 3] } });
   });
 });
+
+describe("REMOVE-ENTITIES-FROM-FLOOR", () => {
+  test("should remove pps entities", () => {
+    var state = { "1": { ppses: [1, 3, 4, 5, 6] } };
+    // 2 to be removeed
+    var ppsEntityIds = [1, 2, 3];
+
+    var newState = floorReducer(state, {
+      type: "REMOVE-ENTITIES-FROM-FLOOR",
+      value: {
+        floorKey: "ppses",
+        currentFloor: 1,
+        ids: ppsEntityIds
+      }
+    });
+    expect(newState).toMatchObject({ "1": { ppses: [4, 5, 6] } });
+  });
+  test("should remove barcodes entities", () => {
+    var state = { "1": { map_values: ["0,1", "0,2", "3,0", "4,0"] } };
+    // 2 to be removeed
+    var barcodeIds = ["0,2", "3,0", "5,0"];
+
+    var newState = floorReducer(state, {
+      type: "REMOVE-ENTITIES-FROM-FLOOR",
+      value: {
+        floorKey: "map_values",
+        currentFloor: 1,
+        ids: barcodeIds
+      }
+    });
+    expect(newState).toMatchObject({ "1": { map_values: ["0,1", "4,0"] } });
+  });
+});

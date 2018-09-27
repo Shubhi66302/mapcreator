@@ -1,0 +1,25 @@
+import React from "react";
+import { removeBarcodes } from "actions/barcode";
+import { connect } from "react-redux";
+
+const RemoveBarcodeButton = ({ onClick, disabled }) => (
+  <button
+    disabled={disabled}
+    type="button"
+    className="btn btn-outline-primary"
+    onClick={() => {
+      onClick();
+    }}
+  >
+    Remove Barcodes
+  </button>
+);
+
+export default connect(
+  state => ({
+    disabled: Object.keys(state.selectedTiles).length === 0
+  }),
+  dispatch => ({
+    onClick: () => dispatch(removeBarcodes)
+  })
+)(RemoveBarcodeButton);
