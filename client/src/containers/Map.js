@@ -68,15 +68,6 @@ class Map extends Component {
               <Elm key={idx} onError={e => this.setState({ e })} />
             </div>
           ))}
-          {/* <AssignStorable />
-          <AddPPS />
-          <AddCharger />
-          <AssignDockPoint />
-          <AssignZone />
-          <AssignODSExcluded />
-          <AssignEmergencyBarcode />
-          <AddBarcode onError={e => this.setState({ e })} />
-          <RemoveBarcode /> */}
         </div>
         <div className="row py-1">
           <div className="btn-group" role="group">

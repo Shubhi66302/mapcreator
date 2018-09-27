@@ -27,10 +27,8 @@ class MapViewport extends Component {
     document.removeEventListener("keyup", this.customKeyupListener);
   }
   render() {
-    // HACK: using tabindex=0 to make div accept keyboard events, should figure
-    // out a better method
     return (
-      <div id="mapdiv" style={{ height: 600, width: 800 }}>
+      <div id="mapdiv">
         <PixiStage
           shouldProcessDrag={this.props.shouldProcessDrag}
           spriteSheetLoaded={this.props.loaded}

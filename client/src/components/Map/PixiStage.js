@@ -37,6 +37,7 @@ class PixiStage extends Component {
           antialias: false,
           transparent: true
         }}
+        width={1000}
       >
         {/* <Container> */}
         <PixiViewport {...rest} store={store}>
