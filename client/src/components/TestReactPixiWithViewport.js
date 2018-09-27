@@ -129,9 +129,9 @@ class App extends Component {
           tabIndex="0"
           onKeyDown={e => {
             console.log(`key down event ${e}`);
-            this.setState({ metaKey: e.metaKey });
+            this.setState({ metaKey: e.metaKey || e.ctrlKey });
           }}
-          onKeyUp={e => this.setState({ metaKey: e.metaKey })}
+          onKeyUp={e => this.setState({ metaKey: e.metaKey || e.ctrlKey })}
           id="bigdiv"
           style={{ height: 100, width: 100 }}
         >
