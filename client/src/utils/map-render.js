@@ -5,6 +5,7 @@ import {
   tileSpriteNamesWithoutEntityData,
   tileNameWithoutEntityDataSelector,
   specialTileSpritesMapSelector,
+  distanceTileSpritesSelector,
   tileBoundsSelector,
   tileIdsSelector,
   getBarcodes
@@ -12,6 +13,7 @@ import {
 import { coordinateKeyToTupleOfIntegers } from "../utils/util";
 import { dummyState } from "reducers/reducer";
 import * as PIXI from "pixi.js";
+import * as constants from "../constants";
 
 // some exports are for testing
 

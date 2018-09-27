@@ -5,8 +5,14 @@ import PixiMapContainer from "./PixiMapContainer";
 import PixiViewport from "./PixiViewport";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getRectFromDiagonalPoints } from "utils/selectors";
+import {
+  getRectFromDiagonalPoints,
+  distanceTileSpritesSelector,
+  getTileInBetweenDistances
+} from "utils/selectors";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
+import PixiDistanceTileRectange from "./PixiDistanceTileRectange";
+import _ from "lodash";
 // this removes anti-aliasing somehow
 PIXI.settings.PRECISION_FRAGMENT = "highp"; // this makes text looks better
 
@@ -19,8 +25,12 @@ class PixiStage extends Component {
       spriteSheetLoaded,
       isMapLoaded,
       dragSelectRect,
+      state,
       ...rest
     } = this.props;
+    // TODO: optimize this rendering
+    const distanceTiles = distanceTileSpritesSelector(state);
+    const inBetweenDistances = getTileInBetweenDistances(state);
     return (
       <Stage
         options={{
@@ -51,6 +61,28 @@ class PixiStage extends Component {
             alpha={0.5}
             rect={dragSelectRect}
           />
+          {_.zip(distanceTiles, inBetweenDistances).map(
+            ([{ x, y, width, height }, dist], idx) => [
+              <PixiDistanceTileRectange
+                key={2 * idx}
+                rect={{ x, y, width, height }}
+              />,
+              <Text
+                key={2 * idx + 1}
+                text={`${dist}`}
+                style={{
+                  fontFamily: "Arial",
+                  fontSize: 35,
+                  fill: 0x000000,
+                  align: "center"
+                  // resolution: 2
+                }}
+                x={x}
+                // TODO: make a constant
+                y={y - 40}
+              />
+            ]
+          )}
         </PixiViewport>
       </Stage>
     );
@@ -63,5 +95,6 @@ export default connect(state => ({
   isMapLoaded: state.normalizedMap ? true : false,
   dragSelectRect: state.selectedArea
     ? getRectFromDiagonalPoints(state.selectedArea)
-    : { top: 0, left: 0, right: 0, bottom: 0 }
+    : { top: 0, left: 0, right: 0, bottom: 0 },
+  state
 }))(PixiStage);

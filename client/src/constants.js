@@ -4,7 +4,20 @@ export var TILE_HEIGHT = 220;
 // tile sprite dimensions used to calculate actual hitbox for registering clicks
 export var TILE_SPRITE_WIDTH = 150;
 export var TILE_SPRITE_HEIGHT = 150;
-
+export var DISTANCE_TILE_WIDTH = 120;
+export var DISTANCE_TILE_HEIGHT = 50;
+export var DISTANCE_TILE_OFFSETS = {
+  top: {
+    x: -75,
+    y: -200,
+    yText: -100
+  },
+  left: {
+    x: -150,
+    y: 110,
+    yText: -50
+  }
+};
 export var SCALE = 4;
 // constants for offsetting barcode string sprites
 export var BARCODE_SPRITE_Y_OFFSET = -50;
@@ -29,7 +42,6 @@ export var CHARGER = "charger.png";
 export var CHARGER_ENTRY = "charger-entry.png";
 export var QUEUE = "queue.png";
 export var DOCK_POINT = "normal.png";
-export var DISTANCE_TILE = "normal.png";
 // TODO: figure out how to display zones with limited number of colors?
 // eg. continental has 16 zones.
 // right now just using 1 color? actually zone view is not implemented.

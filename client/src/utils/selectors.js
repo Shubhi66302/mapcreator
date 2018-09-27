@@ -4,6 +4,7 @@ import { createSelector } from "reselect";
 import createCachedSelector from "re-reselect";
 import {
   coordinateKeyToTupleOfIntegers,
+  tupleOfIntegersToCoordinateKey,
   tileToWorldCoordinate,
   getNeighbouringBarcodes,
   intersectRect
@@ -224,6 +225,88 @@ export const specialTileSpritesMapSelector = createSelector(
     var ret = {};
     Object.keys(selectedTiles).forEach(key => (ret[key] = constants.SELECTED));
     return { ...entitySpritesMap, ...ret };
+  }
+);
+
+// TODO: untested
+export const distanceTileSpritesSelector = createSelector(
+  tileBoundsSelector,
+  state => state,
+  ({ maxX, maxY, minX, minY }, state) => {
+    // return x, y, width, height for all the distance tile sprites
+    var ret = [];
+    const {
+      top: { x: xTopOffset, y: yTopOffset }
+    } = constants.DISTANCE_TILE_OFFSETS;
+    for (var i = minX; i < maxX; i++) {
+      const { x: middle, y: top } = tileRenderCoordinateSelector(state, {
+        tileId: tupleOfIntegersToCoordinateKey([i, minY])
+      });
+      ret.push({
+        x: middle + xTopOffset,
+        y: top + yTopOffset,
+        width: constants.DISTANCE_TILE_WIDTH,
+        height: constants.DISTANCE_TILE_HEIGHT
+      });
+    }
+    const {
+      left: { x: xLeftOffset, y: yLeftOffset }
+    } = constants.DISTANCE_TILE_OFFSETS;
+    for (var i = minY; i < maxY; i++) {
+      const { x: right, y: top } = tileRenderCoordinateSelector(state, {
+        tileId: tupleOfIntegersToCoordinateKey([maxX, i])
+      });
+      ret.push({
+        x: right + xLeftOffset,
+        y: top + yLeftOffset,
+        width: constants.DISTANCE_TILE_HEIGHT,
+        height: constants.DISTANCE_TILE_WIDTH
+      });
+    }
+    return ret;
+  }
+);
+
+// TODO: untested
+export const getTileInBetweenDistances = createSelector(
+  tileBoundsSelector,
+  getBarcodes,
+  ({ maxX, maxY, minX, minY }, barcodesDict) => {
+    var ret = [];
+    // columns
+    for (var i = minX; i < maxX; i++) {
+      var dist = 0;
+      for (var j = minY; j < maxY; j++) {
+        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+        var tileId2 = tupleOfIntegersToCoordinateKey([i + 1, j]);
+        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
+          // TODO: consider if they are actually connected
+          dist = Math.max(
+            dist,
+            barcodesDict[tileId1].size_info[3] +
+              barcodesDict[tileId2].size_info[1]
+          );
+        }
+      }
+      ret.push(dist);
+    }
+    for (var j = minY; j < maxY; j++) {
+      var dist = 0;
+      for (var i = minX; i < maxX; i++) {
+        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+        var tileId2 = tupleOfIntegersToCoordinateKey([i, j + 1]);
+        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
+          // TODO: consider if they are actually connected
+          dist = Math.max(
+            dist,
+            barcodesDict[tileId1].size_info[2] +
+              barcodesDict[tileId2].size_info[0]
+          );
+        }
+      }
+      ret.push(dist);
+    }
+    return ret;
   }
 );
 
