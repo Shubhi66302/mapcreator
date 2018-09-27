@@ -53,22 +53,35 @@ class Map extends Component {
           </h3>
         </div>
         <div className="row py-1">
-          <div className="btn-group" role="group">
-            <AssignStorable />
-            <AddPPS />
-            <AddCharger />
-            <AssignDockPoint />
-            <AssignZone />
-            <AssignODSExcluded />
-            <AssignEmergencyBarcode />
-            <AddBarcode onError={e => this.setStaet({ e })} />
-            <RemoveBarcode />
-          </div>
+          {[
+            AssignStorable,
+            AddPPS,
+            AddCharger,
+            AssignDockPoint,
+            AssignZone,
+            AssignODSExcluded,
+            AssignEmergencyBarcode,
+            AddBarcode,
+            RemoveBarcode
+          ].map((Elm, idx) => (
+            <div className="pr-1 pt-1">
+              <Elm key={idx} onError={e => this.setState({ e })} />
+            </div>
+          ))}
+          {/* <AssignStorable />
+          <AddPPS />
+          <AddCharger />
+          <AssignDockPoint />
+          <AssignZone />
+          <AssignODSExcluded />
+          <AssignEmergencyBarcode />
+          <AddBarcode onError={e => this.setState({ e })} />
+          <RemoveBarcode /> */}
         </div>
         <div className="row py-1">
           <div className="btn-group" role="group">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary"
               type="button"
               onClick={() =>
                 dispatch(
@@ -85,7 +98,7 @@ class Map extends Component {
               Save
             </button>
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary"
               type="button"
               onClick={() => {
                 dispatch(downloadMap());

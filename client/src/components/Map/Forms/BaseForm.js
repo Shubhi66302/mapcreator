@@ -16,34 +16,37 @@ class BaseForm extends Component {
       validate = null,
       uiSchema = undefined
     } = this.props;
-    return [
-      <button
-        key={0}
-        type="button"
-        className="btn btn-outline-primary"
-        disabled={disabled}
-        onClick={() => this.setState({ show: true })}
-      >
-        {buttonText}
-      </button>,
-      <div key={1} className="modal fade" tabIndex="-1" role="dialog">
-        <FormModal
-          show={this.state.show}
-          toggle={() => this.setState({ show: !this.state.show })}
+    return (
+      <div>
+        <button
+          key={0}
+          type="button"
+          className="btn btn-outline-primary"
+          disabled={disabled}
+          onClick={() => this.setState({ show: true })}
         >
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            onSubmit={formData => {
-              this.setState({ show: false });
-              onSubmit(formData);
-            }}
-            onError={onError}
-            validate={validate}
-          />
-        </FormModal>
+          {buttonText}
+        </button>
+
+        <div key={1} className="modal fade" tabIndex="-1" role="dialog">
+          <FormModal
+            show={this.state.show}
+            toggle={() => this.setState({ show: !this.state.show })}
+          >
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={formData => {
+                this.setState({ show: false });
+                onSubmit(formData);
+              }}
+              onError={onError}
+              validate={validate}
+            />
+          </FormModal>
+        </div>
       </div>
-    ];
+    );
   }
 }
 
