@@ -3,7 +3,10 @@ import { PixiComponent } from "@inlet/react-pixi";
 import * as constants from "../../constants";
 export default PixiComponent("DistanceTileRectangle", {
   create: props => {
-    return new PIXI.Graphics();
+    const instance = new PIXI.Graphics();
+    instance.interactive = true;
+    instance.on("click", e => console.log("clicked a distance tile"));
+    return instance;
   },
   didMount: (instance, parent) => {
     // apply custom logic on mount

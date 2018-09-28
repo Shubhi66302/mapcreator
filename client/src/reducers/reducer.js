@@ -31,7 +31,8 @@ export const dummyState = {
   selectedArea: null,
   metaKey: false,
   viewport: {
-    instance: null,
+    viewportInstance: null,
+    minimapInstance: null,
     currentView: null
   }
 };
@@ -163,12 +164,14 @@ export const selectedAreaReducer = (state = null, action) => {
 };
 
 const viewportReducer = (
-  state = { instance: null, currentView: null },
+  state = { viewportInstance: null, minimapInstance: null, currentView: null },
   action
 ) => {
   switch (action.type) {
     case "REGISTER-PIXI-VIEWPORT":
-      return { ...state, instance: action.value };
+      return { ...state, viewportInstance: action.value };
+    case "REGISTER-PIXI-MINIMAP":
+      return { ...state, minimapInstance: action.value };
   }
   return state;
 };

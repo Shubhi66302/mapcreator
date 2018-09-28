@@ -30,7 +30,7 @@ export default createStore(
     selectedArea: null,
     metaKey: false,
     viewport: {
-      instance: null,
+      viewportInstance: null,
       currentView: null
     }
   },

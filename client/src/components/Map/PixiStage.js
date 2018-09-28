@@ -13,6 +13,7 @@ import {
 } from "utils/selectors";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
 import PixiDistanceTileRectange from "./PixiDistanceTileRectange";
+import PixiNumberSprite from "./PixiNumberSprite";
 import _ from "lodash";
 // this removes anti-aliasing somehow
 PIXI.settings.PRECISION_FRAGMENT = "highp"; // this makes text looks better
@@ -44,7 +45,24 @@ class PixiStage extends Component {
         {/* <Container> */}
         <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
-            <PixiMapContainer store={store} />
+            [
+              <PixiMapContainer key={"first"} store={store} />,
+              ..._.zip(distanceTiles, inBetweenDistances).map(
+                ([{ x, y, width, height }, dist], idx) => [
+                  <PixiDistanceTileRectange
+                    key={2 * idx}
+                    rect={{ x, y, width, height }}
+                  />,
+                  <PixiNumberSprite
+                    key={2 * idx + 1}
+                    number={dist}
+                    x={x}
+                    y={y - 40}
+                    scale={0.8}
+                  />
+                ]
+              )
+            ]
           ) : (
             <Text
               text="loading..."
@@ -64,28 +82,6 @@ class PixiStage extends Component {
             alpha={0.5}
             rect={dragSelectRect}
           />
-          {_.zip(distanceTiles, inBetweenDistances).map(
-            ([{ x, y, width, height }, dist], idx) => [
-              <PixiDistanceTileRectange
-                key={2 * idx}
-                rect={{ x, y, width, height }}
-              />,
-              <Text
-                key={2 * idx + 1}
-                text={`${dist}`}
-                style={{
-                  fontFamily: "Arial",
-                  fontSize: 35,
-                  fill: 0x000000,
-                  align: "center"
-                  // resolution: 2
-                }}
-                x={x}
-                // TODO: make a constant
-                y={y - 40}
-              />
-            ]
-          )}
         </PixiViewport>
       </Stage>
     );

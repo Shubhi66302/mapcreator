@@ -53,12 +53,6 @@ var PixiViewport = PixiComponent("PixiViewport", {
       .drag()
       .pinch()
       .wheel();
-    // .clampZoom({
-    //   minWidth: 1000,
-    //   maxWidth: 100000,
-    //   minHeight: 600,
-    //   maxHeight: 100000
-    // });
     instance.on("clicked", e => {
       console.log("clicked");
       var tileBounds = store.dispatch(clickOnViewport(e.world));
