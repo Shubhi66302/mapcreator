@@ -310,6 +310,31 @@ export const getTileInBetweenDistances = createSelector(
   }
 );
 
+// TODO: test
+export const getFitToSizeViewportRect = createSelector(
+  tileBoundsSelector,
+  tileBounds => {
+    const { maxX, maxY, minX, minY } = tileBounds;
+    const { x: left, y: top } = tileToWorldCoordinate(
+      tupleOfIntegersToCoordinateKey([maxX, minY]),
+      tileBounds
+    );
+    const { x: right, y: bottom } = tileToWorldCoordinate(
+      tupleOfIntegersToCoordinateKey([minX, maxY]),
+      tileBounds
+    );
+    // offset by a little
+    var xPadding = (right - left) * constants.VIEWPORT_MAX_SIZE_PADDING_RATIO;
+    var yPadding = (bottom - top) * constants.VIEWPORT_MAX_SIZE_PADDING_RATIO;
+    return {
+      top: top - yPadding,
+      bottom: bottom + yPadding,
+      left: left - xPadding,
+      right: right + xPadding
+    };
+  }
+);
+
 export const getIdsForNewEntities = createSelector(
   getParticularEntity,
   (_state, { newEntities }) => newEntities,

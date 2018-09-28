@@ -64,8 +64,8 @@ class Map extends Component {
             AddBarcode,
             RemoveBarcode
           ].map((Elm, idx) => (
-            <div className="pr-1 pt-1">
-              <Elm key={idx} onError={e => this.setState({ e })} />
+            <div key={idx} className="pr-1 pt-1">
+              <Elm onError={e => this.setState({ e })} />
             </div>
           ))}
         </div>

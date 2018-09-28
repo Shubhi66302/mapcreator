@@ -26,9 +26,14 @@ export const dummyState = {
   }),
   currentFloor: 1,
   selectedTiles: {},
+  selectedDistanceTiles: {},
   zoneView: false,
   selectedArea: null,
-  metaKey: false
+  metaKey: false,
+  viewport: {
+    instance: null,
+    currentView: null
+  }
 };
 
 // exporting reducers for testing
@@ -79,6 +84,12 @@ export const currentFloorReducer = (state = 1, action) => {
   return state;
 };
 
+export const selectedDistanceTilesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "CLICK-ON-DISTANCE-TILE":
+  }
+};
+
 export const selectedTilesReducer = (state = {}, action) => {
   switch (action.type) {
     case "CLEAR-MAP":
@@ -86,6 +97,7 @@ export const selectedTilesReducer = (state = {}, action) => {
     case "CLEAR-SELECTED-TILES":
     case "CLICK-OUTSIDE-TILES":
       return {};
+
     case "CLICK-ON-TILE":
       const tileId = action.value;
       if (state[tileId]) {
@@ -150,6 +162,17 @@ export const selectedAreaReducer = (state = null, action) => {
   return state;
 };
 
+const viewportReducer = (
+  state = { instance: null, currentView: null },
+  action
+) => {
+  switch (action.type) {
+    case "REGISTER-PIXI-VIEWPORT":
+      return { ...state, instance: action.value };
+  }
+  return state;
+};
+
 export default combineReducers({
   normalizedMap: mapReducer,
   currentFloor: currentFloorReducer,
@@ -157,5 +180,6 @@ export default combineReducers({
   zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
   metaKey: metaKeyReducer,
-  selectedArea: selectedAreaReducer
+  selectedArea: selectedAreaReducer,
+  viewport: viewportReducer
 });

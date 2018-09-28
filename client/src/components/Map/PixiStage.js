@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Stage, Text } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
+import * as constants from "../../constants";
 import PixiMapContainer from "./PixiMapContainer";
 import PixiViewport from "./PixiViewport";
 import PropTypes from "prop-types";
@@ -37,7 +38,8 @@ class PixiStage extends Component {
           antialias: false,
           transparent: true
         }}
-        width={1000}
+        width={constants.VIEWPORT_WIDTH}
+        height={constants.VIEWPORT_HEIGHT}
       >
         {/* <Container> */}
         <PixiViewport {...rest} store={store}>

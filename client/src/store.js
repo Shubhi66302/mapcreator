@@ -16,6 +16,7 @@ const logger = createLogger({
   predicate: (_getState, { type }) => !/DRAG-MOVE/.test(type)
 });
 
+// TODO: shouldn't have to define default state both here and in reducer.js, find a way to do it only in one place
 export default createStore(
   reducer,
   {
@@ -27,7 +28,11 @@ export default createStore(
     zoneView: false,
     spritesheetLoaded: false,
     selectedArea: null,
-    metaKey: false
+    metaKey: false,
+    viewport: {
+      instance: null,
+      currentView: null
+    }
   },
   applyMiddleware(thunk, entityMiddleware, floorMiddleware, logger)
 );

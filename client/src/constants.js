@@ -54,3 +54,8 @@ export var EDGE_SPRITES = ["0.png", "1.png", "2.png", "3.png"];
 
 // Constants for map charger_location
 export var CHARGER_DISTANCE = 205;
+
+// Viewport
+export var VIEWPORT_MAX_SIZE_PADDING_RATIO = 1.3;
+export var VIEWPORT_WIDTH = 1000;
+export var VIEWPORT_HEIGHT = 600;

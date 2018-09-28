@@ -3,7 +3,8 @@ import { worldToTileCoordinate, handleErrors } from "utils/util";
 import {
   tileBoundsSelector,
   tileIdsMapSelector,
-  getDragSelectedTileIds
+  getDragSelectedTileIds,
+  getMapCentreWorldCoordinate
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
@@ -11,6 +12,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver/FileSaver";
 import exportMap from "common/utils/export-map";
 import { SPRITESHEET_PATH } from "../constants";
+import { fitToViewport, setViewportClamp } from "./viewport";
 // always good idea to return promises from async action creators
 
 export const tileClick = tileId => ({
@@ -73,6 +75,7 @@ export const loadSpritesheet = () => dispatch => {
   PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load((loader, resource) => {
     dispatch(newSpritesheet);
   });
+  return Promise.resolve();
 };
 
 export const newMap = map => ({
@@ -84,12 +87,14 @@ export const clearMap = {
   type: "CLEAR-MAP"
 };
 
-export const fetchMap = mapId => dispatch => {
+export const fetchMap = mapId => (dispatch, getState) => {
   dispatch(clearMap);
   return fetch(`/api/map/${mapId}`)
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
+    .then(() => dispatch(setViewportClamp))
+    .then(() => dispatch(fitToViewport))
     .catch(error => console.warn(error));
 };
 
