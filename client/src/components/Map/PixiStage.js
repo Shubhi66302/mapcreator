@@ -27,12 +27,11 @@ class PixiStage extends Component {
       spriteSheetLoaded,
       isMapLoaded,
       dragSelectRect,
-      state,
+      distanceTiles,
+      inBetweenDistances,
+      selectedDistanceTiles,
       ...rest
     } = this.props;
-    // TODO: optimize this rendering
-    const distanceTiles = distanceTileSpritesSelector(state);
-    const inBetweenDistances = getTileInBetweenDistances(state);
     return (
       <Stage
         options={{
@@ -42,16 +41,17 @@ class PixiStage extends Component {
         width={constants.VIEWPORT_WIDTH}
         height={constants.VIEWPORT_HEIGHT}
       >
-        {/* <Container> */}
         <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
             [
+              // TODO: optimize this rendering even more
               <PixiMapContainer key={"first"} store={store} />,
               ..._.zip(distanceTiles, inBetweenDistances).map(
                 ([{ x, y, width, height }, dist], idx) => [
                   <PixiDistanceTileRectange
                     key={2 * idx}
                     rect={{ x, y, width, height }}
+                    fill={selectedDistanceTiles[idx] ? 0x0000ff : 0x000000}
                   />,
                   <PixiNumberSprite
                     key={2 * idx + 1}
@@ -95,5 +95,7 @@ export default connect(state => ({
   dragSelectRect: state.selectedArea
     ? getRectFromDiagonalPoints(state.selectedArea)
     : { top: 0, left: 0, right: 0, bottom: 0 },
-  state
+  distanceTiles: distanceTileSpritesSelector(state),
+  inBetweenDistances: getTileInBetweenDistances(state),
+  selectedDistanceTiles: state.selectedDistanceTiles || {}
 }))(PixiStage);

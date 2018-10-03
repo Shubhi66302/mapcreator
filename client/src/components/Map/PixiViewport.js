@@ -54,7 +54,6 @@ var PixiViewport = PixiComponent("PixiViewport", {
       .pinch()
       .wheel();
     instance.on("clicked", e => {
-      console.log("clicked");
       var tileBounds = store.dispatch(clickOnViewport(e.world));
     });
     // add instance referene to store

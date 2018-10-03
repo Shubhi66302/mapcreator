@@ -89,6 +89,7 @@ export const selectedDistanceTilesReducer = (state = {}, action) => {
   switch (action.type) {
     case "CLICK-ON-DISTANCE-TILE":
   }
+  return state;
 };
 
 export const selectedTilesReducer = (state = {}, action) => {
@@ -180,6 +181,7 @@ export default combineReducers({
   normalizedMap: mapReducer,
   currentFloor: currentFloorReducer,
   selectedTiles: selectedTilesReducer,
+  selectedDistanceTiles: selectedDistanceTilesReducer,
   zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
   metaKey: metaKeyReducer,

@@ -24,6 +24,7 @@ export default createStore(
     currentFloor: 1,
     // NOTE: selected tiles is also a map for efficiency reasons
     selectedTiles: {},
+    selectedDistanceTiles: {},
     // TODO: implement zone view
     zoneView: false,
     spritesheetLoaded: false,
