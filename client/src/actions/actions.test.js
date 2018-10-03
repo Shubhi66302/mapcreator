@@ -11,7 +11,7 @@ const mockStore = configureStore(middlewares);
 
 // TODO: test click-between-tiles functionality more thoroughly
 describe("clickOnViewport", () => {
-  const { clickOnViewport, tileClick, outsideTileClick } = actions;
+  const { clickOnViewport, mapTileClick, outsideTilesClick } = actions;
   test("dispatches click on tile action when an existing tile is clicked", async () => {
     // setup
     const initialState = makeState(singleFloor, 1);
@@ -23,7 +23,7 @@ describe("clickOnViewport", () => {
     const dispatchedActions = store.getActions();
 
     // test
-    expect(dispatchedActions).toEqual([tileClick("1,0")]);
+    expect(dispatchedActions).toEqual([mapTileClick("1,0")]);
   });
   test("dispatches outside click action when clicking on a non existing tile (i.e. outside map)", async () => {
     // setup
@@ -36,7 +36,7 @@ describe("clickOnViewport", () => {
     const dispatchedActions = store.getActions();
 
     // test
-    expect(dispatchedActions).toEqual([outsideTileClick]);
+    expect(dispatchedActions).toEqual([outsideTilesClick]);
   });
 });
 
@@ -108,8 +108,8 @@ describe("assignStorable", () => {
   const { assignStorable, clearTiles } = actions;
   test("should dispatch assign storable action and also clear tiles action", async () => {
     // setup
-    const selectedTiles = { "1,1": true, "1,2": true };
-    const initialState = makeState(singleFloor, 1, selectedTiles);
+    const selectedMapTiles = { "1,1": true, "1,2": true };
+    const initialState = makeState(singleFloor, 1, selectedMapTiles);
     const store = mockStore(initialState);
 
     await store.dispatch(assignStorable());
@@ -119,7 +119,7 @@ describe("assignStorable", () => {
     expect(dispatchedActions).toEqual([
       {
         type: "ASSIGN-STORABLE",
-        value: selectedTiles
+        value: selectedMapTiles
       },
       clearTiles
     ]);

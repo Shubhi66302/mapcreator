@@ -18,7 +18,7 @@ export const getBarcodes = state => state.normalizedMap.entities.barcode || {};
 export const getBarcode = (state, { tileId }) =>
   state.normalizedMap.entities.barcode[tileId];
 // get renderable barcodes, i.e. those on current floor and not 'special'
-// this should not compute when only selectedTiles changes since inputs won't change then?
+// this should not compute when only selection.mapTiles changes since inputs won't change then?
 // it should only be caching references so we shouldn't worry about recomputation
 // although recomputation will create a new array and each selector that depends on it will recompute also.
 export const tileIdsSelector = createSelector(
@@ -220,10 +220,12 @@ export const tileEntitySpritesMapSelector = state => {
 
 export const specialTileSpritesMapSelector = createSelector(
   tileEntitySpritesMapSelector,
-  state => state.selectedTiles,
-  (entitySpritesMap, selectedTiles) => {
+  state => state.selection.mapTiles,
+  (entitySpritesMap, selectedMapTiles) => {
     var ret = {};
-    Object.keys(selectedTiles).forEach(key => (ret[key] = constants.SELECTED));
+    Object.keys(selectedMapTiles).forEach(
+      key => (ret[key] = constants.SELECTED)
+    );
     return { ...entitySpritesMap, ...ret };
   }
 );
@@ -263,7 +265,8 @@ export const distanceTileSpritesSelector = createSelector(
         height: constants.DISTANCE_TILE_WIDTH
       });
     }
-    return ret;
+    // key is the unique indentifier for a distance tile
+    return ret.map((val, idx) => ({ ...val, key: idx }));
   }
 );
 
@@ -358,14 +361,15 @@ export const getRectFromDiagonalPoints = ({ startPoint, endPoint }) => ({
   bottom: Math.max(startPoint.y, endPoint.y)
 });
 
-export const getDragSelectedTileIds = createSelector(
+export const getDragSelectedTiles = createSelector(
   tileIdsSelector,
   tileBoundsSelector,
+  distanceTileSpritesSelector,
   state => state.selectedArea,
-  (tileIds, tileBounds, selectedArea) => {
+  (tileIds, tileBounds, distanceTileRects, selectedArea) => {
     if (!selectedArea) return [];
     const selectionRect = getRectFromDiagonalPoints(selectedArea);
-    return tileIds.filter(tileId => {
+    const selectedMapTiles = tileIds.filter(tileId => {
       const { x: left, y: top } = tileToWorldCoordinate(tileId, tileBounds);
       var rect = {
         left,
@@ -375,6 +379,20 @@ export const getDragSelectedTileIds = createSelector(
       };
       return intersectRect(selectionRect, rect);
     });
+    const selectedDistanceTiles = distanceTileRects
+      .filter(({ x, y, width, height }) =>
+        intersectRect(selectionRect, {
+          left: x,
+          right: x + width,
+          top: y,
+          bottom: y + height
+        })
+      )
+      .map(({ key }) => key);
+    return {
+      mapTilesArr: selectedMapTiles,
+      distanceTilesArr: selectedDistanceTiles
+    };
   }
 );
 

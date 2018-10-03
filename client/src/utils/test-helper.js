@@ -9,11 +9,20 @@ import { fromJS } from "immutable";
 export var makeState = (
   immutableMap,
   currentFloor = 1,
-  selectedTiles = {}
+  selectedMapTiles = {},
+  selectedDistanceTiles = {}
 ) => ({
   normalizedMap: normalizeMap(immutableMap.toJS()),
   currentFloor,
-  selectedTiles,
+  viewport: {
+    viewportInstance: null,
+    minimapInstance: null,
+    currentView: null
+  },
+  selection: {
+    mapTiles: selectedMapTiles,
+    distanceTiles: selectedDistanceTiles
+  },
   zoneView: false,
   selectedArea: undefined
 });

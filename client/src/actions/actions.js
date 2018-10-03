@@ -3,8 +3,8 @@ import { worldToTileCoordinate, handleErrors } from "utils/util";
 import {
   tileBoundsSelector,
   tileIdsMapSelector,
-  getDragSelectedTileIds,
-  getMapCentreWorldCoordinate
+  getDragSelectedTiles,
+  distanceTileSpritesSelector
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
@@ -15,27 +15,40 @@ import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
 // always good idea to return promises from async action creators
 
-export const tileClick = tileId => ({
-  type: "CLICK-ON-TILE",
+export const mapTileClick = tileId => ({
+  type: "CLICK-ON-MAP-TILE",
   value: tileId
 });
-export const outsideTileClick = {
+export const outsideTilesClick = {
   type: "CLICK-OUTSIDE-TILES"
 };
 
-// TODO: should probably check if click is on sprite or not.
+const isPointInRect = ({ x, y, width, height }, { x: px, y: py }) =>
+  px >= x && px <= x + width && py >= y && py <= y + height;
+
 export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
   const state = getState();
   const tileIdsMap = tileIdsMapSelector(state);
   const tileBounds = tileBoundsSelector(state);
+  const distanceTileRects = distanceTileSpritesSelector(state);
+  const isPointOnADistanceTile = distanceTileRects.some(rect =>
+    isPointInRect(rect, worldCoordinate)
+  );
   var tileId = worldToTileCoordinate(worldCoordinate, tileBounds);
   // make sure the tileId is actually part of current floor's tiles
   if (tileId && tileIdsMap[tileId]) {
-    return dispatch(tileClick(tileId));
+    return dispatch(mapTileClick(tileId));
+  } else if (!isPointOnADistanceTile) {
+    return dispatch(outsideTilesClick);
   } else {
-    return dispatch(outsideTileClick);
+    return Promise.resolve();
   }
 };
+
+export const clickOnDistanceTile = distanceTileIdx => ({
+  type: "CLICK-ON-DISTANCE-TILE",
+  value: distanceTileIdx
+});
 
 export const dragStart = worldCoordinate => (dispatch, getState) => {
   const { selectedArea } = getState();
@@ -52,11 +65,9 @@ export const dragStart = worldCoordinate => (dispatch, getState) => {
 export const dragEnd = worldCoordinate => (dispatch, getState) => {
   const state = getState();
   if (state.selectedArea) {
-    // calculate tiles that were selected.
-    const selectedTiles = getDragSelectedTileIds(state);
     dispatch({
       type: "DRAG-END",
-      value: selectedTiles
+      value: getDragSelectedTiles(state)
     });
   }
   return Promise.resolve();
@@ -124,10 +135,12 @@ export const addEntitiesToFloor = ({
 });
 
 export const assignStorable = () => (dispatch, getState) => {
-  const { selectedTiles } = getState();
+  const {
+    selection: { mapTiles }
+  } = getState();
   dispatch({
     type: "ASSIGN-STORABLE",
-    value: selectedTiles
+    value: mapTiles
   });
   return dispatch(clearTiles);
 };

@@ -523,3 +523,18 @@ describe("getNewSpecialCoordinates", () => {
     expect(maxCoordinate).toEqual(["13,13", "14,14"]);
   });
 });
+
+describe("distanceTileSpritesSelector", () => {
+  const { distanceTileSpritesSelector } = selectors;
+  // TODO: better tests that check if rects are correct
+  test("should give correct number of distance tiles", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var distanceTilesArr = distanceTileSpritesSelector(state);
+    expect(distanceTilesArr).toHaveLength(4);
+    // should have key property
+    distanceTilesArr.forEach((distanceTile, idx) => {
+      expect(distanceTile).toHaveProperty("key");
+      expect(distanceTile.key).toBe(idx);
+    });
+  });
+});

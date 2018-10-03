@@ -45,7 +45,7 @@ export var createOrUpdateAllSprites = (container, state, tileId) => {
 // will define selectors 3 cases:
 // 1. tileIds update (use tileIds selector twice) -> re render everything O(n)
 // 2. barcode entity updates: re-render tiles. also re-render barcode sprites if changed.
-// 2. Other entity updates (charger, pps, selectedTiles etc. etc.) -> diff render entity, maybe just re-render all every time.
+// 2. Other entity updates (charger, pps, selection.mapTiles etc. etc.) -> diff render entity, maybe just re-render all every time.
 
 // called whenever tileIds change.
 export var tileIdsUpdate = (container, state, prevState) => {
@@ -88,7 +88,7 @@ export var barcodeUpdate = (container, state, prevState) => {
 export var tileSpriteUpdate = (container, state, prevState) => {
   if (
     state.normalizedMap.entities === prevState.normalizedMap.entities &&
-    state.selectedTiles === prevState.selectedTiles
+    state.selection.mapTiles === prevState.selection.mapTiles
   )
     return;
   var prevSpecial = specialTileSpritesMapSelector(prevState);

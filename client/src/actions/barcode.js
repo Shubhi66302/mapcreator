@@ -68,20 +68,23 @@ export const addNewBarcode = formData => (dispatch, getState) => {
 
 // NOTE: fix remove barcode so taht neighbour structures are updated
 export const removeBarcodes = (dispatch, getState) => {
-  const { selectedTiles, currentFloor } = getState();
+  const {
+    selection: { mapTiles },
+    currentFloor
+  } = getState();
   // remove from floor
   dispatch({
     type: "REMOVE-ENTITIES-FROM-FLOOR",
     value: {
       currentFloor,
       floorKey: "map_values",
-      ids: Object.keys(selectedTiles) || []
+      ids: Object.keys(mapTiles) || []
     }
   });
   // remove barcodes
   dispatch({
     type: "DELETE-MULTIPLE-BARCODE-BY-ID",
-    value: Object.keys(selectedTiles) || []
+    value: Object.keys(mapTiles) || []
   });
   // clear tiles
   dispatch(clearTiles);

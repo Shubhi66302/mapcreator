@@ -27,7 +27,7 @@ const AddPPS = ({ onSubmit, disabled }) => (
 // only connecting to minimal state since don't know if data will be copied in props...
 export default connect(
   state => ({
-    disabled: Object.keys(state.selectedTiles).length === 0
+    disabled: Object.keys(state.selection.mapTiles).length === 0
   }),
   dispatch => ({
     onSubmit: ({ formData }) => {

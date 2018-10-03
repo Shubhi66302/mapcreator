@@ -17,14 +17,14 @@ const baseSchema = {
 };
 
 // exported for testing
-export const onlyOneTileSelected = selectedTiles =>
-  Object.keys(selectedTiles).length == 1;
+export const onlyOneTileSelected = selectedMapTiles =>
+  Object.keys(selectedMapTiles).length == 1;
 
-export const hasBarcodeForTile = (selectedTiles, barcodes) =>
-  barcodes[Object.keys(selectedTiles)[0]];
+export const hasBarcodeForTile = (selectedMapTiles, barcodes) =>
+  barcodes[Object.keys(selectedMapTiles)[0]];
 
-export const getValidEmptyNeighbours = (selectedTiles, barcodes) => {
-  const coordinate = Object.keys(selectedTiles)[0];
+export const getValidEmptyNeighbours = (selectedMapTiles, barcodes) => {
+  const coordinate = Object.keys(selectedMapTiles)[0];
   const nbTileIds = getNeighbourTiles(coordinate, barcodes);
   const emptyDirTileIdList = _.zip([0, 1, 2, 3], nbTileIds).filter(
     ([_dir, nbTileId]) => !barcodes[nbTileId] && isValidCoordinateKey(nbTileId)
@@ -32,11 +32,11 @@ export const getValidEmptyNeighbours = (selectedTiles, barcodes) => {
   return emptyDirTileIdList;
 };
 
-const shouldBeDisabled = (selectedTiles, barcodes) => {
+const shouldBeDisabled = (selectedMapTiles, barcodes) => {
   return (
-    !onlyOneTileSelected(selectedTiles) ||
-    !hasBarcodeForTile(selectedTiles, barcodes) ||
-    getValidEmptyNeighbours(selectedTiles, barcodes).length == 0
+    !onlyOneTileSelected(selectedMapTiles) ||
+    !hasBarcodeForTile(selectedMapTiles, barcodes) ||
+    getValidEmptyNeighbours(selectedMapTiles, barcodes).length == 0
   );
 };
 
@@ -44,8 +44,8 @@ const shouldBeDisabled = (selectedTiles, barcodes) => {
 // TODO: support adding multiple edges to new barcode
 class AddBarcode extends Component {
   render() {
-    const { selectedTiles, barcodes, onSubmit, onError } = this.props;
-    const disabled = shouldBeDisabled(selectedTiles, barcodes);
+    const { selectedMapTiles, barcodes, onSubmit, onError } = this.props;
+    const disabled = shouldBeDisabled(selectedMapTiles, barcodes);
     if (disabled)
       return (
         <BaseForm
@@ -55,9 +55,12 @@ class AddBarcode extends Component {
           buttonText={"Add Barcode"}
         />
       );
-    const coordinate = Object.keys(selectedTiles)[0];
+    const coordinate = Object.keys(selectedMapTiles)[0];
     const dirStrs = ["top", "right", "bottom", "left"];
-    const emptyDirTileIdList = getValidEmptyNeighbours(selectedTiles, barcodes);
+    const emptyDirTileIdList = getValidEmptyNeighbours(
+      selectedMapTiles,
+      barcodes
+    );
     const keys = _.unzip(emptyDirTileIdList)[0];
     const schema = {
       ...baseSchema,
@@ -98,7 +101,7 @@ class AddBarcode extends Component {
 
 export default connect(
   state => ({
-    selectedTiles: state.selectedTiles,
+    selectedMapTiles: state.selection.mapTiles,
     barcodes: getBarcodes(state)
   }),
   dispatch => ({
