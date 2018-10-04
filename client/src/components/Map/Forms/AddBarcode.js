@@ -41,11 +41,20 @@ const shouldBeDisabled = (selectedTiles, barcodes) => {
 };
 
 // TODO: support negative tile id i.e. when trying to go above 0,0 etc.
-// TODO: support adding multiple edges to new barcode
+// TODO: support customizing edges of new barcode
 class AddBarcode extends Component {
   render() {
     const { selectedTiles, barcodes, onSubmit, onError } = this.props;
     const disabled = shouldBeDisabled(selectedTiles, barcodes);
+    const tooltipData = {
+      id: "add-barcode",
+      title: "Add a barcode",
+      bulletPoints: [
+        "Can only add one barcode at a time.",
+        "Barcodes can only be added at peripheries.",
+        "Negative coordinates are not supported, so can't add barcode which might result in negative coordinate."
+      ]
+    };
     if (disabled)
       return (
         <BaseForm
@@ -53,6 +62,8 @@ class AddBarcode extends Component {
           schema={baseSchema}
           onSubmit={onSubmit}
           buttonText={"Add Barcode"}
+          tooltipId={"add-barcode"}
+          tooltipData={tooltipData}
         />
       );
     const coordinate = Object.keys(selectedTiles)[0];
@@ -91,6 +102,7 @@ class AddBarcode extends Component {
         onSubmit={onSubmit}
         buttonText={"Add Barcode"}
         uiSchema={uiSchema}
+        tooltipData={tooltipData}
       />
     );
   }

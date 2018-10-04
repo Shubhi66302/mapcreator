@@ -18,12 +18,23 @@ const schema = {
   }
 };
 
+const tooltipData = {
+  id: "add-charger",
+  title: "Add one or more chargers",
+  bulletPoints: [
+    "Can't add charger at periphery in a direction so that entry point would be outside map, please don't try.",
+    "Also creates a special barcode with barcode 500.500 and above to accomodate map expansion",
+    "Distance b/w special barcode and its neighbours is hardcoded but can be changed later in json"
+  ]
+};
+
 const AddCharger = ({ onSubmit, disabled }) => (
   <BaseForm
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}
     buttonText={"Assign Charger"}
+    tooltipData={tooltipData}
   />
 );
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Form from "react-jsonschema-form";
 import FormModal from "./FormModal";
+import BulletPointsTooltip from "./BulletPointsTooltip";
 
 class BaseForm extends Component {
   state = {
@@ -14,20 +15,25 @@ class BaseForm extends Component {
       buttonText = "Submit",
       disabled = false,
       validate = null,
-      uiSchema = undefined
+      uiSchema = undefined,
+      tooltipData = {
+        id: "default-tooltip-id"
+      }
     } = this.props;
     return (
       <div>
-        <button
-          key={0}
-          type="button"
-          className="btn btn-outline-primary"
-          disabled={disabled}
-          onClick={() => this.setState({ show: true })}
-        >
-          {buttonText}
-        </button>
-
+        <div className="tooltip-wrapper" data-tip data-for={tooltipData.id}>
+          <button
+            key={0}
+            type="button"
+            className="btn btn-outline-primary"
+            disabled={disabled}
+            onClick={() => this.setState({ show: true })}
+          >
+            {buttonText}
+          </button>
+        </div>
+        <BulletPointsTooltip {...tooltipData} />
         <div key={1} className="modal fade" tabIndex="-1" role="dialog">
           <FormModal
             show={this.state.show}
