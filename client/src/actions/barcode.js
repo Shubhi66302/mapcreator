@@ -3,7 +3,7 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode } from "utils/selectors";
+import { getBarcode, currentFloorBotWithRackThreshold } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 
 export const createNewBarcode = ({
@@ -30,6 +30,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   const nbNeighboursTileIds = getNeighbourTiles(nbTileId);
   const oldBarcodes = [];
   const nbNeighbourStructure = [];
+  const nbSizeInfo = Array(4).fill(currentFloorBotWithRackThreshold(state));
   nbNeighboursTileIds.forEach((nbNbTileId, idx) => {
     const nbNbBarcode = getBarcode(state, { tileId: nbNbTileId });
     if (nbNbBarcode) {
@@ -37,6 +38,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
         addNeighbourToBarcode(nbNbBarcode, (idx + 2) % 4, nbTileId)
       );
       nbNeighbourStructure.push([1, 1, 1]);
+      nbSizeInfo[idx] = nbNbBarcode.size_info[(idx + 2) % 4];
     } else {
       nbNeighbourStructure.push([0, 0, 0]);
     }
@@ -45,7 +47,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
     coordinate: nbTileId,
     neighbours: nbNeighbourStructure,
     barcode: implicitCoordinateKeyToBarcode(nbTileId),
-    size_info: [750, 750, 750, 750]
+    size_info: nbSizeInfo
   });
 
   // add to barcodes
@@ -64,6 +66,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   );
   // clear selection
   dispatch(clearTiles);
+  return Promise.resolve();
 };
 
 // NOTE: fix remove barcode so taht neighbour structures are updated

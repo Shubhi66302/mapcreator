@@ -450,3 +450,10 @@ export const getNewSpecialCoordinates = createSelector(
     return ret;
   }
 );
+
+export const currentFloorBotWithRackThreshold = state =>
+  state.normalizedMap.entities.floor[state.currentFloor].metadata
+    .botWithRackThreshold;
+export const currentFloorBotWithoutRackThreshold = state =>
+  state.normalizedMap.entities.floor[state.currentFloor].metadata
+    .botWithoutRackThreshold;
