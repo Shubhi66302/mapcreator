@@ -54,6 +54,7 @@ describe("addNewBarcode", () => {
     expect(dispatchedActions[2]).toMatchObject(clearTiles);
   });
   test("should add new barcode with size_info as set in metadata", async () => {
+    const { clearTiles } = actions;
     const singleFloorVanillaWithModifiedThreshold = singleFloorVanilla.updateIn(
       ["map", "floors", 0, "metadata", "botWithRackThreshold"],
       () => 800
