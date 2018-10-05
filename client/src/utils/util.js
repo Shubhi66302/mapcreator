@@ -172,7 +172,11 @@ export var createMapFromCoordinateData = (
         odses: [],
         dockPoints: [],
         fireEmergencies: [],
-        map_values
+        map_values,
+        metadata: {
+          botWithRackThreshold: 750,
+          botWithoutRackThreshold: 610
+        }
       }
     ]
   };

@@ -30,3 +30,15 @@ Open 192.168.x.x:3001/ for mapcreator
 
 TODO: write dev setup process
 
+
+# Modifying JSON schemas
+
+- Schema files are present in `client/common/json-schemas` and tests in `client/common/__tests__/json-schemas`
+- Change schema .json files and also change `export-map.js` and `import-map.js` so that maps are imported/exported correctly with new fields
+- Change map .json files in `client/test-data/test-maps`
+- After modifying schema .json files and import-map.js and export-map.js functions, you need to update existing maps in db to reflect the changed schema
+- Create a script in `server/map-json-migrations/` which will run over all rows in db and modify the map json (eg. see add-floor-metadata.js)
+- To change dev database (use `babel-node` if your script uses es6 syntax, otherwise just use `node`):
+    - `babel-node server/map-json-migrations/<yourscript>.js`
+- To change prod database:
+    - `NODE_ENV=production babel-node server/map-json-migrations/<yourscript>.js`

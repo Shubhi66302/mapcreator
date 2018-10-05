@@ -13,6 +13,10 @@
         "odses": [],
         "dockPoints": [],
         "fireEmergencies": [],
+        "metadata": {
+          "botWithRackThreshold": 750,
+          "botWithoutRackThreshold": 610
+        },
         "map_values": [
           {
             "store_status": 0,
