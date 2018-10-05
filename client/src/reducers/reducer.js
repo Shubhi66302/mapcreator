@@ -123,13 +123,6 @@ export const selectedMapTilesReducer = (state = {}, action) => {
       return {};
     case "CLICK-ON-MAP-TILE":
       return toggleKeyInMap(state, action.value);
-    // case "DRAG-END":
-    //   const selectedTiles = action.value;
-    //   if (selectedTiles) {
-    //     // calculate symmetric difference
-    //     const xored = _.xor(Object.keys(state), selectedTiles);
-    //     return _.fromPairs(xored.map(x => [x, true]));
-    //   }
   }
   return state;
 };

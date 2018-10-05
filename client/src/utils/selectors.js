@@ -244,11 +244,13 @@ export const distanceTileSpritesSelector = createSelector(
       const { x: middle, y: top } = tileRenderCoordinateSelector(state, {
         tileId: tupleOfIntegersToCoordinateKey([i, minY])
       });
+      // key is the unique indentifier for a distance tile
       ret.push({
         x: middle + xTopOffset,
         y: top + yTopOffset,
         width: constants.DISTANCE_TILE_WIDTH,
-        height: constants.DISTANCE_TILE_HEIGHT
+        height: constants.DISTANCE_TILE_HEIGHT,
+        key: `c-${i}`
       });
     }
     const {
@@ -262,13 +264,60 @@ export const distanceTileSpritesSelector = createSelector(
         x: right + xLeftOffset,
         y: top + yLeftOffset,
         width: constants.DISTANCE_TILE_HEIGHT,
-        height: constants.DISTANCE_TILE_WIDTH
+        height: constants.DISTANCE_TILE_WIDTH,
+        key: `r-${i}`
       });
     }
-    // key is the unique indentifier for a distance tile
-    return ret.map((val, idx) => ({ ...val, key: idx }));
+    return ret;
   }
 );
+
+export const getAllInBetweenDistances = (arrOfTuple, direction, barcodesDict) =>
+  arrOfTuple.map(([tileId1, tileId2]) => {
+    const [barcode1, barcode2] = [barcodesDict[tileId1], barcodesDict[tileId2]];
+    if (barcode1 && barcode2) {
+      var distance =
+        barcode1.size_info[direction] + barcode2.size_info[(direction + 2) % 4];
+      if (barcode1.adjacency && barcode2.adjacency) {
+        // there might be special barcode between them
+        var specialTileId = tupleOfIntegersToCoordinateKey(
+          barcode1.adjacency[direction]
+        );
+        var specialBarcode = barcodesDict[specialTileId];
+        if (specialBarcode && specialBarcode.special)
+          distance +=
+            specialBarcode.size_info[direction] +
+            specialBarcode.size_info[(direction + 2) % 4];
+      }
+      return distance;
+    }
+    return 0;
+  });
+
+export const getMaxInBetweenDistance = (arrOfTuple, direction, barcodesDict) =>
+  _.max(getAllInBetweenDistances(arrOfTuple, direction, barcodesDict));
+
+export const getAllColumnTileIdTuples = ({ maxY, minY }, distanceTileKey) => {
+  const i = parseInt(distanceTileKey.match(/c\-(.*)/)[1]);
+  var arrOfTuple = [];
+  for (var j = minY; j <= maxY; j++) {
+    var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+    var tileId2 = tupleOfIntegersToCoordinateKey([i + 1, j]);
+    arrOfTuple.push([tileId1, tileId2]);
+  }
+  return arrOfTuple;
+};
+
+export const getAllRowTileIdTuples = ({ maxX, minX }, distanceTileKey) => {
+  const j = parseInt(distanceTileKey.match(/r\-(.*)/)[1]);
+  var arrOfTuple = [];
+  for (var i = minX; i <= maxX; i++) {
+    var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+    var tileId2 = tupleOfIntegersToCoordinateKey([i, j + 1]);
+    arrOfTuple.push([tileId1, tileId2]);
+  }
+  return arrOfTuple;
+};
 
 // TODO: untested
 export const getTileInBetweenDistances = createSelector(
@@ -278,36 +327,13 @@ export const getTileInBetweenDistances = createSelector(
     var ret = [];
     // columns
     for (var i = minX; i < maxX; i++) {
-      var dist = 0;
-      for (var j = minY; j < maxY; j++) {
-        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
-        var tileId2 = tupleOfIntegersToCoordinateKey([i + 1, j]);
-        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
-          // TODO: consider if they are actually connected
-          dist = Math.max(
-            dist,
-            barcodesDict[tileId1].size_info[3] +
-              barcodesDict[tileId2].size_info[1]
-          );
-        }
-      }
-      ret.push(dist);
+      var arrOfTuple = getAllColumnTileIdTuples({ maxY, minY }, `c-${i}`);
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 3, barcodesDict));
     }
+    // rows
     for (var j = minY; j < maxY; j++) {
-      var dist = 0;
-      for (var i = minX; i < maxX; i++) {
-        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
-        var tileId2 = tupleOfIntegersToCoordinateKey([i, j + 1]);
-        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
-          // TODO: consider if they are actually connected
-          dist = Math.max(
-            dist,
-            barcodesDict[tileId1].size_info[2] +
-              barcodesDict[tileId2].size_info[0]
-          );
-        }
-      }
-      ret.push(dist);
+      var arrOfTuple = getAllRowTileIdTuples({ maxX, minX }, `r-${j}`);
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 2, barcodesDict));
     }
     return ret;
   }

@@ -46,16 +46,15 @@ class PixiStage extends Component {
         <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
             [
-              // TODO: optimize this rendering even more
+              // TODO: optimize this rendering even more, maybe using ParticleContainer
               <PixiMapContainer key={"first"} store={store} />,
               ..._.zip(distanceTiles, inBetweenDistances).map(
-                ([{ x, y, width, height }, dist], idx) => [
+                ([{ x, y, width, height, key }, dist], idx) => [
                   <PixiDistanceTileRectange
-                    key={2 * idx}
+                    key={key}
                     rect={{ x, y, width, height }}
-                    fill={selectedDistanceTiles[idx] ? 0x0000ff : 0x000000}
-                    idx={idx}
-                    onClick={() => dispatch(clickOnDistanceTile(idx))}
+                    fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
+                    onClick={() => dispatch(clickOnDistanceTile(key))}
                   />,
                   <PixiNumberSprite
                     key={2 * idx + 1}

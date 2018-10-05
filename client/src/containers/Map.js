@@ -15,6 +15,7 @@ import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
 import AddBarcode from "components/Map/Forms/AddBarcode";
 import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
+import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
 
 class Map extends Component {
   state = {
@@ -62,7 +63,8 @@ class Map extends Component {
             AssignODSExcluded,
             AssignEmergencyBarcode,
             AddBarcode,
-            RemoveBarcode
+            RemoveBarcode,
+            ModifyDistanceBwBarcodes
           ].map((Elm, idx) => (
             <div key={idx} className="pr-1 pt-1">
               <Elm onError={e => this.setState({ e })} />

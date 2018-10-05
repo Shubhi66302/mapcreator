@@ -45,9 +45,9 @@ export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
   }
 };
 
-export const clickOnDistanceTile = distanceTileIdx => ({
+export const clickOnDistanceTile = distanceTileKey => ({
   type: "CLICK-ON-DISTANCE-TILE",
-  value: distanceTileIdx
+  value: distanceTileKey
 });
 
 export const dragStart = worldCoordinate => (dispatch, getState) => {

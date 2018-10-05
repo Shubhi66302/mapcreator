@@ -25,7 +25,7 @@ const AssignODSExcluded = ({ onSubmit, disabled }) => (
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}
-    buttonText={"ODS Excluded"}
+    buttonText={"Assign ODS Excluded"}
   />
 );
 

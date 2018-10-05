@@ -89,3 +89,13 @@ export const removeBarcodes = (dispatch, getState) => {
   // clear tiles
   dispatch(clearTiles);
 };
+
+export const modifyDistanceBetweenBarcodes = formData => (
+  dispatch,
+  getState
+) => {
+  const {
+    selection: { distanceTiles }
+  } = getState();
+  // dispatch({})
+};
