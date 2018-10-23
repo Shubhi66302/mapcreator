@@ -16,11 +16,11 @@ TODO: write complete readme.
     - `cp client/.env.sample client/.env`
 - Make sure `postgres@9.4` is installed and has user `mapcreator_user` with password `apj0702`. Also db `mapcreator_react` and `mapcreator_user` should have full read/write access to this db.
     - TODO: instructions on how to this.
+- Install packages
+    - `yarn install`
 - Apply migrations
     - `cd server`
     - `NODE_ENV=production ../node_modules/.bin/sequelize db:migrate`
-- Install packages
-    - `yarn install`
 - Build
     - `npm run build`
 - Run
