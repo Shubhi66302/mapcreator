@@ -42,7 +42,8 @@
           "ppses",
           "odses",
           "dockPoints",
-          "fireEmergencies"
+          "fireEmergencies",
+          "metadata"
         ],
         "additionalProperties": false,
         "properties": {
@@ -130,6 +131,14 @@
                 },
                 { "$ref": "fireEmergency" }
               ]
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "required": ["botWithRackThreshold", "botWithoutRackThreshold"],
+            "properties": {
+              "botWithRackThreshold": {"type": "integer", "minimum": 1},
+              "botWithoutRackThreshold": {"type": "integer", "minimum": 1}
             }
           }
         }

@@ -5,7 +5,9 @@ export default PixiComponent("DistanceTileRectangle", {
   create: props => {
     const instance = new PIXI.Graphics();
     instance.interactive = true;
-    instance.on("click", e => console.log("clicked a distance tile"));
+    instance.on("click", e => {
+      props.onClick();
+    });
     return instance;
   },
   didMount: (instance, parent) => {

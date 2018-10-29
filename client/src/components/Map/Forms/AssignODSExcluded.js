@@ -25,13 +25,13 @@ const AssignODSExcluded = ({ onSubmit, disabled }) => (
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}
-    buttonText={"ODS Excluded"}
+    buttonText={"Assign ODS Excluded"}
   />
 );
 
 export default connect(
   state => ({
-    disabled: Object.keys(state.selectedTiles).length === 0
+    disabled: Object.keys(state.selection.mapTiles).length === 0
   }),
   dispatch => ({
     onSubmit: formData => {

@@ -8,6 +8,7 @@ import {
   singleFloorVanilla
 } from "./test-helper";
 import { fromJS } from "immutable";
+import { decodeStream } from "iconv-lite";
 
 describe("tileIdsSelector", () => {
   test("should get 8 out of 9 barcodes since sampleMapJson has one special", () => {
@@ -521,5 +522,88 @@ describe("getNewSpecialCoordinates", () => {
     var state = makeState(singleFloor, 1);
     var maxCoordinate = getNewSpecialCoordinates(state, { n: 2 });
     expect(maxCoordinate).toEqual(["13,13", "14,14"]);
+  });
+});
+
+describe("distanceTileSpritesSelector", () => {
+  const { distanceTileSpritesSelector } = selectors;
+  // TODO: better tests that check if rects are correct
+  test("should give correct number of distance tiles", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var distanceTilesArr = distanceTileSpritesSelector(state);
+    expect(distanceTilesArr).toHaveLength(4);
+    // should have key property
+    distanceTilesArr.forEach((distanceTile, idx) => {
+      expect(distanceTile).toHaveProperty("key");
+    });
+  });
+});
+
+describe("getAllInBetweenDistances", () => {
+  const { getAllInBetweenDistances } = selectors;
+  test("should give correct distances when no special tile id in between", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var barcodesDict = selectors.getBarcodes(state);
+    var arrOfTuple = [["0,0", "1,0"], ["0,1", "1,1"], ["0,2", "1,2"]];
+    const allInBetweenDistances = getAllInBetweenDistances(
+      arrOfTuple,
+      3,
+      barcodesDict
+    );
+    expect(allInBetweenDistances).toEqual([1500, 1500, 1500]);
+  });
+  test("Should give correct distances when there is a special barcode (charger entry) in between some tiles", () => {
+    var state = makeState(singleFloor, 1);
+    var barcodesDict = selectors.getBarcodes(state);
+    var arrOfTuple = [["0,1", "0,2"], ["1,1", "1,2"], ["2,1", "2,2"]];
+    const allInBetweenDistances = getAllInBetweenDistances(
+      arrOfTuple,
+      2,
+      barcodesDict
+    );
+    expect(allInBetweenDistances).toEqual([1500, 1500, 1500]);
+  });
+});
+
+describe("getAllColumnTileIdTuples", () => {
+  const { getAllColumnTileIdTuples } = selectors;
+  test("should give correct lsit of tuples when selecting a good column of vanilla map", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var tileBounds = selectors.tileBoundsSelector(state);
+    var arrOfTuples = getAllColumnTileIdTuples(tileBounds, "c-0");
+    expect(arrOfTuples).toEqual([
+      ["0,0", "1,0"],
+      ["0,1", "1,1"],
+      ["0,2", "1,2"]
+    ]);
+  });
+});
+
+describe("getAllRowTileIdTuples", () => {
+  const { getAllRowTileIdTuples } = selectors;
+  test("should give correct lsit of tuples when selecting a good row of vanilla map", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var tileBounds = selectors.tileBoundsSelector(state);
+    var arrOfTuples = getAllRowTileIdTuples(tileBounds, "r-1");
+    expect(arrOfTuples).toEqual([
+      ["0,1", "0,2"],
+      ["1,1", "1,2"],
+      ["2,1", "2,2"]
+    ]);
+  });
+});
+
+describe("currentFloorBotWithRackThreshold", () => {
+  const { currentFloorBotWithRackThreshold } = selectors;
+  test("should give current threshold", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    expect(currentFloorBotWithRackThreshold(state)).toBe(750);
+  });
+});
+describe("currentFloorBotWithoutRackThreshold", () => {
+  const { currentFloorBotWithoutRackThreshold } = selectors;
+  test("should give current threshold", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    expect(currentFloorBotWithoutRackThreshold(state)).toBe(610);
   });
 });

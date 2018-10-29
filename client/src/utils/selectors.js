@@ -18,7 +18,7 @@ export const getBarcodes = state => state.normalizedMap.entities.barcode || {};
 export const getBarcode = (state, { tileId }) =>
   state.normalizedMap.entities.barcode[tileId];
 // get renderable barcodes, i.e. those on current floor and not 'special'
-// this should not compute when only selectedTiles changes since inputs won't change then?
+// this should not compute when only selection.mapTiles changes since inputs won't change then?
 // it should only be caching references so we shouldn't worry about recomputation
 // although recomputation will create a new array and each selector that depends on it will recompute also.
 export const tileIdsSelector = createSelector(
@@ -220,10 +220,12 @@ export const tileEntitySpritesMapSelector = state => {
 
 export const specialTileSpritesMapSelector = createSelector(
   tileEntitySpritesMapSelector,
-  state => state.selectedTiles,
-  (entitySpritesMap, selectedTiles) => {
+  state => state.selection.mapTiles,
+  (entitySpritesMap, selectedMapTiles) => {
     var ret = {};
-    Object.keys(selectedTiles).forEach(key => (ret[key] = constants.SELECTED));
+    Object.keys(selectedMapTiles).forEach(
+      key => (ret[key] = constants.SELECTED)
+    );
     return { ...entitySpritesMap, ...ret };
   }
 );
@@ -242,11 +244,13 @@ export const distanceTileSpritesSelector = createSelector(
       const { x: middle, y: top } = tileRenderCoordinateSelector(state, {
         tileId: tupleOfIntegersToCoordinateKey([i, minY])
       });
+      // key is the unique indentifier for a distance tile
       ret.push({
         x: middle + xTopOffset,
         y: top + yTopOffset,
         width: constants.DISTANCE_TILE_WIDTH,
-        height: constants.DISTANCE_TILE_HEIGHT
+        height: constants.DISTANCE_TILE_HEIGHT,
+        key: `c-${i}`
       });
     }
     const {
@@ -260,12 +264,60 @@ export const distanceTileSpritesSelector = createSelector(
         x: right + xLeftOffset,
         y: top + yLeftOffset,
         width: constants.DISTANCE_TILE_HEIGHT,
-        height: constants.DISTANCE_TILE_WIDTH
+        height: constants.DISTANCE_TILE_WIDTH,
+        key: `r-${i}`
       });
     }
     return ret;
   }
 );
+
+export const getAllInBetweenDistances = (arrOfTuple, direction, barcodesDict) =>
+  arrOfTuple.map(([tileId1, tileId2]) => {
+    const [barcode1, barcode2] = [barcodesDict[tileId1], barcodesDict[tileId2]];
+    if (barcode1 && barcode2) {
+      var distance =
+        barcode1.size_info[direction] + barcode2.size_info[(direction + 2) % 4];
+      if (barcode1.adjacency && barcode2.adjacency) {
+        // there might be special barcode between them
+        var specialTileId = tupleOfIntegersToCoordinateKey(
+          barcode1.adjacency[direction]
+        );
+        var specialBarcode = barcodesDict[specialTileId];
+        if (specialBarcode && specialBarcode.special)
+          distance +=
+            specialBarcode.size_info[direction] +
+            specialBarcode.size_info[(direction + 2) % 4];
+      }
+      return distance;
+    }
+    return 0;
+  });
+
+export const getMaxInBetweenDistance = (arrOfTuple, direction, barcodesDict) =>
+  _.max(getAllInBetweenDistances(arrOfTuple, direction, barcodesDict));
+
+export const getAllColumnTileIdTuples = ({ maxY, minY }, distanceTileKey) => {
+  const i = parseInt(distanceTileKey.match(/c\-(.*)/)[1]);
+  var arrOfTuple = [];
+  for (var j = minY; j <= maxY; j++) {
+    var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+    var tileId2 = tupleOfIntegersToCoordinateKey([i + 1, j]);
+    arrOfTuple.push([tileId1, tileId2]);
+  }
+  return arrOfTuple;
+};
+
+export const getAllRowTileIdTuples = ({ maxX, minX }, distanceTileKey) => {
+  const j = parseInt(distanceTileKey.match(/r\-(.*)/)[1]);
+  var arrOfTuple = [];
+  for (var i = minX; i <= maxX; i++) {
+    var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
+    var tileId2 = tupleOfIntegersToCoordinateKey([i, j + 1]);
+    arrOfTuple.push([tileId1, tileId2]);
+  }
+  return arrOfTuple;
+};
 
 // TODO: untested
 export const getTileInBetweenDistances = createSelector(
@@ -275,36 +327,13 @@ export const getTileInBetweenDistances = createSelector(
     var ret = [];
     // columns
     for (var i = minX; i < maxX; i++) {
-      var dist = 0;
-      for (var j = minY; j < maxY; j++) {
-        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
-        var tileId2 = tupleOfIntegersToCoordinateKey([i + 1, j]);
-        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
-          // TODO: consider if they are actually connected
-          dist = Math.max(
-            dist,
-            barcodesDict[tileId1].size_info[3] +
-              barcodesDict[tileId2].size_info[1]
-          );
-        }
-      }
-      ret.push(dist);
+      var arrOfTuple = getAllColumnTileIdTuples({ maxY, minY }, `c-${i}`);
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 3, barcodesDict));
     }
+    // rows
     for (var j = minY; j < maxY; j++) {
-      var dist = 0;
-      for (var i = minX; i < maxX; i++) {
-        var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
-        var tileId2 = tupleOfIntegersToCoordinateKey([i, j + 1]);
-        if (barcodesDict[tileId1] && barcodesDict[tileId2]) {
-          // TODO: consider if they are actually connected
-          dist = Math.max(
-            dist,
-            barcodesDict[tileId1].size_info[2] +
-              barcodesDict[tileId2].size_info[0]
-          );
-        }
-      }
-      ret.push(dist);
+      var arrOfTuple = getAllRowTileIdTuples({ maxX, minX }, `r-${j}`);
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 2, barcodesDict));
     }
     return ret;
   }
@@ -358,14 +387,15 @@ export const getRectFromDiagonalPoints = ({ startPoint, endPoint }) => ({
   bottom: Math.max(startPoint.y, endPoint.y)
 });
 
-export const getDragSelectedTileIds = createSelector(
+export const getDragSelectedTiles = createSelector(
   tileIdsSelector,
   tileBoundsSelector,
+  distanceTileSpritesSelector,
   state => state.selectedArea,
-  (tileIds, tileBounds, selectedArea) => {
+  (tileIds, tileBounds, distanceTileRects, selectedArea) => {
     if (!selectedArea) return [];
     const selectionRect = getRectFromDiagonalPoints(selectedArea);
-    return tileIds.filter(tileId => {
+    const selectedMapTiles = tileIds.filter(tileId => {
       const { x: left, y: top } = tileToWorldCoordinate(tileId, tileBounds);
       var rect = {
         left,
@@ -375,6 +405,20 @@ export const getDragSelectedTileIds = createSelector(
       };
       return intersectRect(selectionRect, rect);
     });
+    const selectedDistanceTiles = distanceTileRects
+      .filter(({ x, y, width, height }) =>
+        intersectRect(selectionRect, {
+          left: x,
+          right: x + width,
+          top: y,
+          bottom: y + height
+        })
+      )
+      .map(({ key }) => key);
+    return {
+      mapTilesArr: selectedMapTiles,
+      distanceTilesArr: selectedDistanceTiles
+    };
   }
 );
 
@@ -406,3 +450,10 @@ export const getNewSpecialCoordinates = createSelector(
     return ret;
   }
 );
+
+export const currentFloorBotWithRackThreshold = state =>
+  state.normalizedMap.entities.floor[state.currentFloor].metadata
+    .botWithRackThreshold;
+export const currentFloorBotWithoutRackThreshold = state =>
+  state.normalizedMap.entities.floor[state.currentFloor].metadata
+    .botWithoutRackThreshold;

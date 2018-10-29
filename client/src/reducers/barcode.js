@@ -3,9 +3,9 @@ import { getNeighbourTiles } from "utils/util";
 export default (state = {}, action) => {
   switch (action.type) {
     case "ASSIGN-STORABLE":
-      const selectedTiles = action.value;
+      const selectedMapTiles = action.value;
       var newState = {};
-      for (let tileId of Object.keys(selectedTiles)) {
+      for (let tileId of Object.keys(selectedMapTiles)) {
         newState[tileId] = { ...state[tileId], store_status: 1 };
         if (newState[tileId].neighbours) {
           var neighbouringTileIds = getNeighbourTiles(tileId);

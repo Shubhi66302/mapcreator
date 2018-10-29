@@ -18,7 +18,7 @@ const StorableButton = ({ onClick, disabled }) => (
 
 export default connect(
   state => ({
-    disabled: Object.keys(state.selectedTiles).length === 0
+    disabled: Object.keys(state.selection.mapTiles).length === 0
   }),
   dispatch => ({
     onClick: () => dispatch(assignStorable())

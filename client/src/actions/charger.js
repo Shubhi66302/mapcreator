@@ -128,14 +128,17 @@ export const createAllChargerBarcodes = (
 
 export const addChargers = formData => (dispatch, getState) => {
   const state = getState();
-  const { selectedTiles, currentFloor } = state;
+  const {
+    selection: { mapTiles },
+    currentFloor
+  } = state;
   const barcodesDict = state.normalizedMap.entities["barcode"] || {};
   var newBarcodes = [];
   var newChargers = [];
   var specialTileIds = getNewSpecialCoordinates(state, {
-    n: Object.keys(selectedTiles).length
+    n: Object.keys(mapTiles).length
   });
-  Object.keys(selectedTiles).forEach((tileId, idx) => {
+  Object.keys(mapTiles).forEach((tileId, idx) => {
     var specialTileId = specialTileIds[idx];
     newBarcodes = newBarcodes.concat(
       createAllChargerBarcodes(formData, tileId, specialTileId, barcodesDict)

@@ -5,6 +5,7 @@ import { createEntityReducer } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
+import { getDragSelectedTiles } from "utils/selectors";
 import _ from "lodash";
 
 export const dummyState = {
@@ -25,8 +26,10 @@ export const dummyState = {
     }
   }),
   currentFloor: 1,
-  selectedTiles: {},
-  selectedDistanceTiles: {},
+  selection: {
+    mapTiles: {},
+    distanceTIles: {}
+  },
   zoneView: false,
   selectedArea: null,
   metaKey: false,
@@ -85,39 +88,75 @@ export const currentFloorReducer = (state = 1, action) => {
   return state;
 };
 
-export const selectedDistanceTilesReducer = (state = {}, action) => {
-  switch (action.type) {
-    case "CLICK-ON-DISTANCE-TILE":
+// helper exported for testing
+export const toggleKeyInMap = (theMap, key) => {
+  if (theMap[key]) {
+    const { [`${key}`]: toDelete_, ...rest } = theMap;
+    return { ...rest };
   }
-  return state;
+  return { ...theMap, [key]: true };
 };
 
-export const selectedTilesReducer = (state = {}, action) => {
+export const selectedDistanceTilesReducer = (state = {}, action) => {
   switch (action.type) {
     case "CLEAR-MAP":
     case "NEW-MAP":
     case "CLEAR-SELECTED-TILES":
     case "CLICK-OUTSIDE-TILES":
+    // should deselect if a map tile is clicked
+    case "CLICK-ON-MAP-TILE":
       return {};
+    case "CLICK-ON-DISTANCE-TILE":
+      return toggleKeyInMap(state, action.value);
+  }
+  return state;
+};
 
-    case "CLICK-ON-TILE":
-      const tileId = action.value;
-      if (state[tileId]) {
-        // delete tile from selected
-        const { [tileId]: toDelete_, ...rest } = state;
-        return { ...rest };
-      } else {
-        // using true to signify tile is selected. doesn't really matter what
-        // the value is, just interested in the key
-        return { ...state, [tileId]: true };
-      }
+export const selectedMapTilesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "CLEAR-MAP":
+    case "NEW-MAP":
+    case "CLEAR-SELECTED-TILES":
+    case "CLICK-OUTSIDE-TILES":
+    // should deselect if a distance tile is selected
+    case "CLICK-ON-DISTANCE-TILE":
+      return {};
+    case "CLICK-ON-MAP-TILE":
+      return toggleKeyInMap(state, action.value);
+  }
+  return state;
+};
+
+export const baseSelectionReducer = combineReducers({
+  mapTiles: selectedMapTilesReducer,
+  distanceTiles: selectedDistanceTilesReducer
+});
+
+// exported for testing
+export const xoredMap = (theMap, keysArr) => {
+  // keysArr should be array of strings!
+  const xored = _.xor(Object.keys(theMap), keysArr.map(x => `${x}`));
+  return _.fromPairs(xored.map(x => [x, true]));
+};
+
+export const selectionReducer = (
+  state = { mapTiles: {}, distanceTiles: {} },
+  action
+) => {
+  switch (action.type) {
     case "DRAG-END":
-      const selectedTiles = action.value;
-      if (selectedTiles) {
-        // calculate symmetric difference
-        const xored = _.xor(Object.keys(state), selectedTiles);
-        return _.fromPairs(xored.map(x => [x, true]));
+      const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
+      // if both map tiles and distance tiles are selected, consider only map tiles as selected
+      if (mapTilesArr.length > 0) {
+        return {
+          distanceTiles: {},
+          mapTiles: xoredMap(state.mapTiles, mapTilesArr)
+        };
       }
+      return {
+        mapTiles: {},
+        distanceTiles: xoredMap(state.distanceTiles, distanceTilesArr)
+      };
   }
   return state;
 };
@@ -180,8 +219,7 @@ const viewportReducer = (
 export default combineReducers({
   normalizedMap: mapReducer,
   currentFloor: currentFloorReducer,
-  selectedTiles: selectedTilesReducer,
-  selectedDistanceTiles: selectedDistanceTilesReducer,
+  selection: reduceReducers(selectionReducer, baseSelectionReducer),
   zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
   metaKey: metaKeyReducer,

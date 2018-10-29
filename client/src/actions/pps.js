@@ -8,8 +8,10 @@ import _ from "lodash";
 
 // exported for testing
 export const createNewPPSes = ({ pick_direction }, state) => {
-  const { selectedTiles } = state;
-  var ppses = Object.keys(selectedTiles).map(tileId => {
+  const {
+    selection: { mapTiles }
+  } = state;
+  var ppses = Object.keys(mapTiles).map(tileId => {
     const barcode = coordinateKeyToBarcodeSelector(state, { tileId });
     return {
       coordinate: tileId,

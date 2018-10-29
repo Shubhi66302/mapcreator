@@ -23,8 +23,10 @@ export default createStore(
     normalizedMap: normalizeMap(sampleMapObj),
     currentFloor: 1,
     // NOTE: selected tiles is also a map for efficiency reasons
-    selectedTiles: {},
-    selectedDistanceTiles: {},
+    selection: {
+      mapTiles: {},
+      distanceTiles: {}
+    },
     // TODO: implement zone view
     zoneView: false,
     spritesheetLoaded: false,

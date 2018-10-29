@@ -10,11 +10,16 @@ describe("ASSIGN-STORABLE", () => {
   test("should correctly mutate barcodes so that neighbouring rack paths are not traversible", () => {
     var state = makeState(vanilla3x3BarcodeMap);
     // 2x2 square is selected
-    var selectedTiles = { "0,0": true, "1,0": true, "0,1": true, "1,1": true };
+    var selectedMapTiles = {
+      "0,0": true,
+      "1,0": true,
+      "0,1": true,
+      "1,1": true
+    };
 
     var newState = barcodeReducer(state, {
       type: "ASSIGN-STORABLE",
-      value: selectedTiles
+      value: selectedMapTiles
     });
 
     // check if storable is true for correct barcodes
@@ -59,16 +64,17 @@ describe("ASSIGN-STORABLE", () => {
   test("should not modify neighbour structure when no storables are connected", () => {
     var state = makeState(vanilla3x3BarcodeMap);
     // 2 unconnected selected tiles
-    var selectedTiles = { "0,0": true, "2,0": true };
+    var selectedMapTiles = { "0,0": true, "2,0": true };
 
     var newState = barcodeReducer(state, {
       type: "ASSIGN-STORABLE",
-      value: selectedTiles
+      value: selectedMapTiles
     });
 
     // check if storable is true
     for (let tileId of Object.keys(state)) {
-      if (selectedTiles[tileId]) expect(newState[tileId].store_status).toBe(1);
+      if (selectedMapTiles[tileId])
+        expect(newState[tileId].store_status).toBe(1);
       else expect(newState[tileId].store_status).toBe(0);
     }
     // check neighbour structure

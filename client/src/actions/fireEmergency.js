@@ -7,8 +7,10 @@ import _ from "lodash";
 
 // exported for testing
 export const createNewFireEmergencies = ({ group_id, type }, state) => {
-  const { selectedTiles } = state;
-  var fireEmergencies = Object.keys(selectedTiles).map(tileId => {
+  const {
+    selection: { mapTiles }
+  } = state;
+  var fireEmergencies = Object.keys(mapTiles).map(tileId => {
     const barcode = coordinateKeyToBarcodeSelector(state, { tileId });
     return {
       coordinate: tileId,

@@ -11,6 +11,7 @@ import {
   distanceTileSpritesSelector,
   getTileInBetweenDistances
 } from "utils/selectors";
+import { clickOnDistanceTile } from "actions/actions";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
 import PixiDistanceTileRectange from "./PixiDistanceTileRectange";
 import PixiNumberSprite from "./PixiNumberSprite";
@@ -30,6 +31,7 @@ class PixiStage extends Component {
       distanceTiles,
       inBetweenDistances,
       selectedDistanceTiles,
+      dispatch,
       ...rest
     } = this.props;
     return (
@@ -44,14 +46,15 @@ class PixiStage extends Component {
         <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
             [
-              // TODO: optimize this rendering even more
+              // TODO: optimize this rendering even more, maybe using ParticleContainer
               <PixiMapContainer key={"first"} store={store} />,
               ..._.zip(distanceTiles, inBetweenDistances).map(
-                ([{ x, y, width, height }, dist], idx) => [
+                ([{ x, y, width, height, key }, dist], idx) => [
                   <PixiDistanceTileRectange
-                    key={2 * idx}
+                    key={key}
                     rect={{ x, y, width, height }}
-                    fill={selectedDistanceTiles[idx] ? 0x0000ff : 0x000000}
+                    fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
+                    onClick={() => dispatch(clickOnDistanceTile(key))}
                   />,
                   <PixiNumberSprite
                     key={2 * idx + 1}
@@ -71,9 +74,7 @@ class PixiStage extends Component {
                 fontSize: 40,
                 fill: 0xff1010,
                 align: "center"
-                // resolution: 2
               }}
-              // resolution={2}
             />
           )}
 
@@ -97,5 +98,5 @@ export default connect(state => ({
     : { top: 0, left: 0, right: 0, bottom: 0 },
   distanceTiles: distanceTileSpritesSelector(state),
   inBetweenDistances: getTileInBetweenDistances(state),
-  selectedDistanceTiles: state.selectedDistanceTiles || {}
+  selectedDistanceTiles: state.selection.distanceTiles || {}
 }))(PixiStage);
