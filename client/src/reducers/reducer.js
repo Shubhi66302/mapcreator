@@ -144,6 +144,23 @@ export const selectionReducer = (
   action
 ) => {
   switch (action.type) {
+    case "CLICK-ON-TILE":
+      const tileId = action.value;
+      if (state[tileId]) {
+        // delete tile from selected
+        const { [tileId]: toDelete_, ...rest } = state;
+        return { ...rest };
+      } else {
+        // using true to signify tile is selected. doesn't really matter what
+        // the value is, just interested in the key
+        var a = _.reduce(state, function(acc,value,key) {
+            console.log(key);
+            
+            return Math.max(acc,value);
+          }, 0);
+        console.log(a);
+        return { ...state, [tileId]: a+1 };
+      }
     case "DRAG-END":
       const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
       // if both map tiles and distance tiles are selected, consider only map tiles as selected
@@ -216,6 +233,13 @@ const viewportReducer = (
   return state;
 };
 
+const QueueModeReducer = (state = false, action) => {
+    switch(action.type) {
+        case 'TOGGLE-QUEUE-MODE':
+          return !state;
+    }
+    return state
+};
 export default combineReducers({
   normalizedMap: mapReducer,
   currentFloor: currentFloorReducer,
@@ -224,5 +248,6 @@ export default combineReducers({
   spritesheetLoaded: spritesheetLoadedReducer,
   metaKey: metaKeyReducer,
   selectedArea: selectedAreaReducer,
-  viewport: viewportReducer
+  viewport: viewportReducer,
+  queueMode: QueueModeReducer
 });

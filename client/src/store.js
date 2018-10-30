@@ -35,7 +35,8 @@ export default createStore(
     viewport: {
       viewportInstance: null,
       currentView: null
-    }
+    },
+    queueMode: false
   },
   applyMiddleware(thunk, entityMiddleware, floorMiddleware, logger)
 );
