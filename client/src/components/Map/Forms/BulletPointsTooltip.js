@@ -8,8 +8,8 @@ export default ({ id, title, bulletPoints }) =>
         <span>{title}</span>
         {bulletPoints && bulletPoints.length ? (
           <ul>
-            {bulletPoints.map(bulletPoint => (
-              <li>{bulletPoint}</li>
+            {bulletPoints.map((bulletPoint, idx) => (
+              <li key={idx}>{bulletPoint}</li>
             ))}
           </ul>
         ) : (

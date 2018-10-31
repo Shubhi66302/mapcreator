@@ -4,7 +4,8 @@ import {
   tileBoundsSelector,
   tileIdsMapSelector,
   getDragSelectedTiles,
-  distanceTileSpritesSelector
+  distanceTileSpritesSelector,
+  coordinateKeyToBarcodeSelector
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
@@ -13,6 +14,7 @@ import { saveAs } from "file-saver/FileSaver";
 import exportMap from "common/utils/export-map";
 import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
+import _ from "lodash";
 // always good idea to return promises from async action creators
 
 export const mapTileClick = tileId => ({
@@ -113,6 +115,8 @@ export const clearTiles = {
   type: "CLEAR-SELECTED-TILES"
 };
 
+
+
 // TODO: figure out if this can be done
 // export const addToEntitiesAndFloor = ({
 //   currentFloor, floorKey, entitiesKey, reducerKey, idField, entities
@@ -144,6 +148,43 @@ export const assignStorable = () => (dispatch, getState) => {
   });
   return dispatch(clearTiles);
 };
+
+export const addQueueBarcodes = () => (dispatch, getState) => {
+    const state = getState();
+    const {
+      selection: { mapTiles },
+      normalizedMap: {entities:  {pps}} 
+    } = state;
+
+            // console.log(pps);
+             var ppscoordiantes = _.map(pps, 'coordinate');
+             console.log("pps cordinates");
+             console.log(ppscoordiantes);
+             var queuebarcodes = _.keys(mapTiles)
+             var intersectionresult = ppscoordiantes.filter(value => -1 !== queuebarcodes.indexOf(value));
+             
+             if (intersectionresult.length == 1)
+             {
+                 console.log("assigning to pps");
+                
+                 var pps_id = _.findKey(pps, { "coordinate": intersectionresult[0] });
+                 console.log(pps_id);
+                 var queue_barcodes_array = Object.keys(mapTiles).sort(function(a,b){return mapTiles[a]-mapTiles[b]})
+                 var asBarcodes = queue_barcodes_array.map(asCoordinate => coordinateKeyToBarcodeSelector(state, {tileId: asCoordinate}))
+                 dispatch({
+                    type: "ADD-QUEUE-BARCODES-TO-PPS",
+                    value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array}
+                  });
+             }
+             else 
+            {
+                 console.log("not assigning to pps beause 2 or more pps are found in queuebarcodes")
+                 
+            }
+
+    return dispatch(clearTiles);
+    
+  };
 
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();

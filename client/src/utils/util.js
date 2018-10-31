@@ -21,6 +21,34 @@ function stringify_number(input_number) {
   }
 }
 
+export function getDirection(SourceCoordinate,DestinationCoordinate)
+{
+    
+    var SourceX = parseInt(SourceCoordinate.split(",")[0]);
+    var SourceY = parseInt(SourceCoordinate.split(",")[1]);
+    var DestinationX = parseInt(DestinationCoordinate.split(",")[0]);
+    var DestinationY = parseInt(DestinationCoordinate.split(",")[1]);
+    var Dir = 5; 
+    if
+    (DestinationY < SourceY) {
+        Dir = 0;
+    }
+    if (DestinationX < SourceX)
+     {
+        Dir = 1;
+     }
+    if (DestinationY > SourceY)
+    {
+      Dir = 2;
+    }
+    if(DestinationX > SourceX) 
+    {
+       Dir = 3;
+    }
+    
+    return Dir;
+}
+
 export function encode_barcode(row, column) {
   var row_string = stringify_number(row);
   var column_string = stringify_number(column);

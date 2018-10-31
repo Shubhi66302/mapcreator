@@ -10,6 +10,7 @@ import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
 import AssignStorable from "components/Map/Forms/AssignStorable";
+import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode"
 import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
@@ -20,7 +21,7 @@ import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarco
 const QueueCheckbox = ({val, onChange}) => (
     <label>
     Queue mode:
-    <input
+    <input 
       name="queuemode"
       type="checkbox"
       checked={val}
@@ -74,6 +75,7 @@ class Map extends Component {
             AssignEmergencyBarcode,
             AddBarcode,
             RemoveBarcode,
+            AddQueueBarcode,
             ModifyDistanceBwBarcodes
           ].map((Elm, idx) => (
             <div key={idx} className="pr-1 pt-1">
@@ -121,5 +123,5 @@ class Map extends Component {
 }
 export default connect(state => ({
   nMap: state.normalizedMap,
-  queueMode: state.queueMode
+  queueMode: state.selection.queueMode
 }))(Map);

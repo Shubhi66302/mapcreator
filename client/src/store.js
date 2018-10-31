@@ -24,6 +24,7 @@ export default createStore(
     currentFloor: 1,
     // NOTE: selected tiles is also a map for efficiency reasons
     selection: {
+      queueMode: false,
       mapTiles: {},
       distanceTiles: {}
     },
@@ -35,8 +36,7 @@ export default createStore(
     viewport: {
       viewportInstance: null,
       currentView: null
-    },
-    queueMode: false
+    }
   },
   applyMiddleware(thunk, entityMiddleware, floorMiddleware, logger)
 );

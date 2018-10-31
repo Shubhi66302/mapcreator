@@ -56,3 +56,12 @@ describe("xoredMap", () => {
     expect(xoredMap(theMap, keys)).toMatchObject({ "0": true, "2": true });
   });
 });
+
+describe("ppsReducer", () => {
+    const {ppsReducer} = reducer;
+    test("adds queue into pps", () => {
+        const state = {'1': {pps_id: 1, something: 'ok', coordinate: '1,1'}}
+        const newState = ppsReducer(state, {type: 'ADD-QUEUE-BARCODES-TO-PPS', value: {'2,1': 1, '1,1': 2 , '3,1' : 3}})
+        expect(newState).toMatchObject({'1': {pps_id: 1, something: 'ok', coordinate: '1,1', queue_barcodes: ['2,1','1,1','3,1']}})    
+    })
+})
