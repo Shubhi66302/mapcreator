@@ -10,14 +10,13 @@ TODO: write complete readme.
 - Install `nodejs` and `npm` if not already installed:
     - Install `nvm`: https://github.com/creationix/nvm#usage
     - `nvm install node`
-- Install `yarn` globally: `npm install yarn --global`
 - Create .env files
     - `cp .env.sample.prod .env`
     - `cp client/.env.sample client/.env`
 - Make sure `postgres@9.4` is installed and has user `mapcreator_user` with password `apj0702`. Also db `mapcreator_react` and `mapcreator_user` should have full read/write access to this db.
     - TODO: instructions on how to this.
 - Install packages
-    - `yarn install`
+    - `npm install`
 - Apply migrations
     - `cd server`
     - `NODE_ENV=production ../node_modules/.bin/sequelize db:migrate`
