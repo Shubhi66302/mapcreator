@@ -20,8 +20,4 @@ pipelines:
 definitions: 
   services: 
     postgres: 
-      image: postgres 
-      environment: 
-        POSTGRES_TEST_USER: 'test_user'
-        POSTGRES_TEST_PASSWORD: 'test_user_password'
-        POSTGRES_TEST_DB: 'pipelines' 
+      image: postgres
