@@ -4,23 +4,6 @@ import { Map, sequelize } from "server/models/index";
 import { map as dummyGoodMap } from "../../client/src/test-data/test-maps/3x3-vanilla.json";
 import _ from "lodash";
 
-// var dummyGoodMap = {
-//   elevators: [],
-//   zones: [],
-//   queueDatas: [],
-//   floors: [
-//     {
-//       floor_id: 1,
-//       map_values: [],
-//       chargers: [],
-//       ppses: [],
-//       odses: [],
-//       fireEmergencies: [],
-//       dockPoints: []
-//     }
-//   ]
-// };
-
 describe("/api/createMap", () => {
   test("create good map", async () => {
     var response = await request(app)
