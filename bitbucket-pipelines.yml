@@ -21,7 +21,7 @@ pipelines:
 
 definitions: 
   caches:
-    nodeclient: ~/.node/client/node_modules
+    nodeclient: client/node_modules
   services: 
     postgres: 
       image: postgres
