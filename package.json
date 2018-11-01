@@ -46,7 +46,7 @@
     "migrate": "cd server && sequelize db:migrate",
     "start": "node dist/server/index.js",
     "test-server": "jest",
-    "test": "npm test && cd client/ && npm test"
+    "test": "jest && cd client/ && CI=true npm test"
   },
   "author": "",
   "license": "ISC",

@@ -26,7 +26,7 @@ describe("invalid queue_data", () => {
     var result = validate([]);
     expect(validate.errors).toHaveLength(1);
     expect(validate.errors[0].message).toBe(
-      "should NOT have less than 1 items"
+      `should NOT have fewer than 1 items`
     );
     expect(result).toBe(false);
   });
