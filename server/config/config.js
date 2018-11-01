@@ -10,9 +10,9 @@ module.exports = {
     logging: false
   },
   test: {
-    username: process.env.POSTGRES_DEV_USER,
-    password: process.env.POSTGRES_DEV_PASSWORD,
-    database: "mapcreator_react_test",
+    username: process.env.POSTGRES_TEST_USER,
+    password: process.env.POSTGRES_TEST_PASSWORD,
+    database: process.env.POSTGRES_TEST_DB,
     host: "127.0.0.1",
     dialect: "postgres",
     logging: false

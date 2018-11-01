@@ -45,7 +45,7 @@
     "build": "npm run build-client && npm run babel-server && npm run babel-client && npm run copy-client-build",
     "start": "node dist/server/index.js",
     "test-server": "jest",
-    "test": "cd client/ && CI=true npm test"
+    "test": "npm test && cd client/ && npm test"
   },
   "author": "",
   "license": "ISC",

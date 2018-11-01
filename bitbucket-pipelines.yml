@@ -11,5 +11,17 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          - yarn install && cd client && yarn install && cd ..
+          - npm install && cd client && npm install && cd ..
+          - sequelize db:migrate
           - npm test
+        services: 
+          - postgres
+
+definitions: 
+  services: 
+    postgres: 
+      image: postgres 
+      environment: 
+        POSTGRES_TEST_USER: 'test_user'
+        POSTGRES_TEST_PASSWORD: 'test_user_password'
+        POSTGRES_TEST_DB: 'pipelines' 
