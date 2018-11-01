@@ -11,7 +11,8 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          - npm install && cd client && npm install && cd ..
+          - yarn install 
+          - cd client && yarn install && cd ..
           - npm run migrate
           - npm test
         services: 
