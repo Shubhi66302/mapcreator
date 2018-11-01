@@ -10,6 +10,7 @@ pipelines:
     - step:
         caches:
           - node
+          - nodeclient
         script: # Modify the commands below to build your repository.
           - yarn install 
           - cd client && yarn install && cd ..
@@ -19,6 +20,8 @@ pipelines:
           - postgres
 
 definitions: 
+  caches:
+    nodeclient: ~/.node/client/node_modules
   services: 
     postgres: 
       image: postgres
