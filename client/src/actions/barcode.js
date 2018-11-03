@@ -69,7 +69,6 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-// NOTE: fix remove barcode so taht neighbour structures are updated
 export const removeBarcodes = (dispatch, getState) => {
   const {
     selection: { mapTiles },
@@ -86,8 +85,8 @@ export const removeBarcodes = (dispatch, getState) => {
   });
   // remove barcodes
   dispatch({
-    type: "DELETE-MULTIPLE-BARCODE-BY-ID",
-    value: Object.keys(mapTiles) || []
+    type: "DELETE-BARCODES",
+    value: mapTiles || {}
   });
   // clear tiles
   dispatch(clearTiles);

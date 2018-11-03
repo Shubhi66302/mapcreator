@@ -56,7 +56,8 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
   return neighbourTileKeys.map(
     (tileKey, idx) =>
-      _.isEqual(curBarcode.neighbours[idx], [0, 0, 0])
+      _.isEqual(curBarcode.neighbours[idx], [0, 0, 0]) ||
+      _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
         ? null
         : barcodesDict[tileKey]
   );
@@ -203,6 +204,28 @@ export const addNeighbourToBarcode = (barcode, direction, nbCoordinate) => {
       ...withoutAdjacency,
       adjacency: Object.assign([...barcode.adjacency], {
         [direction]: coordinateKeyToTupleOfIntegers(nbCoordinate)
+      })
+    };
+  }
+  return withoutAdjacency;
+};
+
+export const deleteNeighbourFromBarcode = (
+  barcode,
+  direction,
+  doesNeighbourExist = false
+) => {
+  const withoutAdjacency = {
+    ...barcode,
+    neighbours: Object.assign([...barcode.neighbours], {
+      [direction]: [doesNeighbourExist ? 1 : 0, 0, 0]
+    })
+  };
+  if (barcode.adjacency) {
+    return {
+      ...withoutAdjacency,
+      adjacency: Object.assign([...barcode.adjacency], {
+        [direction]: null
       })
     };
   }

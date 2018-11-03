@@ -25,8 +25,8 @@ describe("invalid queue_data", () => {
   test("empty queue", () => {
     var result = validate([]);
     expect(validate.errors).toHaveLength(1);
-    expect(validate.errors[0].message).toBe(
-      `should NOT have fewer than 1 items`
+    expect(validate.errors[0].message).toMatch(
+      /should NOT have (less|fewer) than 1 items/
     );
     expect(result).toBe(false);
   });

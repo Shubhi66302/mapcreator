@@ -1,4 +1,9 @@
-import { getNeighbourTiles } from "utils/util";
+import {
+  getNeighbourTiles,
+  getNeighbouringBarcodes,
+  deleteNeighbourFromBarcode
+} from "utils/util";
+import _ from "lodash";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -21,6 +26,29 @@ export default (state = {}, action) => {
         }
       }
       return Object.assign({}, state, newState);
+    case "DELETE-BARCODES": {
+      // iterate over all barcodes and just see if their neighbours exist. if not, make the edge [0,0,0]
+      var newState = {};
+      var tileIdMap = action.value;
+      for (let key of Object.keys(tileIdMap)) {
+        if (state[key]) {
+          var neighbours = getNeighbouringBarcodes(key, state);
+          for (const [idx, nb] of neighbours.entries()) {
+            if (nb && !tileIdMap[nb.coordinate]) {
+              // its a valid neighbour of the deleted barcode that itself won't be deleted
+              if (!newState[nb.coordinate])
+                newState[nb.coordinate] = state[nb.coordinate];
+              newState[nb.coordinate] = deleteNeighbourFromBarcode(
+                newState[nb.coordinate],
+                (idx + 2) % 4,
+                false
+              );
+            }
+          }
+        }
+      }
+      return { ..._.omit(state, Object.keys(tileIdMap)), ...newState };
+    }
   }
   return state;
 };
