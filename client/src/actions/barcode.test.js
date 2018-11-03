@@ -95,3 +95,4 @@ describe("addNewBarcode", () => {
     expect(dispatchedActions[2]).toMatchObject(clearTiles);
   });
 });
+// TODO: test for removeBarcodes

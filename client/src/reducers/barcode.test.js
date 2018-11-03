@@ -83,3 +83,65 @@ describe("ASSIGN-STORABLE", () => {
     }
   });
 });
+
+describe("DELETE-BARCODE", () => {
+  test("deleting a single barcode should update all its neighbours", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var tileIdMap = { "1,1": true };
+    var newState = barcodeReducer(state, {
+      type: "DELETE-BARCODES",
+      value: tileIdMap
+    });
+    expect(newState["0,0"].neighbours).toEqual([
+      [0, 0, 0],
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]);
+    expect(newState["0,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]);
+    expect(newState["0,2"].neighbours).toEqual([
+      [1, 1, 1],
+      [0, 0, 0],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+    expect(newState["1,2"].neighbours).toEqual([
+      [0, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+    expect(newState["2,2"].neighbours).toEqual(state["2,2"].neighbours);
+    expect(newState["2,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]);
+    expect(newState["2,0"].neighbours).toEqual(state["2,0"].neighbours);
+    expect(newState["1,1"]).not.toBeTruthy();
+  });
+  test("deleting multiple barcodes", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var tileIdMap = { "1,0": true, "1,2": true };
+    var newState = barcodeReducer(state, {
+      type: "DELETE-BARCODES",
+      value: tileIdMap
+    });
+    expect(newState["1,0"]).not.toBeTruthy();
+    expect(newState["1,2"]).not.toBeTruthy();
+    // middle one is important
+    expect(newState["1,1"].neighbours).toEqual([
+      [0, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+  });
+  // TODO: probably write some tests for adjacency barcodes
+});
