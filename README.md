@@ -31,6 +31,8 @@ Open 192.168.x.x:3001/ for mapcreator
 
 TODO: write dev setup process
 
+# Pro tip
+- `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can check them quickly without setting up the whole scenario in the browser.
 
 # Modifying JSON schemas
 

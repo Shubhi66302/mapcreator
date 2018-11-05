@@ -3,7 +3,12 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode, currentFloorBotWithRackThreshold } from "utils/selectors";
+import {
+  getBarcode,
+  currentFloorBotWithRackThreshold,
+  currentFloorBotWithoutRackThreshold,
+  tileBoundsSelector
+} from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 
 export const createNewBarcode = ({
@@ -92,12 +97,23 @@ export const removeBarcodes = (dispatch, getState) => {
   dispatch(clearTiles);
 };
 
-export const modifyDistanceBetweenBarcodes = formData => (
+export const modifyDistanceBetweenBarcodes = ({ distance }) => (
   dispatch,
   getState
 ) => {
+  const state = getState();
   const {
     selection: { distanceTiles }
-  } = getState();
-  // dispatch({})
+  } = state;
+  dispatch({
+    type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+    value: {
+      distance,
+      tileBounds: tileBoundsSelector(state),
+      distanceTiles,
+      botWithRackThreshold: currentFloorBotWithRackThreshold(state),
+      botWithoutRackThreshold: currentFloorBotWithoutRackThreshold(state)
+    }
+  });
+  dispatch(clearTiles);
 };

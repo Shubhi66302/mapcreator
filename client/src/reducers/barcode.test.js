@@ -1,9 +1,15 @@
 import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
+import complicated3x3 from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
 import { normalizeMap } from "utils/normalizr";
 import { fromJS } from "immutable";
-import barcodeReducer from "./barcode.js";
+import barcodeReducer, { calculateDistances } from "./barcode.js";
+import { getAllColumnTileIdTuples } from "utils/selectors";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
+const complicated3x3BarcodeMap = fromJS(
+  normalizeMap(complicated3x3).entities.barcode
+);
+// TODO: this function has same name as test-helper/makeState, change to make less confusing
 const makeState = immutableMap => immutableMap.toJS();
 
 describe("ASSIGN-STORABLE", () => {
@@ -144,4 +150,116 @@ describe("DELETE-BARCODE", () => {
     ]);
   });
   // TODO: probably write some tests for adjacency barcodes
+});
+
+describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
+  test("should modify neighbour distances when only 1 column is selected", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
+        distanceTiles: { "c-0": true },
+        botWithRackThreshold: 750,
+        botWithoutRackThreshold: 610
+      }
+    });
+    expect(newState["0,0"].size_info).toEqual([750, 750, 750, 100]);
+    expect(newState["0,1"].size_info).toEqual([750, 750, 750, 100]);
+    expect(newState["0,2"].size_info).toEqual([750, 750, 750, 100]);
+
+    expect(newState["1,0"].size_info).toEqual([750, 100, 750, 750]);
+    expect(newState["1,1"].size_info).toEqual([750, 100, 750, 750]);
+    expect(newState["1,2"].size_info).toEqual([750, 100, 750, 750]);
+
+    expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,1"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,2"].size_info).toEqual([750, 750, 750, 750]);
+  });
+  test("should modify neighbour distances when 1 row and 1 columns is selected", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
+        distanceTiles: { "c-0": true, "r-1": true },
+        botWithRackThreshold: 750,
+        botWithoutRackThreshold: 610
+      }
+    });
+    expect(newState["0,0"].size_info).toEqual([750, 750, 750, 100]);
+    expect(newState["0,1"].size_info).toEqual([750, 750, 100, 100]);
+    expect(newState["0,2"].size_info).toEqual([100, 750, 750, 100]);
+
+    expect(newState["1,0"].size_info).toEqual([750, 100, 750, 750]);
+    expect(newState["1,1"].size_info).toEqual([750, 100, 100, 750]);
+    expect(newState["1,2"].size_info).toEqual([100, 100, 750, 750]);
+
+    expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,1"].size_info).toEqual([750, 750, 100, 750]);
+    expect(newState["2,2"].size_info).toEqual([100, 750, 750, 750]);
+  });
+  test("should not touch special barcode or their neighbours' distances", () => {
+    var state = makeState(complicated3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
+        distanceTiles: { "c-0": true, "r-1": true },
+        botWithRackThreshold: 750,
+        botWithoutRackThreshold: 610
+      }
+    });
+    expect(newState["0,1"].size_info).toEqual([750, 750, 100, 100]);
+    expect(newState["0,2"].size_info).toEqual([100, 750, 750, 100]);
+
+    expect(newState["1,0"].size_info).toEqual([750, 100, 750, 750]);
+    expect(newState["1,1"].size_info).toEqual([750, 100, 100, 750]);
+    expect(newState["1,2"].size_info).toEqual([100, 100, 750, 750]);
+
+    expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,1"].size_info).toEqual(state["2,1"].size_info);
+    expect(newState["2,2"].size_info).toEqual(state["2,2"].size_info);
+  });
+});
+
+describe("calculateDistances", () => {
+  test("when no storables", () => {
+    var barcodeDict = makeState(vanilla3x3BarcodeMap);
+    var distances = calculateDistances(
+      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
+      200,
+      750,
+      610,
+      barcodeDict
+    );
+    expect(distances).toEqual([100, 100]);
+  });
+  test("when one storable in the center, and distance is small so taht smallDistance is negative", () => {
+    var barcodeDict = makeState(vanilla3x3BarcodeMap);
+    barcodeDict["1,1"].store_status = true;
+    var distances = calculateDistances(
+      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
+      200,
+      750,
+      610,
+      barcodeDict
+    );
+    expect(distances).toEqual([100, 100]);
+  });
+  test("when one storable in center and smallDistance > botWithoutRackThreshold", () => {
+    var barcodeDict = makeState(vanilla3x3BarcodeMap);
+    barcodeDict["1,1"].store_status = true;
+    var distances = calculateDistances(
+      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
+      2000,
+      750,
+      610,
+      barcodeDict
+    );
+    expect(distances).toEqual([750, 1250]);
+  });
 });

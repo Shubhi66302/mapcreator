@@ -18,6 +18,15 @@ const schema = {
   }
 };
 
+const tooltipData = {
+  id: "modify-distance-bw-barcodes",
+  title: "Modify distances between barcodes",
+  bulletPoints: [
+    "Will not modify distances between charger entry and charger, or other special barcodes.",
+    "Hence the distance number will look the same even though other barcode distances have been modified."
+  ]
+};
+
 const ModifyDistanceBwBarcodes = ({ dispatch, disabled }) => (
   <BaseForm
     disabled={disabled}
@@ -26,6 +35,7 @@ const ModifyDistanceBwBarcodes = ({ dispatch, disabled }) => (
       dispatch(modifyDistanceBetweenBarcodes(formData))
     }
     buttonText={"Modify Distance b/w barcodes"}
+    tooltipData={tooltipData}
   />
 );
 

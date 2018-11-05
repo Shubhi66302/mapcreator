@@ -3,7 +3,43 @@ import {
   getNeighbouringBarcodes,
   deleteNeighbourFromBarcode
 } from "utils/util";
+import {
+  getAllColumnTileIdTuples,
+  getAllRowTileIdTuples
+} from "utils/selectors";
 import _ from "lodash";
+
+// exported for testing
+export var calculateDistances = (
+  tuples,
+  distance,
+  botWithRackThreshold,
+  botWithoutRackThreshold,
+  barcodeDict
+) => {
+  // count storables
+  var firstStorables = tuples
+    .map(
+      ([first, _second]) =>
+        barcodeDict[first] ? barcodeDict[first].store_status : false
+    )
+    .reduce((acc, curr) => (acc + curr ? 1 : 0));
+  var secondStorables = tuples
+    .map(
+      ([_first, second]) =>
+        barcodeDict[second] ? barcodeDict[second].store_status : false
+    )
+    .reduce((acc, curr) => (acc + curr ? 1 : 0));
+  if (firstStorables == 0 && secondStorables == 0)
+    return [distance / 2, distance / 2];
+  var bigDistance = botWithRackThreshold;
+  var smallDistance = distance - bigDistance;
+  if (smallDistance >= botWithoutRackThreshold) {
+    if (firstStorables >= secondStorables) return [smallDistance, bigDistance];
+    return [bigDistance, smallDistance];
+  }
+  return [distance / 2, distance / 2];
+};
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -48,6 +84,54 @@ export default (state = {}, action) => {
         }
       }
       return { ..._.omit(state, Object.keys(tileIdMap)), ...newState };
+    }
+    case "MODIFY-DISTANCE-BETWEEN-BARCODES": {
+      // iterate over all rows/cols and modify
+      var newState = {};
+      var {
+        distanceTiles,
+        distance,
+        tileBounds,
+        botWithRackThreshold,
+        botWithoutRackThreshold
+      } = action.value;
+      for (let key in distanceTiles) {
+        let tuples, direction;
+        if (/c-.*/.test(key)) {
+          // column
+          tuples = getAllColumnTileIdTuples(tileBounds, key);
+          direction = 3;
+        } else {
+          // row
+          tuples = getAllRowTileIdTuples(tileBounds, key);
+          direction = 2;
+        }
+        const distances = calculateDistances(
+          tuples,
+          distance,
+          botWithRackThreshold,
+          botWithoutRackThreshold,
+          state
+        );
+        tuples.forEach(([tile1, tile2]) => {
+          [
+            [tile1, direction, distances[0]],
+            [tile2, (direction + 2) % 4, distances[1]]
+          ].forEach(([tile, dir, val]) => {
+            if (!state[tile]) return;
+            if (state[tile].adjacency) {
+              var nbInDirection = getNeighbouringBarcodes(tile, state)[dir];
+              // don't mess with special barcodes or their neighbours
+              if (nbInDirection && nbInDirection.special) {
+                return;
+              }
+            }
+            if (!newState[tile]) newState[tile] = _.cloneDeep(state[tile]);
+            newState[tile].size_info[dir] = val;
+          });
+        });
+      }
+      return { ...state, ...newState };
     }
   }
   return state;
