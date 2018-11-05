@@ -3,6 +3,10 @@ import {
   getNeighbouringBarcodes,
   deleteNeighbourFromBarcode
 } from "utils/util";
+import {
+  getAllColumnTileIdTuples,
+  getAllRowTileIdTuples
+} from "utils/selectors";
 import _ from "lodash";
 
 export default (state = {}, action) => {
@@ -48,6 +52,32 @@ export default (state = {}, action) => {
         }
       }
       return { ..._.omit(state, Object.keys(tileIdMap)), ...newState };
+    }
+    case "MODIFY-DISTANCE-BETWEEN-BARCODES": {
+      // iterate over all rows/cols and modify
+      var newState = {};
+      var { distanceTiles, distance, tileBounds } = action.value;
+      for (let key in distanceTiles) {
+        let tuples, direction;
+        if (/c-.*/.test(key)) {
+          // column
+          tuples = getAllColumnTileIdTuples(tileBounds, key);
+          direction = 3;
+        } else {
+          // row
+          tuples = getAllRowTileIdTuples(tileBounds, key);
+          direction = 2;
+        }
+        tuples.forEach(([tile1, tile2]) => {
+          // don't mess with special barcodes or their neighbours
+          if (state[tile1].special || state[tile2].special) return;
+          if (!newState[tile1]) newState[tile1] = _.cloneDeep(state[tile1]);
+          if (!newState[tile2]) newState[tile2] = _.cloneDeep(state[tile2]);
+          newState[tile1].size_info[direction] = distance;
+          newState[tile2].size_info[(direction + 2) % 4] = distance;
+        });
+      }
+      return { ...state, ...newState };
     }
   }
   return state;

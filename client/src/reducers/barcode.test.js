@@ -4,6 +4,7 @@ import { fromJS } from "immutable";
 import barcodeReducer from "./barcode.js";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
+// TODO: this function has same name as test-helper/makeState, change to make less confusing
 const makeState = immutableMap => immutableMap.toJS();
 
 describe("ASSIGN-STORABLE", () => {
@@ -144,4 +145,53 @@ describe("DELETE-BARCODE", () => {
     ]);
   });
   // TODO: probably write some tests for adjacency barcodes
+});
+
+describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
+  test("should modify neighbour distances when only 1 column is selected", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
+        distanceTiles: { "c-0": true }
+      }
+    });
+    expect(newState["0,0"].size_info).toEqual([750, 750, 750, 200]);
+    expect(newState["0,1"].size_info).toEqual([750, 750, 750, 200]);
+    expect(newState["0,2"].size_info).toEqual([750, 750, 750, 200]);
+
+    expect(newState["1,0"].size_info).toEqual([750, 200, 750, 750]);
+    expect(newState["1,1"].size_info).toEqual([750, 200, 750, 750]);
+    expect(newState["1,2"].size_info).toEqual([750, 200, 750, 750]);
+
+    expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,1"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,2"].size_info).toEqual([750, 750, 750, 750]);
+  });
+  test("should modify neighbour distances when 1 row and 1 columns is selected", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
+        distanceTiles: { "c-0": true, "r-1": true }
+      }
+    });
+
+    expect(newState["0,0"].size_info).toEqual([750, 750, 750, 200]);
+    expect(newState["0,1"].size_info).toEqual([750, 750, 200, 200]);
+    expect(newState["0,2"].size_info).toEqual([200, 750, 750, 200]);
+
+    expect(newState["1,0"].size_info).toEqual([750, 200, 750, 750]);
+    expect(newState["1,1"].size_info).toEqual([750, 200, 200, 750]);
+    expect(newState["1,2"].size_info).toEqual([200, 200, 750, 750]);
+
+    expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["2,1"].size_info).toEqual([750, 750, 200, 750]);
+    expect(newState["2,2"].size_info).toEqual([200, 750, 750, 750]);
+  });
+  test("should not touch special barcode or their neighbours' distances", () => {});
 });
