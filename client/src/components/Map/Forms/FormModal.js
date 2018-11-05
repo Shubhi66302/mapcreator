@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 
-export default ({ toggle, show, children }) => (
-  <Modal isOpen={show} toggle={toggle}>
+export default ({ toggle, show, children, ...rest }) => (
+  <Modal isOpen={show} toggle={toggle} {...rest}>
     <ModalBody>{children}</ModalBody>
     {/* <ModalFooter>
       <Button color="danger" onClick={onSubmitClicked}>

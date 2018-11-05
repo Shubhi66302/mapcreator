@@ -133,6 +133,21 @@ export default (state = {}, action) => {
       }
       return { ...state, ...newState };
     }
+    case "MODIFY-BARCODE-NEIGHBOURS": {
+      var { tileId, values } = action.value;
+      if (!state[tileId]) return state;
+      var newBarcode = _.cloneDeep(state[tileId]);
+      ["top", "right", "bottom", "left"].forEach((key, idx) => {
+        var matches = values[key].neighbours.match(/(\d),(\d),(\d)/);
+        newBarcode.neighbours[idx] = [
+          parseInt(matches[1]),
+          parseInt(matches[2]),
+          parseInt(matches[3])
+        ];
+        newBarcode.size_info[idx] = parseInt(values[key].sizeInfo);
+      });
+      return { ...state, [tileId]: newBarcode };
+    }
   }
   return state;
 };

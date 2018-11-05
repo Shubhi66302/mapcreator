@@ -31,8 +31,9 @@ export default createStore(
     zoneView: false,
     spritesheetLoaded: false,
     selectedArea: null,
-    metaKey: false,
     viewport: {
+      metaKey: false,
+      shiftKey: false,
       viewportInstance: null,
       currentView: null
     }

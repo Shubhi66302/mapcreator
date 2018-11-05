@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import MapViewport from "components/Map/MapViewport";
 import { connect } from "react-redux";
 import { fetchMap, saveMap, downloadMap } from "actions/actions";
+import { modifyNeighbours } from "actions/barcode";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
 
@@ -16,11 +17,16 @@ import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode"
 import AddBarcode from "components/Map/Forms/AddBarcode";
 import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
 import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
+import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 
 class Map extends Component {
   state = {
     error: undefined,
-    successMessage: undefined
+    successMessage: undefined,
+    barcodeView: {
+      show: false,
+      tileId: null
+    }
   };
   componentDidMount() {
     const {
@@ -102,8 +108,36 @@ class Map extends Component {
           </div>
         </div>
         <div className="row">
-          <MapViewport />
+          <MapViewport
+            onShiftClickOnMapTile={tileId =>
+              this.setState({
+                barcodeView: {
+                  tileId,
+                  show: true
+                }
+              })
+            }
+          />
         </div>
+        <BarcodeViewPopup
+          show={this.state.barcodeView.show}
+          toggle={() =>
+            this.setState({
+              barcodeView: {
+                ...this.state.barcodeView,
+                show: !this.state.barcodeView.show
+              }
+            })
+          }
+          barcode={
+            nMap && this.state.barcodeView.tileId
+              ? nMap.entities.barcode[this.state.barcodeView.tileId]
+              : undefined
+          }
+          onSubmit={values =>
+            dispatch(modifyNeighbours(this.state.barcodeView.tileId, values))
+          }
+        />
       </div>
     );
   }
