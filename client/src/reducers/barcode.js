@@ -9,6 +9,38 @@ import {
 } from "utils/selectors";
 import _ from "lodash";
 
+// exported for testing
+export var calculateDistances = (
+  tuples,
+  distance,
+  botWithRackThreshold,
+  botWithoutRackThreshold,
+  barcodeDict
+) => {
+  // count storables
+  var firstStorables = tuples
+    .map(
+      ([first, _second]) =>
+        barcodeDict[first] ? barcodeDict[first].store_status : false
+    )
+    .reduce((acc, curr) => (acc + curr ? 1 : 0));
+  var secondStorables = tuples
+    .map(
+      ([_first, second]) =>
+        barcodeDict[second] ? barcodeDict[second].store_status : false
+    )
+    .reduce((acc, curr) => (acc + curr ? 1 : 0));
+  if (firstStorables == 0 && secondStorables == 0)
+    return [distance / 2, distance / 2];
+  var bigDistance = botWithRackThreshold;
+  var smallDistance = distance - bigDistance;
+  if (smallDistance >= botWithoutRackThreshold) {
+    if (firstStorables >= secondStorables) return [smallDistance, bigDistance];
+    return [bigDistance, smallDistance];
+  }
+  return [distance / 2, distance / 2];
+};
+
 export default (state = {}, action) => {
   switch (action.type) {
     case "ASSIGN-STORABLE":
@@ -56,7 +88,13 @@ export default (state = {}, action) => {
     case "MODIFY-DISTANCE-BETWEEN-BARCODES": {
       // iterate over all rows/cols and modify
       var newState = {};
-      var { distanceTiles, distance, tileBounds } = action.value;
+      var {
+        distanceTiles,
+        distance,
+        tileBounds,
+        botWithRackThreshold,
+        botWithoutRackThreshold
+      } = action.value;
       for (let key in distanceTiles) {
         let tuples, direction;
         if (/c-.*/.test(key)) {
@@ -68,13 +106,29 @@ export default (state = {}, action) => {
           tuples = getAllRowTileIdTuples(tileBounds, key);
           direction = 2;
         }
+        const distances = calculateDistances(
+          tuples,
+          distance,
+          botWithRackThreshold,
+          botWithoutRackThreshold,
+          state
+        );
         tuples.forEach(([tile1, tile2]) => {
-          // don't mess with special barcodes or their neighbours
-          if (state[tile1].special || state[tile2].special) return;
-          if (!newState[tile1]) newState[tile1] = _.cloneDeep(state[tile1]);
-          if (!newState[tile2]) newState[tile2] = _.cloneDeep(state[tile2]);
-          newState[tile1].size_info[direction] = distance;
-          newState[tile2].size_info[(direction + 2) % 4] = distance;
+          [
+            [tile1, direction, distances[0]],
+            [tile2, (direction + 2) % 4, distances[1]]
+          ].forEach(([tile, dir, val]) => {
+            if (!state[tile]) return;
+            if (state[tile].adjacency) {
+              var nbInDirection = getNeighbouringBarcodes(tile, state)[dir];
+              // don't mess with special barcodes or their neighbours
+              if (nbInDirection && nbInDirection.special) {
+                return;
+              }
+            }
+            if (!newState[tile]) newState[tile] = _.cloneDeep(state[tile]);
+            newState[tile].size_info[dir] = val;
+          });
         });
       }
       return { ...state, ...newState };

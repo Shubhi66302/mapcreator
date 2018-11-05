@@ -6,6 +6,7 @@ import {
 import {
   getBarcode,
   currentFloorBotWithRackThreshold,
+  currentFloorBotWithoutRackThreshold,
   tileBoundsSelector
 } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
@@ -109,7 +110,10 @@ export const modifyDistanceBetweenBarcodes = ({ distance }) => (
     value: {
       distance,
       tileBounds: tileBoundsSelector(state),
-      distanceTiles
+      distanceTiles,
+      botWithRackThreshold: currentFloorBotWithRackThreshold(state),
+      botWithoutRackThreshold: currentFloorBotWithoutRackThreshold(state)
     }
   });
+  dispatch(clearTiles);
 };

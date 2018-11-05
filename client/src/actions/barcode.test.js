@@ -96,3 +96,30 @@ describe("addNewBarcode", () => {
   });
 });
 // TODO: test for removeBarcodes
+
+describe("modifyDistanceBetweenBarcodes", () => {
+  const { modifyDistanceBetweenBarcodes } = barcode;
+  const { clearTiles } = actions;
+  test("should dispatch action with all the required keys", async () => {
+    const initialState = makeState(singleFloorVanilla, 1, {}, { "c-0": true });
+    const store = mockStore(initialState);
+    await store.dispatch(
+      modifyDistanceBetweenBarcodes({
+        distance: 200
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(2);
+    expect(dispatchedActions[0]).toEqual({
+      type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+      value: {
+        distance: 200,
+        tileBounds: { maxX: 2, maxY: 2, minX: 0, minY: 0 },
+        distanceTiles: { "c-0": true },
+        botWithRackThreshold: 750,
+        botWithoutRackThreshold: 610
+      }
+    });
+    expect(dispatchedActions[1]).toEqual(clearTiles);
+  });
+});

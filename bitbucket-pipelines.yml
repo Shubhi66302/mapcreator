@@ -8,6 +8,7 @@ image: node:8
 pipelines:
   default:
     - step:
+        name: Install and Test
         caches:
           - nodeserver
           - nodeclient
