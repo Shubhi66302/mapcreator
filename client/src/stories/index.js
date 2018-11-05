@@ -8,6 +8,7 @@ import { Button, Welcome } from "@storybook/react/demo";
 import JSONFileInput from "components/JSONFileInput";
 import InlineTextInput from "components/InlineTextInput";
 import TestReactPixiWithViewport from "components/TestReactPixiWithViewport";
+import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 
 storiesOf("Welcome", module).add("to Storybook", () => (
   <Welcome showApp={linkTo("Button")} />
@@ -67,6 +68,19 @@ storiesOf("InlineTextInput", module)
     </form>
   ));
 
-storiesOf("TestReactPixiWithViewport", module).add("default", () => (
-  <TestReactPixiWithViewport />
+storiesOf("BarcodeViewPopup", module).add("default", () => (
+  <BarcodeViewPopup
+    show={true}
+    toggle={() => {}}
+    barcode={{
+      store_status: 0,
+      zone: "defzone",
+      barcode: "000.000",
+      botid: "null",
+      neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+      coordinate: "0,0",
+      blocked: false,
+      size_info: [750, 750, 750, 750]
+    }}
+  />
 ));

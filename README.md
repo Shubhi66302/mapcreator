@@ -31,8 +31,10 @@ Open 192.168.x.x:3001/ for mapcreator
 
 TODO: write dev setup process
 
-# Pro tip
-- `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can check them quickly without setting up the whole scenario in the browser.
+# Dev
+## Pro tip
+- `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can iterate quickly without making up the whole scenario in the browser.
+- To iterate fast on a UI component, `cd` into client in a new tab and run `yarn run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
 
 # Modifying JSON schemas
 

@@ -20,7 +20,7 @@ var PixiViewport = PixiComponent("PixiViewport", {
       instance.resize(window.innerWidth, window.innerHeight)
     );
 
-    const { store } = props;
+    const { store, onShiftClickOnMapTile } = props;
 
     var onDragStart = e =>
       instance.pause
@@ -54,7 +54,7 @@ var PixiViewport = PixiComponent("PixiViewport", {
       .pinch()
       .wheel();
     instance.on("clicked", e => {
-      var tileBounds = store.dispatch(clickOnViewport(e.world));
+      store.dispatch(clickOnViewport(e.world, onShiftClickOnMapTile));
     });
     // add instance referene to store
     store.dispatch(registerViewport(instance));

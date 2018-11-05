@@ -117,3 +117,14 @@ export const modifyDistanceBetweenBarcodes = ({ distance }) => (
   });
   dispatch(clearTiles);
 };
+
+export const modifyNeighbours = (tileId, values) => dispatch => {
+  dispatch({
+    type: "MODIFY-BARCODE-NEIGHBOURS",
+    value: {
+      tileId,
+      values
+    }
+  });
+  dispatch(clearTiles);
+};

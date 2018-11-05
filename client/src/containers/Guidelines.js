@@ -24,5 +24,12 @@ export default () => (
       than 750, map will show neighbour structure as [1,1,0] i.e. butler cannot
       go to this barcode with rack.
     </span>
+    <ul>
+      <li>Use Ctrl+Drag to select barcodes in a rectangle.</li>
+      <li>
+        Use Shift+Click on a barcode for barcode view, where you can edit size
+        info and neighbour structure of a barcode
+      </li>
+    </ul>
   </div>
 );

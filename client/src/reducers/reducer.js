@@ -32,8 +32,9 @@ export const dummyState = {
   },
   zoneView: false,
   selectedArea: null,
-  metaKey: false,
   viewport: {
+    shiftKey: false,
+    metaKey: false,
     viewportInstance: null,
     minimapInstance: null,
     currentView: null
@@ -129,7 +130,9 @@ export const selectedMapTilesReducer = (state = {}, action) => {
 
 export const baseSelectionReducer = combineReducers({
   mapTiles: selectedMapTilesReducer,
-  distanceTiles: selectedDistanceTilesReducer
+  distanceTiles: selectedDistanceTilesReducer,
+  metaKey: (e = false) => e,
+  shiftKey: (e = false) => e
 });
 
 // exported for testing
@@ -140,10 +143,18 @@ export const xoredMap = (theMap, keysArr) => {
 };
 
 export const selectionReducer = (
-  state = { mapTiles: {}, distanceTiles: {} },
+  state = { mapTiles: {}, distanceTiles: {}, metaKey: false, shiftKey: false },
   action
 ) => {
   switch (action.type) {
+    case "META-KEY-UP":
+      return { ...state, metaKey: false };
+    case "META-KEY-DOWN":
+      return { ...state, metaKey: true };
+    case "SHIFT-KEY-UP":
+      return { ...state, shiftKey: false };
+    case "SHIFT-KEY-DOWN":
+      return { ...state, shiftKey: true };
     case "DRAG-END":
       const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
       // if both map tiles and distance tiles are selected, consider only map tiles as selected
@@ -174,6 +185,16 @@ export const metaKeyReducer = (state = false, action) => {
     case "META-KEY-DOWN":
       return true;
     case "META-KEY-UP":
+      return false;
+  }
+  return state;
+};
+
+export const shiftKeyReducer = (state = false, action) => {
+  switch (action.type) {
+    case "SHIFT-KEY-DOWN":
+      return true;
+    case "SHIFT-KEY-UP":
       return false;
   }
   return state;
@@ -222,7 +243,6 @@ export default combineReducers({
   selection: reduceReducers(selectionReducer, baseSelectionReducer),
   zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
-  metaKey: metaKeyReducer,
   selectedArea: selectedAreaReducer,
   viewport: viewportReducer
 });
