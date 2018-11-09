@@ -41,8 +41,9 @@
     "babel-client": "babel client/src/common -d dist/client/src/common --copy-files",
     "babel-server": "babel server -d dist/server --copy-files",
     "copy-client-build": "rm -rf dist/client/build && cp -r client/build dist/client/build",
-    "build-client": "cd client && yarn install && npm run build",
+    "build-client": "cd client && yarn install && npm run build && cd ..",
     "build": "npm run build-client && npm run babel-server && npm run babel-client && npm run copy-client-build",
+    "postinstall": "npm run build",
     "migrate": "cd server && sequelize db:migrate",
     "start": "node dist/server/index.js",
     "test-server": "jest",
@@ -52,5 +53,6 @@
   "license": "ISC",
   "_moduleAliases": {
     "@server": "./server"
-  }
+  },
+  "cacheDirectories": ["client/node_modules", "node_modules"]
 }
