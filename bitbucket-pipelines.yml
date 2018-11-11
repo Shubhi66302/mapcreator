@@ -13,7 +13,7 @@ pipelines:
           - nodeserver
           - nodeclient
         script: # Modify the commands below to build your repository.
-          - yarn install 
+          - yarn install --ignore-scripts
           - cd client && yarn install && cd ..
           - npm run migrate
           - npm test
