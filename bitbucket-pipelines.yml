@@ -21,6 +21,7 @@ pipelines:
           - postgres
     - step:
         name: Deploy
+        deployment: production
         trigger: manual
         script:
           - git push $DOKKU_URL $BITBUCKET_COMMIT:master
