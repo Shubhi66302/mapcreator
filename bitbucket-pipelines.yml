@@ -8,17 +8,22 @@ image: node:8
 pipelines:
   default:
     - step:
-        name: Install and Test
-        caches:
-          - nodeserver
-          - nodeclient
-        script: # Modify the commands below to build your repository.
-          - yarn install 
-          - cd client && yarn install && cd ..
-          - npm run migrate
-          - npm test
-        services: 
-          - postgres
+      name: Install and Test
+      caches:
+        - nodeserver
+        - nodeclient
+      script: # Modify the commands below to build your repository.
+        - yarn install 
+        - cd client && yarn install && cd ..
+        - npm run migrate
+        - npm test
+      services: 
+        - postgres
+    - step:
+      name: Deploy
+      trigger: manual
+      script:
+        - git push $DOKKU_URL $BITBUCKET_COMMIT:master
 
 definitions: 
   caches:
