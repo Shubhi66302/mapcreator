@@ -151,7 +151,7 @@ describe("/api/map:id (save map)", () => {
   });
   test("should throw when trying to update non-existing map", async () => {
     var response = await request(app)
-      .post(`/api/map/221`)
+      .post("/api/map/221")
       .send({ map: dummyGoodMap })
       .expect(500);
     expect(response.error.text).toMatch(/could not find map for id/);

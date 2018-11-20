@@ -5,7 +5,6 @@ const express = require("express");
 
 import app from "server/src/app";
 // after api routes so that doesn't mess with them?
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 
