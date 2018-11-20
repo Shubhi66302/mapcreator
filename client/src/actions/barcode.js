@@ -3,7 +3,12 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode, currentFloorBotWithRackThreshold } from "utils/selectors";
+import {
+  getBarcode,
+  currentFloorBotWithRackThreshold,
+  currentFloorBotWithoutRackThreshold,
+  tileBoundsSelector
+} from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 
 export const createNewBarcode = ({
@@ -69,7 +74,6 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-// NOTE: fix remove barcode so taht neighbour structures are updated
 export const removeBarcodes = (dispatch, getState) => {
   const {
     selection: { mapTiles },
@@ -86,19 +90,41 @@ export const removeBarcodes = (dispatch, getState) => {
   });
   // remove barcodes
   dispatch({
-    type: "DELETE-MULTIPLE-BARCODE-BY-ID",
-    value: Object.keys(mapTiles) || []
+    type: "DELETE-BARCODES",
+    value: mapTiles || {}
   });
   // clear tiles
   dispatch(clearTiles);
 };
 
-export const modifyDistanceBetweenBarcodes = formData => (
+export const modifyDistanceBetweenBarcodes = ({ distance }) => (
   dispatch,
   getState
 ) => {
+  const state = getState();
   const {
     selection: { distanceTiles }
-  } = getState();
-  // dispatch({})
+  } = state;
+  dispatch({
+    type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
+    value: {
+      distance,
+      tileBounds: tileBoundsSelector(state),
+      distanceTiles,
+      botWithRackThreshold: currentFloorBotWithRackThreshold(state),
+      botWithoutRackThreshold: currentFloorBotWithoutRackThreshold(state)
+    }
+  });
+  dispatch(clearTiles);
+};
+
+export const modifyNeighbours = (tileId, values) => dispatch => {
+  dispatch({
+    type: "MODIFY-BARCODE-NEIGHBOURS",
+    value: {
+      tileId,
+      values
+    }
+  });
+  dispatch(clearTiles);
 };

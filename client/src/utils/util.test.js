@@ -9,7 +9,8 @@ import {
   getNeighbouringBarcodes,
   getNeighbourTiles,
   tupleOfIntegersToCoordinateKey,
-  addNeighbourToBarcode
+  addNeighbourToBarcode,
+  deleteNeighbourFromBarcode
 } from "./util";
 import { singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
@@ -166,7 +167,7 @@ describe("getNeighbouringBarcodes", () => {
       }
     ]);
   });
-  test("should give correct neighbour barcodes when neighbour is there but edge is [0,0,0]", () => {
+  test("should give correct neighbour barcodes when neighbour is there but edge is [1,0,0]", () => {
     var barcodesDict = {
       // map is:
       // -      1,1    -
@@ -175,7 +176,7 @@ describe("getNeighbouringBarcodes", () => {
       // this one will be tested
       "1,2": {
         coordinate: "1,2",
-        neighbours: [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]]
+        neighbours: [[1, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]]
       },
       "1,1": {
         coordinate: "1,1",
@@ -265,5 +266,54 @@ describe("addNeighbourToBarcode", () => {
       special: true,
       coordinate: "12,12"
     });
+  });
+});
+
+describe("deleteNeighbourFromBarcode", () => {
+  var testingBarcode = {
+    size_info: [205, 1000, 205, 1000],
+    zone: "defzone",
+    neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [1, 1, 1]],
+    store_status: 0,
+    barcode: "012.012",
+    blocked: false,
+    botid: "null",
+    special: true,
+    coordinate: "12,12"
+  };
+  test("should delete a neighbour completely if it is told that neighbourt doesn't exist, also it doesn't have adjacency", () => {
+    var newBarcode = deleteNeighbourFromBarcode(testingBarcode, 0, false);
+    expect(newBarcode).toMatchObject({
+      ...testingBarcode,
+      neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [1, 1, 1]]
+    });
+  });
+  test("should delete correctly when there is adjacency and neighbour doesn't exist", () => {
+    var withAdjacency = {
+      ...testingBarcode,
+      adjacency: [[2, 1], null, [2, 2], [3, 2]]
+    };
+    var newBarcode = deleteNeighbourFromBarcode(withAdjacency, 2, false);
+    expect(newBarcode).toMatchObject({
+      ...withAdjacency,
+      neighbours: [[1, 1, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+      adjacency: [[2, 1], null, null, [3, 2]]
+    });
+  });
+  test("should have deleted edge as [1,0,0] if neighbour exists", () => {
+    var withAdjacency = {
+      ...testingBarcode,
+      adjacency: [[2, 1], null, [2, 2], [3, 2]]
+    };
+    var newBarcode = deleteNeighbourFromBarcode(withAdjacency, 0, true);
+    expect(newBarcode).toMatchObject({
+      ...withAdjacency,
+      neighbours: [[1, 0, 0], [0, 0, 0], [1, 1, 0], [1, 1, 1]],
+      adjacency: [null, null, [2, 2], [3, 2]]
+    });
+  });
+  test("should not be mutating old object", () => {
+    var newBarcode = deleteNeighbourFromBarcode(testingBarcode, 0, true);
+    expect(newBarcode).not.toBe(testingBarcode);
   });
 });

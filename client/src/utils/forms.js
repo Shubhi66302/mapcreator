@@ -11,3 +11,21 @@ export const barcodeStringSchema = {
   title: "Barcode",
   pattern: "^\\d\\d\\d\\.\\d\\d\\d$"
 };
+
+export const neighboursSchema = {
+  type: "object",
+  required: ["neighbours", "size_info"],
+  properties: {
+    neighbours: {
+      type: "string",
+      title: "Neighbour Structure",
+      pattern: "^[01], *[01], *[01]$"
+    },
+    size_info: {
+      type: "number",
+      title: "Size Info",
+      minimum: 0
+    }
+  },
+  title: "Neighbours"
+};

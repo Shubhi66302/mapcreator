@@ -10,11 +10,15 @@ class MapViewport extends Component {
   customKeydownListener = ({ key, repeat }) =>
     key == "Meta" && !repeat
       ? this.props.dispatch({ type: "META-KEY-DOWN" })
-      : null;
+      : /Shift/.test(key) && !repeat
+        ? this.props.dispatch({ type: "SHIFT-KEY-DOWN" })
+        : null;
   customKeyupListener = ({ key, repeat }) =>
     key == "Meta" && !repeat
       ? this.props.dispatch({ type: "META-KEY-UP" })
-      : null;
+      : /Shift/.test(key) && !repeat
+        ? this.props.dispatch({ type: "SHIFT-KEY-UP" })
+        : null;
 
   componentDidMount() {
     const { dispatch, loaded } = this.props;
@@ -30,6 +34,7 @@ class MapViewport extends Component {
     return (
       <div id="mapdiv">
         <PixiStage
+          onShiftClickOnMapTile={this.props.onShiftClickOnMapTile}
           shouldProcessDrag={this.props.shouldProcessDrag}
           spriteSheetLoaded={this.props.loaded}
         />
@@ -39,5 +44,8 @@ class MapViewport extends Component {
 }
 export default connect(state => ({
   loaded: state.spritesheetLoaded,
-  shouldProcessDrag: state.selectedArea || state.metaKey ? true : false
+  shouldProcessDrag:
+    state.selectedArea || (state.selection.metaKey && !state.selection.shiftKey)
+      ? true
+      : false
 }))(MapViewport);

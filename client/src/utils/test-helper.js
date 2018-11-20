@@ -20,6 +20,8 @@ export var makeState = (
     currentView: null
   },
   selection: {
+    metaKey: false,
+    shiftKey: false,
     mapTiles: selectedMapTiles,
     distanceTiles: selectedDistanceTiles
   },

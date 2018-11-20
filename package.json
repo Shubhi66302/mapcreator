@@ -5,10 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "ajv": "^6.5.2",
+    "babel-polyfill": "^6.26.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-async-handler": "^1.1.3",
+    "jest": "^23.4.1",
     "lodash": "^4.17.10",
     "module-alias": "^2.1.0",
     "moment": "^2.22.2",
@@ -31,7 +33,6 @@
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
     "d3": "^5.5.0",
-    "jest": "^23.4.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.17.5",
     "regenerator-runtime": "^0.12.0"
@@ -41,14 +42,21 @@
     "babel-client": "babel client/src/common -d dist/client/src/common --copy-files",
     "babel-server": "babel server -d dist/server --copy-files",
     "copy-client-build": "rm -rf dist/client/build && cp -r client/build dist/client/build",
-    "build-client": "cd client && yarn install && npm run build",
+    "build-client": "cd client && yarn install && npm run build && cd ..",
     "build": "npm run build-client && npm run babel-server && npm run babel-client && npm run copy-client-build",
+    "postinstall": "npm run build && npm run migrate",
+    "migrate": "cd server && sequelize db:migrate",
     "start": "node dist/server/index.js",
-    "test": "jest"
+    "test-server": "jest",
+    "test": "jest && cd client/ && CI=true npm test"
   },
   "author": "",
   "license": "ISC",
   "_moduleAliases": {
     "@server": "./server"
-  }
+  },
+  "cacheDirectories": [
+    "client/node_modules",
+    "node_modules"
+  ]
 }

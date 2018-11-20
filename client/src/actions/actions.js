@@ -28,7 +28,10 @@ export const outsideTilesClick = {
 const isPointInRect = ({ x, y, width, height }, { x: px, y: py }) =>
   px >= x && px <= x + width && py >= y && py <= y + height;
 
-export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
+export const clickOnViewport = (worldCoordinate, onShiftClickOnMapTile) => (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const tileIdsMap = tileIdsMapSelector(state);
   const tileBounds = tileBoundsSelector(state);
@@ -39,6 +42,7 @@ export const clickOnViewport = worldCoordinate => (dispatch, getState) => {
   var tileId = worldToTileCoordinate(worldCoordinate, tileBounds);
   // make sure the tileId is actually part of current floor's tiles
   if (tileId && tileIdsMap[tileId]) {
+    if (state.selection.shiftKey) return onShiftClickOnMapTile(tileId);
     return dispatch(mapTileClick(tileId));
   } else if (!isPointOnADistanceTile) {
     return dispatch(outsideTilesClick);
