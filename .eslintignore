@@ -1,0 +1,11 @@
+dist/*
+coverage/*
+server/models/*
+server/migrations/*
+node_modules/*
+client/build/*
+client/coverage/*
+client/node_modules/*
+client/.storybook/*
+
+

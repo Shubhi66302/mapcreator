@@ -81,8 +81,7 @@ app.post(
 );
 
 // error handler should be last middleware?
-app.use((err, req, res, next) => {
-  // console.log(err.message);
+app.use((err, req, res) => {
   res.status(500).send(err.message);
 });
 

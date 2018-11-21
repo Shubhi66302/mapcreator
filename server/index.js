@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 require("dotenv").config();
 import "babel-polyfill";
 const path = require("path");

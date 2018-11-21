@@ -68,10 +68,10 @@ export const mapUpdateReducer = combineReducers({
 // for full map updates eg. clear, new
 export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
   switch (action.type) {
-    case "CLEAR-MAP":
-      return dummyState.normalizedMap;
-    case "NEW-MAP":
-      return normalizeMap(action.value);
+  case "CLEAR-MAP":
+    return dummyState.normalizedMap;
+  case "NEW-MAP":
+    return normalizeMap(action.value);
   }
   return state;
 };
@@ -80,11 +80,11 @@ export const mapReducer = reduceReducers(mapUpdateReducer, mapChangeReducer);
 
 export const currentFloorReducer = (state = 1, action) => {
   switch (action.type) {
-    case "CLEAR-MAP":
-    case "NEW-MAP":
-      return 1;
-    case "CHANGE-FLOOR":
-      return action.value;
+  case "CLEAR-MAP":
+  case "NEW-MAP":
+    return 1;
+  case "CHANGE-FLOOR":
+    return action.value;
   }
   return state;
 };
@@ -100,30 +100,30 @@ export const toggleKeyInMap = (theMap, key) => {
 
 export const selectedDistanceTilesReducer = (state = {}, action) => {
   switch (action.type) {
-    case "CLEAR-MAP":
-    case "NEW-MAP":
-    case "CLEAR-SELECTED-TILES":
-    case "CLICK-OUTSIDE-TILES":
+  case "CLEAR-MAP":
+  case "NEW-MAP":
+  case "CLEAR-SELECTED-TILES":
+  case "CLICK-OUTSIDE-TILES":
     // should deselect if a map tile is clicked
-    case "CLICK-ON-MAP-TILE":
-      return {};
-    case "CLICK-ON-DISTANCE-TILE":
-      return toggleKeyInMap(state, action.value);
+  case "CLICK-ON-MAP-TILE":
+    return {};
+  case "CLICK-ON-DISTANCE-TILE":
+    return toggleKeyInMap(state, action.value);
   }
   return state;
 };
 
 export const selectedMapTilesReducer = (state = {}, action) => {
   switch (action.type) {
-    case "CLEAR-MAP":
-    case "NEW-MAP":
-    case "CLEAR-SELECTED-TILES":
-    case "CLICK-OUTSIDE-TILES":
+  case "CLEAR-MAP":
+  case "NEW-MAP":
+  case "CLEAR-SELECTED-TILES":
+  case "CLICK-OUTSIDE-TILES":
     // should deselect if a distance tile is selected
-    case "CLICK-ON-DISTANCE-TILE":
-      return {};
-    case "CLICK-ON-MAP-TILE":
-      return toggleKeyInMap(state, action.value);
+  case "CLICK-ON-DISTANCE-TILE":
+    return {};
+  case "CLICK-ON-MAP-TILE":
+    return toggleKeyInMap(state, action.value);
   }
   return state;
 };
@@ -147,79 +147,79 @@ export const selectionReducer = (
   action
 ) => {
   switch (action.type) {
-    case "META-KEY-UP":
-      return { ...state, metaKey: false };
-    case "META-KEY-DOWN":
-      return { ...state, metaKey: true };
-    case "SHIFT-KEY-UP":
-      return { ...state, shiftKey: false };
-    case "SHIFT-KEY-DOWN":
-      return { ...state, shiftKey: true };
-    case "DRAG-END":
-      const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
-      // if both map tiles and distance tiles are selected, consider only map tiles as selected
-      if (mapTilesArr.length > 0) {
-        return {
-          distanceTiles: {},
-          mapTiles: xoredMap(state.mapTiles, mapTilesArr)
-        };
-      }
+  case "META-KEY-UP":
+    return { ...state, metaKey: false };
+  case "META-KEY-DOWN":
+    return { ...state, metaKey: true };
+  case "SHIFT-KEY-UP":
+    return { ...state, shiftKey: false };
+  case "SHIFT-KEY-DOWN":
+    return { ...state, shiftKey: true };
+  case "DRAG-END":
+    const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
+    // if both map tiles and distance tiles are selected, consider only map tiles as selected
+    if (mapTilesArr.length > 0) {
       return {
-        mapTiles: {},
-        distanceTiles: xoredMap(state.distanceTiles, distanceTilesArr)
+        distanceTiles: {},
+        mapTiles: xoredMap(state.mapTiles, mapTilesArr)
       };
+    }
+    return {
+      mapTiles: {},
+      distanceTiles: xoredMap(state.distanceTiles, distanceTilesArr)
+    };
   }
   return state;
 };
 
 export const spritesheetLoadedReducer = (state = false, action) => {
   switch (action.type) {
-    case "LOADED-SPRITESHEET":
-      return true;
+  case "LOADED-SPRITESHEET":
+    return true;
   }
   return state;
 };
 
 export const metaKeyReducer = (state = false, action) => {
   switch (action.type) {
-    case "META-KEY-DOWN":
-      return true;
-    case "META-KEY-UP":
-      return false;
+  case "META-KEY-DOWN":
+    return true;
+  case "META-KEY-UP":
+    return false;
   }
   return state;
 };
 
 export const shiftKeyReducer = (state = false, action) => {
   switch (action.type) {
-    case "SHIFT-KEY-DOWN":
-      return true;
-    case "SHIFT-KEY-UP":
-      return false;
+  case "SHIFT-KEY-DOWN":
+    return true;
+  case "SHIFT-KEY-UP":
+    return false;
   }
   return state;
 };
 
 export const selectedAreaReducer = (state = null, action) => {
   switch (action.type) {
-    case "DRAG-START": {
-      if (state) {
-        // duplicate event, already processing a drag
-        return state;
-      }
-      let { x, y } = action.value;
-      return { startPoint: { x, y }, endPoint: { x, y } };
+  case "DRAG-START": {
+    if (state) {
+      // duplicate event, already processing a drag
+      return state;
     }
-    case "DRAG-MOVE": {
-      if (!state) {
-        // drag not started yet?
-        return state;
-      }
-      let { x, y } = action.value;
-      return { ...state, endPoint: { x, y } };
+    let { x, y } = action.value;
+    return { startPoint: { x, y }, endPoint: { x, y } };
+  }
+  case "DRAG-MOVE": {
+    if (!state) {
+      // drag not started yet?
+      return state;
     }
-    case "DRAG-END":
-      return null;
+    let { x, y } = action.value;
+    return { ...state, endPoint: { x, y } };
+  }
+  case "DRAG-END":
+    return null;
   }
   return state;
 };
@@ -229,10 +229,10 @@ const viewportReducer = (
   action
 ) => {
   switch (action.type) {
-    case "REGISTER-PIXI-VIEWPORT":
-      return { ...state, viewportInstance: action.value };
-    case "REGISTER-PIXI-MINIMAP":
-      return { ...state, minimapInstance: action.value };
+  case "REGISTER-PIXI-VIEWPORT":
+    return { ...state, viewportInstance: action.value };
+  case "REGISTER-PIXI-MINIMAP":
+    return { ...state, minimapInstance: action.value };
   }
   return state;
 };

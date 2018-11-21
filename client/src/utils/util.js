@@ -1,4 +1,3 @@
-import assert from "assert";
 import * as constants from "../constants";
 import _ from "lodash";
 
@@ -54,12 +53,11 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
     });
   }
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
-  return neighbourTileKeys.map(
-    (tileKey, idx) =>
-      _.isEqual(curBarcode.neighbours[idx], [0, 0, 0]) ||
-      _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
-        ? null
-        : barcodesDict[tileKey]
+  return neighbourTileKeys.map((tileKey, idx) =>
+    _.isEqual(curBarcode.neighbours[idx], [0, 0, 0]) ||
+    _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
+      ? null
+      : barcodesDict[tileKey]
   );
 };
 
