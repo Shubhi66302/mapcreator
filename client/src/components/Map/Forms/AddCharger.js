@@ -19,8 +19,9 @@ const schema = {
 
 const tooltipData = {
   id: "add-charger",
-  title: "Add one or more chargers",
+  title: "Add a charger",
   bulletPoints: [
+    "Can only add one charger at a time.",
     "Can't add charger at periphery in a direction so that entry point would be outside map, please don't try.",
     "Also creates a special barcode with barcode 500.500 and above to accomodate map expansion",
     "Distance b/w special barcode and its neighbours is hardcoded but can be changed later in json"
@@ -39,7 +40,9 @@ const AddCharger = ({ onSubmit, disabled }) => (
 
 export default connect(
   state => ({
-    disabled: Object.keys(state.selection.mapTiles).length === 0
+    // TODO: disabling adding multiple chargers; adding neighbouring chargers together messes up
+    // adjacency, should be fixed...
+    disabled: Object.keys(state.selection.mapTiles).length !== 1
   }),
   dispatch => ({
     onSubmit: ({ formData }) => {

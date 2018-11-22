@@ -287,7 +287,12 @@ export const getAllInBetweenDistances = (arrOfTuple, direction, barcodesDict) =>
     if (barcode1 && barcode2) {
       var distance =
         barcode1.size_info[direction] + barcode2.size_info[(direction + 2) % 4];
-      if (barcode1.adjacency && barcode2.adjacency) {
+      if (
+        barcode1.adjacency &&
+        barcode2.adjacency &&
+        barcode1.adjacency[direction] &&
+        barcode2.adjacency[(direction + 2) % 4]
+      ) {
         // there might be special barcode between them
         var specialTileId = tupleOfIntegersToCoordinateKey(
           barcode1.adjacency[direction]
