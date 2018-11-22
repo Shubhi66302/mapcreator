@@ -23,5 +23,10 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"]
+  },
+  settings: {
+    react: {
+      version: "detect"
+    }
   }
 };

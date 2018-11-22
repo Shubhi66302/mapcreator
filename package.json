@@ -54,7 +54,9 @@
     "migrate": "cd server && sequelize db:migrate",
     "start": "node dist/server/index.js",
     "test-server": "jest",
-    "test": "jest && cd client/ && CI=true npm test"
+    "test": "jest && cd client/ && CI=true npm test",
+    "lint-no-fix": "eslint .",
+    "lint": "eslint . --fix"
   },
   "author": "",
   "license": "ISC",
