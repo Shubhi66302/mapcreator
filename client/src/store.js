@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import reducer from "reducers/reducer";
-import { TILE_WIDTH, TILE_HEIGHT } from "./constants";
 import { normalizeMap } from "utils/normalizr";
 import { entityMiddleware, floorMiddleware } from "actions/middlewares";
 // TEST: using sampleMap from test-data to initialize store.

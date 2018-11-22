@@ -2,6 +2,7 @@ import request from "supertest";
 import app from "server/src/app";
 import { Map, sequelize } from "server/models/index";
 import { map as dummyGoodMap } from "../../client/src/test-data/test-maps/3x3-vanilla.json";
+import _ from "lodash";
 
 describe("/api/createMap", () => {
   test("create good map", async () => {
@@ -83,7 +84,8 @@ describe("/api/maps", () => {
     // reverse order since sorted in descending order of updatedAt
     var expectedMaps = [map2, map1]
       .map(map => map.toJSON())
-      .map(({ ...rest }) => ({
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
         ...rest,
         createdAt: rest.createdAt.toISOString(),
         updatedAt: rest.updatedAt.toISOString()
@@ -107,7 +109,8 @@ describe("/api/maps", () => {
     await map1.update({ name: "i-changed-the-name" });
     var expectedMaps = [map1, map3, map2]
       .map(map => map.toJSON())
-      .map(({ ...rest }) => ({
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
         ...rest,
         createdAt: rest.createdAt.toISOString(),
         updatedAt: rest.updatedAt.toISOString()

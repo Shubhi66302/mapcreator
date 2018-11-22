@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PixiStage from "./PixiStage";
-import * as PIXI from "pixi.js";
 import { loadSpritesheet } from "actions/actions";
 import { connect } from "react-redux";
 // this should handle all the click, modifier, drag etc. events...

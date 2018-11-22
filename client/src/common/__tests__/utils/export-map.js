@@ -69,7 +69,6 @@ describe("export good maps", () => {
   });
 
   test("queue_data.json should be exported correctly for 3-7 map", () => {
-    var ajv = getLoadedAjv();
     expect(threeSevenJsons.mapJson).toBeTruthy();
     var map = importMap(threeSevenJsons);
     var exported = exportMap({

@@ -60,8 +60,8 @@ var PixiViewport = PixiComponent("PixiViewport", {
     store.dispatch(registerViewport(instance));
     return instance;
   },
-  didMount: (instance, parent) => {},
-  willUnmount: (instance, parent) => {
+  didMount: () => {},
+  willUnmount: instance => {
     instance.removeListeners();
   },
   applyProps: (instance, oldProps, newProps) => {

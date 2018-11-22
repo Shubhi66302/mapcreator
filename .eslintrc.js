@@ -5,7 +5,8 @@ module.exports = {
     node: true,
     jest: true
   },
-  extends: "eslint:recommended",
+  extends: ["eslint:recommended", "prettier", "plugin:react/recommended"],
+  parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -15,7 +16,10 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    indent: ["error", 2],
+    "no-fallthrough": "off",
+    "react/display-name": "off",
+    "react/prop-types": "off",
+    indent: ["error", 2, { SwitchCase: 1 }],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"]

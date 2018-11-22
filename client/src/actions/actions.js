@@ -66,7 +66,7 @@ export const dragStart = worldCoordinate => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-export const dragEnd = worldCoordinate => (dispatch, getState) => {
+export const dragEnd = () => (dispatch, getState) => {
   const state = getState();
   if (state.selectedArea) {
     dispatch({
@@ -87,7 +87,7 @@ const newSpritesheet = {
 };
 
 export const loadSpritesheet = () => dispatch => {
-  PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load((loader, resource) => {
+  PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load(() => {
     dispatch(newSpritesheet);
   });
   return Promise.resolve();
@@ -102,7 +102,7 @@ export const clearMap = {
   type: "CLEAR-MAP"
 };
 
-export const fetchMap = mapId => (dispatch, getState) => {
+export const fetchMap = mapId => dispatch => {
   dispatch(clearMap);
   return fetch(`/api/map/${mapId}`)
     .then(handleErrors)
@@ -110,7 +110,7 @@ export const fetchMap = mapId => (dispatch, getState) => {
     .then(map => dispatch(newMap(map)))
     .then(() => dispatch(setViewportClamp))
     .then(() => dispatch(fitToViewport))
-    .catch(error => console.warn(error));
+    .catch(error => console.warn(error)); // eslint-disable-line no-console
 };
 
 export const clearTiles = {

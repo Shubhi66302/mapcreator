@@ -81,7 +81,9 @@ app.post(
 );
 
 // error handler should be last middleware?
-app.use((err, req, res) => {
+// removing next from here breaks tests??
+/* eslint-disable-next-line no-unused-vars */
+app.use((err, req, res, next) => {
   res.status(500).send(err.message);
 });
 

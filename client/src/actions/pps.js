@@ -1,4 +1,3 @@
-import { getIdsForEntities } from "utils/util";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import {
   coordinateKeyToBarcodeSelector,

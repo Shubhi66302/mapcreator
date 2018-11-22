@@ -1,12 +1,7 @@
 import mapSchema from "common/json-schemas/map.json";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
 import { makeState, singleFloor } from "utils/test-helper";
 import { createNewPPSes } from "./pps";
-
-const middlewares = [thunk];
-const mockStore = configureStore(middlewares);
 
 var ajv = getLoadedAjv();
 ajv.addSchema(mapSchema.properties.queueDatas, "queueDatasSchema");

@@ -21,15 +21,7 @@ const FormikedInput = ({
   />
 );
 // form html
-const InnerForm = ({
-  values,
-  errors,
-  touched,
-  handleChange,
-  handleBlur,
-  handleSubmit,
-  isSubmitting
-}) => {
+const InnerForm = ({ handleSubmit, isSubmitting }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Field name="name" component={FormikedInput} label="Name" type="text" />
@@ -66,14 +58,14 @@ const InnerForm = ({
 
 // form validation etc.
 const Form = withFormik({
-  mapPropsToValues: props => ({
+  mapPropsToValues: () => ({
     name: "",
     row_start: "",
     row_end: "",
     col_start: "",
     col_end: ""
   }),
-  validationSchema: props => {
+  validationSchema: () => {
     var posIntSchema = number()
       .required()
       .positive()
@@ -88,7 +80,7 @@ const Form = withFormik({
   },
   handleSubmit: (
     { name, row_start, row_end, col_start, col_end },
-    { props, setSubmitting, setErrors }
+    { props, setSubmitting }
   ) => {
     // create a map with row_start etc.
     var map = createMapFromCoordinateData(
@@ -98,7 +90,7 @@ const Form = withFormik({
       col_end
     );
     const { onServerError, onSuccess } = props;
-    fetch(`/api/createMap`, {
+    fetch("/api/createMap", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

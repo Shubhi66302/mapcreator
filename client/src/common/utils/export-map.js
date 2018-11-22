@@ -35,7 +35,6 @@ export default map => {
   ].forEach(([outKey, floorKey, convert, idFieldNotRequired]) => {
     // start with empty list
     var list = [];
-    var curId = 1;
     // destructuring with variable name very cool
     map.floors.forEach(({ [floorKey]: things }) => {
       // add to the list

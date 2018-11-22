@@ -1,9 +1,8 @@
 // technically components should not be connected to app state but it's ok for our case.
-import React, { Component } from "react";
+import React from "react";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 import { addPPSes } from "actions/pps";
-import _ from "lodash";
 import { directionSchema } from "utils/forms";
 
 const schema = {

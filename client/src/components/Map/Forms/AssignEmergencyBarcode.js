@@ -1,10 +1,9 @@
 // technically components should not be connected to app state but it's ok for our case.
-import React, { Component } from "react";
+import React from "react";
 import BaseForm from "./BaseForm";
 import { connect } from "react-redux";
 // import { addEntities } from "actions/actions";
 import { addFireEmergencies } from "actions/fireEmergency";
-import _ from "lodash";
 
 const schema = {
   title: "Fire Emergency Barcodes",

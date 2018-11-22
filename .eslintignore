@@ -7,5 +7,5 @@ client/build/*
 client/coverage/*
 client/node_modules/*
 client/.storybook/*
-
+client/src/registerServiceWorker.js
 

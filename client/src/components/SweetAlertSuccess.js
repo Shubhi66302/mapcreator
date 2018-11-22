@@ -1,7 +1,7 @@
 import React from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 
-export default ({ message, onConfirm, title = "Success" }) => (
+var SweetAlertSuccess = ({ message, onConfirm, title = "Success" }) => (
   <SweetAlert
     show={message != null}
     success
@@ -13,3 +13,5 @@ export default ({ message, onConfirm, title = "Success" }) => (
     </pre>
   </SweetAlert>
 );
+
+export default SweetAlertSuccess;

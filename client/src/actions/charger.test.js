@@ -1,15 +1,7 @@
 import { createAllChargerBarcodes } from "./charger";
-import mapSchema from "common/json-schemas/map.json";
-import getLoadedAjv from "common/utils/get-loaded-ajv";
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
 import { makeState, singleFloorVanilla } from "utils/test-helper";
 import _ from "lodash";
 
-const middlewares = [thunk];
-const mockStore = configureStore(middlewares);
-
-var ajv = getLoadedAjv();
 // TODO: more tests for createAllChargerBarcodes with json checks also
 describe("createAllChargerBarcodes", () => {
   describe("should create 5 barcodes: charger barcode, entry barcode, special barcode, and three other neighbour barcodes", () => {

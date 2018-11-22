@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 
-export default ({ toggle, show, children, ...rest }) => (
+var FormModal = ({ toggle, show, children, ...rest }) => (
   <Modal isOpen={show} toggle={toggle} {...rest}>
     <ModalBody>{children}</ModalBody>
     {/* <ModalFooter>
@@ -14,3 +14,5 @@ export default ({ toggle, show, children, ...rest }) => (
     </ModalFooter> */}
   </Modal>
 );
+
+export default FormModal;

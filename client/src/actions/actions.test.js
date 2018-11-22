@@ -4,7 +4,7 @@ import { tileBoundsSelector } from "utils/selectors";
 import configureStore from "redux-mock-store";
 import { makeState, singleFloor } from "utils/test-helper";
 import * as actions from "./actions";
-import fetchMock, * as fetch from "fetch-mock";
+import fetchMock from "fetch-mock";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);

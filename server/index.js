@@ -1,5 +1,3 @@
-/* eslint no-console: 0 */
-
 require("dotenv").config();
 import "babel-polyfill";
 const path = require("path");
@@ -15,5 +13,6 @@ if (process.env.NODE_ENV == "production") {
   });
 }
 app.listen(process.env.PORT, () =>
+  /* eslint-disable-next-line no-console */
   console.log(`Listening on ${process.env.PORT}`)
 );

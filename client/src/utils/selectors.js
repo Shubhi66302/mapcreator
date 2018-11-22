@@ -168,7 +168,7 @@ export const getParticularEntityMap = createCachedSelector(
   (particularEntities, entityName) => {
     var ret = {};
     const [, entitySprite] = entitySelectorHelperData[entityName];
-    var list = Object.entries(particularEntities).map(([key, val]) => val);
+    var list = Object.entries(particularEntities).map(([, val]) => val);
     var coordinateKeys = list.map(e => e.coordinate);
     coordinateKeys.forEach(key => (ret[key] = entitySprite));
     return ret;
@@ -180,12 +180,12 @@ export const getQueueMap = createSelector(
   queueData => {
     var ret = {};
     var queueCoordinates = [].concat(
-      ...Object.entries(queueData).map(([key, { coordinates }]) => coordinates)
+      ...Object.entries(queueData).map(([, { coordinates }]) => coordinates)
     );
     // make unique
     var queueCoordinatesWithoutDuplicates = new Set(queueCoordinates);
     queueCoordinatesWithoutDuplicates.forEach(
-      (v1, _v2, _set) => (ret[v1] = constants.QUEUE)
+      v1 => (ret[v1] = constants.QUEUE)
     );
     return ret;
   }
@@ -196,7 +196,7 @@ export const getChargerEntryMap = state => {
   var barcodesDict = getBarcodes(state);
   var ret = {};
   Object.entries(chargerEntities).forEach(
-    ([_key, { charger_direction, coordinate }]) => {
+    ([, { charger_direction, coordinate }]) => {
       var nb = getNeighbouringBarcodes(coordinate, barcodesDict)[
         charger_direction
       ];
@@ -265,16 +265,16 @@ export const distanceTileSpritesSelector = createSelector(
     const {
       left: { x: xLeftOffset, y: yLeftOffset }
     } = constants.DISTANCE_TILE_OFFSETS;
-    for (var i = minY; i < maxY; i++) {
+    for (var j = minY; j < maxY; j++) {
       const { x: right, y: top } = tileRenderCoordinateSelector(state, {
-        tileId: tupleOfIntegersToCoordinateKey([maxX, i])
+        tileId: tupleOfIntegersToCoordinateKey([maxX, j])
       });
       ret.push({
         x: right + xLeftOffset,
         y: top + yLeftOffset,
         width: constants.DISTANCE_TILE_HEIGHT,
         height: constants.DISTANCE_TILE_WIDTH,
-        key: `r-${i}`
+        key: `r-${j}`
       });
     }
     return ret;
@@ -307,7 +307,7 @@ export const getMaxInBetweenDistance = (arrOfTuple, direction, barcodesDict) =>
   _.max(getAllInBetweenDistances(arrOfTuple, direction, barcodesDict));
 
 export const getAllColumnTileIdTuples = ({ maxY, minY }, distanceTileKey) => {
-  const i = parseInt(distanceTileKey.match(/c\-(.*)/)[1]);
+  const i = parseInt(distanceTileKey.match(/c-(.*)/)[1]);
   var arrOfTuple = [];
   for (var j = minY; j <= maxY; j++) {
     var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
@@ -318,7 +318,7 @@ export const getAllColumnTileIdTuples = ({ maxY, minY }, distanceTileKey) => {
 };
 
 export const getAllRowTileIdTuples = ({ maxX, minX }, distanceTileKey) => {
-  const j = parseInt(distanceTileKey.match(/r\-(.*)/)[1]);
+  const j = parseInt(distanceTileKey.match(/r-(.*)/)[1]);
   var arrOfTuple = [];
   for (var i = minX; i <= maxX; i++) {
     var tileId1 = tupleOfIntegersToCoordinateKey([i, j]);
@@ -336,12 +336,12 @@ export const getTileInBetweenDistances = createSelector(
     var ret = [];
     // columns
     for (var i = minX; i < maxX; i++) {
-      var arrOfTuple = getAllColumnTileIdTuples({ maxY, minY }, `c-${i}`);
+      let arrOfTuple = getAllColumnTileIdTuples({ maxY, minY }, `c-${i}`);
       ret.push(getMaxInBetweenDistance(arrOfTuple, 3, barcodesDict));
     }
     // rows
     for (var j = minY; j < maxY; j++) {
-      var arrOfTuple = getAllRowTileIdTuples({ maxX, minX }, `r-${j}`);
+      let arrOfTuple = getAllRowTileIdTuples({ maxX, minX }, `r-${j}`);
       ret.push(getMaxInBetweenDistance(arrOfTuple, 2, barcodesDict));
     }
     return ret;
@@ -447,11 +447,11 @@ export const getNewSpecialCoordinates = createSelector(
       coordinateKeys.length == 0
         ? 500
         : coordinateKeys
-            .map(coordinateKey =>
-              Math.max(...coordinateKeyToTupleOfIntegers(coordinateKey))
-            )
-            .sort()
-            .reverse()[0] + 1;
+          .map(coordinateKey =>
+            Math.max(...coordinateKeyToTupleOfIntegers(coordinateKey))
+          )
+          .sort()
+          .reverse()[0] + 1;
     var ret = [];
     for (var i = 0; i < n; i++) {
       ret.push(`${start + i},${start + i}`);

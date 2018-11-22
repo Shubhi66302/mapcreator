@@ -7,7 +7,6 @@ import { linkTo } from "@storybook/addon-links";
 import { Button, Welcome } from "@storybook/react/demo";
 import JSONFileInput from "components/JSONFileInput";
 import InlineTextInput from "components/InlineTextInput";
-import TestReactPixiWithViewport from "components/TestReactPixiWithViewport";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 
 storiesOf("Welcome", module).add("to Storybook", () => (
