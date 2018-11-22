@@ -27,13 +27,16 @@ export const tileIdsSelector = createSelector(
   (barcodeIds, barcodes) => [...barcodeIds.filter(id => !barcodes[id].special)]
 );
 // just a map of tileIds instead of array. useful to key if tileId is good or not
-export const tileIdsMapSelector = createSelector(tileIdsSelector, tileIds => {
-  var ret = {};
-  for (var tileId of tileIds) {
-    ret[tileId] = true;
+export const tileIdsMapSelector = createSelector(
+  tileIdsSelector,
+  tileIds => {
+    var ret = {};
+    for (var tileId of tileIds) {
+      ret[tileId] = true;
+    }
+    return ret;
   }
-  return ret;
-});
+);
 
 // since barcodes =/= coordinate sometimes
 export const coordinateKeyToBarcodeSelector = createSelector(
@@ -70,19 +73,22 @@ export const barcodeToCoordinateKeySelector = createSelector(
 
 // get max and min coordinates for current floor. don't need barcode data since
 // tileId is already the encoded coordinate
-export const tileBoundsSelector = createSelector(tileIdsSelector, tileIds => {
-  // special barcodes are already ignored.
-  var coordinates = tileIds.map(tileId =>
-    coordinateKeyToTupleOfIntegers(tileId)
-  );
-  var [xs, ys] = _.unzip(coordinates);
-  return {
-    maxX: _.max(xs),
-    maxY: _.max(ys),
-    minX: _.min(xs),
-    minY: _.min(ys)
-  };
-});
+export const tileBoundsSelector = createSelector(
+  tileIdsSelector,
+  tileIds => {
+    // special barcodes are already ignored.
+    var coordinates = tileIds.map(tileId =>
+      coordinateKeyToTupleOfIntegers(tileId)
+    );
+    var [xs, ys] = _.unzip(coordinates);
+    return {
+      maxX: _.max(xs),
+      maxY: _.max(ys),
+      minX: _.min(xs),
+      minY: _.min(ys)
+    };
+  }
+);
 
 // max coordinate including special points. used to generate the new special point.
 export const getCurrentFloorMaxCoordinate = createSelector(
@@ -169,18 +175,21 @@ export const getParticularEntityMap = createCachedSelector(
   }
 )((state, { entityName }) => entityName);
 
-export const getQueueMap = createSelector(getQueueData, queueData => {
-  var ret = {};
-  var queueCoordinates = [].concat(
-    ...Object.entries(queueData).map(([key, { coordinates }]) => coordinates)
-  );
-  // make unique
-  var queueCoordinatesWithoutDuplicates = new Set(queueCoordinates);
-  queueCoordinatesWithoutDuplicates.forEach(
-    (v1, _v2, _set) => (ret[v1] = constants.QUEUE)
-  );
-  return ret;
-});
+export const getQueueMap = createSelector(
+  getQueueData,
+  queueData => {
+    var ret = {};
+    var queueCoordinates = [].concat(
+      ...Object.entries(queueData).map(([key, { coordinates }]) => coordinates)
+    );
+    // make unique
+    var queueCoordinatesWithoutDuplicates = new Set(queueCoordinates);
+    queueCoordinatesWithoutDuplicates.forEach(
+      (v1, _v2, _set) => (ret[v1] = constants.QUEUE)
+    );
+    return ret;
+  }
+);
 
 export const getChargerEntryMap = state => {
   var chargerEntities = getParticularEntity(state, { entityName: "charger" });
@@ -278,7 +287,12 @@ export const getAllInBetweenDistances = (arrOfTuple, direction, barcodesDict) =>
     if (barcode1 && barcode2) {
       var distance =
         barcode1.size_info[direction] + barcode2.size_info[(direction + 2) % 4];
-      if (barcode1.adjacency && barcode2.adjacency) {
+      if (
+        barcode1.adjacency &&
+        barcode2.adjacency &&
+        barcode1.adjacency[direction] &&
+        barcode2.adjacency[(direction + 2) % 4]
+      ) {
         // there might be special barcode between them
         var specialTileId = tupleOfIntegersToCoordinateKey(
           barcode1.adjacency[direction]
