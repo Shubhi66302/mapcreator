@@ -34,6 +34,11 @@ TODO: write complete readme.
 
 Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so editing any js file in `client/` will reload page in browser 
 
+## Creating pull request for a feature
+- For each feature, create a new branch that looks like `feature/some-feature`. Once you are confident with the code do `git push origin feature/some-feature`. This will push the branch to remote where you can create a pull request for it.
+- Bitbucket pipelines runs unit tests and linting on each commit, so run tests and linting locally to find any problems. Run `npm run test` for running unit tests, and `npm run lint` for `eslint` which will also try autofix any linting errors. Fix any remaining errors before pushing.
+
+
 ## Pro tip
 - `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can iterate quickly without making up the whole scenario in the browser.
 - To iterate fast on a UI component, `cd` into client in a new tab and run `yarn run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
