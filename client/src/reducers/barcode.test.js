@@ -111,9 +111,9 @@ describe("ADD-QUEUE-BARCODES-TO-PPS", () => {
     ]);
     expect(newState["1,0"].neighbours).toMatchObject([
       [0, 0, 0],
+      [1, 1, 1],
       [1, 0, 0],
-      [1, 0, 0],
-      [1, 0, 0]
+      [1, 1, 1]
     ]);
   });
 });

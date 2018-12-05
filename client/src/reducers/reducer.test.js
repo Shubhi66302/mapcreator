@@ -1,28 +1,29 @@
 // TODO: write more tests
 import * as reducer from "./reducer";
 
-describe("selectedMapTilesReducer", () => {
-  const { selectedMapTilesReducer } = reducer;
-  describe("CLICK-ON-MAP-TILE", () => {
-    test("should add an unclicked tile", () => {
-      var state = { "31,32": true };
-      expect(
-        selectedMapTilesReducer(state, {
-          type: "CLICK-ON-MAP-TILE",
-          value: "32,32"
-        })
-      ).toMatchObject({ ...state, "32,32": true });
-    });
-    test("should remove an already clicked tile", () => {
-      var state = { "31,32": true, "33,32": true };
-      expect(
-        selectedMapTilesReducer(state, {
-          type: "CLICK-ON-MAP-TILE",
-          value: "31,32"
-        })
-      ).toMatchObject({ "33,32": true });
-    });
-  });
+// describe("selectedMapTilesReducer", () => {
+//   const { selectedMapTilesReducer } = reducer;
+//   describe("CLICK-ON-MAP-TILE", () => {
+//     test("should add an unclicked tile", () => {
+//       var state = { "31,32": true };
+//       expect(
+//         selectedMapTilesReducer(state, {
+//           type: "CLICK-ON-MAP-TILE",
+//           value: "32,32"
+//         })
+//       ).toMatchObject({ ...state, "32,32": true });
+//     });
+//     test("should remove an already clicked tile", () => {
+//       var state = { "31,32": true, "33,32": true };
+//       expect(
+//         selectedMapTilesReducer(state, {
+//           type: "CLICK-ON-MAP-TILE",
+//           value: "31,32"
+//         })
+//       ).toMatchObject({ "33,32": true });
+//     });
+//   });
+
   /// this method should be moved to selectionReducer
   // describe("DRAG-END", () => {
   //   test("shouldn't do anything if no selected tiles", () => {
@@ -46,6 +47,60 @@ describe("selectedMapTilesReducer", () => {
   //     });
   //   });
   // });
+// });
+
+describe("selectionReducer", () => {
+  const { selectionReducer } = reducer;
+  describe("CLICK_ON_MAP_TILE", () => {
+    test("should select tile when queue mode is off and click on unselected tile", () => {
+      var state = { mapTiles: {}, distanceTiles: {}, queueMode: false };
+      var newState = selectionReducer(state, {
+        type: "CLICK-ON-MAP-TILE",
+        value: "32,32"
+      });
+      expect(newState).toMatchObject({
+        mapTiles: { "32,32": true },
+        distanceTiles: {},
+        queueMode: false
+      });
+    });
+    test("should unselect tile when queue mode is off and click on selected tile", () => {
+        var state = { mapTiles: {"32,32": true , "31,31":true}, distanceTiles: {}, queueMode: false };
+        var newState = selectionReducer(state, {
+          type: "CLICK-ON-MAP-TILE",
+          value: "32,32"
+        });
+        expect(newState).toMatchObject({
+          mapTiles: { "31,31":true },
+          distanceTiles: {},
+          queueMode: false
+        });
+      });
+      test("should select tile with order when queue mode is on and click on unselected tile", () => {
+        var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
+        var newState = selectionReducer(state, {
+          type: "CLICK-ON-MAP-TILE",
+          value: "33,33"
+        });
+        expect(newState).toMatchObject({
+          mapTiles: { "32,32": 1 , "31,31":2,"33,33":3 },
+          distanceTiles: {},
+          queueMode: true
+        });
+      });
+      test("should not unselect tile with order when queue mode is on and click on selected tile", () => {
+        var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
+        var newState = selectionReducer(state, {
+          type: "CLICK-ON-MAP-TILE",
+          value: "32,32"
+        });
+        expect(newState).toMatchObject({
+          mapTiles: { "32,32": 1 , "31,31":2 },
+          distanceTiles: {},
+          queueMode: true
+        });
+      });
+  });
 });
 
 describe("xoredMap", () => {
@@ -58,10 +113,19 @@ describe("xoredMap", () => {
 });
 
 describe("ppsReducer", () => {
-    const {ppsReducer} = reducer;
-    test("adds queue into pps", () => {
-        const state = {'1': {pps_id: 1, something: 'ok', coordinate: '1,1'}}
-        const newState = ppsReducer(state, {type: 'ADD-QUEUE-BARCODES-TO-PPS', value: {'2,1': 1, '1,1': 2 , '3,1' : 3}})
-        expect(newState).toMatchObject({'1': {pps_id: 1, something: 'ok', coordinate: '1,1', queue_barcodes: ['2,1','1,1','3,1']}})    
-    })
-})
+  const { ppsReducer } = reducer;
+  test("adds queue into pps", () => {
+    const state = { "1": { pps_id: 1, coordinate: "1,1" } };
+    const newState = ppsReducer(state, {
+      type: "ADD-QUEUE-BARCODES-TO-PPS",
+      value: {pps_id:1,tiles: ["001.002", "001.001", "001.003"] }
+    });
+    expect(newState).toMatchObject({
+      "1": {
+        pps_id: 1,
+        coordinate: "1,1",
+        queue_barcodes: ["001.002", "001.001", "001.003"]
+      }
+    });
+  });
+});

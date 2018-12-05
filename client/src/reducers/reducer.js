@@ -46,21 +46,21 @@ export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 
 export var ppsReducer = (state = {}, action) => {
-  switch (action.type) {
-    case "ADD-QUEUE-BARCODES-TO-PPS":
-      // console.log(action.value);
-      // console.log(state);
-
-      return {
-        ...state,
-        [action.value.pps_id]: {
-          ...state[action.value.pps_id],
-          queue_barcodes: action.value.tiles
-        }
-      };
-  }
-  return { ...state };
-};
+    switch (action.type) {
+      case "ADD-QUEUE-BARCODES-TO-PPS":
+        // console.log(action.value);
+        // console.log(state);
+  
+        return {
+          ...state,
+          [action.value.pps_id]: {
+            ...state[action.value.pps_id],
+            queue_barcodes: action.value.tiles
+          }
+        };
+    }
+    return { ...state };
+  };
 
 export const entitiesReducer = combineReducers({
   elevator: createEntityReducer("ELEVATOR", "elevator_id"),
@@ -216,10 +216,14 @@ export const selectionReducer = (
           // the value is, just interested in the key
           return { ...state, mapTiles: { ...state.mapTiles, [tileId]: true } };
         }
-      } else {
-        var a = _.reduce(
-          state.mapTiles,
-          function(acc, value, key) {
+      } 
+    else {
+        // don't do anything if it's already selected
+        if (state.mapTiles[action.value]) {
+            return state;
+        }
+        var a = _.reduce(state.mapTiles, function(acc,value,key) {
+
             console.log(key);
 
             return Math.max(acc, value);
