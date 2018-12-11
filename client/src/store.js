@@ -24,15 +24,15 @@ export default createStore(
     // NOTE: selected tiles is also a map for efficiency reasons
     selection: {
       mapTiles: {},
-      distanceTiles: {}
+      distanceTiles: {},
+      metaKey: false,
+      shiftKey: false
     },
     // TODO: implement zone view
     zoneView: false,
     spritesheetLoaded: false,
     selectedArea: null,
     viewport: {
-      metaKey: false,
-      shiftKey: false,
       viewportInstance: null,
       currentView: null
     }

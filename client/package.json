@@ -39,6 +39,7 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
+    "redux-undo": "^1.0.0-beta9-9-7",
     "reselect": "^3.0.1",
     "sweetalert": "^2.1.0",
     "sweetalert2": "^7.26.9",

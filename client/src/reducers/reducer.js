@@ -26,13 +26,13 @@ export const dummyState = {
   currentFloor: 1,
   selection: {
     mapTiles: {},
-    distanceTIles: {}
+    distanceTiles: {},
+    shiftKey: false,
+    metaKey: false
   },
   zoneView: false,
   selectedArea: null,
   viewport: {
-    shiftKey: false,
-    metaKey: false,
     viewportInstance: null,
     minimapInstance: null,
     currentView: null
