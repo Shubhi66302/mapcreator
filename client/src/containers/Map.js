@@ -105,6 +105,15 @@ class Map extends Component {
             >
               Download
             </button>
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => {
+                dispatch(downloadMap(true));
+              }}
+            >
+              Download as Single Floor
+            </button>
           </div>
         </div>
         <div className="row">

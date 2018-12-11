@@ -167,11 +167,11 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
     .catch(onError);
 };
 
-export const downloadMap = () => (dispatch, getState) => {
+export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   // denormalize it
   const mapObj = denormalizeMap(normalizedMap);
-  const exportedJson = exportMap(mapObj.map);
+  const exportedJson = exportMap(mapObj.map, singleFloor);
   var zip = new JSZip();
   Object.keys(exportedJson).forEach(fileName => {
     zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
