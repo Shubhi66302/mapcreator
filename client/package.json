@@ -73,9 +73,6 @@
     "react-test-renderer": "^16.4.1"
   },
   "jest": {
-    "setupFiles": [
-      "jest-canvas-mock"
-    ],
     "collectCoverageFrom": [
       "!<rootDir>/src/components/",
       "!<rootDir>/src/containers/",
