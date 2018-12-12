@@ -18,7 +18,12 @@ TODO: write complete readme.
     - `createuser -P gor`
     - `createdb mapcreator_react_dev`
     - `createdb mapcreator_react_test`
-    - TODO: grant privilege instructions
+    - `psql mapcreator_react_dev`
+    - `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO gor;`
+    - `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to gor;`
+    - `psql mapcreator_react_test`
+    - `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO gor;`
+    - `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to gor;`
 - Install packages
     - `yarn install`
     - `cd client && yarn install`
