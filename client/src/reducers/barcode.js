@@ -1,5 +1,6 @@
 import {
   getNeighbourTiles,
+  getDirection,
   getNeighbouringBarcodes,
   deleteNeighbourFromBarcode
 } from "utils/util";
@@ -41,13 +42,81 @@ export var calculateDistances = (
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case "ADD-QUEUE-BARCODES-TO-PPS":
+    {    
+      const tileIds = action.value.coordinates;
+      var newState = _.cloneDeep(state);
+      for( var i =0;i < tileIds.length; i++) {
+        var tileId = tileIds[i];
+                
+                
+        if(newState[tileId].neighbours)
+        {   var QueueDirection;
+          if (i == tileIds.length-1)
+          {   
+            QueueDirection = 5; 
+          }
+          else
+          {
+            QueueDirection = getDirection(tileId,tileIds[i+1]);
+          } 
+          var neighbouringTileIds = _.filter(getNeighbouringBarcodes(tileId,state),function (tile) {return tile!=null && !_.includes(tileIds,tile.coordinate);});
+          
+          if ( i!=0){
+                    
+            if (QueueDirection != 5){
+              newState[tileId].neighbours[QueueDirection][1] = 1;
+              newState[tileId].neighbours[QueueDirection][2] = 1;
+              var Remaining = _.difference([0,1,2,3],[QueueDirection]);
+                    
+              for (var j = 0; j < Remaining.length; j++) {
+                newState[tileId].neighbours[Remaining[j]][1] = 0;
+                newState[tileId].neighbours[Remaining[j]][2] = 0;
+              }
+                    
+              neighbouringTileIds.forEach((neighbouringTileIdobject) => {
+                var neighbouringTileId = neighbouringTileIdobject.coordinate;
+                var current_neighbour_dir =  getDirection(tileId,neighbouringTileId);
+                // var prevQueDir = getDirection(tileIds[i-1],tileId);
+                var neighbour_current_dir = (current_neighbour_dir + 2) % 4;
+                newState[neighbouringTileId].neighbours[neighbour_current_dir][1] = 0;
+                newState[neighbouringTileId].neighbours[neighbour_current_dir][2] = 0;
+              });
+            }
+            else {
+              
+              var endQueuedir = getDirection(tileIds[i-1],tileId);
+              var endoppQuedir = (endQueuedir + 2) % 4;
+              newState[tileId].neighbours[endoppQuedir][1] = 0;
+              newState[tileId].neighbours[endoppQuedir][2] = 0;
+              neighbouringTileIds.forEach((neighbouringTileIdobjectend ) => {
+                var neighbouringTileIdend = neighbouringTileIdobjectend.coordinate;
+                var endcurrdir = getDirection(tileId,neighbouringTileIdend);
+                var endnbrdir = (endcurrdir + 2) %4 ;
+                if (endcurrdir != endQueuedir && endcurrdir != endoppQuedir)
+                {
+                  newState[neighbouringTileIdend].neighbours[endnbrdir][1] = 0;
+                  newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
+                }
+                      
+              });
+            }
+          }
+        }
+      };
+
+      return { ...state, ...newState };
+    }
+      
+      
+    
     case "ASSIGN-STORABLE": {
       const selectedMapTiles = action.value;
-      var newState = {};
+      newState = {};
       for (let tileId of Object.keys(selectedMapTiles)) {
         newState[tileId] = { ...state[tileId], store_status: 1 };
         if (newState[tileId].neighbours) {
-          var neighbouringTileIds = getNeighbourTiles(tileId);
+          neighbouringTileIds = getNeighbourTiles(tileId);
           neighbouringTileIds.forEach((neighbouringTileId, idx) => {
             // only get neighbours that have already been added to new state. this
             // reduces redundant updates
@@ -133,7 +202,7 @@ export default (state = {}, action) => {
       return { ...state, ...newState };
     }
     case "MODIFY-BARCODE-NEIGHBOURS": {
-      var { tileId, values } = action.value;
+      var {  values } = action.value;
       if (!state[tileId]) return state;
       var newBarcode = _.cloneDeep(state[tileId]);
       ["top", "right", "bottom", "left"].forEach((key, idx) => {

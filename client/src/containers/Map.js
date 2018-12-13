@@ -11,6 +11,7 @@ import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
 import AssignStorable from "components/Map/Forms/AssignStorable";
+import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode";
 import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
@@ -19,6 +20,16 @@ import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
 import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 
+const QueueCheckbox = ({val, onChange}) => (
+  <label>
+    Queue mode:
+    <input 
+      name="queuemode"
+      type="checkbox"
+      checked={val}
+      onChange={onChange} />
+  </label>
+);
 class Map extends Component {
   state = {
     error: undefined,
@@ -40,7 +51,7 @@ class Map extends Component {
 
   render() {
     const { error, successMessage } = this.state;
-    const { nMap, dispatch } = this.props;
+    const { nMap, queueMode, dispatch } = this.props;
     // mapId may be different from params since it may not have been fetched yet...
 
     const mapId = nMap ? Object.entries(nMap.entities.mapObj)[0][1].id : 0;
@@ -70,12 +81,14 @@ class Map extends Component {
             AssignEmergencyBarcode,
             AddBarcode,
             RemoveBarcode,
+            AddQueueBarcode,
             ModifyDistanceBwBarcodes
           ].map((Elm, idx) => (
             <div key={idx} className="pr-1 pt-1">
               <Elm onError={e => this.setState({ e })} />
             </div>
           ))}
+          <QueueCheckbox val={queueMode} onChange={() => dispatch({type: "TOGGLE-QUEUE-MODE"})}/>
         </div>
         <div className="row py-1">
           <div className="btn-group" role="group">
@@ -152,5 +165,6 @@ class Map extends Component {
   }
 }
 export default connect(state => ({
-  nMap: state.normalizedMap
+  nMap: state.normalizedMap,
+  queueMode: state.selection.queueMode
 }))(Map);
