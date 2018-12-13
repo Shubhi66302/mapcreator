@@ -2289,7 +2289,7 @@ caniuse-lite@^1.0.30000748, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.300008
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000885.tgz#e889e9f8e7e50e769f2a49634c932b8aee622984"
   integrity sha512-cXKbYwpxBLd7qHyej16JazPoUacqoVuDhvR61U7Fr5vSxMUiodzcYa1rQYRYfZ5GexV03vGZHd722vNPLjPJGQ==
 
-canvas-prebuilt@^1.6.5-prerelease.1:
+canvas-prebuilt@1:
   version "1.6.11"
   resolved "https://registry.yarnpkg.com/canvas-prebuilt/-/canvas-prebuilt-1.6.11.tgz#9b37071aa0ddd4f7c2b4a9e279b63fb2dc30db9b"
   integrity sha512-ayBAayYLgFbGBX+cwtOzM4iEQP4XB5DuBbtjgvAwQ66/FMzSR7DhlCqtDZIq9UBbpFCb1QpyDgUNVclHDdBixg==
@@ -5701,6 +5701,10 @@ istanbul-reports@^1.5.1:
   integrity sha512-+cfoZ0UXzWjhAdzosCPP3AN8vvef8XDkWtTfgaN+7L3YTpNYITnCaEkceo5SEYy644VkHka/P1FvkWvrG/rrJw==
   dependencies:
     handlebars "^4.0.3"
+
+jest-canvas-mock@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/jest-canvas-mock/-/jest-canvas-mock-1.1.0.tgz#f6ed0998b6be3ae2b7e095d7173441ae62cc831e"
 
 jest-changed-files@^20.0.3:
   version "20.0.3"
