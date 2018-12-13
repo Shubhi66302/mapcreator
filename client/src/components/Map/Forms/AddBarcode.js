@@ -27,7 +27,7 @@ export const getValidEmptyNeighbours = (selectedMapTiles, barcodes) => {
   const coordinate = Object.keys(selectedMapTiles)[0];
   const nbTileIds = getNeighbourTiles(coordinate, barcodes);
   const emptyDirTileIdList = _.zip([0, 1, 2, 3], nbTileIds).filter(
-    ([_dir, nbTileId]) => !barcodes[nbTileId] && isValidCoordinateKey(nbTileId)
+    ([, nbTileId]) => !barcodes[nbTileId] && isValidCoordinateKey(nbTileId)
   );
   return emptyDirTileIdList;
 };
@@ -44,7 +44,7 @@ const shouldBeDisabled = (selectedMapTiles, barcodes) => {
 // TODO: support customizing edges of new barcode
 class AddBarcode extends Component {
   render() {
-    const { selectedMapTiles, barcodes, onSubmit, onError } = this.props;
+    const { selectedMapTiles, barcodes, onSubmit } = this.props;
     const disabled = shouldBeDisabled(selectedMapTiles, barcodes);
     const tooltipData = {
       id: "add-barcode",

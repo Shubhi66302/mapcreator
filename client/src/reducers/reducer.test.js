@@ -24,29 +24,29 @@ import * as reducer from "./reducer";
 //     });
 //   });
 
-  /// this method should be moved to selectionReducer
-  // describe("DRAG-END", () => {
-  //   test("shouldn't do anything if no selected tiles", () => {
-  //     var state = { "1,1": true, "2,2": true };
-  //     var newState = selectedMapTilesReducer(state, {
-  //       type: "DRAG-END",
-  //       value: []
-  //     });
-  //     expect(newState).toMatchObject(state);
-  //   });
-  //   test("should xor tiles if some tiles selected", () => {
-  //     var state = { "1,1": true, "2,2": true, "2,3": true };
-  //     var newState = selectedMapTilesReducer(state, {
-  //       type: "DRAG-END",
-  //       value: ["2,2", "4,4"]
-  //     });
-  //     expect(newState).toMatchObject({
-  //       "1,1": true,
-  //       "2,3": true,
-  //       "4,4": true
-  //     });
-  //   });
-  // });
+/// this method should be moved to selectionReducer
+// describe("DRAG-END", () => {
+//   test("shouldn't do anything if no selected tiles", () => {
+//     var state = { "1,1": true, "2,2": true };
+//     var newState = selectedMapTilesReducer(state, {
+//       type: "DRAG-END",
+//       value: []
+//     });
+//     expect(newState).toMatchObject(state);
+//   });
+//   test("should xor tiles if some tiles selected", () => {
+//     var state = { "1,1": true, "2,2": true, "2,3": true };
+//     var newState = selectedMapTilesReducer(state, {
+//       type: "DRAG-END",
+//       value: ["2,2", "4,4"]
+//     });
+//     expect(newState).toMatchObject({
+//       "1,1": true,
+//       "2,3": true,
+//       "4,4": true
+//     });
+//   });
+// });
 // });
 
 describe("selectionReducer", () => {
@@ -65,41 +65,41 @@ describe("selectionReducer", () => {
       });
     });
     test("should unselect tile when queue mode is off and click on selected tile", () => {
-        var state = { mapTiles: {"32,32": true , "31,31":true}, distanceTiles: {}, queueMode: false };
-        var newState = selectionReducer(state, {
-          type: "CLICK-ON-MAP-TILE",
-          value: "32,32"
-        });
-        expect(newState).toMatchObject({
-          mapTiles: { "31,31":true },
-          distanceTiles: {},
-          queueMode: false
-        });
+      var state = { mapTiles: {"32,32": true , "31,31":true}, distanceTiles: {}, queueMode: false };
+      var newState = selectionReducer(state, {
+        type: "CLICK-ON-MAP-TILE",
+        value: "32,32"
       });
-      test("should select tile with order when queue mode is on and click on unselected tile", () => {
-        var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
-        var newState = selectionReducer(state, {
-          type: "CLICK-ON-MAP-TILE",
-          value: "33,33"
-        });
-        expect(newState).toMatchObject({
-          mapTiles: { "32,32": 1 , "31,31":2,"33,33":3 },
-          distanceTiles: {},
-          queueMode: true
-        });
+      expect(newState).toMatchObject({
+        mapTiles: { "31,31":true },
+        distanceTiles: {},
+        queueMode: false
       });
-      test("should not unselect tile with order when queue mode is on and click on selected tile", () => {
-        var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
-        var newState = selectionReducer(state, {
-          type: "CLICK-ON-MAP-TILE",
-          value: "32,32"
-        });
-        expect(newState).toMatchObject({
-          mapTiles: { "32,32": 1 , "31,31":2 },
-          distanceTiles: {},
-          queueMode: true
-        });
+    });
+    test("should select tile with order when queue mode is on and click on unselected tile", () => {
+      var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
+      var newState = selectionReducer(state, {
+        type: "CLICK-ON-MAP-TILE",
+        value: "33,33"
       });
+      expect(newState).toMatchObject({
+        mapTiles: { "32,32": 1 , "31,31":2,"33,33":3 },
+        distanceTiles: {},
+        queueMode: true
+      });
+    });
+    test("should not unselect tile with order when queue mode is on and click on selected tile", () => {
+      var state = { mapTiles: {"32,32": 1 , "31,31":2}, distanceTiles: {}, queueMode: true };
+      var newState = selectionReducer(state, {
+        type: "CLICK-ON-MAP-TILE",
+        value: "32,32"
+      });
+      expect(newState).toMatchObject({
+        mapTiles: { "32,32": 1 , "31,31":2 },
+        distanceTiles: {},
+        queueMode: true
+      });
+    });
   });
 });
 

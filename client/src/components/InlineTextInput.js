@@ -10,8 +10,8 @@ export default ({ label, errorMessage, touched, name, ...props }) => (
       <input className="form-control" id={name} name={name} {...props} />
       {touched &&
         errorMessage && (
-          <small className="form-text text-danger">{errorMessage}</small>
-        )}
+        <small className="form-text text-danger">{errorMessage}</small>
+      )}
     </div>
   </div>
 );

@@ -11,7 +11,7 @@ import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
 import AssignStorable from "components/Map/Forms/AssignStorable";
-import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode"
+import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode";
 import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
@@ -21,7 +21,7 @@ import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarco
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 
 const QueueCheckbox = ({val, onChange}) => (
-    <label>
+  <label>
     Queue mode:
     <input 
       name="queuemode"
@@ -29,7 +29,7 @@ const QueueCheckbox = ({val, onChange}) => (
       checked={val}
       onChange={onChange} />
   </label>
-)
+);
 class Map extends Component {
   state = {
     error: undefined,
@@ -88,7 +88,7 @@ class Map extends Component {
               <Elm onError={e => this.setState({ e })} />
             </div>
           ))}
-        <QueueCheckbox val={queueMode} onChange={() => dispatch({type: 'TOGGLE-QUEUE-MODE'})}/>
+          <QueueCheckbox val={queueMode} onChange={() => dispatch({type: "TOGGLE-QUEUE-MODE"})}/>
         </div>
         <div className="row py-1">
           <div className="btn-group" role="group">
@@ -117,6 +117,15 @@ class Map extends Component {
               }}
             >
               Download
+            </button>
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => {
+                dispatch(downloadMap(true));
+              }}
+            >
+              Download as Single Floor
             </button>
           </div>
         </div>

@@ -64,7 +64,7 @@ describe("/api/map", () => {
 
   test("no map id", async () => {
     // since no id is provided it gives 404
-    var response = await request(app)
+    await request(app)
       .get("/api/map")
       .expect(404);
   });
@@ -84,7 +84,8 @@ describe("/api/maps", () => {
     // reverse order since sorted in descending order of updatedAt
     var expectedMaps = [map2, map1]
       .map(map => map.toJSON())
-      .map(({ map, ...rest }) => ({
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
         ...rest,
         createdAt: rest.createdAt.toISOString(),
         updatedAt: rest.updatedAt.toISOString()
@@ -108,7 +109,8 @@ describe("/api/maps", () => {
     await map1.update({ name: "i-changed-the-name" });
     var expectedMaps = [map1, map3, map2]
       .map(map => map.toJSON())
-      .map(({ map, ...rest }) => ({
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
         ...rest,
         createdAt: rest.createdAt.toISOString(),
         updatedAt: rest.updatedAt.toISOString()
@@ -151,7 +153,7 @@ describe("/api/map:id (save map)", () => {
   });
   test("should throw when trying to update non-existing map", async () => {
     var response = await request(app)
-      .post(`/api/map/221`)
+      .post("/api/map/221")
       .send({ map: dummyGoodMap })
       .expect(500);
     expect(response.error.text).toMatch(/could not find map for id/);

@@ -1,11 +1,9 @@
-import { TILE_WIDTH, TILE_HEIGHT } from "../constants";
 import { normalizeMap } from "utils/normalizr";
 import { combineReducers } from "redux";
 import { createEntityReducer } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
-import { getDragSelectedTiles } from "utils/selectors";
 import _ from "lodash";
 
 export const dummyState = {
@@ -28,13 +26,13 @@ export const dummyState = {
   currentFloor: 1,
   selection: {
     mapTiles: {},
-    distanceTIles: {}
+    distanceTiles: {},
+    shiftKey: false,
+    metaKey: false
   },
   zoneView: false,
   selectedArea: null,
   viewport: {
-    shiftKey: false,
-    metaKey: false,
     viewportInstance: null,
     minimapInstance: null,
     currentView: null
@@ -46,21 +44,19 @@ export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 
 export var ppsReducer = (state = {}, action) => {
-    switch (action.type) {
-      case "ADD-QUEUE-BARCODES-TO-PPS":
-        // console.log(action.value);
-        // console.log(state);
-  
-        return {
-          ...state,
-          [action.value.pps_id]: {
-            ...state[action.value.pps_id],
-            queue_barcodes: action.value.tiles
-          }
-        };
-    }
-    return { ...state };
-  };
+  switch (action.type) {
+    case "ADD-QUEUE-BARCODES-TO-PPS":
+
+      return {
+        ...state,
+        [action.value.pps_id]: {
+          ...state[action.value.pps_id],
+          queue_barcodes: action.value.tiles
+        }
+      };
+  }
+  return { ...state };
+};
 
 export const entitiesReducer = combineReducers({
   elevator: createEntityReducer("ELEVATOR", "elevator_id"),
@@ -110,8 +106,7 @@ export const currentFloorReducer = (state = 1, action) => {
 // helper exported for testing
 export const toggleKeyInMap = (theMap, key) => {
   if (theMap[key]) {
-    const { [`${key}`]: toDelete_, ...rest } = theMap;
-    return { ...rest };
+    return _.omit(theMap, key);
   }
 
   return { ...theMap, [key]: true };
@@ -120,14 +115,14 @@ export const toggleKeyInMap = (theMap, key) => {
 export const toggleKeyInMapWhenQueueMode = (state, tileId) => {
   var a = _.reduce(
     state,
-    function(acc, value, key) {
-      console.log(key);
+    function(acc, value) {
+      
 
       return Math.max(acc, value);
     },
     0
   );
-  console.log(a);
+  
   return { ...state, [tileId]: a + 1 };
 };
 
@@ -205,32 +200,31 @@ export const selectionReducer = (
     case "TOGGLE-QUEUE-MODE":
       return { mapTiles: {}, distanceTiles: {}, queueMode: state.queueMode };
     case "CLICK-ON-MAP-TILE":
-      const tileId = action.value;
+      var tileId = action.value;
       if (!state.queueMode) {
         if (state.mapTiles[tileId]) {
           // delete tile from selected
-          const { [tileId]: toDelete_, ...rest } = state.mapTiles;
-          return { ...state, mapTiles: { ...rest } };
+          return {...state, mapTiles: _.omit(state.mapTiles, tileId)};
         } else {
           // using true to signify tile is selected. doesn't really matter what
           // the value is, just interested in the key
           return { ...state, mapTiles: { ...state.mapTiles, [tileId]: true } };
         }
       } 
-    else {
+      else {
         // don't do anything if it's already selected
         if (state.mapTiles[action.value]) {
-            return state;
+          return state;
         }
-        var a = _.reduce(state.mapTiles, function(acc,value,key) {
+        var a = _.reduce(state.mapTiles, function(acc,value) {
 
-            console.log(key);
+         
 
-            return Math.max(acc, value);
-          },
-          0
+          return Math.max(acc, value);
+        },
+        0
         );
-        console.log(a);
+       
         return { ...state, mapTiles: { ...state.mapTiles, [tileId]: a + 1 } };
       }
 
@@ -246,31 +240,15 @@ export const selectionReducer = (
 
     case "ADD-QUEUE-BARCODES-TO-PPS":
       if (!state.queueMode) {
-        console.log("queue mode is off");
+       
         return { ...state };
       } else {
-        const selectedMapTiles = action.value;
+        
         var newState = {};
-        for (let tileId of Object.keys(selectedMapTiles)) {
-          //   newState[tileId] = { ...state[tileId], store_status: 1 };
-          //   if (newState[tileId].neighbours) {
-          //     var neighbouringTileIds = getNeighbourTiles(tileId);
-          //     neighbouringTileIds.forEach((neighbouringTileId, idx) => {
-          //       // only get neighbours that have already been added to new state. this
-          //       // reduces redundant updates
-          //       if (newState[neighbouringTileId]) {
-          //         // cannot traverse rack to rack
-          //         newState[neighbouringTileId].neighbours[(idx + 2) % 4][2] = 0;
-          //         newState[tileId].neighbours[idx][2] = 0;
-          //       }
-          //     });
-          //   }
-          console.log("logging");
-          console.log(tileId);
-        }
+        
         return Object.assign({}, state, newState);
       }
-    case "DRAG-END":
+    case "DRAG-END": {
       const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
       // if both map tiles and distance tiles are selected, consider only map tiles as selected
       if (!state.queueMode) {
@@ -289,6 +267,7 @@ export const selectionReducer = (
       } else {
         return { ...state };
       }
+    }
   }
   return state;
 };

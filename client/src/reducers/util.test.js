@@ -76,7 +76,7 @@ describe("createEntityReducer", () => {
       expect(
         dummyEntityReducer(someEntities, {
           type: "DELETE-DUMMY-BY-ID",
-          value: 3
+          value: 4
         })
       ).toMatchObject(someEntities);
     });

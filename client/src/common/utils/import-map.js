@@ -115,14 +115,16 @@ export default ({
     // in case of queues also add coordinate for each queue thingy
     if (schemaName == "queue_data_json") {
       if (elms.length != 0) {
+        /* eslint-disable no-console*/
         console.warn(
           "WARNING: queue_data.json has queues in it. Inconsistency might arise if two floors have same barcode strings"
         );
+        /* eslint-enable no-console*/
       }
       elms = elms.map((elm, idx) => ({
         [idField]: idx + 1,
         data: elm,
-        coordinates: elm.map(([barcode, _direction]) =>
+        coordinates: elm.map(([barcode]) =>
           findCoordinateForBarcode(allMapValues, barcode)
         )
       }));

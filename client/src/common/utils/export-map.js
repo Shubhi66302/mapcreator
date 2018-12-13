@@ -1,7 +1,7 @@
 // exports mapcreator's represention of map (map.json schema) to multiple output
 // json files (map.json, pps.json, fire_emergency.json etc.)
 
-export default map => {
+export default (map, singleFloor = false) => {
   var ret = {};
   ret.elevator = map.elevators;
   // Why is this like this?
@@ -23,6 +23,10 @@ export default map => {
       coordinate: `[${coordinate}]`
     }))
   }));
+  // make single floor if required
+  if (singleFloor && ret.map.length == 1) {
+    ret.map = ret.map[0].map_values;
+  }
   // merge things from all floors into respective files
   // don't forget dock_point.json and queue_data.json even though not used
   // charger and pps need to have id attached
@@ -35,7 +39,6 @@ export default map => {
   ].forEach(([outKey, floorKey, convert, idFieldNotRequired]) => {
     // start with empty list
     var list = [];
-    var curId = 1;
     // destructuring with variable name very cool
     map.floors.forEach(({ [floorKey]: things }) => {
       // add to the list

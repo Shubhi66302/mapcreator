@@ -8,7 +8,7 @@ const AddQueueBarcodesButton = ({ onClick, disabled }) => (
     type="button"
     className="btn btn-outline-primary"
     onClick={() => {
-      console.log("clicked!");
+      
       onClick();
     }}
   >

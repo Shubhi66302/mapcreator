@@ -4,7 +4,6 @@ import importMap from "common/utils/import-map";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
 import _ from "lodash";
-import fs from "fs";
 
 var ajv = getLoadedAjv();
 var mapValidate = ajv.getSchema("map");

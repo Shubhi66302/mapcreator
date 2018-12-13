@@ -1,19 +1,18 @@
 import * as PIXI from "pixi.js";
 import { PixiComponent } from "@inlet/react-pixi";
-import * as constants from "../../constants";
 export default PixiComponent("DistanceTileRectangle", {
   create: props => {
     const instance = new PIXI.Graphics();
     instance.interactive = true;
-    instance.on("click", e => {
+    instance.on("click", () => {
       props.onClick();
     });
     return instance;
   },
-  didMount: (instance, parent) => {
+  didMount: () => {
     // apply custom logic on mount
   },
-  willUnmount: (instance, parent) => {
+  willUnmount: () => {
     // clean up before removal
   },
   applyProps: (instance, oldProps, newProps) => {

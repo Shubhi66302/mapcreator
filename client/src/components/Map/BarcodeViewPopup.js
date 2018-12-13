@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import _ from "lodash";
-import { neighboursSchema } from "utils/forms";
 // import Form from "react-jsonschema-form";
 import FormModal from "./Forms/FormModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";

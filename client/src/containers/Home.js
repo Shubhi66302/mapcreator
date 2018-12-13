@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { LinkContainer } from "react-router-bootstrap";
 
-export default () => (
+var Home = () => (
   <div className="container">
     <h3 className="display-5">Choose one of the below options</h3>
     <div className="list-group">
@@ -25,3 +24,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default Home;

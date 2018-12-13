@@ -1,3 +1,4 @@
+/* eslint-disable no-console*/
 // middleware to make sure coordinate is there for every entity whenever an ADD-MULTIPLE-X action is sent
 // if not, action is not processed by reducers
 // TODO: add tests

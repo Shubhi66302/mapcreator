@@ -68,7 +68,7 @@ export const dragStart = worldCoordinate => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-export const dragEnd = worldCoordinate => (dispatch, getState) => {
+export const dragEnd = () => (dispatch, getState) => {
   const state = getState();
   if (state.selectedArea) {
     dispatch({
@@ -89,7 +89,7 @@ const newSpritesheet = {
 };
 
 export const loadSpritesheet = () => dispatch => {
-  PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load((loader, resource) => {
+  PIXILoader.add("mySpritesheet", SPRITESHEET_PATH).load(() => {
     dispatch(newSpritesheet);
   });
   return Promise.resolve();
@@ -104,7 +104,7 @@ export const clearMap = {
   type: "CLEAR-MAP"
 };
 
-export const fetchMap = mapId => (dispatch, getState) => {
+export const fetchMap = mapId => dispatch => {
   dispatch(clearMap);
   return fetch(`/api/map/${mapId}`)
     .then(handleErrors)
@@ -112,7 +112,7 @@ export const fetchMap = mapId => (dispatch, getState) => {
     .then(map => dispatch(newMap(map)))
     .then(() => dispatch(setViewportClamp))
     .then(() => dispatch(fitToViewport))
-    .catch(error => console.warn(error));
+    .catch(error => console.warn(error)); // eslint-disable-line no-console
 };
 
 export const clearTiles = {
@@ -154,41 +154,35 @@ export const assignStorable = () => (dispatch, getState) => {
 };
 
 export const addQueueBarcodes = () => (dispatch, getState) => {
-    const state = getState();
-    const {
-      selection: { mapTiles },
-      normalizedMap: {entities:  {pps}} 
-    } = state;
+  const state = getState();
+  const {
+    selection: { mapTiles },
+    normalizedMap: {entities:  {pps}} 
+  } = state;
 
-            // console.log(pps);
-             var ppscoordiantes = _.map(pps, 'coordinate');
-             console.log("pps cordinates");
-             console.log(ppscoordiantes);
-             var queuebarcodes = _.keys(mapTiles)
-             var intersectionresult = ppscoordiantes.filter(value => -1 !== queuebarcodes.indexOf(value));
+  
+  var ppscoordiantes = _.map(pps, "coordinate");
+  var queuebarcodes = _.keys(mapTiles);
+  var intersectionresult = ppscoordiantes.filter(value => -1 !== queuebarcodes.indexOf(value));
              
-             if (intersectionresult.length == 1)
-             {
-                 console.log("assigning to pps");
-                
-                 var pps_id = _.findKey(pps, { "coordinate": intersectionresult[0] });
-                 console.log(pps_id);
-                 var queue_barcodes_array = Object.keys(mapTiles).sort(function(a,b){return mapTiles[a]-mapTiles[b]})
-                 var asBarcodes = queue_barcodes_array.map(asCoordinate => coordinateKeyToBarcodeSelector(state, {tileId: asCoordinate}))
-                 dispatch({
-                    type: "ADD-QUEUE-BARCODES-TO-PPS",
-                    value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array}
-                  });
-             }
-             else 
-            {
-                 console.log("not assigning to pps beause 2 or more pps are found in queuebarcodes")
-                 
-            }
+  if (intersectionresult.length == 1)
+  {
 
-    return dispatch(clearTiles);
+                
+    var pps_id = _.findKey(pps, { "coordinate": intersectionresult[0] });
+
+    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a,b){return mapTiles[a]-mapTiles[b];});
+    var asBarcodes = queue_barcodes_array.map(asCoordinate => coordinateKeyToBarcodeSelector(state, {tileId: asCoordinate}));
+    dispatch({
+      type: "ADD-QUEUE-BARCODES-TO-PPS",
+      value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array}
+    });
+  }
+  
+
+  return dispatch(clearTiles);
     
-  };
+};
 
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
@@ -208,11 +202,11 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
     .catch(onError);
 };
 
-export const downloadMap = () => (dispatch, getState) => {
+export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   // denormalize it
   const mapObj = denormalizeMap(normalizedMap);
-  const exportedJson = exportMap(mapObj.map);
+  const exportedJson = exportMap(mapObj.map, singleFloor);
   var zip = new JSZip();
   Object.keys(exportedJson).forEach(fileName => {
     zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));

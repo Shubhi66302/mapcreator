@@ -1,4 +1,4 @@
-import { singleFloor, twoFloors, singleFloorVanilla } from "./test-helper";
+import { twoFloors } from "./test-helper";
 
 describe("twoFloors", () => {
   test("should have two floors", () => {

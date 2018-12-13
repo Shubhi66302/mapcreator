@@ -25,10 +25,10 @@ export default PixiComponent("NumberSprite", {
 
     return instance;
   },
-  didMount: (instance, parent) => {
+  didMount: () => {
     // apply custom logic on mount
   },
-  willUnmount: (instance, parent) => {
+  willUnmount: () => {
     // clean up before removal
   },
   applyProps: (instance, oldProps, newProps) => {

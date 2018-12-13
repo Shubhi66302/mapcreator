@@ -1,5 +1,4 @@
-import React, { Component, PureComponent } from "react";
-import { Sprite, PixiComponent, ParticleContainer } from "@inlet/react-pixi";
+import { PixiComponent } from "@inlet/react-pixi";
 import mapUpdateFn from "utils/map-render";
 import * as PIXI from "pixi.js";
 
@@ -20,11 +19,11 @@ var PixiMapContainer = PixiComponent("PixiMapContainer", {
     });
     return container;
   },
-  didMount: (instance, parent) => {},
-  willUnmount: (instance, parent) => {
+  didMount: () => {},
+  willUnmount: instance => {
     instance.unsubscribe();
   },
-  applyProps: (instance, oldProps, newProps) => {}
+  applyProps: () => {}
 });
 
 export default PixiMapContainer;

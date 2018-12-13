@@ -1,7 +1,7 @@
 import React from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 
-export default ({ error, onConfirm, title = "Error" }) => {
+var SweetAlertError = ({ error, onConfirm, title = "Error" }) => {
   let parsedError;
   try {
     parsedError = JSON.stringify(JSON.parse(error), null, 2);
@@ -16,3 +16,5 @@ export default ({ error, onConfirm, title = "Error" }) => {
     </SweetAlert>
   );
 };
+
+export default SweetAlertError;

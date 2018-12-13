@@ -8,7 +8,6 @@ const StorableButton = ({ onClick, disabled }) => (
     type="button"
     className="btn btn-outline-primary"
     onClick={() => {
-      console.log("clicked!");
       onClick();
     }}
   >

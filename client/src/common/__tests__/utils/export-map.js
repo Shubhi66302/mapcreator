@@ -5,6 +5,7 @@ import exportMap from "common/utils/export-map";
 
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
+import vanilla3x3Map from "test-data/test-maps/3x3-vanilla.json";
 
 var convertFileNames = map => ({
   mapJson: map.map,
@@ -69,7 +70,6 @@ describe("export good maps", () => {
   });
 
   test("queue_data.json should be exported correctly for 3-7 map", () => {
-    var ajv = getLoadedAjv();
     expect(threeSevenJsons.mapJson).toBeTruthy();
     var map = importMap(threeSevenJsons);
     var exported = exportMap({
@@ -116,5 +116,14 @@ describe("export good maps", () => {
     var result = mapValidate(importedAgain);
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
+  });
+});
+
+describe("export single floor maps", () => {
+  test("vanilla 3x3", () => {
+    var map = vanilla3x3Map.map;
+    var exported = exportMap(map, true);
+    expect(exported.map).toBeTruthy();
+    expect(exported.map).toHaveLength(9);
   });
 });

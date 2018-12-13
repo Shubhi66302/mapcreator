@@ -10,15 +10,15 @@ class SavedMaps extends Component {
   };
   componentDidMount() {
     // fetch maps
-    fetch(`/api/maps`)
+    fetch("/api/maps")
       .then(handleErrors)
       .then(res => res.json())
       .then(maps => this.setState({ maps }))
       // TODO: not doing anything with error right now
-      .catch(e => console.log(e));
+      .catch(() => {});
   }
   render() {
-    const { maps, loading } = this.state;
+    const { maps } = this.state;
 
     return (
       <div className="container">

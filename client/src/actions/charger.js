@@ -2,11 +2,9 @@ import {
   getNeighbourTiles,
   getNeighbouringBarcodes,
   implicitCoordinateKeyToBarcode,
-  coordinateKeyToTupleOfIntegers,
-  tupleOfIntegersToCoordinateKey
+  coordinateKeyToTupleOfIntegers
 } from "utils/util";
 import {
-  getCurrentFloorMaxCoordinate,
   coordinateKeyToBarcodeSelector,
   getIdsForNewEntities,
   getNewSpecialCoordinates

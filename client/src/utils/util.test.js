@@ -115,7 +115,7 @@ describe("worldToTileCoordinate", () => {
 describe("matching between tileToWorldCoordinate and worldToTileCoordinate", () => {
   // x = f1(f2(x))
   test("should match", () => {
-    var tile = `7,6`;
+    var tile = "7,6";
     var tileBounds = { maxX: 10, maxY: 20, minX: 5, minY: 2 };
     expect(
       worldToTileCoordinate(tileToWorldCoordinate(tile, tileBounds), tileBounds)

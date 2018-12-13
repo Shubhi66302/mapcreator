@@ -13,5 +13,4 @@ import { Map } from "server/models/index";
     }));
     await map.update({ map: mapObj });
   });
-  console.log("done");
 })();

@@ -1,6 +1,5 @@
 import React from "react";
-import { shallow, mount, render } from "enzyme";
-import jest from "jest";
+import { shallow } from "enzyme";
 import JSONFileInput from "./JSONFileInput";
 
 describe("JSONFileInput Component", () => {

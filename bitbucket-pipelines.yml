@@ -15,6 +15,7 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - yarn install --ignore-scripts
           - cd client && yarn install && cd ..
+          - npm run lint-no-fix
           - npm run migrate
           - npm test
         services: 

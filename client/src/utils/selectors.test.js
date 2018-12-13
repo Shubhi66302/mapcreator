@@ -8,7 +8,6 @@ import {
   singleFloorVanilla
 } from "./test-helper";
 import { fromJS } from "immutable";
-import { decodeStream } from "iconv-lite";
 
 describe("tileIdsSelector", () => {
   test("should get 8 out of 9 barcodes since sampleMapJson has one special", () => {
@@ -533,7 +532,7 @@ describe("distanceTileSpritesSelector", () => {
     var distanceTilesArr = distanceTileSpritesSelector(state);
     expect(distanceTilesArr).toHaveLength(4);
     // should have key property
-    distanceTilesArr.forEach((distanceTile, idx) => {
+    distanceTilesArr.forEach(distanceTile => {
       expect(distanceTile).toHaveProperty("key");
     });
   });

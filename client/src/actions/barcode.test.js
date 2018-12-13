@@ -1,13 +1,9 @@
 import * as barcode from "./barcode";
 import * as actions from "./actions";
-import {
-  currentFloorBotWithRackThreshold,
-  currentFloorBotWithoutRackThreshold
-} from "utils/selectors";
+import { currentFloorBotWithRackThreshold } from "utils/selectors";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { makeState, singleFloorVanilla } from "utils/test-helper";
-import _ from "lodash";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
