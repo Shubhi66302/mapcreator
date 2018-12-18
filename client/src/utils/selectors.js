@@ -212,6 +212,32 @@ export const getChargerEntryMap = state => {
   return ret;
 };
 
+
+
+export const getPpsQueueMap = state => {
+  var PpsEntities = getParticularEntity(state, { entityName: "pps" });
+
+    
+  var ret = {};
+
+  Object.entries(PpsEntities).forEach(
+    ([, { coordinate,queue_barcodes }]) => {
+      _.forEach(queue_barcodes, function(queue_barcode){
+        var qb_coordinate = barcodeToCoordinateKeySelector(state,{barcode: queue_barcode});
+            
+        if (qb_coordinate != coordinate){
+          ret[qb_coordinate] = constants.QUEUE;
+        }
+            
+      });
+         
+
+    }
+      
+  );
+  return ret;
+};
+
 // creates map of tileId -> spriteName for all special tiles i.e. tile which
 // have some entity (charger, pps, queue etc.)
 export const tileEntitySpritesMapSelector = state => {
@@ -224,6 +250,7 @@ export const tileEntitySpritesMapSelector = state => {
   ret = { ...ret, ...getChargerEntryMap(state) };
   // selected also
   ret = { ...ret, ...getQueueMap(state) };
+  ret = { ...ret, ...getPpsQueueMap(state) };
   return ret;
 };
 

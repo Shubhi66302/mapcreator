@@ -23,6 +23,7 @@ export default createStore(
     currentFloor: 1,
     // NOTE: selected tiles is also a map for efficiency reasons
     selection: {
+      queueMode: false,
       mapTiles: {},
       distanceTiles: {},
       metaKey: false,
