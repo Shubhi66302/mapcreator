@@ -1,8 +1,8 @@
 require("dotenv").config({ path: ".env.test" });
 import getLoadedAjv from "common/utils/get-loaded-ajv";
 import importMap from "common/utils/import-map";
-import exportMap from "common/utils/export-map";
-
+import exportMap, { ppsConverter } from "common/utils/export-map";
+import _ from "lodash";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
 import vanilla3x3Map from "test-data/test-maps/3x3-vanilla.json";
@@ -17,6 +17,32 @@ var convertFileNames = map => ({
   fireEmergencyJson: map.fire_emergency,
   odsExcludedJson: map.ods_excluded,
   dockPointJson: map.dock_point
+});
+
+describe("ppsConverter", () => {
+  test("removes barcodes before pps location", () => {
+    var pps = {
+      location: "001.002",
+      queue_barcodes: [
+        "000.000",
+        "000.001",
+        "001.001",
+        "001.002",
+        "001.003",
+        "001.004"
+      ],
+      else: "something"
+    };
+    var convertedPps = ppsConverter(pps);
+    expect(convertedPps.queue_barcodes).toEqual([
+      "001.002",
+      "001.003",
+      "001.004"
+    ]);
+    expect(_.omit(convertedPps, "queue_barcodes")).toEqual(
+      _.omit(pps, "queue_barcodes")
+    );
+  });
 });
 
 describe("export good maps", () => {
