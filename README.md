@@ -44,7 +44,11 @@ Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so ed
 - To iterate fast on a UI component, `cd` into client in a new tab and run `yarn run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
 
 # Deployment
-- Deployment is now done through bitbucket and [dokku](http://dokku.viewdocs.io/dokku/) on publicly accessible vm `172.104.160.85:9982`
+- Deployment is done through Dockerfile. There are two deployments on VM:
+    - staging server on `172.104.160.85:3002`
+    - production server on `172.104.160.85:9982`
+- Both have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
+- To make staging build, run `make experimental`.
 - Push your branch to git using `git push origin <branch-name>`
 - This will trigger an install and test step. Go to bitbucker -> mapcreator-react -> Pipelines to see this and view progress.
 - Once it is done (usually around 1 minute) click on deploy button. This will launch deploy script on VM (usually takes around 5 minutes right now, can be improved a lot) and commit will get deployed.

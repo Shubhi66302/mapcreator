@@ -5,6 +5,7 @@ BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
 EXPERIMENTAL:= ${BASENAME}:experimental
 LATEST		:= ${BASENAME}:latest
+AWS_CONN	:= root@172.104.160.85
 
 .PHONY: check-uncommitted all
 
@@ -21,7 +22,7 @@ build: check-uncommitted build-no-check
 push:
 	docker push ${IMG}
 
-push-as-latest:
+push-as-latest: check-uncommitted
 	docker pull ${IMG}
 	docker tag ${IMG} ${LATEST}
 	docker push ${LATEST}
@@ -31,6 +32,12 @@ all: build push push-as-latest
 experimental:
 	docker build -t ${EXPERIMENTAL} .
 	docker push ${EXPERIMENTAL}
+
+deploy-staging: experimental
+		ssh ${AWS_CONN} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d'
+
+deploy: all
+		ssh ${AWS_CONN} 'cd mapcreator && docker-compose pull web && docker-compose up -d'
 
 login:
 # do this before any other command. set env variables for docker login (contact vivek.r@greyorange.sg)
