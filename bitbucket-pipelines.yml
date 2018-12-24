@@ -12,7 +12,7 @@ pipelines:
         caches:
           - nodeserver
           - nodeclient
-        script: # Modify the commands below to build your repository.
+        script:
           - yarn install --ignore-scripts
           - cd client && yarn install && cd ..
           - npm run lint-no-fix
