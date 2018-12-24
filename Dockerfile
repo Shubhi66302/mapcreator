@@ -15,7 +15,7 @@ FROM node:9.11.1-alpine
 RUN apk update && apk add bash
 WORKDIR /app
 ENV PORT 3001
-ENV DATABASE_URL postgres://gor:apj0702@db:5432/mapcreator_react
+ENV DATABASE_URL postgres://gor:apj0702@db:5432/mapcreator
 COPY package.json yarn.lock .babelrc ./
 # need node env development for install since for some reason babel is in dev dependencies...
 ENV NODE_ENV development

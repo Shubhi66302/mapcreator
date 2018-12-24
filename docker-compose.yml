@@ -4,11 +4,11 @@ services:
   db:
     image: postgres
     volumes:
-      - ~/postgres-mapcreator:/var/lib/postgresql/data
+      - /var/lib/postgresql/mapcreator/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=apj0702
       - POSTGRES_USER=gor
-      - POSTGRES_DB=mapcreator_react
+      - POSTGRES_DB=mapcreator
     stop_signal: SIGINT
   web:
     image: repo.labs.greyorange.com/mapcreator:latest
