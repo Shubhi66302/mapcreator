@@ -53,11 +53,12 @@ Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so ed
     - staging server on `172.104.160.85:3002`
     - production server on `172.104.160.85:9982`
 - Both have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
-- To make staging build, run `make experimental`.
-- Push your branch to git using `git push origin <branch-name>`
-- This will trigger an install and test step. Go to bitbucker -> mapcreator-react -> Pipelines to see this and view progress.
-- Once it is done (usually around 1 minute) click on deploy button. This will launch deploy script on VM (usually takes around 5 minutes right now, can be improved a lot) and commit will get deployed.
-- To deploy some other commit, just go to its build in pipelines and click on deploy.
+- To make staging image, run `make staging`. This will build image with `staging` tag and push to repo.
+- To make production image, run `make all`. This will build image with `latest` tag and push to repo.
+    - Building an image will be slow for the first time or when either `package.json` changes.
+- To just make a image with just current commit id as tag, run `make build push`.
+- For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running atnd test it out.
+- For deploying to production, run `make deploy`. Then check production server to see if build is runnig.
 
 # Modifying JSON schemas
 
