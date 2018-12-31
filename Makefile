@@ -3,7 +3,7 @@ TAG			:= $$(echo $${BITBUCKET_COMMIT:-$$(git rev-parse HEAD)} | cut -c1-7)
 REPO		:= repo.labs.greyorange.com
 BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
-EXPERIMENTAL:= ${BASENAME}:experimental
+STAGING:= ${BASENAME}:staging
 LATEST		:= ${BASENAME}:latest
 AWS_CONN	:= root@172.104.160.85
 
@@ -27,16 +27,21 @@ push-as-latest: check-uncommitted
 	docker tag ${IMG} ${LATEST}
 	docker push ${LATEST}
 
+push-as-staging:
+	docker pull ${IMG}
+	docker tag ${IMG} ${STAGING}
+	docker push ${STAGING}
+
 all: build push push-as-latest
 
-experimental:
-	docker build -t ${EXPERIMENTAL} .
-	docker push ${EXPERIMENTAL}
+staging:
+	docker build -t ${STAGING} .
+	docker push ${STAGING}
 
-deploy-staging: experimental
+deploy-staging:
 		ssh ${AWS_CONN} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d'
 
-deploy: all
+deploy:
 		ssh ${AWS_CONN} 'cd mapcreator && docker-compose pull web && docker-compose up -d'
 
 login:
