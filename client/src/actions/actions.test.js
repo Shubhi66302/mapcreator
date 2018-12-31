@@ -127,3 +127,29 @@ describe("assignStorable", () => {
 });
 
 // TODO: test for saveMap
+
+describe("addQueueBarcodes", () => {
+  const {addQueueBarcodes, clearTiles} = actions;
+  test("should make queue barcodes with both barcodes and coordinates in values", async () => {
+    var selectedMapTiles = {"2,2": 1, "1,2": 2, "1,1": 3};
+    var initialState = makeState(singleFloor, 1, selectedMapTiles);
+    const store = mockStore(initialState);
+
+    await store.dispatch(addQueueBarcodes());
+    const dispatchedActions = store.getActions();
+
+    // test
+    expect(dispatchedActions).toEqual([
+      {
+        type: "ADD-QUEUE-BARCODES-TO-PPS",
+        value: {
+          tiles: ["002.002", "002.001", "001.001"],
+          pps_id: "2",
+          coordinates: ["2,2", "1,2", "1,1"]
+        }
+      },
+      clearTiles
+    ]);
+
+  });
+});

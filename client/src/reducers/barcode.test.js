@@ -90,6 +90,33 @@ describe("ASSIGN-STORABLE", () => {
   });
 });
 
+describe("ADD-QUEUE-BARCODES-TO-PPS", () => {
+  test("should correctly modify multiple queue barcodes with neighbour changes", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var action = {
+      type: "ADD-QUEUE-BARCODES-TO-PPS",
+      value: {
+        pps_id: "1",
+        coordinates: ["1,2", "1,1", "1,0"]
+      }
+    };
+    var newState = barcodeReducer(state, action);
+    expect(newState["1,2"].neighbours).toMatchObject(state["1,2"].neighbours);
+
+    expect(newState["1,1"].neighbours).toMatchObject([
+      [1, 1, 1],
+      [1, 0, 0],
+      [1, 0, 0],
+      [1, 0, 0]
+    ]);
+    expect(newState["1,0"].neighbours).toMatchObject([
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 0, 0],
+      [1, 1, 1]
+    ]);
+  });
+});
 describe("DELETE-BARCODE", () => {
   test("deleting a single barcode should update all its neighbours", () => {
     var state = makeState(vanilla3x3BarcodeMap);
