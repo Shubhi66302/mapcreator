@@ -57,8 +57,10 @@ Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so ed
 - To make production image, run `make all`. This will build image with `latest` tag and push to repo.
     - Building an image will be slow for the first time or when either `package.json` changes.
 - To just make a image with just current commit id as tag, run `make build push`.
-- For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running atnd test it out.
+- For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running and test it out.
 - For deploying to production, run `make deploy`. Then check production server to see if build is runnig.
+- Deployment can also be done through bitbucket pipelines. Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy
+    - TODO: how to do this
 
 # Modifying JSON schemas
 
