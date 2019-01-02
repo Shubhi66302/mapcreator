@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BaseForm from "./BaseForm";
+import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
 import {
   getNeighbourTiles,
@@ -57,7 +57,7 @@ class AddBarcode extends Component {
     };
     if (disabled)
       return (
-        <BaseForm
+        <BaseJsonForm
           disabled={disabled}
           schema={baseSchema}
           onSubmit={onSubmit}
@@ -99,7 +99,7 @@ class AddBarcode extends Component {
       tileId: { "ui:widget": "hidden" }
     };
     return (
-      <BaseForm
+      <BaseJsonForm
         disabled={disabled}
         schema={schema}
         onSubmit={onSubmit}
