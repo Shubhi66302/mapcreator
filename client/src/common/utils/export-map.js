@@ -1,5 +1,11 @@
 // exports mapcreator's represention of map (map.json schema) to multiple output
 // json files (map.json, pps.json, fire_emergency.json etc.)
+export var ppsConverter = ({ location, queue_barcodes: qb, ...rest }) => ({
+  location,
+  ...rest,
+  queue_barcodes:
+    qb && qb.length ? qb.slice(qb.findIndex(e => e === location)) : []
+});
 
 export default (map, singleFloor = false) => {
   var ret = {};
@@ -32,7 +38,7 @@ export default (map, singleFloor = false) => {
   // charger and pps need to have id attached
   [
     ["charger", "chargers", e => e, null],
-    ["pps", "ppses", e => e, null],
+    ["pps", "ppses", e => e.map(ppsConverter), null],
     ["fire_emergency", "fireEmergencies", e => e, "fire_emergency_id"],
     ["ods_excluded", "odses", e => ({ ods_excluded_list: e }), "ods_id"],
     ["dock_point", "dockPoints", e => e, "dock_field"]
