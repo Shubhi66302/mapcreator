@@ -15,7 +15,7 @@ check-uncommitted:
     endif
 
 build-no-check:
-	docker build -t ${IMG} .
+	docker build -t ${IMG} --build-arg commit_id=${TAG} .
 
 build: check-uncommitted build-no-check
 
@@ -35,7 +35,7 @@ push-as-staging:
 all: build push push-as-latest
 
 staging:
-	docker build -t ${STAGING} .
+	docker build -t ${STAGING} --build-arg commit_id=${TAG} .
 	docker push ${STAGING}
 
 deploy-staging:
