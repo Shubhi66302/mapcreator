@@ -12,7 +12,7 @@ pipelines:
         caches:
           - nodeserver
           - nodeclient
-        script: # Modify the commands below to build your repository.
+        script:
           - yarn install --ignore-scripts
           - cd client && yarn install && cd ..
           - npm run lint-no-fix
@@ -21,11 +21,36 @@ pipelines:
         services: 
           - postgres
     - step:
-        name: Deploy
+        name: Build image
+        services:
+          - docker
+        script:
+          - make login
+          - make build push
+        caches:
+          - docker
+    - step:
+        name: Deploy Staging
+        deployment: staging
+        trigger: manual
+        services:
+          - docker
+        script:
+          - make login
+          - make push-as-staging
+          - make deploy-staging
+        caches:
+          - docker
+    - step:
+        name: Deploy Production
         deployment: production
         trigger: manual
+        services:
+          - docker
         script:
-          - git push $DOKKU_URL $BITBUCKET_COMMIT:master
+          - make login
+          - make push-as-latest
+          - make deploy
 
 definitions: 
   caches:
@@ -34,3 +59,6 @@ definitions:
   services: 
     postgres: 
       image: postgres
+    docker:
+      memory: 2048
+    
