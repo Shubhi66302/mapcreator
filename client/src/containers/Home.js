@@ -3,7 +3,20 @@ import { LinkContainer } from "react-router-bootstrap";
 
 var Home = () => (
   <div className="container">
-    <h3 className="display-5">Choose one of the below options</h3>
+    <div className="row justify-content-between">
+      <div className="col">
+        <h3 className="display-5">Mapcreator</h3>
+      </div>
+      <div className="col pt-auto">
+        {process.env.REACT_APP_COMMIT_ID ? (
+          <h4 style={{ textAlign: "right", marginBottom: 0 }}>
+            commit id: {process.env.REACT_APP_COMMIT_ID}
+          </h4>
+        ) : (
+          ""
+        )}
+      </div>
+    </div>
     <div className="list-group">
       <LinkContainer to="/new">
         <a className="list-group-item list-group-item-action">Create new map</a>
