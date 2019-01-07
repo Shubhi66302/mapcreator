@@ -20,31 +20,25 @@ function stringify_number(input_number) {
   }
 }
 
-export function getDirection(SourceCoordinate,DestinationCoordinate)
-{
-    
+export function getDirection(SourceCoordinate, DestinationCoordinate) {
   var SourceX = parseInt(SourceCoordinate.split(",")[0]);
   var SourceY = parseInt(SourceCoordinate.split(",")[1]);
   var DestinationX = parseInt(DestinationCoordinate.split(",")[0]);
   var DestinationY = parseInt(DestinationCoordinate.split(",")[1]);
-  var Dir = 5; 
-  if
-  (DestinationY < SourceY) {
+  var Dir = 5;
+  if (DestinationY < SourceY) {
     Dir = 0;
   }
-  if (DestinationX < SourceX)
-  {
+  if (DestinationX < SourceX) {
     Dir = 1;
   }
-  if (DestinationY > SourceY)
-  {
+  if (DestinationY > SourceY) {
     Dir = 2;
   }
-  if(DestinationX > SourceX) 
-  {
+  if (DestinationX > SourceX) {
     Dir = 3;
   }
-    
+
   return Dir;
 }
 
@@ -189,7 +183,14 @@ export var createMapFromCoordinateData = (
   }
   return {
     elevators: [],
-    zones: [],
+    // add default zone defzone
+    zones: [
+      {
+        zone_id: "defzone",
+        blocked: false,
+        paused: false
+      }
+    ],
     queueDatas: [],
     floors: [
       {
