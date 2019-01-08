@@ -205,7 +205,14 @@ export var createMapFromCoordinateData = (
 ) => {
   return {
     elevators: [],
-    zones: [],
+    // add default zone defzone
+    zones: [
+      {
+        zone_id: "defzone",
+        blocked: false,
+        paused: false
+      }
+    ],
     queueDatas: [],
     floors: [
       createFloorFromCoordinateData({

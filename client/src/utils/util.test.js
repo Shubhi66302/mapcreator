@@ -58,6 +58,13 @@ describe("createMapFromCoordinateData", () => {
   test("create map that passes json schema validation", () => {
     var map = createMapFromCoordinateData(0, 10, 0, 10);
     var result = mapValidate(map);
+    expect(map.zones).toEqual([
+      {
+        zone_id: "defzone",
+        blocked: false,
+        paused: false
+      }
+    ]);
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
   });

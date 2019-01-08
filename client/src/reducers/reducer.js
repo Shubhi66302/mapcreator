@@ -72,6 +72,7 @@ export const entitiesReducer = combineReducers({
   map: mapReducer,
   // TODO: make reducers for these
   // using identity reducers for rest for now?
+  zone: z => z || null,
   mapObj: m => m || null
 });
 
