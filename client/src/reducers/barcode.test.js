@@ -4,6 +4,8 @@ import { normalizeMap } from "utils/normalizr";
 import { fromJS } from "immutable";
 import barcodeReducer, { calculateDistances } from "./barcode.js";
 import { getAllColumnTileIdTuples } from "utils/selectors";
+import {createFloorFromCoordinateData} from "utils/util";
+import _ from "lodash";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
 const complicated3x3BarcodeMap = fromJS(
@@ -250,6 +252,22 @@ describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
     expect(newState["2,0"].size_info).toEqual([750, 750, 750, 750]);
     expect(newState["2,1"].size_info).toEqual(state["2,1"].size_info);
     expect(newState["2,2"].size_info).toEqual(state["2,2"].size_info);
+  });
+});
+
+describe("ADD-FLOOR", () => {
+  test("should add floor barcodes", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var floorData = createFloorFromCoordinateData({floor_id: 2, row_start: 2, row_end: 3, column_start: 2, column_end: 3});
+    var newState = barcodeReducer(state, {
+      type: "ADD-FLOOR",
+      value: floorData
+    });
+    var pairs = _.zip(floorData.map_values.map(barcode => barcode.coordinate), floorData.map_values);
+    expect(newState).toEqual({
+      ...state,
+      ..._.fromPairs(pairs)
+    });
   });
 });
 

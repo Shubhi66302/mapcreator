@@ -4,6 +4,8 @@ import { createEntityReducer } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
+import currentFloorReducer from "./currentFloor";
+import mapReducer from "./map";
 import _ from "lodash";
 
 export const dummyState = {
@@ -46,7 +48,6 @@ export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 export var ppsReducer = (state = {}, action) => {
   switch (action.type) {
     case "ADD-QUEUE-BARCODES-TO-PPS":
-
       return {
         ...state,
         [action.value.pps_id]: {
@@ -68,9 +69,9 @@ export const entitiesReducer = combineReducers({
   fireEmergency: createEntityReducer("FIRE-EMERGENCY", "fire_emergency_id"),
   barcode: reduceReducers(barcodeReducer, baseBarcodeReducer),
   floor: floorReducer,
+  map: mapReducer,
   // TODO: make reducers for these
   // using identity reducers for rest for now?
-  map: m => m || null,
   mapObj: m => m || null
 });
 
@@ -90,18 +91,7 @@ export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
   return state;
 };
 
-export const mapReducer = reduceReducers(mapUpdateReducer, mapChangeReducer);
-
-export const currentFloorReducer = (state = 1, action) => {
-  switch (action.type) {
-    case "CLEAR-MAP":
-    case "NEW-MAP":
-      return 1;
-    case "CHANGE-FLOOR":
-      return action.value;
-  }
-  return state;
-};
+export const normalizedMapReducer = reduceReducers(mapUpdateReducer, mapChangeReducer);
 
 // helper exported for testing
 export const toggleKeyInMap = (theMap, key) => {
@@ -116,13 +106,11 @@ export const toggleKeyInMapWhenQueueMode = (state, tileId) => {
   var a = _.reduce(
     state,
     function(acc, value) {
-      
-
       return Math.max(acc, value);
     },
     0
   );
-  
+
   return { ...state, [tileId]: a + 1 };
 };
 
@@ -134,6 +122,7 @@ export const selectedDistanceTilesReducer = (state = {}, action) => {
     case "CLICK-OUTSIDE-TILES":
     // should deselect if a map tile is clicked
     case "CLICK-ON-MAP-TILE":
+    case "CHANGE-FLOOR":
       return {};
     // case "CLICK-ON-DISTANCE-TILE":
     //   return toggleKeyInMap(state, action.value);
@@ -149,6 +138,7 @@ export const selectedMapTilesReducer = (state = {}, action) => {
     case "CLICK-OUTSIDE-TILES":
     // should deselect if a distance tile is selected
     case "CLICK-ON-DISTANCE-TILE":
+    case "CHANGE-FLOOR":
       return {};
     // case "CLICK-ON-MAP-TILE":
 
@@ -204,27 +194,25 @@ export const selectionReducer = (
       if (!state.queueMode) {
         if (state.mapTiles[tileId]) {
           // delete tile from selected
-          return {...state, mapTiles: _.omit(state.mapTiles, tileId)};
+          return { ...state, mapTiles: _.omit(state.mapTiles, tileId) };
         } else {
           // using true to signify tile is selected. doesn't really matter what
           // the value is, just interested in the key
           return { ...state, mapTiles: { ...state.mapTiles, [tileId]: true } };
         }
-      } 
-      else {
+      } else {
         // don't do anything if it's already selected
         if (state.mapTiles[action.value]) {
           return state;
         }
-        var a = _.reduce(state.mapTiles, function(acc,value) {
-
-         
-
-          return Math.max(acc, value);
-        },
-        0
+        var a = _.reduce(
+          state.mapTiles,
+          function(acc, value) {
+            return Math.max(acc, value);
+          },
+          0
         );
-       
+
         return { ...state, mapTiles: { ...state.mapTiles, [tileId]: a + 1 } };
       }
 
@@ -240,12 +228,10 @@ export const selectionReducer = (
 
     case "ADD-QUEUE-BARCODES-TO-PPS":
       if (!state.queueMode) {
-       
         return { ...state };
       } else {
-        
         var newState = {};
-        
+
         return Object.assign({}, state, newState);
       }
     case "DRAG-END": {
@@ -338,7 +324,7 @@ const viewportReducer = (
 };
 
 export default combineReducers({
-  normalizedMap: mapReducer,
+  normalizedMap: normalizedMapReducer,
   currentFloor: currentFloorReducer,
   selection: reduceReducers(selectionReducer, baseSelectionReducer),
   zoneView: z => z || false,

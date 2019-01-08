@@ -20,31 +20,25 @@ function stringify_number(input_number) {
   }
 }
 
-export function getDirection(SourceCoordinate,DestinationCoordinate)
-{
-    
+export function getDirection(SourceCoordinate, DestinationCoordinate) {
   var SourceX = parseInt(SourceCoordinate.split(",")[0]);
   var SourceY = parseInt(SourceCoordinate.split(",")[1]);
   var DestinationX = parseInt(DestinationCoordinate.split(",")[0]);
   var DestinationY = parseInt(DestinationCoordinate.split(",")[1]);
-  var Dir = 5; 
-  if
-  (DestinationY < SourceY) {
+  var Dir = 5;
+  if (DestinationY < SourceY) {
     Dir = 0;
   }
-  if (DestinationX < SourceX)
-  {
+  if (DestinationX < SourceX) {
     Dir = 1;
   }
-  if (DestinationY > SourceY)
-  {
+  if (DestinationY > SourceY) {
     Dir = 2;
   }
-  if(DestinationX > SourceX) 
-  {
+  if (DestinationX > SourceX) {
     Dir = 3;
   }
-    
+
   return Dir;
 }
 
@@ -152,12 +146,13 @@ export const getIdsForEntities = (numEntities = 0, existingEntities = {}) => {
   return [...Array(numEntities).keys()].map(idx => idx + startId);
 };
 
-export var createMapFromCoordinateData = (
+export var createFloorFromCoordinateData = ({
   row_start,
   row_end,
   column_start,
-  column_end
-) => {
+  column_end,
+  floor_id
+}) => {
   // be careful to satisfy json schema
   // iterate and fill up map_values
   var map_values = [];
@@ -188,23 +183,38 @@ export var createMapFromCoordinateData = (
     }
   }
   return {
+    floor_id,
+    chargers: [],
+    ppses: [],
+    odses: [],
+    dockPoints: [],
+    fireEmergencies: [],
+    map_values,
+    metadata: {
+      botWithRackThreshold: 750,
+      botWithoutRackThreshold: 610
+    }
+  };
+};
+
+export var createMapFromCoordinateData = (
+  row_start,
+  row_end,
+  column_start,
+  column_end
+) => {
+  return {
     elevators: [],
     zones: [],
     queueDatas: [],
     floors: [
-      {
-        floor_id: 1,
-        chargers: [],
-        ppses: [],
-        odses: [],
-        dockPoints: [],
-        fireEmergencies: [],
-        map_values,
-        metadata: {
-          botWithRackThreshold: 750,
-          botWithoutRackThreshold: 610
-        }
-      }
+      createFloorFromCoordinateData({
+        row_start,
+        row_end,
+        column_start,
+        column_end,
+        floor_id: 1
+      })
     ]
   };
 };

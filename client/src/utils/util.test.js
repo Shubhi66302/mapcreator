@@ -1,4 +1,5 @@
 import {
+  createFloorFromCoordinateData,
   createMapFromCoordinateData,
   encode_barcode,
   coordinateKeyToTupleOfIntegers,
@@ -25,6 +26,31 @@ describe("encode_barcode", () => {
   });
   test("both double digits (which is what is expected usually)", () => {
     expect(encode_barcode(10, 20)).toBe("010.020");
+  });
+});
+
+describe("createFloorFromCoordinateData", () => {
+  test("create floor 2 that has all required keys", () => {
+    var floor = createFloorFromCoordinateData({
+      floor_id: 2,
+      row_start: 0,
+      row_end: 10,
+      column_start: 0,
+      column_end: 10
+    });
+    expect(floor).toMatchObject({
+      floor_id: 2,
+      chargers: [],
+      ppses: [],
+      odses: [],
+      dockPoints: [],
+      fireEmergencies: [],
+      metadata: {
+        botWithRackThreshold: 750,
+        botWithoutRackThreshold: 610
+      }
+    });
+    expect(floor.map_values).toHaveLength(121);
   });
 });
 
