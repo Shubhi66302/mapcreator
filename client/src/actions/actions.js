@@ -175,7 +175,7 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
     var asBarcodes = queue_barcodes_array.map(asCoordinate => coordinateKeyToBarcodeSelector(state, {tileId: asCoordinate}));
     dispatch({
       type: "ADD-QUEUE-BARCODES-TO-PPS",
-      value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array}
+      value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array, "pps_coordinate": pps[pps_id].coordinate}
     });
   }
   
