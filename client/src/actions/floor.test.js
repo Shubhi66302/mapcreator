@@ -2,7 +2,6 @@ import { makeState, singleFloorVanilla } from "utils/test-helper";
 import { createFloorFromCoordinateData } from "utils/util";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as actions from "./actions";
 import { addFloor } from "./floor";
 
 const middlewares = [thunk];

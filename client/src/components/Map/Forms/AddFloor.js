@@ -100,7 +100,11 @@ class AddFloor extends Component {
           tooltipData={{ id: "add-floor", title: "Add Floor" }}
           buttonText="Add Floor"
         >
-          <Form onSuccess={() => this.toggle()} nextFloorId={nextFloorId} dispatch={dispatch} />
+          <Form
+            onSuccess={() => this.toggle()}
+            nextFloorId={nextFloorId}
+            dispatch={dispatch}
+          />
         </ButtonForm>
       </div>
     );
@@ -110,7 +114,7 @@ class AddFloor extends Component {
 export default connect(state => ({
   nextFloorId:
     Math.max(
-      Object.keys(state.normalizedMap.entities.floor).map(floor_id =>
+      ...Object.keys(state.normalizedMap.entities.floor).map(floor_id =>
         parseInt(floor_id)
       )
     ) + 1
