@@ -219,12 +219,3 @@ export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
     saveAs(content, mapObj.id + ".zip");
   });
 };
-
-export const showErrorMessage = message => ({
-  type: "SHOW-ERROR",
-  value: message
-});
-
-export const removeErrorMessage = () => ({
-  type: "REMOVE-ERROR"
-});

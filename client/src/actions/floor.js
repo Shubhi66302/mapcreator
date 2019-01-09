@@ -1,5 +1,4 @@
 import { createFloorFromCoordinateData } from "utils/util";
-import { showErrorMessage } from "./actions";
 import { getBarcodes } from "utils/selectors";
 import _ from "lodash";
 
@@ -24,13 +23,7 @@ export const addFloor = ({
     floorData.map_values.map(barcode => barcode.coordinate)
   );
   if (intersection.length) {
-    return dispatch(
-      showErrorMessage(
-        `Found ${
-          intersection.length
-        } already existing barcodes in range. Please enter a range which does not already exist.`
-      )
-    );
+    return Promise.resolve();
   }
   return dispatch({
     type: "ADD-FLOOR",

@@ -27,8 +27,7 @@ describe("addFloor", () => {
       value: createFloorFromCoordinateData(coordinateData)
     });
   });
-  test("should dispatch SHOW-ERROR when there are some overlapping barcodes", async () => {
-    const { showErrorMessage } = actions;
+  test("should not dispatch anything when some overlap is there", async () => {
     const initialState = makeState(singleFloorVanilla, 1);
     const store = mockStore(initialState);
     var coordinateData = {
@@ -40,11 +39,6 @@ describe("addFloor", () => {
     };
     await store.dispatch(addFloor(coordinateData));
     const dispatchedActions = store.getActions();
-    expect(dispatchedActions).toHaveLength(1);
-    expect(dispatchedActions[0]).toEqual(
-      showErrorMessage(
-        "Found 1 already existing barcodes in range. Please enter a range which does not already exist."
-      )
-    );
+    expect(dispatchedActions).toHaveLength(0);
   });
 });
