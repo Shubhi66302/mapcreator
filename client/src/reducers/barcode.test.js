@@ -97,22 +97,33 @@ describe("ADD-QUEUE-BARCODES-TO-PPS", () => {
       type: "ADD-QUEUE-BARCODES-TO-PPS",
       value: {
         pps_id: "1",
-        coordinates: ["1,2", "1,1", "1,0"]
+        coordinates: ["1,2", "1,1", "1,0", "0,0", "0,1"]
       }
     };
     var newState = barcodeReducer(state, action);
-    expect(newState["1,2"].neighbours).toMatchObject(state["1,2"].neighbours);
-
-    expect(newState["1,1"].neighbours).toMatchObject([
+    expect(newState["1,2"].neighbours).toEqual(state["1,2"].neighbours);
+    expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 1],
-      [1, 0, 0],
-      [1, 0, 0],
-      [1, 0, 0]
+      [1, 1, 0],
+      [1, 1, 0],
+      [1, 1, 0]
     ]);
-    expect(newState["1,0"].neighbours).toMatchObject([
+    expect(newState["1,0"].neighbours).toEqual([
       [0, 0, 0],
       [1, 1, 1],
-      [1, 0, 0],
+      [1, 1, 0],
+      [1, 1, 0]
+    ]);
+    expect(newState["0,0"].neighbours).toEqual([
+      [0, 0, 0],
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 0]
+    ]);
+    expect(newState["0,1"].neighbours).toEqual([
+      [1, 1, 0],
+      [0, 0, 0],
+      [1, 1, 1],
       [1, 1, 1]
     ]);
   });

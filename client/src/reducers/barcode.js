@@ -70,7 +70,6 @@ export default (state = {}, action) => {
               var Remaining = _.difference([0,1,2,3],[QueueDirection]);
                     
               for (var j = 0; j < Remaining.length; j++) {
-                newState[tileId].neighbours[Remaining[j]][1] = 0;
                 newState[tileId].neighbours[Remaining[j]][2] = 0;
               }
                     
@@ -79,7 +78,6 @@ export default (state = {}, action) => {
                 var current_neighbour_dir =  getDirection(tileId,neighbouringTileId);
                 // var prevQueDir = getDirection(tileIds[i-1],tileId);
                 var neighbour_current_dir = (current_neighbour_dir + 2) % 4;
-                newState[neighbouringTileId].neighbours[neighbour_current_dir][1] = 0;
                 newState[neighbouringTileId].neighbours[neighbour_current_dir][2] = 0;
               });
             }
@@ -87,7 +85,6 @@ export default (state = {}, action) => {
               
               var endQueuedir = getDirection(tileIds[i-1],tileId);
               var endoppQuedir = (endQueuedir + 2) % 4;
-              newState[tileId].neighbours[endoppQuedir][1] = 0;
               newState[tileId].neighbours[endoppQuedir][2] = 0;
               neighbouringTileIds.forEach((neighbouringTileIdobjectend ) => {
                 var neighbouringTileIdend = neighbouringTileIdobjectend.coordinate;
@@ -95,7 +92,6 @@ export default (state = {}, action) => {
                 var endnbrdir = (endcurrdir + 2) %4 ;
                 if (endcurrdir != endQueuedir && endcurrdir != endoppQuedir)
                 {
-                  newState[neighbouringTileIdend].neighbours[endnbrdir][1] = 0;
                   newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
                 }
                       
