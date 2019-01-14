@@ -1,6 +1,6 @@
 // technically components should not be connected to app state but it's ok for our case.
 import React from "react";
-import BaseForm from "./BaseForm";
+import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
 import { addPPSes } from "actions/pps";
 import { directionSchema } from "utils/forms";
@@ -15,7 +15,7 @@ const schema = {
 };
 
 const AddPPS = ({ onSubmit, disabled }) => (
-  <BaseForm
+  <BaseJsonForm
     disabled={disabled}
     schema={schema}
     onSubmit={onSubmit}

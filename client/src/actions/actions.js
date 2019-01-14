@@ -119,8 +119,6 @@ export const clearTiles = {
   type: "CLEAR-SELECTED-TILES"
 };
 
-
-
 // TODO: figure out if this can be done
 // export const addToEntitiesAndFloor = ({
 //   currentFloor, floorKey, entitiesKey, reducerKey, idField, entities
@@ -157,31 +155,33 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   const state = getState();
   const {
     selection: { mapTiles },
-    normalizedMap: {entities:  {pps}} 
+    normalizedMap: {
+      entities: { pps }
+    }
   } = state;
 
-  
   var ppscoordiantes = _.map(pps, "coordinate");
   var queuebarcodes = _.keys(mapTiles);
-  var intersectionresult = ppscoordiantes.filter(value => -1 !== queuebarcodes.indexOf(value));
-             
-  if (intersectionresult.length == 1)
-  {
+  var intersectionresult = ppscoordiantes.filter(
+    value => -1 !== queuebarcodes.indexOf(value)
+  );
 
-                
-    var pps_id = _.findKey(pps, { "coordinate": intersectionresult[0] });
+  if (intersectionresult.length == 1) {
+    var pps_id = _.findKey(pps, { coordinate: intersectionresult[0] });
 
-    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a,b){return mapTiles[a]-mapTiles[b];});
-    var asBarcodes = queue_barcodes_array.map(asCoordinate => coordinateKeyToBarcodeSelector(state, {tileId: asCoordinate}));
+    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a, b) {
+      return mapTiles[a] - mapTiles[b];
+    });
+    var asBarcodes = queue_barcodes_array.map(asCoordinate =>
+      coordinateKeyToBarcodeSelector(state, { tileId: asCoordinate })
+    );
     dispatch({
       type: "ADD-QUEUE-BARCODES-TO-PPS",
       value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array, "pps_coordinate": pps[pps_id].coordinate}
     });
   }
-  
 
   return dispatch(clearTiles);
-    
 };
 
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {

@@ -14,6 +14,7 @@ export default (state = {}, action) => {
           }
         };
       }
+      break;
     }
     case "REMOVE-ENTITIES-FROM-FLOOR": {
       const { floorKey, currentFloor, ids } = action.value;
@@ -26,6 +27,17 @@ export default (state = {}, action) => {
           }
         };
       }
+      break;
+    }
+    case "ADD-FLOOR": {
+      const floorData = action.value;
+      return {
+        ...state,
+        [floorData.floor_id]: {
+          ...floorData,
+          map_values: floorData.map_values.map(barcode => barcode.coordinate)
+        }
+      };
     }
   }
   return state;

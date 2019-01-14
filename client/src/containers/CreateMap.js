@@ -1,25 +1,11 @@
 import React, { Component } from "react";
 import { withFormik, Field } from "formik";
 import { withRouter } from "react-router-dom";
-import InlineTextInput from "components/InlineTextInput";
+import { FormikedInput } from "components/InlineTextInput";
 import { createMapFromCoordinateData, handleErrors } from "utils/util";
 import SweetAlertError from "components/SweetAlertError";
 import { string, number, object, ref } from "yup";
 
-const FormikedInput = ({
-  field,
-  form: { touched, errors },
-  type,
-  ...props
-}) => (
-  <InlineTextInput
-    errorMessage={errors[field.name]}
-    touched={touched[field.name]}
-    type={type || "text"}
-    {...field}
-    {...props}
-  />
-);
 // form html
 const InnerForm = ({ handleSubmit, isSubmitting }) => {
   return (

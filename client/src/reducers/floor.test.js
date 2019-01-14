@@ -94,3 +94,24 @@ describe("REMOVE-ENTITIES-FROM-FLOOR", () => {
     expect(newState).toMatchObject({ "1": { map_values: ["0,1", "4,0"] } });
   });
 });
+
+describe("ADD-FLOOR", () => {
+  test("should add floor data", () => {
+    var state = {
+      "1": { map_values: ["0,1", "0,2", "3,0", "4,0"], chargers: [] }
+    };
+    var floorData = {
+      floor_id: 2,
+      chargers: [],
+      map_values: [{ coordinate: "2,3" }, { coordinate: "4,5" }]
+    };
+    var newState = floorReducer(state, {
+      type: "ADD-FLOOR",
+      value: floorData
+    });
+    expect(newState).toEqual({
+      ...state,
+      "2": { ...floorData, map_values: ["2,3", "4,5"] }
+    });
+  });
+});

@@ -215,6 +215,12 @@ export default (state = {}, action) => {
       });
       return { ...state, [tileId]: newBarcode };
     }
+    case "ADD-FLOOR": {
+      const { map_values } = action.value;
+      const keys = map_values.map(barcode => barcode.coordinate);
+      const newBarcodesObj = _.fromPairs(_.zip(keys, map_values));
+      return { ...state, ...newBarcodesObj };
+    }
   }
   return state;
 };
