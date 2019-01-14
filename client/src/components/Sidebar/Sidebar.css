@@ -5,7 +5,6 @@
 
 #sidebar {
   width: 250px;
-  /* position: fixed; */
   top: 0;
   left: 0;
   height: 100vh;
@@ -13,6 +12,8 @@
   background: #7386D5;
   color: #fff;
   transition: all 0.3s;
+  margin-top: -20px; /* to account for 20px body padding in index.css */
+  padding-right: 20px;
 }
 
 #sidebar.active {
