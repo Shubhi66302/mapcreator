@@ -7,8 +7,8 @@ RUN yarn install
 COPY client/ .
 ENV NODE_PATH ./src/
 ENV NODE_ENV production
-ARG commit_id=unknown
-ENV REACT_APP_COMMIT_ID ${commit_id}
+ARG version=unknown
+ENV REACT_APP_VERSION ${version}
 RUN npm run build
 
 

@@ -1,5 +1,6 @@
 NAME		:= mapcreator
 TAG			:= $$(echo $${BITBUCKET_COMMIT:-$$(git rev-parse HEAD)} | cut -c1-7)
+VERSION			:= `git describe --dirty`
 REPO		:= repo.labs.greyorange.com
 BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
@@ -15,7 +16,7 @@ check-uncommitted:
     endif
 
 build-no-check:
-	docker build -t ${IMG} --build-arg commit_id=${TAG} .
+	docker build -t ${IMG} --build-arg version=${VERSION} .
 
 build: check-uncommitted build-no-check
 
@@ -35,7 +36,7 @@ push-as-staging:
 all: build push push-as-latest
 
 staging:
-	docker build -t ${STAGING} --build-arg commit_id=${TAG} .
+	docker build -t ${STAGING} --build-arg version=${VERSION} .
 	docker push ${STAGING}
 
 deploy-staging:
@@ -50,3 +51,6 @@ login:
 
 test-tag:
 	echo ${TAG}
+
+test-version:
+	echo ${VERSION}

@@ -8,9 +8,9 @@ var Home = () => (
         <h3 className="display-5">Mapcreator</h3>
       </div>
       <div className="col pt-auto">
-        {process.env.REACT_APP_COMMIT_ID ? (
+        {process.env.REACT_APP_VERSION ? (
           <h4 style={{ textAlign: "right", marginBottom: 0 }}>
-            commit id: {process.env.REACT_APP_COMMIT_ID}
+            {process.env.REACT_APP_VERSION}
           </h4>
         ) : (
           ""
