@@ -15,6 +15,8 @@ const logger = createLogger({
   predicate: (_getState, { type }) => !/DRAG-MOVE/.test(type)
 });
 
+let middleware = [thunk, entityMiddleware, floorMiddleware];
+if (process.env.NODE_ENV !== "production") middleware = [...middleware, logger];
 // TODO: shouldn't have to define default state both here and in reducer.js, find a way to do it only in one place
 export default createStore(
   reducer,
@@ -38,5 +40,6 @@ export default createStore(
       currentView: null
     }
   },
-  applyMiddleware(thunk, entityMiddleware, floorMiddleware, logger)
+  // only do logging in development
+  applyMiddleware(...middleware)
 );

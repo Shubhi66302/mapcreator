@@ -146,12 +146,13 @@ export const getIdsForEntities = (numEntities = 0, existingEntities = {}) => {
   return [...Array(numEntities).keys()].map(idx => idx + startId);
 };
 
-export var createMapFromCoordinateData = (
+export var createFloorFromCoordinateData = ({
   row_start,
   row_end,
   column_start,
-  column_end
-) => {
+  column_end,
+  floor_id
+}) => {
   // be careful to satisfy json schema
   // iterate and fill up map_values
   var map_values = [];
@@ -182,6 +183,27 @@ export var createMapFromCoordinateData = (
     }
   }
   return {
+    floor_id,
+    chargers: [],
+    ppses: [],
+    odses: [],
+    dockPoints: [],
+    fireEmergencies: [],
+    map_values,
+    metadata: {
+      botWithRackThreshold: 750,
+      botWithoutRackThreshold: 610
+    }
+  };
+};
+
+export var createMapFromCoordinateData = (
+  row_start,
+  row_end,
+  column_start,
+  column_end
+) => {
+  return {
     elevators: [],
     // add default zone defzone
     zones: [
@@ -193,19 +215,13 @@ export var createMapFromCoordinateData = (
     ],
     queueDatas: [],
     floors: [
-      {
-        floor_id: 1,
-        chargers: [],
-        ppses: [],
-        odses: [],
-        dockPoints: [],
-        fireEmergencies: [],
-        map_values,
-        metadata: {
-          botWithRackThreshold: 750,
-          botWithoutRackThreshold: 610
-        }
-      }
+      createFloorFromCoordinateData({
+        row_start,
+        row_end,
+        column_start,
+        column_end,
+        floor_id: 1
+      })
     ]
   };
 };

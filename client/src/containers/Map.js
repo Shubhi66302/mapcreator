@@ -17,9 +17,12 @@ import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
 import AddBarcode from "components/Map/Forms/AddBarcode";
+import AddFloor from "components/Map/Forms/AddFloor";
 import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
 import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
+import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
+
 const QueueCheckbox = ({ val, onChange }) => (
   <label>
     Queue mode:
@@ -80,7 +83,8 @@ class Map extends Component {
               AddBarcode,
               RemoveBarcode,
               AddQueueBarcode,
-              ModifyDistanceBwBarcodes
+              ModifyDistanceBwBarcodes,
+              AddFloor
             ].map((Elm, idx) => (
               <div key={idx} className="pr-1 pt-1">
                 <Elm onError={e => this.setState({ e })} />
@@ -90,6 +94,9 @@ class Map extends Component {
               val={queueMode}
               onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
             />
+          </div>
+          <div className="row py-1">
+            <ChangeFloorDropdown />
           </div>
           <div className="row py-1">
             <div className="btn-group" role="group">

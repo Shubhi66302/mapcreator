@@ -1,6 +1,6 @@
 // technically components should not be connected to app state but it's ok for our case.
 import React from "react";
-import BaseForm from "./BaseForm";
+import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
 import { modifyDistanceBetweenBarcodes } from "actions/barcode";
 
@@ -27,7 +27,7 @@ const tooltipData = {
 };
 
 const ModifyDistanceBwBarcodes = ({ dispatch, disabled }) => (
-  <BaseForm
+  <BaseJsonForm
     disabled={disabled}
     schema={schema}
     onSubmit={({ formData }) =>

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 // import Form from "react-jsonschema-form";
-import FormModal from "./Forms/FormModal";
+import FormModal from "./Forms/Util/FormModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
