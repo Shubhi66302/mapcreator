@@ -4,77 +4,54 @@
 }
 
 #sidebar {
+  position: relative;
   width: 250px;
   top: 0;
   left: 0;
   height: 100vh;
   z-index: 999;
-  background: #7386D5;
-  color: #fff;
+  background: #545c64;
   transition: all 0.3s;
   margin-top: -20px; /* to account for 20px body padding in index.css */
-  padding-right: 20px;
-}
-
-#sidebar.active {
+  margin-right: 30px;
   margin-left: -250px;
 }
 
-a[data-toggle="collapse"] {
+#sidebar.active {
+  margin-left: 0px;
+}
+
+#sidebar-button {
   position: relative;
+  right: -250px;
+  padding: 20px 0px 0px 15px;
 }
 
-.dropdown-toggle::after {
-  display: block;
+#sidebar-button:focus {
+  box-shadow: none;
+}
+
+.sidebar-icon.active {
+  color: orange;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color:orange;
+}
+.sidebar-icon {
+  color: #b3b3b3;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.menu-container {
+  position: relative;
+  top: -30px;
+  left: 0;
+}
+
+#version-text {
   position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-}
-
-@media (max-width: 768px) {
-  #sidebar {
-      margin-left: -250px;
-  }
-  #sidebar.active {
-      margin-left: 0;
-  }
-}
-
-/* other styling */
-#sidebar {
-  /* don't forget to add all the previously mentioned styles here too */
-  background: #7386D5;
-  color: #fff;
-  transition: all 0.3s;
-}
-
-#sidebar .sidebar-header {
-  padding: 20px;
-  background: #6d7fcc;
-}
-
-#sidebar ul.components {
-  padding: 20px 0;
-  border-bottom: 1px solid #47748b;
-}
-
-#sidebar ul p {
-  color: #fff;
-  padding: 10px;
-}
-
-#sidebar ul li a {
-  padding: 10px;
-  font-size: 1.1em;
-  display: block;
-}
-#sidebar ul li a:hover {
-  color: #7386D5;
-  background: #fff;
-}
-
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-  color: #fff;
-  background: #6d7fcc;
+  bottom: 10px;
+  left: 10px;
+  color: #b3b3b3;
 }
