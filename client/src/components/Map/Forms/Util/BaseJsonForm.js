@@ -14,11 +14,13 @@ class BaseForm extends Component {
       onError = () => {},
       validate = null,
       uiSchema = undefined,
+      initialFormData = undefined,
       ...rest
     } = this.props;
     return (
       <ButtonForm {...rest} show={this.state.show} toggle={this.toggle}>
         <Form
+          formData={initialFormData}
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={formData => {
