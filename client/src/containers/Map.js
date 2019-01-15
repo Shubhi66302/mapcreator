@@ -6,6 +6,7 @@ import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import { modifyNeighbours } from "actions/barcode";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
+import Sidebar from "components/Sidebar/Sidebar";
 
 import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
@@ -54,117 +55,120 @@ class Map extends Component {
 
     const mapId = nMap ? Object.entries(nMap.entities.mapObj)[0][1].id : 0;
     return (
-      <div className="container">
-        <SweetAlertError
-          error={error}
-          onConfirm={() => this.setState({ error: undefined })}
-        />
-        <SweetAlertSuccess
-          message={successMessage}
-          onConfirm={() => this.setState({ successMessage: undefined })}
-        />
-        <div className="row">
-          <h3 className="display-5">
-            {nMap ? nMap.entities.mapObj[mapId].name : "..."}
-          </h3>
-        </div>
-        <div className="row py-1">
-          {[
-            AssignStorable,
-            AddPPS,
-            AddCharger,
-            AssignDockPoint,
-            AssignZone,
-            AssignODSExcluded,
-            AssignEmergencyBarcode,
-            AddBarcode,
-            RemoveBarcode,
-            AddQueueBarcode,
-            ModifyDistanceBwBarcodes,
-            AddFloor
-          ].map((Elm, idx) => (
-            <div key={idx} className="pr-1 pt-1">
-              <Elm onError={e => this.setState({ e })} />
-            </div>
-          ))}
-          <QueueCheckbox
-            val={queueMode}
-            onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
+      <div className="sidebar-wrapper">
+        <Sidebar />
+        <div className="container content">
+          <SweetAlertError
+            error={error}
+            onConfirm={() => this.setState({ error: undefined })}
           />
-        </div>
-        <div className="row py-1">
-          <ChangeFloorDropdown />
-        </div>
-        <div className="row py-1">
-          <div className="btn-group" role="group">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={() =>
-                dispatch(
-                  saveMap(
-                    error => this.setState({ error }),
-                    () =>
-                      this.setState({
-                        successMessage: "Successfully saved map."
-                      })
-                  )
-                )
-              }
-            >
-              Save
-            </button>
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={() => {
-                dispatch(downloadMap());
-              }}
-            >
-              Download
-            </button>
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={() => {
-                dispatch(downloadMap(true));
-              }}
-            >
-              Download as Single Floor
-            </button>
+          <SweetAlertSuccess
+            message={successMessage}
+            onConfirm={() => this.setState({ successMessage: undefined })}
+          />
+          <div className="row">
+            <h3 className="display-5">
+              {nMap ? nMap.entities.mapObj[mapId].name : "..."}
+            </h3>
           </div>
-        </div>
-        <div className="row">
-          <MapViewport
-            onShiftClickOnMapTile={tileId =>
+          <div className="row py-1">
+            {[
+              AssignStorable,
+              AddPPS,
+              AddCharger,
+              AssignDockPoint,
+              AssignZone,
+              AssignODSExcluded,
+              AssignEmergencyBarcode,
+              AddBarcode,
+              RemoveBarcode,
+              AddQueueBarcode,
+              ModifyDistanceBwBarcodes,
+              AddFloor
+            ].map((Elm, idx) => (
+              <div key={idx} className="pr-1 pt-1">
+                <Elm onError={e => this.setState({ e })} />
+              </div>
+            ))}
+            <QueueCheckbox
+              val={queueMode}
+              onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
+            />
+          </div>
+          <div className="row py-1">
+            <ChangeFloorDropdown />
+          </div>
+          <div className="row py-1">
+            <div className="btn-group" role="group">
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() =>
+                  dispatch(
+                    saveMap(
+                      error => this.setState({ error }),
+                      () =>
+                        this.setState({
+                          successMessage: "Successfully saved map."
+                        })
+                    )
+                  )
+                }
+              >
+                Save
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() => {
+                  dispatch(downloadMap());
+                }}
+              >
+                Download
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() => {
+                  dispatch(downloadMap(true));
+                }}
+              >
+                Download as Single Floor
+              </button>
+            </div>
+          </div>
+          <div className="row">
+            <MapViewport
+              onShiftClickOnMapTile={tileId =>
+                this.setState({
+                  barcodeView: {
+                    tileId,
+                    show: true
+                  }
+                })
+              }
+            />
+          </div>
+          <BarcodeViewPopup
+            show={this.state.barcodeView.show}
+            toggle={() =>
               this.setState({
                 barcodeView: {
-                  tileId,
-                  show: true
+                  ...this.state.barcodeView,
+                  show: !this.state.barcodeView.show
                 }
               })
             }
+            barcode={
+              nMap && this.state.barcodeView.tileId
+                ? nMap.entities.barcode[this.state.barcodeView.tileId]
+                : undefined
+            }
+            onSubmit={values =>
+              dispatch(modifyNeighbours(this.state.barcodeView.tileId, values))
+            }
           />
         </div>
-        <BarcodeViewPopup
-          show={this.state.barcodeView.show}
-          toggle={() =>
-            this.setState({
-              barcodeView: {
-                ...this.state.barcodeView,
-                show: !this.state.barcodeView.show
-              }
-            })
-          }
-          barcode={
-            nMap && this.state.barcodeView.tileId
-              ? nMap.entities.barcode[this.state.barcodeView.tileId]
-              : undefined
-          }
-          onSubmit={values =>
-            dispatch(modifyNeighbours(this.state.barcodeView.tileId, values))
-          }
-        />
       </div>
     );
   }
