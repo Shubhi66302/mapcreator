@@ -6,6 +6,12 @@ export const directionSchema = {
   enumNames: ["Top", "Right", "Bottom", "Left"]
 };
 
+export const listOfBarcodesSchema = {
+  type: "string",
+  title: "Barcodes",
+  pattern: "^\\d\\d\\d\\.\\d\\d\\d( *, *\\d\\d\\d\\.\\d\\d\\d)* *$"
+};
+
 export const barcodeStringSchema = {
   type: "string",
   title: "Barcode",
