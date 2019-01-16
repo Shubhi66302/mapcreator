@@ -43,3 +43,6 @@ export default createStore(
   // only do logging in development
   applyMiddleware(...middleware)
 );
+
+export const configureStore = initState =>
+  createStore(reducer, initState, applyMiddleware(...middleware));

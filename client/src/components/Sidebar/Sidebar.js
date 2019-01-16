@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./Sidebar.css";
+import Chargers from "./Chargers";
+import PPSes from "./PPSes";
 
 var Menu = ({ menuItems }) => (
   <div className="row">
@@ -22,7 +24,12 @@ class Sidebar extends Component {
   };
   render() {
     const { open, activeIdx } = this.state;
-    var menuItemIconNames = ["fa-charging-station", "fa-archive"];
+    var menuItems = [
+      ["fa-charging-station", Chargers],
+      ["fa-archive", PPSes],
+      ["fa-chevron-up", undefined]
+    ];
+    var DataToShow = menuItems[activeIdx][1];
     return (
       <nav id="sidebar" className={open ? "active" : ""}>
         <button
@@ -34,12 +41,13 @@ class Sidebar extends Component {
         </button>
         <div className="container menu-container">
           <Menu
-            menuItems={menuItemIconNames.map((name, idx) => ({
+            menuItems={menuItems.map(([name], idx) => ({
               name,
               isActive: activeIdx === idx,
               onClick: () => this.setState({ activeIdx: idx })
             }))}
           />
+          {DataToShow ? <DataToShow /> : ""}
         </div>
         <small id="version-text">
           {process.env.REACT_APP_VERSION || "unknown version"}

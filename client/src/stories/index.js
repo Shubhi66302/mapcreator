@@ -8,6 +8,15 @@ import { Button, Welcome } from "@storybook/react/demo";
 import JSONFileInput from "components/JSONFileInput";
 import InlineTextInput from "components/InlineTextInput";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
+import BaseCard from "components/Sidebar/BaseCard";
+import Chargers from "components/Sidebar/Chargers";
+
+import { makeState, singleFloor } from "utils/test-helper";
+import { Provider } from "react-redux";
+import { configureStore } from "../store";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const store = configureStore(makeState(singleFloor));
 
 storiesOf("Welcome", module).add("to Storybook", () => (
   <Welcome showApp={linkTo("Button")} />
@@ -83,3 +92,11 @@ storiesOf("BarcodeViewPopup", module).add("default", () => (
     }}
   />
 ));
+
+storiesOf("Sidebar BaseCard", module).add("default", () => (
+  <BaseCard title={"test"}>Hello world</BaseCard>
+));
+// add chargers
+storiesOf("Sidebar > Chargers", module)
+  .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+  .add("default", () => <Chargers />);

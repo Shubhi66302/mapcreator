@@ -150,7 +150,7 @@ export const tileSpriteNamesWithoutEntityData = createSelector(
   }
 );
 
-const getParticularEntity = (state, { entityName }) =>
+export const getParticularEntity = (state, { entityName }) =>
   state.normalizedMap.entities[entityName] || {};
 const getQueueData = state => state.normalizedMap.entities.queueData || {};
 
