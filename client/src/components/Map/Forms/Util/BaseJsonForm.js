@@ -4,9 +4,10 @@ import ButtonForm from "./ButtonForm";
 
 class BaseForm extends Component {
   state = {
-    show: false
+    show: false,
+    formData: {}
   };
-  toggle = () => this.setState({ show: !this.state.show });
+  toggle = () => this.setState({ show: !this.state.show, formData: {} });
   render() {
     const {
       schema,
@@ -25,6 +26,8 @@ class BaseForm extends Component {
             onSubmit(formData);
             this.toggle();
           }}
+          onChange={({ formData }) => this.setState({ formData })}
+          formData={this.state.formData}
           onError={onError}
           validate={validate}
         />
