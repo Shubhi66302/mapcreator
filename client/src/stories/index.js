@@ -8,8 +8,8 @@ import { Button, Welcome } from "@storybook/react/demo";
 import JSONFileInput from "components/JSONFileInput";
 import InlineTextInput from "components/InlineTextInput";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
-import BaseCard from "components/Sidebar/BaseCard";
-import Chargers from "components/Sidebar/Chargers";
+import BaseCard from "components/Map/Sidebar/BaseCard";
+import Chargers from "components/Map/Sidebar/Chargers";
 
 import { makeState, singleFloor } from "utils/test-helper";
 import { Provider } from "react-redux";

@@ -15,13 +15,14 @@ class BaseForm extends Component {
       onError = () => {},
       validate = null,
       uiSchema = undefined,
-      initialFormData = undefined,
+      initialData = {},
       ...rest
     } = this.props;
+    const {formData} = this.state;
+    const fullFormData = {...formData, ...initialData};
     return (
       <ButtonForm {...rest} show={this.state.show} toggle={this.toggle}>
         <Form
-          formData={initialFormData}
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={formData => {
@@ -29,7 +30,7 @@ class BaseForm extends Component {
             this.toggle();
           }}
           onChange={({ formData }) => this.setState({ formData })}
-          formData={this.state.formData}
+          formData={fullFormData}
           onError={onError}
           validate={validate}
         />

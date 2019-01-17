@@ -11,6 +11,7 @@ class ButtonForm extends Component {
         id: "default-tooltip-id"
       },
       toggle,
+      small = false,
       show
     } = this.props;
     return (
@@ -19,7 +20,7 @@ class ButtonForm extends Component {
           <button
             key={0}
             type="button"
-            className="btn btn-outline-primary"
+            className={`btn btn-outline-primary ${small ? "btn-sm" : ""}`}
             disabled={disabled}
             onClick={() => toggle()}
           >
@@ -29,7 +30,7 @@ class ButtonForm extends Component {
         <BulletPointsTooltip {...tooltipData} />
         <div key={1} className="modal fade" tabIndex="-1" role="dialog">
           <FormModal show={show} toggle={toggle}>
-            {this.props.children}
+            <div>{this.props.children}</div>
           </FormModal>
         </div>
       </div>

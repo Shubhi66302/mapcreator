@@ -5,8 +5,14 @@ export const createEntityReducer = (reducerKey, idField) => (
   action
 ) => {
   switch (action.type) {
+    case `ADD-${reducerKey}`: {
+      return {
+        ...state,
+        [action.value[idField]]: action.value
+      };
+    }
     case `ADD-MULTIPLE-${reducerKey}`: {
-    // assumed id is already present in entities (used for barcode reducer)
+      // assumed id is already present in entities (used for barcode reducer)
       let newEntitiesObj = {};
       let entities = action.value;
       for (let idx = 0; idx < entities.length; idx++) {

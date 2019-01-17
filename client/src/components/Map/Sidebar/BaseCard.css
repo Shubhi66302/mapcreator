@@ -1,0 +1,9 @@
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+.collapsible-content.open {
+  max-height: 500px;
+}

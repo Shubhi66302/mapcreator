@@ -5,7 +5,7 @@
 
 #sidebar {
   position: relative;
-  width: 250px;
+  width: 300px;
   top: 0;
   left: 0;
   height: 100vh;
@@ -14,7 +14,7 @@
   transition: all 0.3s;
   margin-top: -20px; /* to account for 20px body padding in index.css */
   margin-right: 30px;
-  margin-left: -250px;
+  margin-left: -300px;
 }
 
 #sidebar.active {
@@ -23,7 +23,7 @@
 
 #sidebar-button {
   position: relative;
-  right: -250px;
+  right: -300px;
   padding: 20px 0px 0px 15px;
 }
 

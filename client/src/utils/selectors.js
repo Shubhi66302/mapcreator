@@ -154,22 +154,29 @@ export const getParticularEntity = (state, { entityName }) =>
   state.normalizedMap.entities[entityName] || {};
 const getQueueData = state => state.normalizedMap.entities.queueData || {};
 
+
 export const entitySelectorHelperData = {
   pps: ["pps", constants.PPS],
   charger: ["charger", constants.CHARGER],
   dockPoint: ["dockPoint", constants.DOCK_POINT],
   ods: ["ods", constants.ODS_EXCLUDED],
-  fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT]
+  fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT],
+  // 3rd argument is how to get coordinate(s) from an entity.
+  // in case of elevator, there are multiple coordinates per elevator
+  elevator: ["elevator", constants.ELEVATOR, e => e.coordinate_list.map(({coordinate}) => tupleOfIntegersToCoordinateKey(coordinate))]
 };
+
+// all entities except elevator have one coordinate per entity
+const defaultGetCoordinatesFromEntity = e => [e.coordinate];
 
 export const getParticularEntityMap = createCachedSelector(
   getParticularEntity,
   (state_, { entityName }) => entityName,
   (particularEntities, entityName) => {
     var ret = {};
-    const [, entitySprite] = entitySelectorHelperData[entityName];
+    const [, entitySprite, getCoordinatesFromEntity = defaultGetCoordinatesFromEntity] = entitySelectorHelperData[entityName];
     var list = Object.entries(particularEntities).map(([, val]) => val);
-    var coordinateKeys = list.map(e => e.coordinate);
+    var coordinateKeys = _.flatten(list.map(e => getCoordinatesFromEntity(e)));
     coordinateKeys.forEach(key => (ret[key] = entitySprite));
     return ret;
   }
@@ -498,3 +505,5 @@ export const currentFloorBotWithRackThreshold = state =>
 export const currentFloorBotWithoutRackThreshold = state =>
   state.normalizedMap.entities.floor[state.currentFloor].metadata
     .botWithoutRackThreshold;
+
+export const getElevatorIds = state => state.normalizedMap.entities.map.dummy.elevators;

@@ -6,7 +6,7 @@ import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import { modifyNeighbours } from "actions/barcode";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
-import Sidebar from "components/Sidebar/Sidebar";
+import Sidebar from "components/Map/Sidebar/Sidebar";
 
 import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";

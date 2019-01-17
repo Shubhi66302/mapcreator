@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Sidebar.css";
 import Chargers from "./Chargers";
 import PPSes from "./PPSes";
+import Elevators from "./Elevators";
 
 var Menu = ({ menuItems }) => (
   <div className="row">
@@ -25,9 +26,9 @@ class Sidebar extends Component {
   render() {
     const { open, activeIdx } = this.state;
     var menuItems = [
+      ["fa-chevron-up", Elevators],
       ["fa-charging-station", Chargers],
-      ["fa-archive", PPSes],
-      ["fa-chevron-up", undefined]
+      ["fa-archive", PPSes]
     ];
     var DataToShow = menuItems[activeIdx][1];
     return (
