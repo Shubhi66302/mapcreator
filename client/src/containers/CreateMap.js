@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import { FormikedInput } from "components/InlineTextInput";
 import { createMapFromCoordinateData, handleErrors } from "utils/util";
 import SweetAlertError from "components/SweetAlertError";
-import { string, number, object, ref } from "yup";
-
+import { string, object, ref } from "yup";
+import { yupPosIntSchema } from "utils/forms";
 // form html
 const InnerForm = ({ handleSubmit, isSubmitting }) => {
   return (
@@ -52,16 +52,12 @@ const Form = withFormik({
     col_end: ""
   }),
   validationSchema: () => {
-    var posIntSchema = number()
-      .required()
-      .positive()
-      .integer();
     return object().shape({
       name: string().required(),
-      row_start: posIntSchema,
-      row_end: posIntSchema.min(ref("row_start")),
-      col_start: posIntSchema,
-      col_end: posIntSchema.min(ref("col_start"))
+      row_start: yupPosIntSchema,
+      row_end: yupPosIntSchema.min(ref("row_start")),
+      col_start: yupPosIntSchema,
+      col_end: yupPosIntSchema.min(ref("col_start"))
     });
   },
   handleSubmit: (

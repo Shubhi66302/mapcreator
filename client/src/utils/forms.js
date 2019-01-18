@@ -1,9 +1,16 @@
+import { number, object, string, array } from "yup";
+import _ from "lodash";
+
+const directions = [0, 1, 2, 3];
+const directionNames = ["Top", "Right", "Bottom", "Left"];
+export const directionsAndNames = _.zip(directions, directionNames);
+
 export const directionSchema = {
   type: "number",
   title: "Direction",
   default: 0,
-  enum: [0, 1, 2, 3],
-  enumNames: ["Top", "Right", "Bottom", "Left"]
+  enum: directions,
+  enumNames: directionNames
 };
 
 export const listOfBarcodesSchema = {
@@ -35,3 +42,39 @@ export const neighboursSchema = {
   },
   title: "Neighbours"
 };
+
+// yup schemas
+
+export const yupPosIntSchema = number()
+  .required("Required")
+  .integer("Should be integer")
+  .min(1, "Should be positive integer");
+
+export const yupBarcodeStringSchema = string()
+  .required("Required")
+  .matches(/^\d\d\d\.\d\d\d$/, "Should match barcode pattern (eg. 000.001)");
+
+export const yupEntryExitBarcodesSchema = array().of(
+  object().shape({
+    barcode: yupBarcodeStringSchema,
+    boom_barrier_id: yupPosIntSchema,
+    floor_id: yupPosIntSchema
+  })
+);
+
+export const yupCoordinateStringSchema = string()
+  .required("Required")
+  .matches(/^\d+,\d+$/, "Should match coordinate pattern (eg. 5,6)");
+
+export const yupDirectionSchema = number()
+  .required("Required")
+  .oneOf([0, 1, 2, 3]);
+
+export const yupCoordinateListSchema = array()
+  .of(
+    object().shape({
+      coordinate: yupCoordinateStringSchema,
+      direction: yupDirectionSchema
+    })
+  )
+  .min(1, "Atleast one coordinate required");

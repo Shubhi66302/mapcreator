@@ -6,6 +6,7 @@ import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
 import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
+import elevatorReducer from "./elevator";
 import _ from "lodash";
 
 export const dummyState = {
@@ -44,6 +45,7 @@ export const dummyState = {
 // exporting reducers for testing
 export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
+export var baseElevatorReducer = createEntityReducer("ELEVATOR", "elevator_id");
 
 export var ppsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -60,7 +62,7 @@ export var ppsReducer = (state = {}, action) => {
 };
 
 export const entitiesReducer = combineReducers({
-  elevator: createEntityReducer("ELEVATOR", "elevator_id"),
+  elevator: reduceReducers(elevatorReducer, baseElevatorReducer),
   queueData: createEntityReducer("QUEUE-DATA", "queue_data_id"),
   charger: createEntityReducer("CHARGER", "charger_id"),
   pps: reduceReducers(basePPSReducer, ppsReducer),
@@ -92,7 +94,10 @@ export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
   return state;
 };
 
-export const normalizedMapReducer = reduceReducers(mapUpdateReducer, mapChangeReducer);
+export const normalizedMapReducer = reduceReducers(
+  mapUpdateReducer,
+  mapChangeReducer
+);
 
 // helper exported for testing
 export const toggleKeyInMap = (theMap, key) => {

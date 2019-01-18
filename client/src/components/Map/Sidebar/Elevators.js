@@ -3,10 +3,15 @@ import { connect } from "react-redux";
 import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
 import { tupleOfIntegersToCoordinateKey } from "utils/util";
-import EditElevator from "../Forms/EditElevator";
-import EditEntryPoints from "../Forms/EditEntryPoints";
+import EditEntryOrExitPoints from "../Forms/EditEntryOrExitPoints";
+import EditElevatorCoordinates from "../Forms/EditElevatorCoordinates";
+import {
+  editEntryPoints,
+  editExitPoints,
+  editElevatorCoordinates
+} from "actions/elevator";
 
-const Entry = ({ header, value }) => (
+const CardEntry = ({ header, value }) => (
   <div className="row justify-content-between">
     <div className="col-auto">{header}:</div>
     <div className="col-auto">
@@ -18,12 +23,16 @@ const Entry = ({ header, value }) => (
 const BarcodeList = ({ barcodes }) => (
   <ul>
     {barcodes.length
-      ? barcodes.map((barcode, idx) => <li key={idx}>{barcode}</li>)
+      ? barcodes.map(({ barcode, floor_id }, idx) => (
+        <li key={idx}>
+          {barcode} [{floor_id}]
+        </li>
+      ))
       : "[none]"}
   </ul>
 );
 
-const Elevators = ({ elevatorDict }) => {
+const Elevators = ({ elevatorDict, floorIds, dispatch }) => {
   const elevators = Object.entries(elevatorDict).map(([, val]) => val);
   return (
     <div className="pt-3">
@@ -42,10 +51,21 @@ const Elevators = ({ elevatorDict }) => {
         ) => (
           <BaseCard key={idx} title={elevator_id}>
             <div className="container">
-              <Entry header="Elevator ID" value={elevator_id} />
-              <Entry header="Position" value={position} />
-              <Entry header="Type" value={type} />
-              Elevator Coordinates:
+              <CardEntry header="Elevator ID" value={elevator_id} />
+              <CardEntry header="Position" value={position} />
+              <CardEntry header="Type" value={type} />
+              <CardEntry
+                header="Coordinates"
+                value={
+                  <EditElevatorCoordinates
+                    elevator_id={elevator_id}
+                    coordinate_list={coordinate_list}
+                    onSubmit={formValues =>
+                      dispatch(editElevatorCoordinates(formValues))
+                    }
+                  />
+                }
+              />
               <ul>
                 {coordinate_list.map(({ coordinate }, idx) => (
                   <li key={idx}>
@@ -53,11 +73,38 @@ const Elevators = ({ elevatorDict }) => {
                   </li>
                 ))}
               </ul>
-              Entry Barcodes: <EditEntryPoints />
+              <CardEntry
+                header="Entry Barcodes"
+                value={
+                  <EditEntryOrExitPoints
+                    elevator_id={elevator_id}
+                    barcodes={entry_barcodes}
+                    barcodesFieldName="entry_barcodes"
+                    barcodesFieldLabel="Entry Barcodes"
+                    floorIds={floorIds}
+                    onSubmit={formValues =>
+                      dispatch(editEntryPoints(formValues))
+                    }
+                  />
+                }
+              />
               <BarcodeList barcodes={entry_barcodes} />
-              Exit Barcodes:
+              <CardEntry
+                header="Exit Barcodes"
+                value={
+                  <EditEntryOrExitPoints
+                    elevator_id={elevator_id}
+                    barcodes={exit_barcodes}
+                    barcodesFieldName="exit_barcodes"
+                    barcodesFieldLabel="Exit Barcodes"
+                    floorIds={floorIds}
+                    onSubmit={formValues =>
+                      dispatch(editExitPoints(formValues))
+                    }
+                  />
+                }
+              />
               <BarcodeList barcodes={exit_barcodes} />
-              <EditElevator />
             </div>
           </BaseCard>
         )
@@ -67,5 +114,6 @@ const Elevators = ({ elevatorDict }) => {
 };
 
 export default connect(state => ({
-  elevatorDict: getParticularEntity(state, { entityName: "elevator" })
+  elevatorDict: getParticularEntity(state, { entityName: "elevator" }),
+  floorIds: state.normalizedMap.entities.map.dummy.floors
 }))(Elevators);
