@@ -1,7 +1,7 @@
 import React from "react";
 import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
-import { barcodeStringSchema, listOfBarcodesSchema } from "utils/forms";
+import { barcodeStringSchema } from "utils/forms";
 import { addElevator } from "actions/elevator";
 import {
   coordinateKeyToBarcodeSelector,
@@ -19,31 +19,17 @@ const elevatorTypeSchema = {
 const schema = {
   title: "Add Elevator",
   type: "object",
-  required: [
-    "elevator_id",
-    "position",
-    "type"
-    // "entry_barcodes",
-    // "exit_barcodes"
-  ],
+  required: ["elevator_id", "position", "type"],
   properties: {
     elevator_id: { type: "integer", title: "Id" },
     position: { ...barcodeStringSchema, title: "Position" },
     type: elevatorTypeSchema
-    // entry_barcodes: { ...listOfBarcodesSchema, title: "Entry Points" },
-    // exit_barcodes: { ...listOfBarcodesSchema, title: "Exit Points" }
   }
 };
-
-// const listOfBarcodesPlaceholder = {
-//   "ui:placeholder": "list of barcodes eg. 000.000, 002.003"
-// };
 
 const uiSchema = {
   elevator_id: { "ui:readonly": true },
   position: { "ui:readonly": true }
-  // entry_barcodes: listOfBarcodesPlaceholder,
-  // exit_barcodes: listOfBarcodesPlaceholder
 };
 
 const AddElevator = ({ onSubmit, disabled, initialData }) => (
