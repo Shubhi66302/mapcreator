@@ -60,7 +60,6 @@ Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so ed
 - For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running and test it out.
 - For deploying to production, run `make deploy`. Then check production server to see if build is runnig.
 - Deployment can also be done through bitbucket pipelines. Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy
-    - NOTE: always use Fast-forward only (--ff-only) merge strategy since deployment step on bitbucket relies on that. Otherwise you'll need to deploy using local commands as stated above.
     - TODO: how to do this
 
 # Modifying JSON schemas

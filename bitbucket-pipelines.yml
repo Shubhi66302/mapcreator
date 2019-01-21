@@ -40,11 +40,22 @@ pipelines:
   branches:
     master:
       - step:
-        # assumes image is already made. will only happen when merge strategy was ff
+          name: Install and Test
+          caches:
+            - nodeserver
+            - nodeclient
+          script:
+            - make test
+          services: 
+            - postgres
+      - step:
           name: Deploy Production
           deployment: production
+          services:
+            - docker
           script:
             - make login
+            - make all
             - make deploy  
 
 definitions: 
