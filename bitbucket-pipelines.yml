@@ -13,11 +13,7 @@ pipelines:
           - nodeserver
           - nodeclient
         script:
-          - yarn install --ignore-scripts
-          - cd client && yarn install && cd ..
-          - npm run lint-no-fix
-          - npm run migrate
-          - npm test
+          - make test
         services: 
           - postgres
     - step:
@@ -41,16 +37,26 @@ pipelines:
           - make deploy-staging
         caches:
           - docker
-    - step:
-        name: Deploy Production
-        deployment: production
-        trigger: manual
-        services:
-          - docker
-        script:
-          - make login
-          - make push-as-latest
-          - make deploy
+  branches:
+    master:
+      - step:
+          name: Install and Test
+          caches:
+            - nodeserver
+            - nodeclient
+          script:
+            - make test
+          services: 
+            - postgres
+      - step:
+          name: Deploy Production
+          deployment: production
+          services:
+            - docker
+          script:
+            - make login
+            - make all
+            - make deploy  
 
 definitions: 
   caches:
