@@ -7,6 +7,7 @@ import barcodeReducer from "./barcode";
 import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
 import elevatorReducer from "./elevator";
+import zoneReducer from "./zone";
 import _ from "lodash";
 
 export const dummyState = {
@@ -72,9 +73,8 @@ export const entitiesReducer = combineReducers({
   barcode: reduceReducers(barcodeReducer, baseBarcodeReducer),
   floor: floorReducer,
   map: mapReducer,
+  zone: zoneReducer,
   // TODO: make reducers for these
-  // using identity reducers for rest for now?
-  zone: z => z || null,
   mapObj: m => m || null
 });
 

@@ -23,6 +23,7 @@ import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarco
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
 import AddElevator from "components/Map/Forms/AddElevator";
+import AddZone from "components/Map/Forms/AddZone";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label>
@@ -78,6 +79,7 @@ class Map extends Component {
               AddPPS,
               AddCharger,
               AssignDockPoint,
+              AddZone,
               AssignZone,
               AssignODSExcluded,
               AssignEmergencyBarcode,
