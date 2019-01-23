@@ -4,7 +4,7 @@ import { normalizeMap } from "utils/normalizr";
 import { fromJS } from "immutable";
 import barcodeReducer, { calculateDistances } from "./barcode.js";
 import { getAllColumnTileIdTuples } from "utils/selectors";
-import {createFloorFromCoordinateData} from "utils/util";
+import { createFloorFromCoordinateData } from "utils/util";
 import _ from "lodash";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
@@ -345,12 +345,21 @@ describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
 describe("ADD-FLOOR", () => {
   test("should add floor barcodes", () => {
     var state = makeState(vanilla3x3BarcodeMap);
-    var floorData = createFloorFromCoordinateData({floor_id: 2, row_start: 2, row_end: 3, column_start: 2, column_end: 3});
+    var floorData = createFloorFromCoordinateData({
+      floor_id: 2,
+      row_start: 2,
+      row_end: 3,
+      column_start: 2,
+      column_end: 3
+    });
     var newState = barcodeReducer(state, {
       type: "ADD-FLOOR",
       value: floorData
     });
-    var pairs = _.zip(floorData.map_values.map(barcode => barcode.coordinate), floorData.map_values);
+    var pairs = _.zip(
+      floorData.map_values.map(barcode => barcode.coordinate),
+      floorData.map_values
+    );
     expect(newState).toEqual({
       ...state,
       ..._.fromPairs(pairs)
@@ -393,5 +402,21 @@ describe("calculateDistances", () => {
       barcodeDict
     );
     expect(distances).toEqual([750, 1250]);
+  });
+});
+
+describe("ASSIGN-ZONE", () => {
+  test("assign zone to selected tiles", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(state, {
+      type: "ASSIGN-ZONE",
+      value: {
+        zone_id: "new-zone-id",
+        mapTiles: { "1,1": true, "2,2": true }
+      }
+    });
+    expect(newState["1,1"].zone).toBe("new-zone-id");
+    expect(newState["2,2"].zone).toBe("new-zone-id");
+    expect(newState["0,1"].zone).toBe("defzone");
   });
 });

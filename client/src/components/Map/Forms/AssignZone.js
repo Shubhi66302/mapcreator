@@ -2,24 +2,31 @@
 import React from "react";
 import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
-// import { addEntities } from "actions/actions";
+import { assignZone } from "actions/zone";
 
-const schema = {
-  title: "Assign Zone",
-  type: "object",
-  required: ["zone"],
-  properties: {
-    zone: {
-      type: "string",
-      title: "Zone name"
+const makeSchema = zoneDict => {
+  const zoneEnum = Object.keys(zoneDict);
+  const defaultZone = zoneEnum[0];
+  return {
+    title: "Assign Zone",
+    type: "object",
+    required: ["zone_id"],
+    properties: {
+      zone_id: {
+        type: "string",
+        title: "Zone name",
+        enum: zoneEnum,
+        enumNames: zoneEnum,
+        default: defaultZone
+      }
     }
-  }
+  };
 };
 
-const AssignZone = ({ onSubmit, disabled }) => (
+const AssignZone = ({ onSubmit, disabled, zoneDict }) => (
   <BaseJsonForm
     disabled={disabled}
-    schema={schema}
+    schema={makeSchema(zoneDict)}
     onSubmit={onSubmit}
     buttonText={"Assign Zone"}
   />
@@ -27,11 +34,14 @@ const AssignZone = ({ onSubmit, disabled }) => (
 
 export default connect(
   state => ({
-    disabled: Object.keys(state.selection.mapTiles).length === 0
+    disabled:
+      Object.keys(state.selection.mapTiles).length === 0 ||
+      Object.keys(state.normalizedMap.entities.zone) === 0,
+    zoneDict: state.normalizedMap.entities.zone || {}
   }),
-  () => ({
-    onSubmit: () => {
-      // state is not accessible here so using a workaround to access it in action creator...
+  dispatch => ({
+    onSubmit: ({ formData }) => {
+      dispatch(assignZone(formData));
       // TODO: define what needs to be done
     }
   })

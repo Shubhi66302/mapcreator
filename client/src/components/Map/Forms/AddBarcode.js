@@ -50,8 +50,8 @@ class AddBarcode extends Component {
       id: "add-barcode",
       title: "Add a barcode",
       bulletPoints: [
-        "Can only add one barcode at a time.",
-        "Barcodes can only be added at peripheries.",
+        "Select a barcode with available neighbours to add barcode",
+        "Can only add one barcode at a time",
         "Negative coordinates are not supported, so can't add barcode which might result in negative coordinate."
       ]
     };

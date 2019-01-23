@@ -221,6 +221,12 @@ export default (state = {}, action) => {
       const newBarcodesObj = _.fromPairs(_.zip(keys, map_values));
       return { ...state, ...newBarcodesObj };
     }
+    case "ASSIGN-ZONE": {
+      const {zone_id, mapTiles} = action.value;
+      let newState = {};
+      Object.keys(mapTiles).forEach(key => newState[key] = {...state[key], zone: zone_id});
+      return {...state, ...newState};
+    }
   }
   return state;
 };

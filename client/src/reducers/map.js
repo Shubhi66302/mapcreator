@@ -1,23 +1,22 @@
 // map entity has 'dummy' as key since there is only one map
+const addKey = (state, entity, key) => ({
+  ...state,
+  dummy: {
+    ...state["dummy"],
+    [entity]: [...state["dummy"][entity], key]
+  }
+});
+
 export default (state = {}, action) => {
   switch (action.type) {
     case "ADD-FLOOR": {
-      return {
-        ...state,
-        dummy: {
-          ...state["dummy"],
-          floors: [...state["dummy"]["floors"], action.value.floor_id]
-        }
-      };
+      return addKey(state, "floors", action.value.floor_id);
     }
     case "ADD-ELEVATOR": {
-      return {
-        ...state,
-        dummy: {
-          ...state["dummy"],
-          elevators: [...state["dummy"]["elevators"], action.value.elevator_id]
-        }
-      };
+      return addKey(state, "elevators", action.value.elevator_id);
+    }
+    case "ADD-ZONE": {
+      return addKey(state, "zones", action.value.zone_id);
     }
   }
   return state;
