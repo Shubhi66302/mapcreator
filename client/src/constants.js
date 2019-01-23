@@ -48,8 +48,7 @@ export var DOCK_POINT = "normal.png";
 export var ZONE_BASE = "not_implemented.png";
 export var ODS_EXCLUDED = "normal.png";
 export var EMERGENCY_EXIT = "emergency-exit.png";
-// TODO: add elevator sprite
-export var ELEVATOR = "queue.png";
+export var ELEVATOR = "elevator.png";
 // graph edge sprites
 export var EDGE_SPRITES = ["0.png", "1.png", "2.png", "3.png"];
 
