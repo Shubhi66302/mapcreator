@@ -4,7 +4,7 @@ import { loadSpritesheet } from "actions/actions";
 import { connect } from "react-redux";
 // this should handle all the click, modifier, drag etc. events...
 // TODO: handle drag etc.
-var isDragKey = key => key == "Meta" || key == "z";
+var isDragKey = key => key == "Meta" || key == "z" || key == "Control";
 class MapViewport extends Component {
   // metaKey decides if drag behaviour should be disabled
   customKeydownListener = ({ key, repeat }) =>
