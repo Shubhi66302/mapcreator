@@ -2,9 +2,9 @@
 import { Map } from "server/models/index";
 var fs = require("fs");
 
-(async (id, fileName, racktype = "11") => {
-  if (!id || !fileName) {
-    console.log("pass map id and file name.");
+var getRacksJson = async (id, racktype = "11") => {
+  if (!id) {
+    console.log("pass map id");
     return;
   }
   var map = await Map.findById(id);
@@ -26,6 +26,17 @@ var fs = require("fs");
       is_stored: true,
       lifted_butler_id: null
     }));
-  fs.writeFileSync(fileName, JSON.stringify(racks, 2), "utf8");
-  console.log("Done.");
-})(process.argv[2], process.argv[3], process.argv[4]);
+  return racks;
+};
+if (require.main === module) {
+  getRacksJson(process.argv[2], process.argv[4]).then(racks => {
+    if (!process.argv[3]) {
+      console.log("Need file name.");
+      return;
+    }
+    fs.writeFileSync(process.argv[3], JSON.stringify(racks, 2), "utf8");
+    console.log("Done.");
+  });
+}
+
+export default getRacksJson;

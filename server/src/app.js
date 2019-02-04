@@ -2,6 +2,7 @@ import express from "express";
 import getLoadedAjv from "client/src/common/utils/get-loaded-ajv";
 import { Map } from "server/models/index";
 import wrap from "express-async-handler";
+import getRacksJson from "server/scripts/make-racks-json";
 import _ from "lodash";
 // HACK: adding cors to fetch data from storybook. should remove this later.
 import cors from "cors";
@@ -77,6 +78,17 @@ app.post(
     // send back the new map?
     var newMap = await Map.findById(id);
     res.json(newMap.toJSON());
+  })
+);
+
+app.get(
+  "/api/racksJson/:id",
+  wrap(async (req, res) => {
+    const { id } = req.params;
+    var map = await Map.findById(id);
+    if (!map) throw new Error(`could not find map for id ${id}`);
+    var racksJson = await getRacksJson(id);
+    res.json(racksJson);
   })
 );
 
