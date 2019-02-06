@@ -24,6 +24,10 @@ TODO: write complete readme.
     - `psql mapcreator_react_test`
     - `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO gor;`
     - `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to gor;`
+NOTE: If you encounter 'sequence relations does not exist' error on creating new map, then use following commands which seem
+    to fix the problem:
+    - GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO gor;
+
 - Install packages
     - `yarn install`
     - `cd client && yarn install`
