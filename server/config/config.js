@@ -4,7 +4,8 @@ module.exports = {
   development: {
     username: process.env.POSTGRES_DEV_USER,
     password: process.env.POSTGRES_DEV_PASSWORD,
-    database: "mapcreator_react_dev",
+    port: process.env.POSTGRES_DEV_PORT || 5432,
+    database: process.env.POSTGRES_DEV_DB || "mapcreator_react_dev",
     host: "127.0.0.1",
     dialect: "postgres",
     logging: false
