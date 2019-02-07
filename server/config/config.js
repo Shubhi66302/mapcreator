@@ -1,5 +1,5 @@
-require("dotenv").config();
-
+// using different path since call to `npm migrate` is run in server directory, not root
+require("dotenv").config({ path: "../.env" });
 module.exports = {
   development: {
     username: process.env.POSTGRES_DEV_USER,
