@@ -5,6 +5,7 @@ import { fromJS } from "immutable";
 import barcodeReducer, { calculateDistances } from "./barcode.js";
 import { getAllColumnTileIdTuples } from "utils/selectors";
 import { createFloorFromCoordinateData } from "utils/util";
+import { addElevator } from "actions/elevator";
 import _ from "lodash";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
@@ -419,4 +420,41 @@ describe("ASSIGN-ZONE", () => {
     expect(newState["2,2"].zone).toBe("new-zone-id");
     expect(newState["0,1"].zone).toBe("defzone");
   });
+});
+
+describe("ADD-ELEVATOR", () => {
+  test("Should actually not do anything since on adding elevator, there is just one coordinate in elevator's coordinate_list", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var newState = barcodeReducer(
+      state,
+      addElevator({
+        elevator_id: 1,
+        position: "001.002",
+        type: "c_type",
+        coordinate_list: ["2,1"]
+      })
+    );
+    expect(newState).toEqual(state);
+  });
+});
+
+describe("EDIT-ELEVATOR-COORDINATES", () => {
+  var state = makeState(vanilla3x3BarcodeMap);
+  var newState = barcodeReducer(state, {
+    type: "EDIT-ELEVATOR-COORDINATES",
+    value: {
+      elevator_id: 1,
+      old_coordinate_list: [{ coordinate: [2, 1], direction: 2 }],
+      elevator_position: "002.001",
+      coordinate_list: [
+        { coordinate: [2, 1], direction: 2 },
+        { coordinate: [1, 1], direction: 2 },
+        { coordinate: [0, 1], direction: 2 }
+      ]
+    }
+  });
+  expect(newState["1,2"]).toEqual({ ...state["1,2"], barcode: "002.001" });
+  expect(newState["1,1"]).toEqual({ ...state["1,1"], barcode: "002.001" });
+  expect(newState["0,1"]).toEqual({ ...state["0,1"], barcode: "002.001" });
+  expect(newState["0,0"]).toEqual({ ...state["0,0"], barcode: "000.000" });
 });

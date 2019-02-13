@@ -129,9 +129,8 @@ export const selectedDistanceTilesReducer = (state = {}, action) => {
     // should deselect if a map tile is clicked
     case "CLICK-ON-MAP-TILE":
     case "CHANGE-FLOOR":
+    case "ADD-ELEVATOR":
       return {};
-    // case "CLICK-ON-DISTANCE-TILE":
-    //   return toggleKeyInMap(state, action.value);
   }
   return state;
 };
@@ -145,10 +144,8 @@ export const selectedMapTilesReducer = (state = {}, action) => {
     // should deselect if a distance tile is selected
     case "CLICK-ON-DISTANCE-TILE":
     case "CHANGE-FLOOR":
+    case "ADD-ELEVATOR":
       return {};
-    // case "CLICK-ON-MAP-TILE":
-
-    //   return toggleKeyInMap(state, action.value);
   }
   return state;
 };

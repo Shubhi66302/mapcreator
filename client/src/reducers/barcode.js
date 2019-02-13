@@ -2,7 +2,9 @@ import {
   getNeighbourTiles,
   getDirection,
   getNeighbouringBarcodes,
-  deleteNeighbourFromBarcode
+  deleteNeighbourFromBarcode,
+  implicitCoordinateKeyToBarcode,
+  tupleOfIntegersToCoordinateKey
 } from "utils/util";
 import {
   getAllColumnTileIdTuples,
@@ -38,6 +40,36 @@ export var calculateDistances = (
     return [bigDistance, smallDistance];
   }
   return [distance / 2, distance / 2];
+};
+
+// in elevator it is stored as [{coordinate: [10,11], direction: 2}, ..] etc.
+// making it ["10,11", ..]
+var elevatorCoordinateListConverter = coordinate_list =>
+  coordinate_list.map(({ coordinate }) =>
+    tupleOfIntegersToCoordinateKey(coordinate)
+  );
+
+export var changeElevatorCoordinates = (
+  state,
+  elevatorPosition,
+  old_coordinate_list,
+  coordinate_list
+) => {
+  var newState = {};
+  const oldCoordinates = elevatorCoordinateListConverter(old_coordinate_list);
+  // reset barcodes for all old coordinates to their origin value (assumed to be "030.020" for {20,30} etc. )
+  oldCoordinates.forEach(coordinate => {
+    newState[coordinate] = {
+      ...state[coordinate],
+      barcode: implicitCoordinateKeyToBarcode(coordinate)
+    };
+  });
+  // make all new barcodes have the same barcode string as elevatorPosition
+  const newCoordinates = elevatorCoordinateListConverter(coordinate_list);
+  newCoordinates.forEach(coordinate => {
+    newState[coordinate] = { ...state[coordinate], barcode: elevatorPosition };
+  });
+  return { ...state, ...newState };
 };
 
 export default (state = {}, action) => {
@@ -222,10 +254,33 @@ export default (state = {}, action) => {
       return { ...state, ...newBarcodesObj };
     }
     case "ASSIGN-ZONE": {
-      const {zone_id, mapTiles} = action.value;
+      const { zone_id, mapTiles } = action.value;
       let newState = {};
-      Object.keys(mapTiles).forEach(key => newState[key] = {...state[key], zone: zone_id});
-      return {...state, ...newState};
+      Object.keys(mapTiles).forEach(
+        key => (newState[key] = { ...state[key], zone: zone_id })
+      );
+      return { ...state, ...newState };
+    }
+    case "ADD-ELEVATOR": {
+      return changeElevatorCoordinates(
+        state,
+        action.value.position,
+        [],
+        action.value.coordinate_list
+      );
+    }
+    case "EDIT-ELEVATOR-COORDINATES": {
+      const {
+        old_coordinate_list,
+        coordinate_list,
+        elevator_position
+      } = action.value;
+      return changeElevatorCoordinates(
+        state,
+        elevator_position,
+        old_coordinate_list,
+        coordinate_list
+      );
     }
   }
   return state;
