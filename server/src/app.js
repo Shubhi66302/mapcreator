@@ -60,7 +60,6 @@ app.get(
     res.json(sortedMaps);
   })
 );
-
 // update map
 app.post(
   "/api/map/:id",

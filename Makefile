@@ -49,13 +49,20 @@ login:
 # do this before any other command. set env variables for docker login (contact vivek.r@greyorange.sg)
 	docker login ${REPO} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
 
-test:
-	yarn install --ignore-scripts
-	cd client && yarn install && cd ..
+lint:
 	npm run lint-no-fix
-	npm run migrate
-	npm test
-	
+
+test-client:
+	cd client && npm install
+	cd client && CI=true NODE_PATH=src/ npm test -- --reporters=default --reporters=jest-junit
+
+test-server:
+	npm install
+	NODE_ENV=test npm run migrate
+	NODE_ENV=test npm run test-server-ci
+
+test: test-client test-server
+
 test-tag:
 	echo ${TAG}
 

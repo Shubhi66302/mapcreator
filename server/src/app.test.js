@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "server/src/app";
+import app from "./app";
 import { Map, sequelize } from "server/models/index";
 import { map as dummyGoodMap } from "../../client/src/test-data/test-maps/3x3-vanilla.json";
 import _ from "lodash";

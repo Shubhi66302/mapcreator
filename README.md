@@ -10,7 +10,6 @@ TODO: write complete readme.
 - Install `nodejs` and `npm` if not already installed:
     - Install `nvm`: https://github.com/creationix/nvm#usage
     - `nvm install node`
-- Install `yarn` globally: `npm install yarn --global`
 - Create .env files
     - `cp .env.sample.dev .env`
     - `cp client/.env.sample client/.env`
@@ -29,8 +28,8 @@ NOTE: If you encounter 'sequence relations does not exist' error on creating new
     - GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO gor;
 
 - Install packages
-    - `yarn install`
-    - `cd client && yarn install`
+    - `npm install`
+    - `cd client && npm install`
 - Apply migrations
     - `cd server`
     - `NODE_ENV=development ../node_modules/.bin/sequelize db:migrate`
@@ -50,7 +49,7 @@ Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so ed
 
 ## Pro tip
 - `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can iterate quickly without making up the whole scenario in the browser.
-- To iterate fast on a UI component, `cd` into client in a new tab and run `yarn run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
+- To iterate fast on a UI component, `cd` into client in a new tab and run `npm run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
 
 # Deployment
 - Deployment is done through Dockerfile. There are two deployments on VM:

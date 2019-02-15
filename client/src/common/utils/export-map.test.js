@@ -1,7 +1,7 @@
 require("dotenv").config({ path: ".env.test" });
-import getLoadedAjv from "common/utils/get-loaded-ajv";
-import importMap from "common/utils/import-map";
-import exportMap, { ppsConverter } from "common/utils/export-map";
+import getLoadedAjv from "./get-loaded-ajv";
+import importMap from "./import-map";
+import exportMap, { ppsConverter } from "./export-map";
 import _ from "lodash";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";

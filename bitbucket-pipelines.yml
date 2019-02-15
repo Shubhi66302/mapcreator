@@ -13,7 +13,7 @@ pipelines:
           - nodeserver
           - nodeclient
         script:
-          - make test
+          - make test -k
         services: 
           - postgres
     - step:
@@ -45,7 +45,7 @@ pipelines:
             - nodeserver
             - nodeclient
           script:
-            - make test
+            - make test -k
           services: 
             - postgres
       - step:

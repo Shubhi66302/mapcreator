@@ -140,13 +140,15 @@ module.exports = {
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: [
-    "/node_modules/",
-    "./server/test/json-schemas/test-jsons/.*",
-    "./dist/"
-  ],
+    "<rootDir>/dist/",
+    // will use different runner for running client tests
+    "<rootDir>/client/",
+    "<rootDir>/coverage/",
+    "<rootDir>/phab-lib/"
+  ]
 
   // The regexp pattern Jest uses to detect test files
-  testRegex: "./server/test/.*.js$"
+  // testRegex: "./server.*.js$"
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: null,

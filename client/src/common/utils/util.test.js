@@ -1,4 +1,4 @@
-import { parseCoordinateString, findFloorIndex } from "common/utils/util";
+import { parseCoordinateString, findFloorIndex } from "./util";
 
 describe("parseCoordinateString", () => {
   test("good coordinate", () => {

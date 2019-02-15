@@ -26,7 +26,9 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "detect"
+      // dunno why "detect" wasn't working
+      // https://github.com/yannickcr/eslint-plugin-react/issues/1955
+      version: "999.999.999"
     }
   }
 };

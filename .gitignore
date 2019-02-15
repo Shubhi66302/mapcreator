@@ -3,6 +3,7 @@ client/node_modules/
 client/coverage/
 coverage/
 dist/
+junit.xml
 .env
 .vscode
 .DS_Store
