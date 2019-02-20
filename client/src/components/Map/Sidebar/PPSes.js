@@ -16,7 +16,8 @@ const PPSes = ({ ppsDict }) => {
             <br />
             Pick Direction: {pick_direction}
             <br />
-            Queue Barcodes: {`${queue_barcodes}`}
+            Queue Barcodes:{" "}
+            {`${queue_barcodes.length !== 0 ? queue_barcodes : "[none]"}`}
             <br />
           </BaseCard>
         )
