@@ -15,7 +15,8 @@ const Chargers = ({ chargerDict }) => {
             charger_location,
             mode,
             entry_point_location,
-            reinit_point_location
+            reinit_point_location,
+            charger_direction
           },
           idx
         ) => (
@@ -24,6 +25,8 @@ const Chargers = ({ chargerDict }) => {
             Location: {charger_location}
             <br />
             Mode: {mode}
+            <br />
+            Direction: {charger_direction}
             <br />
             Entry Point: {entry_point_location}
             <br />
