@@ -4,7 +4,7 @@
   "title": "mapcreator's internal representation of map",
   "type": "object",
   "required": ["elevators", "zones", "queueDatas", "floors"],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "elevators": {
       "type": "array",
@@ -42,10 +42,9 @@
           "ppses",
           "odses",
           "dockPoints",
-          "fireEmergencies",
-          "metadata"
+          "fireEmergencies"
         ],
-        "additionalProperties": false,
+        "additionalProperties": true,
         "properties": {
           "floor_id": { "type": "integer", "minimum": 1 },
           "map_values": {
@@ -131,14 +130,6 @@
                 },
                 { "$ref": "fireEmergency" }
               ]
-            }
-          },
-          "metadata": {
-            "type": "object",
-            "required": ["botWithRackThreshold", "botWithoutRackThreshold"],
-            "properties": {
-              "botWithRackThreshold": {"type": "integer", "minimum": 1},
-              "botWithoutRackThreshold": {"type": "integer", "minimum": 1}
             }
           }
         }

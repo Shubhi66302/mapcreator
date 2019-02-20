@@ -25,11 +25,6 @@ describe("import good maps", () => {
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
     expect(map.floors[0].fireEmergencies[0].fire_emergency_id).toBeTruthy();
-    // test metadata
-    expect(map.floors[0].metadata).toMatchObject({
-      botWithRackThreshold: 750,
-      botWithoutRackThreshold: 610
-    });
     // test that coordinates were added correctly to the entities
     // some pps
     for (let pps of map.floors[0].ppses) {
@@ -70,11 +65,6 @@ describe("import good maps", () => {
     var result = mapValidate(map);
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
-    // test metadata
-    expect(map.floors[0].metadata).toMatchObject({
-      botWithRackThreshold: 750,
-      botWithoutRackThreshold: 610
-    });
   });
 
   test("import 3-7 map with queue_data.json also present", () => {
@@ -100,11 +90,6 @@ describe("import good maps", () => {
         data: [["012.015", 4]]
       }
     ]);
-    // test metadata
-    expect(map.floors[0].metadata).toMatchObject({
-      botWithRackThreshold: 750,
-      botWithoutRackThreshold: 610
-    });
   });
 });
 

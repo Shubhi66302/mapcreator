@@ -5,11 +5,7 @@ import { Map } from "server/models/index";
   maps.forEach(async map => {
     const { map: mapObj } = map;
     mapObj.floors = mapObj.floors.map(floor => ({
-      ...floor,
-      metadata: floor.metadata || {
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
-      }
+      ...floor
     }));
     await map.update({ map: mapObj });
   });

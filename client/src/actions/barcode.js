@@ -5,11 +5,10 @@ import {
 } from "../utils/util";
 import {
   getBarcode,
-  currentFloorBotWithRackThreshold,
-  currentFloorBotWithoutRackThreshold,
   tileBoundsSelector
 } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
+import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
 
 export const createNewBarcode = ({
   coordinate,
@@ -35,7 +34,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   const nbNeighboursTileIds = getNeighbourTiles(nbTileId);
   const oldBarcodes = [];
   const nbNeighbourStructure = [];
-  const nbSizeInfo = Array(4).fill(currentFloorBotWithRackThreshold(state));
+  const nbSizeInfo = Array(4).fill(DEFAULT_BOT_WITH_RACK_THRESHOLD);
   nbNeighboursTileIds.forEach((nbNbTileId, idx) => {
     const nbNbBarcode = getBarcode(state, { tileId: nbNbTileId });
     if (nbNbBarcode) {
@@ -110,9 +109,7 @@ export const modifyDistanceBetweenBarcodes = ({ distance }) => (
     value: {
       distance,
       tileBounds: tileBoundsSelector(state),
-      distanceTiles,
-      botWithRackThreshold: currentFloorBotWithRackThreshold(state),
-      botWithoutRackThreshold: currentFloorBotWithoutRackThreshold(state)
+      distanceTiles
     }
   });
   dispatch(clearTiles);

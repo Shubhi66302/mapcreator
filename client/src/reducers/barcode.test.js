@@ -2,11 +2,11 @@ import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
 import complicated3x3 from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
 import { normalizeMap } from "utils/normalizr";
 import { fromJS } from "immutable";
-import barcodeReducer, { calculateDistances } from "./barcode.js";
-import { getAllColumnTileIdTuples } from "utils/selectors";
+import barcodeReducer from "./barcode.js";
 import { createFloorFromCoordinateData } from "utils/util";
 import { addElevator } from "actions/elevator";
 import _ from "lodash";
+
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
 const complicated3x3BarcodeMap = fromJS(
@@ -277,9 +277,7 @@ describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
       value: {
         distance: 200,
         tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
-        distanceTiles: { "c-0": true },
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
+        distanceTiles: { "c-0": true }
       }
     });
     expect(newState["0,0"].size_info).toEqual([750, 750, 750, 100]);
@@ -301,9 +299,7 @@ describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
       value: {
         distance: 200,
         tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
-        distanceTiles: { "c-0": true, "r-1": true },
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
+        distanceTiles: { "c-0": true, "r-1": true }
       }
     });
     expect(newState["0,0"].size_info).toEqual([750, 750, 750, 100]);
@@ -325,9 +321,7 @@ describe("MODIFY-DISTANCE-BETWEEN-BARCODES", () => {
       value: {
         distance: 200,
         tileBounds: { maxX: 2, minX: 0, maxY: 2, minY: 0 },
-        distanceTiles: { "c-0": true, "r-1": true },
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
+        distanceTiles: { "c-0": true, "r-1": true }
       }
     });
     expect(newState["0,1"].size_info).toEqual([750, 750, 100, 100]);
@@ -365,44 +359,6 @@ describe("ADD-FLOOR", () => {
       ...state,
       ..._.fromPairs(pairs)
     });
-  });
-});
-
-describe("calculateDistances", () => {
-  test("when no storables", () => {
-    var barcodeDict = makeState(vanilla3x3BarcodeMap);
-    var distances = calculateDistances(
-      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
-      200,
-      750,
-      610,
-      barcodeDict
-    );
-    expect(distances).toEqual([100, 100]);
-  });
-  test("when one storable in the center, and distance is small so taht smallDistance is negative", () => {
-    var barcodeDict = makeState(vanilla3x3BarcodeMap);
-    barcodeDict["1,1"].store_status = true;
-    var distances = calculateDistances(
-      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
-      200,
-      750,
-      610,
-      barcodeDict
-    );
-    expect(distances).toEqual([100, 100]);
-  });
-  test("when one storable in center and smallDistance > botWithoutRackThreshold", () => {
-    var barcodeDict = makeState(vanilla3x3BarcodeMap);
-    barcodeDict["1,1"].store_status = true;
-    var distances = calculateDistances(
-      getAllColumnTileIdTuples({ maxY: 2, minY: 0 }, "c-0"),
-      2000,
-      750,
-      610,
-      barcodeDict
-    );
-    expect(distances).toEqual([750, 1250]);
   });
 });
 

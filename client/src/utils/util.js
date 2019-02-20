@@ -77,7 +77,7 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
   return neighbourTileKeys.map((tileKey, idx) =>
     _.isEqual(curBarcode.neighbours[idx], [0, 0, 0]) ||
-    _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
+      _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
       ? null
       : barcodesDict[tileKey]
   );
@@ -189,11 +189,7 @@ export var createFloorFromCoordinateData = ({
     odses: [],
     dockPoints: [],
     fireEmergencies: [],
-    map_values,
-    metadata: {
-      botWithRackThreshold: 750,
-      botWithoutRackThreshold: 610
-    }
+    map_values
   };
 };
 

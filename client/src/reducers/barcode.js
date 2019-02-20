@@ -12,36 +12,6 @@ import {
 } from "utils/selectors";
 import _ from "lodash";
 
-// exported for testing
-export var calculateDistances = (
-  tuples,
-  distance,
-  botWithRackThreshold,
-  botWithoutRackThreshold,
-  barcodeDict
-) => {
-  // count storables
-  var firstStorables = tuples
-    .map(([first]) =>
-      barcodeDict[first] ? barcodeDict[first].store_status : false
-    )
-    .reduce((acc, curr) => (acc + curr ? 1 : 0));
-  var secondStorables = tuples
-    .map(([, second]) =>
-      barcodeDict[second] ? barcodeDict[second].store_status : false
-    )
-    .reduce((acc, curr) => (acc + curr ? 1 : 0));
-  if (firstStorables == 0 && secondStorables == 0)
-    return [distance / 2, distance / 2];
-  var bigDistance = botWithRackThreshold;
-  var smallDistance = distance - bigDistance;
-  if (smallDistance >= botWithoutRackThreshold) {
-    if (firstStorables >= secondStorables) return [smallDistance, bigDistance];
-    return [bigDistance, smallDistance];
-  }
-  return [distance / 2, distance / 2];
-};
-
 // in elevator it is stored as [{coordinate: [10,11], direction: 2}, ..] etc.
 // making it ["10,11", ..]
 var elevatorCoordinateListConverter = coordinate_list =>
@@ -89,7 +59,7 @@ export default (state = {}, action) => {
             QueueDirection = getDirection(tileId, tileIds[i + 1]);
           }
           var allNeighbours = getNeighbouringBarcodes(tileId, state);
-          var filteredNeighbours = _.filter(allNeighbours, function(tile) {
+          var filteredNeighbours = _.filter(allNeighbours, function (tile) {
             return tile != null && !_.includes(tileIds, tile.coordinate);
           });
           // if pps is a neighbour, do not allow movement there
@@ -190,9 +160,7 @@ export default (state = {}, action) => {
       var {
         distanceTiles,
         distance,
-        tileBounds,
-        botWithRackThreshold,
-        botWithoutRackThreshold
+        tileBounds
       } = action.value;
       for (let key in distanceTiles) {
         let tuples, direction;
@@ -205,13 +173,7 @@ export default (state = {}, action) => {
           tuples = getAllRowTileIdTuples(tileBounds, key);
           direction = 2;
         }
-        const distances = calculateDistances(
-          tuples,
-          distance,
-          botWithRackThreshold,
-          botWithoutRackThreshold,
-          state
-        );
+        const distances = [distance / 2, distance / 2];
         tuples.forEach(([tile1, tile2]) => {
           [
             [tile1, direction, distances[0]],

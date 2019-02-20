@@ -44,11 +44,7 @@ describe("createFloorFromCoordinateData", () => {
       ppses: [],
       odses: [],
       dockPoints: [],
-      fireEmergencies: [],
-      metadata: {
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
-      }
+      fireEmergencies: []
     });
     expect(floor.map_values).toHaveLength(121);
   });

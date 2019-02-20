@@ -591,18 +591,3 @@ describe("getAllRowTileIdTuples", () => {
     ]);
   });
 });
-
-describe("currentFloorBotWithRackThreshold", () => {
-  const { currentFloorBotWithRackThreshold } = selectors;
-  test("should give current threshold", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    expect(currentFloorBotWithRackThreshold(state)).toBe(750);
-  });
-});
-describe("currentFloorBotWithoutRackThreshold", () => {
-  const { currentFloorBotWithoutRackThreshold } = selectors;
-  test("should give current threshold", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    expect(currentFloorBotWithoutRackThreshold(state)).toBe(610);
-  });
-});

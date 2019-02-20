@@ -69,12 +69,7 @@ export default ({
     fireEmergencies: [],
     odses: [],
     ppses: [],
-    dockPoints: [],
-    // default value of metadata since it is not persisted in the exported json
-    metadata: {
-      botWithRackThreshold: 750,
-      botWithoutRackThreshold: 610
-    }
+    dockPoints: []
   }));
   // assert that floors do not have barcodes with same coordinate
   var floors_barcodes = map.floors.map(({ map_values }) =>

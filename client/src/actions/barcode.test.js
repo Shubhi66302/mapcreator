@@ -1,9 +1,9 @@
 import * as barcode from "./barcode";
 import * as actions from "./actions";
-import { currentFloorBotWithRackThreshold } from "utils/selectors";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { makeState, singleFloorVanilla } from "utils/test-helper";
+import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -33,50 +33,7 @@ describe("addNewBarcode", () => {
           coordinate: "2,3",
           neighbours: [[1, 1, 1], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
           barcode: "003.002",
-          size_info: Array(4).fill(
-            currentFloorBotWithRackThreshold(initialState)
-          )
-        })
-      ]
-    });
-    expect(dispatchedActions[1]).toMatchObject({
-      type: "ADD-ENTITIES-TO-FLOOR",
-      value: {
-        currentFloor: 1,
-        floorKey: "map_values",
-        ids: ["2,3"]
-      }
-    });
-    expect(dispatchedActions[2]).toMatchObject(clearTiles);
-  });
-  test("should add new barcode with size_info as set in metadata", async () => {
-    const { clearTiles } = actions;
-    const singleFloorVanillaWithModifiedThreshold = singleFloorVanilla.updateIn(
-      ["map", "floors", 0, "metadata", "botWithRackThreshold"],
-      () => 800
-    );
-    const initialState = makeState(singleFloorVanillaWithModifiedThreshold, 1);
-    const store = mockStore(initialState);
-    await store.dispatch(
-      addNewBarcode({
-        tileId: "2,2",
-        direction: 2
-      })
-    );
-    const dispatchedActions = store.getActions();
-    expect(dispatchedActions).toHaveLength(3);
-    expect(dispatchedActions[0]).toMatchObject({
-      type: "ADD-MULTIPLE-BARCODE",
-      value: [
-        {
-          ...initialState.normalizedMap.entities.barcode["2,2"],
-          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]]
-        },
-        createNewBarcode({
-          coordinate: "2,3",
-          neighbours: [[1, 1, 1], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
-          barcode: "003.002",
-          size_info: [750, 800, 800, 800]
+          size_info: Array(4).fill(DEFAULT_BOT_WITH_RACK_THRESHOLD)
         })
       ]
     });
@@ -111,9 +68,7 @@ describe("modifyDistanceBetweenBarcodes", () => {
       value: {
         distance: 200,
         tileBounds: { maxX: 2, maxY: 2, minX: 0, minY: 0 },
-        distanceTiles: { "c-0": true },
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
+        distanceTiles: { "c-0": true }
       }
     });
     expect(dispatchedActions[1]).toEqual(clearTiles);

@@ -56,11 +56,7 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
           size_info: [750, 750, 750, 750],
           botid: "null"
         }
-      ],
-      metadata: {
-        botWithRackThreshold: 750,
-        botWithoutRackThreshold: 610
-      }
+      ]
     }
   ])
 );

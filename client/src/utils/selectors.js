@@ -163,7 +163,7 @@ export const entitySelectorHelperData = {
   fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT],
   // 3rd argument is how to get coordinate(s) from an entity.
   // in case of elevator, there are multiple coordinates per elevator
-  elevator: ["elevator", constants.ELEVATOR, e => e.coordinate_list.map(({coordinate}) => tupleOfIntegersToCoordinateKey(coordinate))]
+  elevator: ["elevator", constants.ELEVATOR, e => e.coordinate_list.map(({ coordinate }) => tupleOfIntegersToCoordinateKey(coordinate))]
 };
 
 // all entities except elevator have one coordinate per entity
@@ -219,29 +219,22 @@ export const getChargerEntryMap = state => {
   return ret;
 };
 
-
-
 export const getPpsQueueMap = state => {
   var PpsEntities = getParticularEntity(state, { entityName: "pps" });
 
-    
   var ret = {};
 
-  Object.entries(PpsEntities).forEach(
-    ([, { coordinate,queue_barcodes }]) => {
-      _.forEach(queue_barcodes, function(queue_barcode){
-        var qb_coordinate = barcodeToCoordinateKeySelector(state,{barcode: queue_barcode});
-            
-        if (qb_coordinate != coordinate){
-          ret[qb_coordinate] = constants.QUEUE;
-        }
-            
+  Object.entries(PpsEntities).forEach(([, { coordinate, queue_barcodes }]) => {
+    _.forEach(queue_barcodes, function (queue_barcode) {
+      var qb_coordinate = barcodeToCoordinateKeySelector(state, {
+        barcode: queue_barcode
       });
-         
 
-    }
-      
-  );
+      if (qb_coordinate != coordinate) {
+        ret[qb_coordinate] = constants.QUEUE;
+      }
+    });
+  });
   return ret;
 };
 
@@ -499,11 +492,5 @@ export const getNewSpecialCoordinates = createSelector(
   }
 );
 
-export const currentFloorBotWithRackThreshold = state =>
-  state.normalizedMap.entities.floor[state.currentFloor].metadata
-    .botWithRackThreshold;
-export const currentFloorBotWithoutRackThreshold = state =>
-  state.normalizedMap.entities.floor[state.currentFloor].metadata
-    .botWithoutRackThreshold;
-
-export const getElevatorIds = state => state.normalizedMap.entities.map.dummy.elevators;
+export const getElevatorIds = state =>
+  state.normalizedMap.entities.map.dummy.elevators;

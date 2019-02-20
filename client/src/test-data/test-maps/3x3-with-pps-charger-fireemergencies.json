@@ -164,10 +164,6 @@
         "dockPoints": []
       }
     ],
-    "metadata": {
-      "botWithRackThreshold": 750,
-      "botWithoutRackThreshold": 610
-    },
     "elevators": [],
     "zones": [],
     "queueDatas": []
