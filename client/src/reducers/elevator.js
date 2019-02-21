@@ -1,3 +1,6 @@
+import _ from "lodash";
+import {implicitCoordinateKeyToBarcode} from "../utils/util";
+
 export default (state = {}, action) => {
   switch (action.type) {
     case "EDIT-ELEVATOR-ENTRY-POINTS": {
@@ -20,6 +23,22 @@ export default (state = {}, action) => {
         ...state,
         [elevator_id]: { ...state[elevator_id], coordinate_list }
       };
+    }
+    case "EDIT-BARCODE": {
+      const {coordinate, new_barcode} = action.value;
+      let newState = _.cloneDeep(state);
+      var old_barcode = implicitCoordinateKeyToBarcode(coordinate);
+      for (var elevator_id in newState) {
+        var indx1 = newState[elevator_id].entry_barcodes.indexOf(old_barcode);
+        var indx2 = newState[elevator_id].exit_barcodes.indexOf(old_barcode);
+        if(indx1 > -1) {
+          newState[elevator_id].entry_barcodes[indx1] = new_barcode;
+        }
+        if(indx2 > -1) {
+          newState[elevator_id].exit_barcodes[indx2] = new_barcode;
+        }
+      }
+      return newState;
     }
   }
   return state;

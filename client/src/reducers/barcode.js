@@ -4,7 +4,9 @@ import {
   getNeighbouringBarcodes,
   deleteNeighbourFromBarcode,
   implicitCoordinateKeyToBarcode,
-  tupleOfIntegersToCoordinateKey
+  tupleOfIntegersToCoordinateKey,
+  implicitBarcodeToCoordinate,
+  coordinateKeyToTupleOfIntegers
 } from "utils/util";
 import {
   getAllColumnTileIdTuples,
@@ -243,6 +245,38 @@ export default (state = {}, action) => {
         old_coordinate_list,
         coordinate_list
       );
+    }
+    case "EDIT-BARCODE": {
+      const { coordinate, new_barcode } = action.value;
+      if (_.find(state, { barcode: new_barcode }) !== undefined) return state;
+      newState = _.cloneDeep(state);
+      var new_coordinate = implicitBarcodeToCoordinate(new_barcode);
+      var [oldx, oldy] = coordinateKeyToTupleOfIntegers(coordinate);
+      var [newx, newy] = coordinateKeyToTupleOfIntegers(new_coordinate);
+      var newCoordinateKey = tupleOfIntegersToCoordinateKey([newx, newy]);
+      allNeighbours = getNeighbouringBarcodes(coordinate, newState);
+      for (var indx in allNeighbours) {
+        // list of neighbours like {0:null, 1:{store..}...}
+        if (allNeighbours[indx]) {
+          for (var adj in allNeighbours[indx].adjacency) {
+            if (
+              allNeighbours[indx].adjacency[adj] &&
+              allNeighbours[indx].adjacency[adj][0] == oldx &&
+              allNeighbours[indx].adjacency[adj][1] == oldy
+            ) {
+              allNeighbours[indx].adjacency[adj] = [newx, newy];
+            }
+          }
+        }
+      }
+      //Lastly update the coordinate value itself.
+      newState[newCoordinateKey] = {
+        ...state[coordinate],
+        coordinate: newCoordinateKey,
+        barcode: new_barcode
+      };
+      delete newState[coordinate];
+      return newState;
     }
   }
   return state;

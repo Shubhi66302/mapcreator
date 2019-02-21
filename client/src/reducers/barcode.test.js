@@ -414,3 +414,40 @@ describe("EDIT-ELEVATOR-COORDINATES", () => {
   expect(newState["0,1"]).toEqual({ ...state["0,1"], barcode: "002.001" });
   expect(newState["0,0"]).toEqual({ ...state["0,0"], barcode: "000.000" });
 });
+
+describe("EDIT-BARCODE", () => {
+  test("should change coordinate and barcode of exisitng special barcode", () => {
+    const state = makeState(complicated3x3BarcodeMap);
+    var new_state = barcodeReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {
+        coordinate: "12,12",
+        new_barcode: "090.013"
+      }
+    });
+    expect(new_state["12,12"]).toEqual(undefined);
+  
+    // check if barcode value is changed to new_barcode
+    expect(new_state["13,90"].barcode).toEqual("090.013");
+    // check if coordinate of new_barcode is changed to new_coordinate
+    expect(new_state["13,90"].coordinate).toEqual("13,90");
+    // neighbours of 13,90 should have new value, i.e. 13,90
+    expect(new_state["2,1"].adjacency).toEqual([[2, 0], [1, 1], [13,90], null]);
+    
+    expect(new_state["2,2"].adjacency).toEqual([[13,90], [1,2], null, null]);
+  });
+
+  describe("EDIT-BARCODE", () => {
+    test("should not do anything if special barcode to be replaced already exists", () => {
+      const state = makeState(complicated3x3BarcodeMap);
+      var new_state = barcodeReducer(state, {
+        type: "EDIT-BARCODE",
+        value: {
+          coordinate: "12,12",
+          new_barcode: "001.002"
+        }
+      });
+      expect(new_state).toEqual(state);
+    });
+  });
+});

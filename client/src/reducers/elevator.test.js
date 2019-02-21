@@ -29,3 +29,50 @@ describe("EDIT-ELEVATOR-COORDINATES", () => {
     });
   });
 });
+
+//test change of elevator special barcodes
+describe("EDIT-BARCODE", () => {
+  test("Should change elevator speical barcodes if present", () => {
+    var state = {
+      "1": {
+        elevator_id: "1",
+        entry_barcodes: ["001.023","012.012","090.12"],
+        exit_barcodes: ["045.012", "023.045", "012.012"]
+      }
+    };
+  
+    var newState = elevatorReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {
+        coordinate: "12,12",
+        new_barcode: "090.013"
+      }
+    });
+    expect(newState).toEqual({
+      "1": {
+        elevator_id: "1",
+        entry_barcodes: ["001.023","090.013","090.12"],
+        exit_barcodes: ["045.012", "023.045", "090.013"]
+      }
+    });
+
+  });
+  test("should not change anything if special barcode does not exist in elevator", () => {
+    var state = {
+      "1": {
+        elevator_id: "1",
+        entry_barcodes: ["001.023","090.12"],
+        exit_barcodes: ["045.012", "023.045", "023.013"]
+      }
+    };
+  
+    var newState = elevatorReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {
+        coordinate: "12,12",
+        new_barcode: "090.013"
+      }
+    });
+    expect(newState).toEqual(state);
+  });
+});

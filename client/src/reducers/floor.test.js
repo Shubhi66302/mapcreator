@@ -115,3 +115,31 @@ describe("ADD-FLOOR", () => {
     });
   });
 });
+
+describe("EDIT-BARCODE", () => {
+  test("should replace old key with new key", () => {
+    var state = {
+      "1": { map_values: ["0,1", "0,2", "3,0", "12,12"]}
+    };
+    var newState = floorReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {coordinate: "12,12", currentFloor: "1", new_barcode: "090.013"}
+    });
+    expect(newState).toEqual({
+      ...state,
+      "1": { map_values: ["0,1", "0,2", "3,0", "13,90"] }
+    });
+  });
+
+  test("should not change anything if key does not exist", () => {
+    var state = {
+      "1": { map_values: ["0,1", "0,2", "3,0"]}
+    };
+    var newState = floorReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {coordinate: "12,12", currentFloor: "1", new_barcode: "090.013"}
+    });
+    expect(newState).toEqual(state);
+  });
+
+});

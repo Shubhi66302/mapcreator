@@ -169,7 +169,7 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   if (intersectionresult.length == 1) {
     var pps_id = _.findKey(pps, { coordinate: intersectionresult[0] });
 
-    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a, b) {
+    var queue_barcodes_array = Object.keys(mapTiles).sort(function (a, b) {
       return mapTiles[a] - mapTiles[b];
     });
     var asBarcodes = queue_barcodes_array.map(asCoordinate =>
@@ -177,7 +177,7 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
     );
     dispatch({
       type: "ADD-QUEUE-BARCODES-TO-PPS",
-      value: {"tiles": asBarcodes,"pps_id" :pps_id, "coordinates": queue_barcodes_array, "pps_coordinate": pps[pps_id].coordinate}
+      value: { "tiles": asBarcodes, "pps_id": pps_id, "coordinates": queue_barcodes_array, "pps_coordinate": pps[pps_id].coordinate }
     });
   }
 
@@ -215,3 +215,8 @@ export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
     saveAs(content, mapObj.id + ".zip");
   });
 };
+
+export const editSpecialBarcode = ({ coordinate, new_barcode }) => (dispatch, getState) => dispatch({
+  type: "EDIT-BARCODE",
+  value: { coordinate, new_barcode, currentFloor: getState().currentFloor }
+});

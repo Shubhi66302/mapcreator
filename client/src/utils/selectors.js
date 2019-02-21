@@ -470,6 +470,13 @@ export const specialBarcodesCoordinateSelector = createSelector(
     Object.keys(barcodes).filter(coordinate => barcodes[coordinate].special)
 );
 
+export const specialBarcodesSelector = createSelector(
+  specialBarcodesCoordinateSelector,
+  getBarcodes,
+  (specialBarcodesCoordinates, barcodes) =>
+    specialBarcodesCoordinates.map(coordinate => barcodes[coordinate])
+);
+
 // initializes with 500,500 for first special barcode
 export const getNewSpecialCoordinates = createSelector(
   specialBarcodesCoordinateSelector,

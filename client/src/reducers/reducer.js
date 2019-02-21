@@ -8,6 +8,7 @@ import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
 import elevatorReducer from "./elevator";
 import zoneReducer from "./zone";
+import charger from "./charger";
 import _ from "lodash";
 
 export const dummyState = {
@@ -47,6 +48,7 @@ export const dummyState = {
 export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 export var baseElevatorReducer = createEntityReducer("ELEVATOR", "elevator_id");
+export var baseChargerReducer = createEntityReducer("CHARGER", "charger_id");
 
 export var ppsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -65,7 +67,7 @@ export var ppsReducer = (state = {}, action) => {
 export const entitiesReducer = combineReducers({
   elevator: reduceReducers(elevatorReducer, baseElevatorReducer),
   queueData: createEntityReducer("QUEUE-DATA", "queue_data_id"),
-  charger: createEntityReducer("CHARGER", "charger_id"),
+  charger: reduceReducers(charger, baseChargerReducer),
   pps: reduceReducers(basePPSReducer, ppsReducer),
   ods: createEntityReducer("ODS", "ods_id"),
   dockPoint: createEntityReducer("DOCK-POINT", "dock_point_id"),

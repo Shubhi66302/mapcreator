@@ -270,3 +270,10 @@ export const deleteNeighbourFromBarcode = (
   }
   return withoutAdjacency;
 };
+
+// Func used to convert barcode to coordinate.
+// "500.143" => "143,500"
+export const implicitBarcodeToCoordinate = (barcode) => {
+  var [X, Y] = barcode.split(".");
+  return parseInt(Y) + "," + parseInt(X);
+};
