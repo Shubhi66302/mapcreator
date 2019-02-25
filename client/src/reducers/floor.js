@@ -1,5 +1,5 @@
 import _ from "lodash";
-import {implicitBarcodeToCoordinate} from "utils/util";
+import { implicitBarcodeToCoordinate } from "utils/util";
 export default (state = {}, action) => {
   // only handle multiple add action for now..
   switch (action.type) {
@@ -40,24 +40,28 @@ export default (state = {}, action) => {
       };
     }
     case "EDIT-BARCODE": {
-      const {coordinate, currentFloor, new_barcode} = action.value;
-      var newCoordinate = implicitBarcodeToCoordinate(new_barcode, newCoordinate);
-      if (state[currentFloor]) {
-        var newMapValues = _.clone(state[currentFloor].map_values);
-        var index = _.findIndex(newMapValues, function(elem) { return elem == coordinate; });
+      const { coordinate, new_barcode } = action.value;
+      var newCoordinate = implicitBarcodeToCoordinate(new_barcode);
+      // search in ALL floors to find this barcode
+      let newState = _.cloneDeep(state);
+      Object.keys(state).forEach(floorId => {
+        var index = _.findIndex(state[floorId].map_values, function(elem) {
+          return elem == coordinate;
+        });
         if (index == -1) {
-          break;
+          return;
         }
+        var newMapValues = _.clone(state[floorId].map_values);
         newMapValues[index] = newCoordinate;
-        return {
-          ...state,
-          [currentFloor]: {
-            ...state[currentFloor],
-            "map_values": newMapValues
+        newState = {
+          ...newState,
+          [floorId]: {
+            ...state[floorId],
+            map_values: newMapValues
           }
         };
-      }
-      break;
+      });
+      return newState;
     }
   }
   return state;

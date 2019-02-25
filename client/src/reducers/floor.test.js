@@ -119,11 +119,11 @@ describe("ADD-FLOOR", () => {
 describe("EDIT-BARCODE", () => {
   test("should replace old key with new key", () => {
     var state = {
-      "1": { map_values: ["0,1", "0,2", "3,0", "12,12"]}
+      "1": { map_values: ["0,1", "0,2", "3,0", "12,12"] }
     };
     var newState = floorReducer(state, {
       type: "EDIT-BARCODE",
-      value: {coordinate: "12,12", currentFloor: "1", new_barcode: "090.013"}
+      value: { coordinate: "12,12", new_barcode: "090.013" }
     });
     expect(newState).toEqual({
       ...state,
@@ -133,13 +133,29 @@ describe("EDIT-BARCODE", () => {
 
   test("should not change anything if key does not exist", () => {
     var state = {
-      "1": { map_values: ["0,1", "0,2", "3,0"]}
+      "1": { map_values: ["0,1", "0,2", "3,0"] }
     };
     var newState = floorReducer(state, {
       type: "EDIT-BARCODE",
-      value: {coordinate: "12,12", currentFloor: "1", new_barcode: "090.013"}
+      value: { coordinate: "12,12", new_barcode: "090.013" }
     });
     expect(newState).toEqual(state);
   });
 
+  test("should update key on correct floor in multi-floor map", () => {
+    var state = {
+      "1": { map_values: ["0,1", "0,2", "3,0", "12,12"] },
+      "2": { map_values: ["3,4", "5,6", "9,19"] }
+    };
+    var newState = floorReducer(state, {
+      type: "EDIT-BARCODE",
+      value: { coordinate: "5,6", new_barcode: "012.013" }
+    });
+    expect(newState).toEqual({
+      ...state,
+      "2": {
+        map_values: ["3,4", "13,12", "9,19"]
+      }
+    });
+  });
 });
