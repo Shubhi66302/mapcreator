@@ -14,6 +14,7 @@ import Chargers from "components/Map/Sidebar/Chargers";
 import { makeState, singleFloor } from "utils/test-helper";
 import { Provider } from "react-redux";
 import { configureStore } from "../store";
+import RemoveItemForm from "components/Map/Forms/RemoveItemForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const store = configureStore(makeState(singleFloor));
@@ -100,3 +101,12 @@ storiesOf("Sidebar BaseCard", module).add("default", () => (
 storiesOf("Sidebar > Chargers", module)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)
   .add("default", () => <Chargers />);
+
+storiesOf("RemoveItemForm", module)
+  .add("default", () => (
+    <RemoveItemForm
+      itemName="Elevator"
+      onSubmit={() => {}}
+      itemId={5}
+    />
+  ));

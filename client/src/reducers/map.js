@@ -1,4 +1,6 @@
 // map entity has 'dummy' as key since there is only one map
+import _ from "lodash";
+
 const addKey = (state, entity, key) => ({
   ...state,
   dummy: {
@@ -17,6 +19,11 @@ export default (state = {}, action) => {
     }
     case "ADD-ZONE": {
       return addKey(state, "zones", action.value.zone_id);
+    }
+    case "DELETE-ELEVATOR-BY-ID": {
+      var newState = _.clone(state);
+      newState.dummy.elevators = newState.dummy.elevators.filter(id => id != action.value);
+      return newState;
     }
   }
   return state;

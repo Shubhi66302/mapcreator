@@ -63,3 +63,8 @@ export const editElevatorCoordinates = ({ elevator_id, coordinate_list }) => (
     }
   });
 };
+
+export const removeElevator = ({ elevator_id }) => ({
+  type: "DELETE-ELEVATOR-BY-ID",
+  value: elevator_id
+});

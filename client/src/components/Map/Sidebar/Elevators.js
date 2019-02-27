@@ -8,8 +8,10 @@ import EditElevatorCoordinates from "../Forms/EditElevatorCoordinates";
 import {
   editEntryPoints,
   editExitPoints,
-  editElevatorCoordinates
+  editElevatorCoordinates,
+  removeElevator
 } from "actions/elevator";
+import RemoveItemForm from "../Forms/RemoveItemForm";
 
 const CardEntry = ({ header, value }) => (
   <div className="row justify-content-between">
@@ -104,7 +106,17 @@ const Elevators = ({ elevatorDict, floorIds, dispatch }) => {
                   />
                 }
               />
-              <BarcodeList barcodes={exit_barcodes} />
+              <CardEntry
+                header="Delete Elevator"
+                value={
+                  <RemoveItemForm
+                    itemName="Elevator"
+                    itemId={elevator_id}
+                    onSubmit={() => dispatch(removeElevator({elevator_id}))
+                    }
+                  />
+                }
+              />
             </div>
           </BaseCard>
         )
