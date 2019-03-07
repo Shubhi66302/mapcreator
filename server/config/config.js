@@ -2,26 +2,21 @@
 require("dotenv").config({ path: "../.env" });
 module.exports = {
   development: {
-    username: process.env.POSTGRES_DEV_USER,
-    password: process.env.POSTGRES_DEV_PASSWORD,
-    port: process.env.POSTGRES_DEV_PORT || 5432,
-    database: process.env.POSTGRES_DEV_DB || "mapcreator_react_dev",
-    host: "127.0.0.1",
-    dialect: "postgres",
+    url:
+      process.env.DEV_DATABASE_URL ||
+      "postgres://gor@localhost:5432/mapcreator_react_dev",
     logging: false
   },
   test: {
-    username: process.env.POSTGRES_TEST_USER,
-    password: process.env.POSTGRES_TEST_PASSWORD,
-    database: process.env.POSTGRES_TEST_DB,
-    host: "127.0.0.1",
-    dialect: "postgres",
+    url:
+      process.env.TEST_DATABASE_URL ||
+      "postgres://gor@localhost:5432/mapcreator_react_test",
     logging: false
   },
   production: {
-    // using connection uri for prod since that is directly supported in dokku
-    // eg. DATABASE_URL=postgres://user:password@host:port/dbname
-    // http://docs.sequelizejs.com/class/lib/sequelize.js~Sequelize.html#instance-constructor-constructor
-    use_env_variable: "DATABASE_URL"
+    url:
+      process.env.DATABASE_URL ||
+      "postgres://gor@localhost:5432/mapcreator_react",
+    logging: false
   }
 };
