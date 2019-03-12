@@ -5,6 +5,7 @@ import sampleVanillaMapObj from "test-data/test-maps/3x3-vanilla.json";
 // we're not actually using immutable in state/main code, it's quite complicated to use
 // https://redux.js.org/recipes/usingimmutablejs#what-are-the-issues-with-using-immutable-js
 import { fromJS } from "immutable";
+import { dummyState } from "reducers/util";
 
 export var makeState = (
   immutableMap,
@@ -12,21 +13,15 @@ export var makeState = (
   selectedMapTiles = {},
   selectedDistanceTiles = {}
 ) => ({
+  ...dummyState,
   normalizedMap: normalizeMap(immutableMap.toJS()),
   currentFloor,
-  viewport: {
-    viewportInstance: null,
-    minimapInstance: null,
-    currentView: null
-  },
   selection: {
     metaKey: false,
     shiftKey: false,
     mapTiles: selectedMapTiles,
     distanceTiles: selectedDistanceTiles
-  },
-  zoneView: false,
-  selectedArea: undefined
+  }
 });
 
 export var singleFloor = fromJS(sampleMapObj);

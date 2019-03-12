@@ -1,6 +1,6 @@
 import { normalizeMap } from "utils/normalizr";
 import { combineReducers } from "redux";
-import { createEntityReducer } from "./util";
+import { createEntityReducer, dummyState } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
@@ -10,39 +10,6 @@ import elevatorReducer from "./elevator";
 import zoneReducer from "./zone";
 import charger from "./charger";
 import _ from "lodash";
-
-export const dummyState = {
-  normalizedMap: normalizeMap({
-    id: "1",
-    name: "loading...",
-    map: {
-      id: "1",
-      floors: [
-        {
-          floor_id: 1,
-          map_values: []
-        }
-      ],
-      elevators: [],
-      zones: [],
-      queueDatas: []
-    }
-  }),
-  currentFloor: 1,
-  selection: {
-    mapTiles: {},
-    distanceTiles: {},
-    shiftKey: false,
-    metaKey: false
-  },
-  zoneView: false,
-  selectedArea: null,
-  viewport: {
-    viewportInstance: null,
-    minimapInstance: null,
-    currentView: null
-  }
-};
 
 // exporting reducers for testing
 export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");

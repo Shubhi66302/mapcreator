@@ -8,7 +8,7 @@ import {
   tileIdsSelector,
   getBarcodes
 } from "../utils/selectors";
-import { dummyState } from "reducers/reducer";
+import { dummyState } from "reducers/util";
 import * as PIXI from "pixi.js";
 
 // some exports are for testing

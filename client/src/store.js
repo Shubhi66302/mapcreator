@@ -2,10 +2,8 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import reducer from "reducers/reducer";
-import { normalizeMap } from "utils/normalizr";
 import { entityMiddleware, floorMiddleware } from "actions/middlewares";
-// TEST: using sampleMap from test-data to initialize store.
-import sampleMapObj from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
+import { dummyState } from "reducers/util";
 
 // using mapObj as source of truth in store. tiles etc. will be derived from it.
 const logger = createLogger({
@@ -17,32 +15,14 @@ const logger = createLogger({
 
 let middleware = [thunk, entityMiddleware, floorMiddleware];
 if (process.env.NODE_ENV !== "production") middleware = [...middleware, logger];
-// TODO: shouldn't have to define default state both here and in reducer.js, find a way to do it only in one place
+
 export default createStore(
   reducer,
-  {
-    normalizedMap: normalizeMap(sampleMapObj),
-    currentFloor: 1,
-    // NOTE: selected tiles is also a map for efficiency reasons
-    selection: {
-      queueMode: false,
-      mapTiles: {},
-      distanceTiles: {},
-      metaKey: false,
-      shiftKey: false
-    },
-    // TODO: implement zone view
-    zoneView: false,
-    spritesheetLoaded: false,
-    selectedArea: null,
-    viewport: {
-      viewportInstance: null,
-      currentView: null
-    }
-  },
+  dummyState,
   // only do logging in development
   applyMiddleware(...middleware)
 );
 
+// this one is mainly for testing
 export const configureStore = initState =>
   createStore(reducer, initState, applyMiddleware(...middleware));

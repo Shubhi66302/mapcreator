@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { normalizeMap } from "utils/normalizr";
 
 export const createEntityReducer = (reducerKey, idField) => (
   state = {},
@@ -37,4 +38,37 @@ export const createEntityReducer = (reducerKey, idField) => (
       return _.omit(state, action.value);
   }
   return state;
+};
+
+export const dummyState = {
+  normalizedMap: normalizeMap({
+    id: "1",
+    name: "loading...",
+    map: {
+      id: "1",
+      floors: [
+        {
+          floor_id: 1,
+          map_values: []
+        }
+      ],
+      elevators: [],
+      zones: [],
+      queueDatas: []
+    }
+  }),
+  currentFloor: 1,
+  selection: {
+    mapTiles: {},
+    distanceTiles: {},
+    shiftKey: false,
+    metaKey: false
+  },
+  zoneView: false,
+  selectedArea: null,
+  viewport: {
+    viewportInstance: null,
+    minimapInstance: null,
+    currentView: null
+  }
 };

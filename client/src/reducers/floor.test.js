@@ -1,4 +1,7 @@
 import floorReducer from "./floor";
+import { configureStore } from "../store";
+import { makeState, singleFloorVanilla } from "utils/test-helper";
+import { addPPSes } from "actions/pps";
 
 describe("ADD-ENTITIES-TO-FLOOR", () => {
   test("should adds a pps entity to an existing floor", () => {
@@ -31,6 +34,33 @@ describe("ADD-ENTITIES-TO-FLOOR", () => {
       }
     });
     expect(newState).toEqual({ "1": { ppses: [2, 3, 1] } });
+  });
+
+  test("Sample test to show usage of redux store to generate initial state for test", async () => {
+    // using actual store to create initial state
+    var store = configureStore(
+      // arguments are mapJson, currentFloor, selectedMapTiles
+      makeState(singleFloorVanilla, 1, { "0,1": true, "0,0": true })
+    );
+    // need to use async/await because of thunk middleware.
+    await store.dispatch(addPPSes({ pick_direction: 0 }, store.getState()));
+    // take out floor slice from state
+    var initialState = store.getState().normalizedMap.entities.floor;
+    // 3 is added, 1 and 2 are updated
+    var ppsEntityIds = [1, 2, 3];
+
+    var newState = floorReducer(initialState, {
+      type: "ADD-ENTITIES-TO-FLOOR",
+      value: {
+        floorKey: "ppses",
+        currentFloor: 1,
+        ids: ppsEntityIds
+      }
+    });
+    expect(newState).toEqual({
+      ...initialState,
+      "1": { ...initialState["1"], ppses: [1, 2, 3] }
+    });
   });
 
   test("should not add anything if floor doesn't axist", () => {
