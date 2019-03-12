@@ -11,7 +11,7 @@ import {
 const elevatorTypeSchema = {
   type: "string",
   title: "Type",
-  default: 0,
+  default: 'c_type',
   enum: ["c_type", "z_type"],
   enumNames: ["C Type", "Z Type"]
 };
