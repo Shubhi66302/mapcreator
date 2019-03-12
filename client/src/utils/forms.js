@@ -50,6 +50,11 @@ export const yupPosIntSchema = number()
   .integer("Should be integer")
   .min(1, "Should be positive integer");
 
+export const yupNonNegIntSchema = number()
+  .required("Required")
+  .integer("Should be integer")
+  .min(0, "Should be non-negative integer");
+
 export const yupBarcodeStringSchema = string()
   .required("Required")
   .matches(/^\d\d\d\.\d\d\d$/, "Should match barcode pattern (eg. 000.001)");

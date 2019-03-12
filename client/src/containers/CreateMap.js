@@ -5,7 +5,7 @@ import { FormikedInput } from "components/InlineTextInput";
 import { createMapFromCoordinateData, handleErrors } from "utils/util";
 import SweetAlertError from "components/SweetAlertError";
 import { string, object, ref } from "yup";
-import { yupPosIntSchema } from "utils/forms";
+import { yupNonNegIntSchema } from "utils/forms";
 // form html
 const InnerForm = ({ handleSubmit, isSubmitting }) => {
   return (
@@ -54,10 +54,10 @@ const Form = withFormik({
   validationSchema: () => {
     return object().shape({
       name: string().required(),
-      row_start: yupPosIntSchema,
-      row_end: yupPosIntSchema.min(ref("row_start")),
-      col_start: yupPosIntSchema,
-      col_end: yupPosIntSchema.min(ref("col_start"))
+      row_start: yupNonNegIntSchema,
+      row_end: yupNonNegIntSchema.min(ref("row_start")),
+      col_start: yupNonNegIntSchema,
+      col_end: yupNonNegIntSchema.min(ref("col_start"))
     });
   },
   handleSubmit: (

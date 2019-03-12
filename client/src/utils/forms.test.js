@@ -1,6 +1,7 @@
 import {
   listOfBarcodesSchema,
   yupPosIntSchema,
+  yupNonNegIntSchema,
   yupBarcodeStringSchema,
   yupEntryExitBarcodesSchema,
   yupCoordinateStringSchema,
@@ -35,6 +36,21 @@ describe("yupPosIntSchema", () => {
     expect(yupPosIntSchema.isValidSync(0)).toBe(false);
     expect(yupPosIntSchema.isValidSync("abc")).toBe(false);
     expect(yupPosIntSchema.isValidSync(1.1)).toBe(false);
+  });
+});
+
+describe("yupNonNegIntSchema", () => {
+  test("good cases", () => {
+    expect(yupNonNegIntSchema.isValidSync(5)).toBe(true);
+    // casting is done automatically
+    expect(yupNonNegIntSchema.isValidSync("1")).toBe(true);
+    expect(yupNonNegIntSchema.isValidSync(0)).toBe(true);
+    expect(yupNonNegIntSchema.isValidSync("0")).toBe(true);
+  });
+  test("bad cases", () => {
+    expect(yupNonNegIntSchema.isValidSync(-1)).toBe(false);
+    expect(yupNonNegIntSchema.isValidSync("abc")).toBe(false);
+    expect(yupNonNegIntSchema.isValidSync(1.1)).toBe(false);
   });
 });
 

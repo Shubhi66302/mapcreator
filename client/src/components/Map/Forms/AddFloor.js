@@ -6,7 +6,7 @@ import { addFloor } from "actions/floor";
 import SweetAlertError from "components/SweetAlertError";
 import { withFormik, Field } from "formik";
 import { object, ref } from "yup";
-import { yupPosIntSchema } from "utils/forms";
+import { yupPosIntSchema, yupNonNegIntSchema } from "utils/forms";
 
 // form html
 // not using BaseForm as more advanced validation needed
@@ -62,10 +62,10 @@ const Form = withFormik({
   validationSchema: () => {
     return object().shape({
       floor_id: yupPosIntSchema,
-      row_start: yupPosIntSchema,
-      row_end: yupPosIntSchema.min(ref("row_start")),
-      column_start: yupPosIntSchema,
-      column_end: yupPosIntSchema.min(ref("column_start"))
+      row_start: yupNonNegIntSchema,
+      row_end: yupNonNegIntSchema.min(ref("row_start")),
+      column_start: yupNonNegIntSchema,
+      column_end: yupNonNegIntSchema.min(ref("column_start"))
     });
   },
   handleSubmit: (formValues, { props }) => {
