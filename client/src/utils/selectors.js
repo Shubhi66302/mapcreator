@@ -154,7 +154,6 @@ export const getParticularEntity = (state, { entityName }) =>
   state.normalizedMap.entities[entityName] || {};
 const getQueueData = state => state.normalizedMap.entities.queueData || {};
 
-
 export const entitySelectorHelperData = {
   pps: ["pps", constants.PPS],
   charger: ["charger", constants.CHARGER],
@@ -163,7 +162,14 @@ export const entitySelectorHelperData = {
   fireEmergency: ["fireEmergency", constants.EMERGENCY_EXIT],
   // 3rd argument is how to get coordinate(s) from an entity.
   // in case of elevator, there are multiple coordinates per elevator
-  elevator: ["elevator", constants.ELEVATOR, e => e.coordinate_list.map(({ coordinate }) => tupleOfIntegersToCoordinateKey(coordinate))]
+  elevator: [
+    "elevator",
+    constants.ELEVATOR,
+    e =>
+      e.coordinate_list.map(({ coordinate }) =>
+        tupleOfIntegersToCoordinateKey(coordinate)
+      )
+  ]
 };
 
 // all entities except elevator have one coordinate per entity
@@ -174,7 +180,11 @@ export const getParticularEntityMap = createCachedSelector(
   (state_, { entityName }) => entityName,
   (particularEntities, entityName) => {
     var ret = {};
-    const [, entitySprite, getCoordinatesFromEntity = defaultGetCoordinatesFromEntity] = entitySelectorHelperData[entityName];
+    const [
+      ,
+      entitySprite,
+      getCoordinatesFromEntity = defaultGetCoordinatesFromEntity
+    ] = entitySelectorHelperData[entityName];
     var list = Object.entries(particularEntities).map(([, val]) => val);
     var coordinateKeys = _.flatten(list.map(e => getCoordinatesFromEntity(e)));
     coordinateKeys.forEach(key => (ret[key] = entitySprite));
@@ -225,7 +235,7 @@ export const getPpsQueueMap = state => {
   var ret = {};
 
   Object.entries(PpsEntities).forEach(([, { coordinate, queue_barcodes }]) => {
-    _.forEach(queue_barcodes, function (queue_barcode) {
+    _.forEach(queue_barcodes, function(queue_barcode) {
       var qb_coordinate = barcodeToCoordinateKeySelector(state, {
         barcode: queue_barcode
       });
@@ -482,19 +492,19 @@ export const getNewSpecialCoordinates = createSelector(
   specialBarcodesCoordinateSelector,
   (_state, { n }) => n,
   (coordinateKeys, n) => {
-    const start =
-      coordinateKeys.length == 0
-        ? 500
-        : coordinateKeys
-          .map(coordinateKey =>
-            Math.max(...coordinateKeyToTupleOfIntegers(coordinateKey))
-          )
-          .sort()
-          .reverse()[0] + 1;
+    const existingSet = new Set(coordinateKeys);
+    // iterate starting from 500,500 and just see if it already exists, otherwise add to result
     var ret = [];
-    for (var i = 0; i < n; i++) {
-      ret.push(`${start + i},${start + i}`);
+    // start from 500,500
+    var currentX = 500;
+    while (ret.length < n) {
+      var candidate = `${currentX},${currentX}`;
+      if (!existingSet.has(candidate)) {
+        ret.push(candidate);
+      }
+      currentX += 1;
     }
+    // hopefully won't get stuck in above loop...
     return ret;
   }
 );

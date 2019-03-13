@@ -512,15 +512,86 @@ describe("getNewSpecialCoordinates", () => {
   const { getNewSpecialCoordinates } = selectors;
   test("shoudl give 500,500 if no special barcode yet", () => {
     var state = makeState(singleFloorVanilla, 1);
-    var maxCoordinate = getNewSpecialCoordinates(state, { n: 3 });
-    expect(maxCoordinate).toEqual(["500,500", "501,501", "502,502"]);
+    var specialCoordinates = getNewSpecialCoordinates(state, { n: 3 });
+    expect(specialCoordinates).toEqual(["500,500", "501,501", "502,502"]);
+  });
+  test("should give more barcodes if 500,500 already exists", () => {
+    // adding a special barcode
+    var singleFloorWithSpecial = singleFloor.updateIn(
+      ["map", "floors", 0, "map_values"],
+      (map_values = []) =>
+        fromJS([
+          ...map_values,
+          {
+            blocked: false,
+            zone: "defzone",
+            coordinate: "500,500",
+            special: true,
+            store_status: 0,
+            barcode: "500.500",
+            neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            size_info: [750, 750, 750, 750],
+            botid: "null"
+          }
+        ])
+    );
+    var state = makeState(singleFloorWithSpecial);
+    var specialCoordinates = getNewSpecialCoordinates(state, { n: 2 });
+    expect(specialCoordinates).toEqual(["501,501", "502,502"]);
   });
   // this singleFloor map is incorrect as special barcode coordinate was calculate with old logic
   // still using it for testing
   test("should give correct special max coordinate if some special barcodes already exist", () => {
     var state = makeState(singleFloor, 1);
     var maxCoordinate = getNewSpecialCoordinates(state, { n: 2 });
-    expect(maxCoordinate).toEqual(["13,13", "14,14"]);
+    expect(maxCoordinate).toEqual(["500,500", "501,501"]);
+  });
+  test("should give some barcodes when the current max is 999.999, and some other specials already exist", () => {
+    // adding a special barcodes
+    // 999,999; 500,500; 502,502
+    var singleFloorWithSpecial = singleFloor.updateIn(
+      ["map", "floors", 0, "map_values"],
+      map_values =>
+        fromJS([
+          ...map_values,
+          {
+            blocked: false,
+            zone: "defzone",
+            coordinate: "999,999",
+            special: true,
+            store_status: 0,
+            barcode: "999.999",
+            neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            size_info: [750, 750, 750, 750],
+            botid: "null"
+          },
+          {
+            blocked: false,
+            zone: "defzone",
+            coordinate: "500,500",
+            special: true,
+            store_status: 0,
+            barcode: "500.500",
+            neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            size_info: [750, 750, 750, 750],
+            botid: "null"
+          },
+          {
+            blocked: false,
+            zone: "defzone",
+            coordinate: "502,502",
+            special: true,
+            store_status: 0,
+            barcode: "502.502",
+            neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            size_info: [750, 750, 750, 750],
+            botid: "null"
+          }
+        ])
+    );
+    var state = makeState(singleFloorWithSpecial);
+    var specialCoordinates = getNewSpecialCoordinates(state, { n: 3 });
+    expect(specialCoordinates).toEqual(["501,501", "503,503", "504,504"]);
   });
 });
 

@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import { createEntityReducer, dummyState } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
-import barcodeReducer from "./barcode";
+import barcodeReducer from "./barcode/index";
 import ppsReducer from "./pps";
 import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
