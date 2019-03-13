@@ -5,6 +5,9 @@ import { fromJS } from "immutable";
 import barcodeReducer from "./barcode.js";
 import { createFloorFromCoordinateData } from "utils/util";
 import { addElevator } from "actions/elevator";
+import { configureStore } from "../store";
+import { makeState as makeStateApp, singleFloorVanilla } from "utils/test-helper";
+import {addChargers} from "actions/charger";
 import _ from "lodash";
 
 
@@ -448,6 +451,37 @@ describe("EDIT-BARCODE", () => {
         }
       });
       expect(new_state).toEqual(state);
+    });
+  });
+
+  describe("DELETE-CHARGER-DATA", () => {
+    test("should delete charger related data in barcodes", async () => {
+      var store = configureStore(
+      // arguments are mapJson, currentFloor, selectedMapTiles
+        makeStateApp(singleFloorVanilla, 1, {"1,1": true})
+      );
+      await store.dispatch(addChargers({ charger_direction: 0 }));
+      const state = store.getState();
+      var initialState = state.normalizedMap.entities.barcode;
+      var newState = barcodeReducer(initialState, {
+        type:"DELETE-CHARGER-DATA",
+        value: {chargerDetails: state.normalizedMap.entities.charger[1]}
+      });
+      // Sp coordinate(enrty point coordinate) is 500,500
+      //Charger coordinate is "1,1"
+      // Previously connected coordinate to 1,1 is 1,0
+      expect(newState["500,500"]).toBe(undefined);
+      expect(newState["1,1"].adjacency).toBe(undefined);
+      // Neighbours of charger should not have adjacency (added while adding charger)
+      expect(newState["2,1"].adjacency).toBe(undefined);
+      expect(newState["1,2"].adjacency).toBe(undefined);
+      expect(newState["0,1"].adjacency).toBe(undefined);
+
+      expect(newState["1,1"].neighbours).toEqual([[1,1,1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
+      expect(newState["1,0"].adjacency).toBe(undefined);
+      expect(newState["1,0"].neighbours).toEqual([[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
+      expect(newState["1,1"].size_info).toEqual([750,750,750,750]);
+      expect(newState["1,0"].size_info).toEqual([750,750,750,750]);
     });
   });
 });

@@ -63,6 +63,22 @@ export default (state = {}, action) => {
       });
       return newState;
     }
+    case "DELETE-CHARGER-DATA": {
+      // const {entry_point_coordinate, charger_id} = action.value;
+      const chargerInfo = action.value.chargerDetails;
+      const entry_point_coordinate = implicitBarcodeToCoordinate(chargerInfo.entry_point_location);
+      const charger_id = chargerInfo.charger_id;
+      let newState = _.cloneDeep(state);
+      Object.keys(newState).forEach(floorId => {
+        _.remove(newState[floorId].chargers, function (charger) {
+          return charger === charger_id;
+        });
+        _.remove(newState[floorId].map_values, function (elem) {
+          return elem === entry_point_coordinate;
+        });
+      });
+      return newState;
+    }
   }
   return state;
 };

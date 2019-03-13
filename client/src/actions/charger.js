@@ -184,3 +184,15 @@ export const addChargers = formData => (dispatch, getState) => {
   );
   return dispatch(clearTiles);
 };
+
+export const removeCharger = ({ charger_id}) => (dispatch, getState) => { 
+  var chargerDetails = _.find(getState().normalizedMap.entities.charger, { "charger_id": charger_id});
+  dispatch({
+    type: "DELETE-CHARGER-DATA",
+    value: {chargerDetails}
+  });
+  dispatch({
+    type: "DELETE-CHARGER-BY-ID",
+    value: charger_id
+  });
+};

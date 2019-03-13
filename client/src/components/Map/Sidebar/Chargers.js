@@ -2,8 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
+import {removeCharger} from "actions/charger";
 
-const Chargers = ({ chargerDict }) => {
+const Chargers = ({ chargerDict, dispatch }) => {
   const chargers = Object.entries(chargerDict).map(([, val]) => val);
   return (
     <div className="pt-3">
@@ -32,6 +33,13 @@ const Chargers = ({ chargerDict }) => {
             <br />
             Reinit Point: {reinit_point_location}
             <br />
+            {
+              <button className="btn btn-outline-danger btn-sm" 
+                type="button"
+                onClick={() => dispatch(removeCharger({charger_id}))}
+              > Delete Charger
+              </button>
+            }
           </BaseCard>
         )
       )}

@@ -188,4 +188,60 @@ describe("EDIT-BARCODE", () => {
       }
     });
   });
+
+  describe("DELETE-CHARGER-DATA", () => {
+    test("should delete charger and its special point", () => {
+      var state = {
+        "1": { map_values: ["12,12", "0,2", "3,0", "4,0"], chargers: [1,2] }
+      };
+      var newState = floorReducer(state, {
+        type: "DELETE-CHARGER-DATA",
+        value: {chargerDetails:
+              {
+                "charger_id": 1,
+                "charger_location": "002.002",
+                "entry_point_location": "012.012",
+                "charger_type": "rectangular_plate_charger",
+                "status": "disconnected",
+                "mode": "manual",
+                "reinit_point_direction": 0,
+                "entry_point_direction": 0,
+                "reinit_point_location": "012.012",
+                "charger_direction": 0,
+                "coordinate": "2,2"
+              }
+        }
+      });
+      expect(newState[1].map_values).toEqual(["0,2", "3,0", "4,0"]);
+      expect(newState[1].chargers).toEqual([2]);
+    });
+    test("should delete charger and its special point from multifloor map", () => {
+      var state = {
+        "1": { map_values: ["12,12", "0,2", "3,0", "4,0"], chargers: [1,2] },
+        "2": { map_values: ["500,500", "5,0", "6,0", "7,0"], chargers: [3,4] }
+      };
+      var newState = floorReducer(state, {
+        type: "DELETE-CHARGER-DATA",
+        value: {chargerDetails:
+              {
+                "charger_id": 3,
+                "charger_location": "000.005",
+                "entry_point_location": "500.500",
+                "charger_type": "rectangular_plate_charger",
+                "status": "disconnected",
+                "mode": "manual",
+                "reinit_point_direction": 0,
+                "entry_point_direction": 0,
+                "reinit_point_location": "500.500",
+                "charger_direction": 0,
+                "coordinate": "5,0"
+              }
+        }
+      });
+      expect(newState[1].map_values).toEqual(state[1].map_values);
+      expect(newState[1].chargers).toEqual(state[1].chargers);
+      expect(newState[2].map_values).toEqual([ "5,0", "6,0", "7,0"]);
+      expect(newState[2].chargers).toEqual([4]);
+    });
+  });
 });
