@@ -11,7 +11,7 @@ import Sidebar from "components/Map/Sidebar/Sidebar";
 import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
-import AssignStorable from "components/Map/Forms/AssignStorable";
+import ToggleStorable from "components/Map/Forms/ToggleStorable";
 import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode";
 import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
@@ -76,7 +76,7 @@ class Map extends Component {
           </div>
           <div className="row py-1">
             {[
-              AssignStorable,
+              ToggleStorable,
               AddPPS,
               AddCharger,
               AssignDockPoint,

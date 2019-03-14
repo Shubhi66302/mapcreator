@@ -1,5 +1,4 @@
 import {
-  getNeighbourTiles,
   getDirection,
   getNeighbouringBarcodes,
   deleteNeighbourFromBarcode,
@@ -122,23 +121,11 @@ export default (state = {}, action) => {
       return { ...state, ...newState };
     }
 
-    case "ASSIGN-STORABLE": {
-      const selectedMapTiles = action.value;
+    case "TOGGLE-STORABLE": {
+      const {selectedTiles, makeStorable} = action.value;
       newState = {};
-      for (let tileId of Object.keys(selectedMapTiles)) {
-        newState[tileId] = { ...state[tileId], store_status: 1 };
-        if (newState[tileId].neighbours) {
-          var neighbouringTileIds = getNeighbourTiles(tileId);
-          neighbouringTileIds.forEach((neighbouringTileId, idx) => {
-            // only get neighbours that have already been added to new state. this
-            // reduces redundant updates
-            if (newState[neighbouringTileId]) {
-              // cannot traverse rack to rack
-              newState[neighbouringTileId].neighbours[(idx + 2) % 4][2] = 0;
-              newState[tileId].neighbours[idx][2] = 0;
-            }
-          });
-        }
+      for (let tileId of selectedTiles) {
+        newState[tileId] = { ...state[tileId], store_status: makeStorable };
       }
       return Object.assign({}, state, newState);
     }

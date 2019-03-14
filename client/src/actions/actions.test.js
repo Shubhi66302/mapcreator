@@ -2,7 +2,7 @@ import { tileToWorldCoordinate } from "utils/util";
 import thunk from "redux-thunk";
 import { tileBoundsSelector } from "utils/selectors";
 import configureStore from "redux-mock-store";
-import { makeState, singleFloor } from "utils/test-helper";
+import { makeState, singleFloor, singleFloorVanilla } from "utils/test-helper";
 import * as actions from "./actions";
 import fetchMock from "fetch-mock";
 
@@ -104,26 +104,68 @@ describe("addEntitiesToFloor", () => {
   });
 });
 
-describe("assignStorable", () => {
-  const { assignStorable, clearTiles } = actions;
+describe("toggleStorable", () => {
+  const { toggleStorable, clearTiles } = actions;
   test("should dispatch assign storable action and also clear tiles action", async () => {
     // setup
-    const selectedMapTiles = { "1,1": true, "1,2": true };
-    const initialState = makeState(singleFloor, 1, selectedMapTiles);
+    const selectedMapTiles =  {"1,1": true, "1,2": true};
+    var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
     const store = mockStore(initialState);
 
-    await store.dispatch(assignStorable());
-    const dispatchedActions = store.getActions();
+    await store.dispatch(toggleStorable());
+    var dispatchedActions = store.getActions();
 
     // test
     expect(dispatchedActions).toEqual([
       {
-        type: "ASSIGN-STORABLE",
-        value: selectedMapTiles
+        type: "TOGGLE-STORABLE",
+        value: {selectedTiles: ["1,1", "1,2"], makeStorable: 1}
       },
       clearTiles
     ]);
   });
+
+  test ("should dispatch assign storable action when mixed type of coordinates selected", async () => {
+    // setup
+    const selectedMapTiles =  {"1,0": true, "1,2": true};
+    var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
+    initialState.normalizedMap.entities.barcode["1,2"].store_status = 1;
+    const store = mockStore(initialState);
+
+    await store.dispatch(toggleStorable());
+    var dispatchedActions = store.getActions();
+
+    // test
+    expect(dispatchedActions).toEqual([
+      {
+        type: "TOGGLE-STORABLE",
+        value: {selectedTiles: ["1,0", "1,2"], makeStorable: 1}
+      },
+      clearTiles
+    ]);
+  });
+
+  test ("should dispatch non-storable action when all storables are selected", async () => {
+    // setup
+    const selectedMapTiles =  {"1,0": true, "1,2": true};
+    var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
+    initialState.normalizedMap.entities.barcode["1,2"].store_status = 1;
+    initialState.normalizedMap.entities.barcode["1,0"].store_status = 1;
+    const store = mockStore(initialState);
+
+    await store.dispatch(toggleStorable());
+    var dispatchedActions = store.getActions();
+
+    // test
+    expect(dispatchedActions).toEqual([
+      {
+        type: "TOGGLE-STORABLE",
+        value: {selectedTiles: ["1,0", "1,2"], makeStorable: 0}
+      },
+      clearTiles
+    ]);
+  });
+
 });
 
 // TODO: test for saveMap

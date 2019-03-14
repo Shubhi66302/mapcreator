@@ -17,80 +17,44 @@ const complicated3x3BarcodeMap = fromJS(
 // TODO: this function has same name as test-helper/makeState, change to make less confusing
 const makeState = immutableMap => immutableMap.toJS();
 
-describe("ASSIGN-STORABLE", () => {
-  test("should correctly mutate barcodes so that neighbouring rack paths are not traversible", () => {
+describe("TOGGLE-STORABLE", () => {
+  test("should mark all coordinates as storable when makeStorable is 1", () => {
     var state = makeState(vanilla3x3BarcodeMap);
-    // 2x2 square is selected
-    var selectedMapTiles = {
-      "0,0": true,
-      "1,0": true,
-      "0,1": true,
-      "1,1": true
-    };
-
+    var toBestorables = ["0,0", "1,0", "0,1", "1,1"];
+    var nonStorables = ["2,0", "0,2", "2,1"];
     var newState = barcodeReducer(state, {
-      type: "ASSIGN-STORABLE",
-      value: selectedMapTiles
+      type: "TOGGLE-STORABLE",
+      value: {selectedTiles: toBestorables, makeStorable: 1}
     });
 
-    // check if storable is true for correct barcodes
-    var nonStorables = ["2,2", "2,1", "2,0", "0,2", "1,2"];
-    expect(newState["1,1"].store_status).toBe(1);
-    expect(newState["0,1"].store_status).toBe(1);
-    expect(newState["1,0"].store_status).toBe(1);
-    expect(newState["0,0"].store_status).toBe(1);
+    expect(newState["1,1"].store_status).toEqual(1);
+    expect(newState["0,1"].store_status).toEqual(1);
+    expect(newState["1,0"].store_status).toEqual(1);
+    expect(newState["0,0"].store_status).toEqual(1);
+    
+    // Rest of the coordinates are left as is.
     for (let tileId of nonStorables) {
-      expect(newState[tileId].store_status).toBe(0);
-    }
-    // check neighbour structures of storables
-    expect(newState["0,0"].neighbours).toEqual([
-      [0, 0, 0],
-      [0, 0, 0],
-      [1, 1, 0],
-      [1, 1, 0]
-    ]);
-    expect(newState["1,0"].neighbours).toEqual([
-      [0, 0, 0],
-      [1, 1, 0],
-      [1, 1, 0],
-      [1, 1, 1]
-    ]);
-    expect(newState["0,1"].neighbours).toEqual([
-      [1, 1, 0],
-      [0, 0, 0],
-      [1, 1, 1],
-      [1, 1, 0]
-    ]);
-    expect(newState["1,1"].neighbours).toEqual([
-      [1, 1, 0],
-      [1, 1, 0],
-      [1, 1, 1],
-      [1, 1, 1]
-    ]);
-    // check for other barcodes
-    for (let tileId of nonStorables) {
-      expect(newState[tileId].neighbours).toEqual(state[tileId].neighbours);
+      expect(newState[tileId].store_status).toEqual(0);
     }
   });
-  test("should not modify neighbour structure when no storables are connected", () => {
-    var state = makeState(vanilla3x3BarcodeMap);
-    // 2 unconnected selected tiles
-    var selectedMapTiles = { "0,0": true, "2,0": true };
 
+  test("should mark all coordinates to non-storable when makeStorable is 0", () => {
+    var state = makeState(vanilla3x3BarcodeMap);
+    var alreadyStorables = ["0,0", "1,0", "0,1", "1,1"];
+    var nonStorables = ["2,0", "0,2", "2,1"];
     var newState = barcodeReducer(state, {
-      type: "ASSIGN-STORABLE",
-      value: selectedMapTiles
+      type: "TOGGLE-STORABLE",
+      value: {selectedTiles: alreadyStorables, makeStorable: 0}
     });
 
-    // check if storable is true
-    for (let tileId of Object.keys(state)) {
-      if (selectedMapTiles[tileId])
-        expect(newState[tileId].store_status).toBe(1);
-      else expect(newState[tileId].store_status).toBe(0);
-    }
-    // check neighbour structure
-    for (let tileId of Object.keys(state)) {
-      expect(newState[tileId].neighbours).toEqual(state[tileId].neighbours);
+    expect(newState["1,1"].store_status).toEqual(0);
+    expect(newState["0,1"].store_status).toEqual(0);
+    expect(newState["1,0"].store_status).toEqual(0);
+    expect(newState["0,0"].store_status).toEqual(0);
+
+    // Rest of the coordinates are left as is.
+    for (let tileId of nonStorables) {
+      expect(newState[tileId].store_status).toEqual(0);
     }
   });
 });

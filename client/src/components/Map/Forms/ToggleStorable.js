@@ -1,5 +1,5 @@
 import React from "react";
-import { assignStorable } from "actions/actions";
+import { toggleStorable } from "actions/actions";
 import { connect } from "react-redux";
 
 const StorableButton = ({ onClick, disabled }) => (
@@ -11,7 +11,7 @@ const StorableButton = ({ onClick, disabled }) => (
       onClick();
     }}
   >
-    Assign Storable
+    Toggle Storable
   </button>
 );
 
@@ -20,6 +20,6 @@ export default connect(
     disabled: Object.keys(state.selection.mapTiles).length === 0
   }),
   dispatch => ({
-    onClick: () => dispatch(assignStorable())
+    onClick: () => dispatch(toggleStorable())
   })
 )(StorableButton);

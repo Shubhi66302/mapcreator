@@ -142,14 +142,27 @@ export const addEntitiesToFloor = ({
   }
 });
 
-export const assignStorable = () => (dispatch, getState) => {
-  const {
-    selection: { mapTiles }
-  } = getState();
-  dispatch({
-    type: "ASSIGN-STORABLE",
-    value: mapTiles
+// If all selections are storable -> converted to non-storable
+// If all/some selections are non-storable -> converted to storable
+export const toggleStorable = () => (dispatch, getState) => {
+  const state = getState();
+  const {selection : {mapTiles}} = state;
+  const selectedTiles = Object.keys(mapTiles);
+  var allStorable = _.every(selectedTiles, function (coordinate){
+    return state.normalizedMap.entities.barcode[coordinate].store_status == 1;
   });
+  if (allStorable==true) {
+    dispatch({
+      type: "TOGGLE-STORABLE",
+      value: {selectedTiles, makeStorable: 0}
+    });
+  } else
+  {
+    dispatch({
+      type: "TOGGLE-STORABLE",
+      value: {selectedTiles, makeStorable: 1}
+    });
+  }
   return dispatch(clearTiles);
 };
 
