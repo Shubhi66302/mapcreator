@@ -244,4 +244,20 @@ describe("EDIT-BARCODE", () => {
       expect(newState[2].chargers).toEqual([4]);
     });
   });
+  
+  test("should delete pps from floor", () => {
+    var state = {
+      "1": { ppses: [1,2,3] }
+    };
+    var newState = floorReducer(state, {
+      type: "DELETE-PPS-BY-ID",
+      value: 1
+    });
+    expect(newState).toEqual({
+      ...state,
+      "1": {
+        ppses: [2,3]
+      }
+    });
+  });
 });

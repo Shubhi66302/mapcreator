@@ -5,6 +5,7 @@ import { getParticularEntity } from "utils/selectors";
 import { tupleOfIntegersToCoordinateKey } from "utils/util";
 import EditEntryOrExitPoints from "../Forms/EditEntryOrExitPoints";
 import EditElevatorCoordinates from "../Forms/EditElevatorCoordinates";
+import CardEntry from "./CardEntry";
 import {
   editEntryPoints,
   editExitPoints,
@@ -12,15 +13,6 @@ import {
   removeElevator
 } from "actions/elevator";
 import RemoveItemForm from "../Forms/RemoveItemForm";
-
-const CardEntry = ({ header, value }) => (
-  <div className="row justify-content-between">
-    <div className="col-auto">{header}:</div>
-    <div className="col-auto">
-      <b>{value}</b>
-    </div>
-  </div>
-);
 
 const BarcodeList = ({ barcodes }) => (
   <ul>

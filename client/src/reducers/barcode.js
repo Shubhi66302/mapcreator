@@ -63,7 +63,6 @@ export default (state = {}, action) => {
       var newState = _.cloneDeep(state);
       for (var i = 0; i < tileIds.length; i++) {
         var tileId = tileIds[i];
-
         if (newState[tileId].neighbours) {
           var QueueDirection;
           if (i == tileIds.length - 1) {
@@ -323,6 +322,31 @@ export default (state = {}, action) => {
       delete newState[chargerCoordinate].adjacency;
       delete newState[coorInDirectionOfCharger].adjacency;
       delete newState[entryPointCoordinate];
+      return newState;
+    }
+
+    case "DELETE-PPS-QUEUE": {
+      const {queue_coordinates} = action.value;
+      let newState = _.clone(state);
+      var direction;
+      
+      _.forEach(queue_coordinates, function (queuePoint) {
+        // Allow all movements in all directions. assuming we dont have any
+        // barcode modified otherwise (besides making it a queue).
+        var neighboursOfQueueCoordinate = getNeighbouringBarcodes(queuePoint, newState);
+        _.forEach(neighboursOfQueueCoordinate, function(neighbour) {
+          if (neighbour) {
+            direction = getDirection(neighbour.coordinate, queuePoint);
+            if (neighbour.neighbours[direction][0] ==! 0) {
+              neighbour.neighbours[direction] = [1,1,1];
+            }
+            // Update queuePoint's movement in opp direction.
+            if (newState[queuePoint].neighbours[(direction+2) %4][0] == 1) {
+              newState[queuePoint].neighbours[(direction+2) %4] = [1,1,1];
+            }
+          } 
+        });
+      });
       return newState;
     }
   }

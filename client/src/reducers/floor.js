@@ -79,6 +79,15 @@ export default (state = {}, action) => {
       });
       return newState;
     }
+    case "DELETE-PPS-BY-ID": {
+      var newState = _.clone(state);
+      Object.keys(newState).forEach(floorId => {
+        _.remove(newState[floorId].ppses, function (pps) {
+          return pps === action.value;
+        });
+      });
+      return newState;
+    }
   }
   return state;
 };

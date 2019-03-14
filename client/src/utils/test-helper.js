@@ -6,6 +6,7 @@ import sampleVanillaMapObj from "test-data/test-maps/3x3-vanilla.json";
 // https://redux.js.org/recipes/usingimmutablejs#what-are-the-issues-with-using-immutable-js
 import { fromJS } from "immutable";
 import { dummyState } from "reducers/util";
+import { mapTileClick } from "actions/actions";
 
 export var makeState = (
   immutableMap,
@@ -17,6 +18,7 @@ export var makeState = (
   normalizedMap: normalizeMap(immutableMap.toJS()),
   currentFloor,
   selection: {
+    ...dummyState.selection,
     metaKey: false,
     shiftKey: false,
     mapTiles: selectedMapTiles,
@@ -56,3 +58,10 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
   ])
 );
 export var singleFloorVanilla = fromJS(sampleVanillaMapObj);
+export const addQueueSelectedTilesToState = (store, tilesList) => {
+  // set queue mode to true
+  store.dispatch({ type: "TOGGLE-QUEUE-MODE" });
+  // add each queue tile one after the other
+  tilesList.forEach(tile => store.dispatch(mapTileClick(tile)));
+  return store;
+};

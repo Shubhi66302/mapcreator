@@ -4,6 +4,7 @@ import { createEntityReducer, dummyState } from "./util";
 import reduceReducers from "reduce-reducers";
 import floorReducer from "./floor";
 import barcodeReducer from "./barcode";
+import ppsReducer from "./pps";
 import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
 import elevatorReducer from "./elevator";
@@ -17,19 +18,7 @@ export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 export var baseElevatorReducer = createEntityReducer("ELEVATOR", "elevator_id");
 export var baseChargerReducer = createEntityReducer("CHARGER", "charger_id");
 
-export var ppsReducer = (state = {}, action) => {
-  switch (action.type) {
-    case "ADD-QUEUE-BARCODES-TO-PPS":
-      return {
-        ...state,
-        [action.value.pps_id]: {
-          ...state[action.value.pps_id],
-          queue_barcodes: action.value.tiles
-        }
-      };
-  }
-  return { ...state };
-};
+
 
 export const entitiesReducer = combineReducers({
   elevator: reduceReducers(elevatorReducer, baseElevatorReducer),
