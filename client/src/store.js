@@ -14,7 +14,7 @@ const logger = createLogger({
 });
 
 let middleware = [thunk, entityMiddleware, floorMiddleware];
-if (process.env.NODE_ENV !== "production") middleware = [...middleware, logger];
+if (process.env.NODE_ENV == "development") middleware = [...middleware, logger];
 
 export default createStore(
   reducer,

@@ -44,11 +44,23 @@ export var changeElevatorCoordinates = (
   return { ...state, ...newState };
 };
 
+// make queue coordinate unidirectional
+var fixQueueCoordinateNeighbours = (newState, tileId, QueueDirection) => {
+  if (QueueDirection != 5) {
+    newState[tileId].neighbours[QueueDirection][1] = 1;
+    newState[tileId].neighbours[QueueDirection][2] = 1;
+    var Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
+    for (var j = 0; j < Remaining.length; j++) {
+      newState[tileId].neighbours[Remaining[j]][2] = 0;
+    }
+  }
+  return newState;
+};
+
 export default (state = {}, action) => {
   switch (action.type) {
     case "ADD-QUEUE-BARCODES-TO-PPS": {
       const tileIds = action.value.coordinates;
-      const pps_coordinate = action.value.pps_coordinate;
       var newState = _.cloneDeep(state);
       for (var i = 0; i < tileIds.length; i++) {
         var tileId = tileIds[i];
@@ -61,25 +73,16 @@ export default (state = {}, action) => {
             QueueDirection = getDirection(tileId, tileIds[i + 1]);
           }
           var allNeighbours = getNeighbouringBarcodes(tileId, state);
-          var filteredNeighbours = _.filter(allNeighbours, function (tile) {
+          var filteredNeighbours = _.filter(allNeighbours, function(tile) {
             return tile != null && !_.includes(tileIds, tile.coordinate);
-          });
-          // if pps is a neighbour, do not allow movement there
-          allNeighbours.forEach((nb, idx) => {
-            if (nb && pps_coordinate == nb.coordinate) {
-              newState[tileId].neighbours[idx][2] = 0;
-            }
           });
           if (i != 0) {
             if (QueueDirection != 5) {
-              newState[tileId].neighbours[QueueDirection][1] = 1;
-              newState[tileId].neighbours[QueueDirection][2] = 1;
-              var Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
-
-              for (var j = 0; j < Remaining.length; j++) {
-                newState[tileId].neighbours[Remaining[j]][2] = 0;
-              }
-
+              newState = fixQueueCoordinateNeighbours(
+                newState,
+                tileId,
+                QueueDirection
+              );
               filteredNeighbours.forEach(neighbouringTileIdobject => {
                 var neighbouringTileId = neighbouringTileIdobject.coordinate;
                 var current_neighbour_dir = getDirection(
@@ -106,10 +109,16 @@ export default (state = {}, action) => {
                 }
               });
             }
+          } else {
+            // first queue coordinate neighbour structure also needs to change
+            newState = fixQueueCoordinateNeighbours(
+              newState,
+              tileId,
+              QueueDirection
+            );
           }
-        }
+        } 
       }
-
       return { ...state, ...newState };
     }
 
@@ -159,11 +168,7 @@ export default (state = {}, action) => {
     case "MODIFY-DISTANCE-BETWEEN-BARCODES": {
       // iterate over all rows/cols and modify
       let newState = {};
-      var {
-        distanceTiles,
-        distance,
-        tileBounds
-      } = action.value;
+      var { distanceTiles, distance, tileBounds } = action.value;
       for (let key in distanceTiles) {
         let tuples, direction;
         if (/c-.*/.test(key)) {

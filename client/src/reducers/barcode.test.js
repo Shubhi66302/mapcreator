@@ -10,7 +10,6 @@ import { makeState as makeStateApp, singleFloorVanilla } from "utils/test-helper
 import {addChargers} from "actions/charger";
 import _ from "lodash";
 
-
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
 const complicated3x3BarcodeMap = fromJS(
   normalizeMap(complicated3x3).entities.barcode
@@ -114,7 +113,13 @@ describe("ADD-QUEUE-BARCODES-TO-PPS", () => {
       }
     };
     var newState = barcodeReducer(state, action);
-    expect(newState["1,2"].neighbours).toEqual(state["1,2"].neighbours);
+    // first barcode should also have movement restricted in non-queue directions
+    expect(newState["1,2"].neighbours).toEqual([
+      [1, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0],
+      [1, 1, 0]
+    ]);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 1],
       [1, 1, 0],
@@ -180,8 +185,8 @@ describe("ADD-QUEUE-BARCODES-TO-PPS", () => {
     var newState = barcodeReducer(state, action);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 0],
-      [1, 1, 1],
-      [1, 1, 1],
+      [1, 1, 0],
+      [1, 1, 0],
       [1, 1, 1]
     ]);
     expect(newState["2,1"].neighbours).toEqual([
@@ -429,59 +434,62 @@ describe("EDIT-BARCODE", () => {
       }
     });
     expect(new_state["12,12"]).toEqual(undefined);
-  
+
     // check if barcode value is changed to new_barcode
     expect(new_state["13,90"].barcode).toEqual("090.013");
     // check if coordinate of new_barcode is changed to new_coordinate
     expect(new_state["13,90"].coordinate).toEqual("13,90");
     // neighbours of 13,90 should have new value, i.e. 13,90
-    expect(new_state["2,1"].adjacency).toEqual([[2, 0], [1, 1], [13,90], null]);
-    
-    expect(new_state["2,2"].adjacency).toEqual([[13,90], [1,2], null, null]);
+    expect(new_state["2,1"].adjacency).toEqual([
+      [2, 0],
+      [1, 1],
+      [13, 90],
+      null
+    ]);
+
+    expect(new_state["2,2"].adjacency).toEqual([[13, 90], [1, 2], null, null]);
   });
 
-  describe("EDIT-BARCODE", () => {
-    test("should not do anything if special barcode to be replaced already exists", () => {
-      const state = makeState(complicated3x3BarcodeMap);
-      var new_state = barcodeReducer(state, {
-        type: "EDIT-BARCODE",
-        value: {
-          coordinate: "12,12",
-          new_barcode: "001.002"
-        }
-      });
-      expect(new_state).toEqual(state);
+  test("should not do anything if special barcode to be replaced already exists", () => {
+    const state = makeState(complicated3x3BarcodeMap);
+    var new_state = barcodeReducer(state, {
+      type: "EDIT-BARCODE",
+      value: {
+        coordinate: "12,12",
+        new_barcode: "001.002"
+      }
     });
+    expect(new_state).toEqual(state);
   });
+});
 
-  describe("DELETE-CHARGER-DATA", () => {
-    test("should delete charger related data in barcodes", async () => {
-      var store = configureStore(
-      // arguments are mapJson, currentFloor, selectedMapTiles
-        makeStateApp(singleFloorVanilla, 1, {"1,1": true})
-      );
-      await store.dispatch(addChargers({ charger_direction: 0 }));
-      const state = store.getState();
-      var initialState = state.normalizedMap.entities.barcode;
-      var newState = barcodeReducer(initialState, {
-        type:"DELETE-CHARGER-DATA",
-        value: {chargerDetails: state.normalizedMap.entities.charger[1]}
-      });
-      // Sp coordinate(enrty point coordinate) is 500,500
-      //Charger coordinate is "1,1"
-      // Previously connected coordinate to 1,1 is 1,0
-      expect(newState["500,500"]).toBe(undefined);
-      expect(newState["1,1"].adjacency).toBe(undefined);
-      // Neighbours of charger should not have adjacency (added while adding charger)
-      expect(newState["2,1"].adjacency).toBe(undefined);
-      expect(newState["1,2"].adjacency).toBe(undefined);
-      expect(newState["0,1"].adjacency).toBe(undefined);
-
-      expect(newState["1,1"].neighbours).toEqual([[1,1,1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
-      expect(newState["1,0"].adjacency).toBe(undefined);
-      expect(newState["1,0"].neighbours).toEqual([[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
-      expect(newState["1,1"].size_info).toEqual([750,750,750,750]);
-      expect(newState["1,0"].size_info).toEqual([750,750,750,750]);
+describe("DELETE-CHARGER-DATA", () => {
+  test("should delete charger related data in barcodes", async () => {
+    var store = configureStore(
+    // arguments are mapJson, currentFloor, selectedMapTiles
+      makeStateApp(singleFloorVanilla, 1, {"1,1": true})
+    );
+    await store.dispatch(addChargers({ charger_direction: 0 }));
+    const state = store.getState();
+    var initialState = state.normalizedMap.entities.barcode;
+    var newState = barcodeReducer(initialState, {
+      type:"DELETE-CHARGER-DATA",
+      value: {chargerDetails: state.normalizedMap.entities.charger[1]}
     });
+    // Sp coordinate(enrty point coordinate) is 500,500
+    //Charger coordinate is "1,1"
+    // Previously connected coordinate to 1,1 is 1,0
+    expect(newState["500,500"]).toBe(undefined);
+    expect(newState["1,1"].adjacency).toBe(undefined);
+    // Neighbours of charger should not have adjacency (added while adding charger)
+    expect(newState["2,1"].adjacency).toBe(undefined);
+    expect(newState["1,2"].adjacency).toBe(undefined);
+    expect(newState["0,1"].adjacency).toBe(undefined);
+
+    expect(newState["1,1"].neighbours).toEqual([[1,1,1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
+    expect(newState["1,0"].adjacency).toBe(undefined);
+    expect(newState["1,0"].neighbours).toEqual([[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]]);
+    expect(newState["1,1"].size_info).toEqual([750,750,750,750]);
+    expect(newState["1,0"].size_info).toEqual([750,750,750,750]);
   });
 });
