@@ -349,6 +349,16 @@ export default (state = {}, action) => {
       });
       return newState;
     }
+    // Replace elevator's barcode to the original value (as coordinate).
+    case "DELETE-ELEVATOR": {
+      let newState = _.clone(state);
+      const {coordinates_list} = action.value;
+      _.forEach(coordinates_list, function(coordinate){
+        // Replace coordinate value to its original barcode value.
+        newState[coordinate].barcode = implicitCoordinateKeyToBarcode(coordinate);
+      });
+      return newState;
+    }
   }
   return state;
 };

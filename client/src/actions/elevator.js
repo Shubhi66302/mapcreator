@@ -1,4 +1,6 @@
 import { coordinateKeyToTupleOfIntegers } from "utils/util";
+import { tupleOfIntegersToCoordinateKey } from "../utils/util";
+import _ from "lodash";
 
 export const addElevator = ({ coordinate_list, ...rest }) => ({
   type: "ADD-ELEVATOR",
@@ -64,7 +66,14 @@ export const editElevatorCoordinates = ({ elevator_id, coordinate_list }) => (
   });
 };
 
-export const removeElevator = ({ elevator_id }) => ({
-  type: "DELETE-ELEVATOR-BY-ID",
-  value: elevator_id
-});
+export const removeElevator = ({ elevator_id }) => (dispatch, getState) =>
+{
+  const state = getState().normalizedMap.entities.elevator[elevator_id].coordinate_list;
+  const coordinates_list = _.map(state, function (coordinate) {
+    return tupleOfIntegersToCoordinateKey(coordinate.coordinate);
+  });
+  dispatch({
+    type: "DELETE-ELEVATOR",
+    value: {elevator_id, coordinates_list}
+  });
+};

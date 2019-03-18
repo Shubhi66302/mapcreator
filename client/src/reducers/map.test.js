@@ -1,6 +1,6 @@
 import mapReducer from "./map";
 
-describe("DELETE-ELEVATOR-BY-ID", () => {
+describe("DELETE-ELEVATOR", () => {
   test("Should delete elevator and related data", () => {
     var defaultState =  {
       dummy: {
@@ -13,8 +13,8 @@ describe("DELETE-ELEVATOR-BY-ID", () => {
     };
     // var state = createState(complicated3x3ElevatorMap);
     var newState = mapReducer(defaultState, {
-      type: "DELETE-ELEVATOR-BY-ID",
-      value: 1
+      type: "DELETE-ELEVATOR",
+      value: {elevator_id: 1, coordinate_list: []}
     });
     expect(newState.dummy.elevators).toEqual([2,3]);
     

@@ -40,6 +40,9 @@ export default (state = {}, action) => {
       }
       return newState;
     }
+    case "DELETE-ELEVATOR": {
+      return _.omit(state, action.value.elevator_id);
+    }
   }
   return state;
 };

@@ -492,4 +492,19 @@ describe("DELETE-CHARGER-DATA", () => {
     });
   });
 
+  describe("DELETE-ELEVATOR", () => {
+    test("should change barcode value of the given coordinate to its original value", () => {
+      const state = makeState(vanilla3x3BarcodeMap);
+      state["2,1"].barcode = "100.100";
+      state["0,2"].barcode = "200.200";
+      var newState = barcodeReducer(state, {
+        type: "DELETE-ELEVATOR",
+        value: {elevator_id:1, coordinates_list: ["2,1","0,2"]}
+      });
+      expect(newState["2,1"].barcode).toEqual("001.002");
+      expect(newState["0,2"].barcode).toEqual("002.000");
+
+    });
+  });
+
 });

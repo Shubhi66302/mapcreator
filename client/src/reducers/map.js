@@ -20,9 +20,10 @@ export default (state = {}, action) => {
     case "ADD-ZONE": {
       return addKey(state, "zones", action.value.zone_id);
     }
-    case "DELETE-ELEVATOR-BY-ID": {
+    case "DELETE-ELEVATOR": {
+      const elevator_id = action.value.elevator_id;
       var newState = _.clone(state);
-      newState.dummy.elevators = newState.dummy.elevators.filter(id => id != action.value);
+      newState.dummy.elevators = newState.dummy.elevators.filter(id => id != elevator_id);
       return newState;
     }
   }
