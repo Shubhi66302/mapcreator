@@ -71,5 +71,7 @@ export const dummyState = {
     viewportInstance: null,
     minimapInstance: null,
     currentView: null
-  }
+  },
+  successMessage: null,
+  errorMessage: null
 };

@@ -23,7 +23,9 @@ export var makeState = (
     shiftKey: false,
     mapTiles: selectedMapTiles,
     distanceTiles: selectedDistanceTiles
-  }
+  },
+  successMessage: null,
+  errorMessage: null
 });
 
 export var singleFloor = fromJS(sampleMapObj);

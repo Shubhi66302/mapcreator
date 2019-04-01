@@ -12,21 +12,25 @@ class ButtonForm extends Component {
       },
       toggle,
       small = false,
+      btnClass = "btn-outline-primary",
       show
     } = this.props;
     return (
-      <div>
-        <div className="tooltip-wrapper" data-tip data-for={tooltipData.id}>
-          <button
-            key={0}
-            type="button"
-            className={`btn btn-outline-primary ${small ? "btn-sm" : ""}`}
-            disabled={disabled}
-            onClick={() => toggle()}
-          >
-            {buttonText}
-          </button>
-        </div>
+      // adding class and role since nested button groups give a cleaner look for some reason
+      <div className="btn-group" role="group">
+        <button
+          key={0}
+          type="button"
+          className={`btn ${btnClass} ${
+            small ? "btn-sm" : ""
+          } tooltip-wrapper btn-group`}
+          disabled={disabled}
+          onClick={() => toggle()}
+          data-tip
+          data-for={tooltipData.id}
+        >
+          {buttonText}
+        </button>
         <BulletPointsTooltip {...tooltipData} />
         <div key={1} className="modal fade" tabIndex="-1" role="dialog">
           <FormModal show={show} toggle={toggle}>

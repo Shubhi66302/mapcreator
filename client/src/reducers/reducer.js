@@ -10,6 +10,7 @@ import mapReducer from "./map";
 import elevatorReducer from "./elevator";
 import zoneReducer from "./zone";
 import charger from "./charger";
+import { successMessageReducer, errorMessageReducer } from "./message";
 import _ from "lodash";
 
 // exporting reducers for testing
@@ -17,8 +18,6 @@ export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 export var baseElevatorReducer = createEntityReducer("ELEVATOR", "elevator_id");
 export var baseChargerReducer = createEntityReducer("CHARGER", "charger_id");
-
-
 
 export const entitiesReducer = combineReducers({
   elevator: reduceReducers(elevatorReducer, baseElevatorReducer),
@@ -291,5 +290,7 @@ export default combineReducers({
   zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
   selectedArea: selectedAreaReducer,
-  viewport: viewportReducer
+  viewport: viewportReducer,
+  successMessage: successMessageReducer,
+  errorMessage: errorMessageReducer
 });

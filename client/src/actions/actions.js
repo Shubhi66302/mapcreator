@@ -17,6 +17,8 @@ import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
 import _ from "lodash";
 import { implicitBarcodeToCoordinate } from "../utils/util";
+import { setErrorMessage, setSuccessMessage } from "./message";
+
 // always good idea to return promises from async action creators
 
 export const mapTileClick = tileId => ({
@@ -146,21 +148,22 @@ export const addEntitiesToFloor = ({
 // If all/some selections are non-storable -> converted to storable
 export const toggleStorable = () => (dispatch, getState) => {
   const state = getState();
-  const {selection : {mapTiles}} = state;
+  const {
+    selection: { mapTiles }
+  } = state;
   const selectedTiles = Object.keys(mapTiles);
-  var allStorable = _.every(selectedTiles, function (coordinate){
+  var allStorable = _.every(selectedTiles, function(coordinate) {
     return state.normalizedMap.entities.barcode[coordinate].store_status == 1;
   });
-  if (allStorable==true) {
+  if (allStorable == true) {
     dispatch({
       type: "TOGGLE-STORABLE",
-      value: {selectedTiles, makeStorable: 0}
+      value: { selectedTiles, makeStorable: 0 }
     });
-  } else
-  {
+  } else {
     dispatch({
       type: "TOGGLE-STORABLE",
-      value: {selectedTiles, makeStorable: 1}
+      value: { selectedTiles, makeStorable: 1 }
     });
   }
   return dispatch(clearTiles);
@@ -184,7 +187,7 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   if (intersectionresult.length == 1) {
     var pps_id = _.findKey(pps, { coordinate: intersectionresult[0] });
 
-    var queue_barcodes_array = Object.keys(mapTiles).sort(function (a, b) {
+    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a, b) {
       return mapTiles[a] - mapTiles[b];
     });
     var asBarcodes = queue_barcodes_array.map(asCoordinate =>
@@ -192,7 +195,12 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
     );
     dispatch({
       type: "ADD-QUEUE-BARCODES-TO-PPS",
-      value: { "tiles": asBarcodes, "pps_id": pps_id, "coordinates": queue_barcodes_array, "pps_coordinate": pps[pps_id].coordinate }
+      value: {
+        tiles: asBarcodes,
+        pps_id: pps_id,
+        coordinates: queue_barcodes_array,
+        pps_coordinate: pps[pps_id].coordinate
+      }
     });
   }
 
@@ -245,4 +253,22 @@ export const editSpecialBarcode = ({ coordinate, new_barcode }) => (
     type: "EDIT-BARCODE",
     value: { coordinate, new_barcode }
   });
+};
+
+export const createMapCopy = ({ name }) => (dispatch, getState) => {
+  const state = getState();
+  fetch("/api/createMap", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      map: denormalizeMap(state.normalizedMap).map,
+      name
+    })
+  })
+    .then(handleErrors)
+    .then(res => res.json())
+    .then(id =>
+      dispatch(setSuccessMessage(`Created new map '${name}' with ID #${id}`))
+    )
+    .catch(error => dispatch(setErrorMessage(error)));
 };

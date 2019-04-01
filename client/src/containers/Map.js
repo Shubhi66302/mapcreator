@@ -4,6 +4,12 @@ import MapViewport from "components/Map/MapViewport";
 import { connect } from "react-redux";
 import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import { modifyNeighbours } from "actions/barcode";
+import {
+  setSuccessMessage,
+  clearSuccessMessage,
+  setErrorMessage,
+  clearErrorMessage
+} from "actions/message";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
 import Sidebar from "components/Map/Sidebar/Sidebar";
@@ -25,6 +31,7 @@ import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
 import AddElevator from "components/Map/Forms/AddElevator";
 import AddZone from "components/Map/Forms/AddZone";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
+import CopyMap from "components/Map/Forms/CopyMap";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label>
@@ -34,8 +41,6 @@ const QueueCheckbox = ({ val, onChange }) => (
 );
 class Map extends Component {
   state = {
-    error: undefined,
-    successMessage: undefined,
     barcodeView: {
       show: false,
       tileId: null
@@ -52,8 +57,13 @@ class Map extends Component {
   }
 
   render() {
-    const { error, successMessage } = this.state;
-    const { nMap, queueMode, dispatch } = this.props;
+    const {
+      nMap,
+      queueMode,
+      dispatch,
+      errorMessage,
+      successMessage
+    } = this.props;
     // mapId may be different from params since it may not have been fetched yet...
 
     const mapId = nMap ? Object.entries(nMap.entities.mapObj)[0][1].id : 0;
@@ -62,12 +72,12 @@ class Map extends Component {
         <Sidebar />
         <div className="container content">
           <SweetAlertError
-            error={error}
-            onConfirm={() => this.setState({ error: undefined })}
+            error={errorMessage}
+            onConfirm={() => dispatch(clearErrorMessage())}
           />
           <SweetAlertSuccess
             message={successMessage}
-            onConfirm={() => this.setState({ successMessage: undefined })}
+            onConfirm={() => dispatch(clearSuccessMessage())}
           />
           <div className="row">
             <h3 className="display-5">
@@ -112,17 +122,16 @@ class Map extends Component {
                 onClick={() =>
                   dispatch(
                     saveMap(
-                      error => this.setState({ error }),
+                      error => dispatch(setErrorMessage(error)),
                       () =>
-                        this.setState({
-                          successMessage: "Successfully saved map."
-                        })
+                        dispatch(setSuccessMessage("Successfully saved map."))
                     )
                   )
                 }
               >
                 Save
               </button>
+              <CopyMap />
               <button
                 className="btn btn-outline-secondary"
                 type="button"
@@ -181,5 +190,7 @@ class Map extends Component {
 }
 export default connect(state => ({
   nMap: state.normalizedMap,
-  queueMode: state.selection.queueMode
+  queueMode: state.selection.queueMode,
+  successMessage: state.successMessage,
+  errorMessage: state.errorMessage
 }))(Map);

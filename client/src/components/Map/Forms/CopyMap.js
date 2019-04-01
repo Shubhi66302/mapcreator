@@ -1,0 +1,44 @@
+// technically components should not be connected to app state but it's ok for our case.
+import React from "react";
+import BaseJsonForm from "./Util/BaseJsonForm";
+import { connect } from "react-redux";
+import { createMapCopy } from "actions/actions";
+
+const schema = {
+  title: "Create Copy",
+  type: "object",
+  required: ["name"],
+  properties: {
+    name: { type: "string", title: "Name" }
+  }
+};
+
+const tooltipData = {
+  id: "copy-map",
+  title: "Copy map",
+  bulletPoints: [
+    "Creates a copy of the map in the database with a different ID."
+  ]
+};
+
+const CopyMap = ({ onSubmit, name }) => (
+  <BaseJsonForm
+    schema={schema}
+    onSubmit={onSubmit}
+    buttonText={"Create Copy"}
+    btnClass="btn-outline-secondary"
+    initialData={{ name: `${name} (copy)` }}
+    tooltipData={tooltipData}
+  />
+);
+
+export default connect(
+  state => ({
+    name: Object.values(state.normalizedMap.entities.mapObj)[0].name
+  }),
+  dispatch => ({
+    onSubmit: ({ formData }) => {
+      dispatch(createMapCopy(formData));
+    }
+  })
+)(CopyMap);
