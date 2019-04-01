@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { handleErrors } from "utils/util";
 import { Link } from "react-router-dom";
 import moment from "moment";
-
+import SearchBar from "components/SavedMaps/SearchBar";
 class SavedMaps extends Component {
   state = {
     maps: [],
@@ -23,6 +23,11 @@ class SavedMaps extends Component {
     return (
       <div className="container">
         <h3 className="display-5">Choose from existing maps</h3>
+        <SearchBar
+          onResults={results =>
+            results.json().then(maps => this.setState({ maps }))
+          }
+        />
         <table className="table">
           <thead>
             <tr>

@@ -3,7 +3,7 @@ import getLoadedAjv from "client/src/common/utils/get-loaded-ajv";
 import { Map } from "server/models/index";
 import wrap from "express-async-handler";
 import getRacksJson from "server/scripts/make-racks-json";
-import _ from "lodash";
+import { Op } from "sequelize";
 // HACK: adding cors to fetch data from storybook. should remove this later.
 import cors from "cors";
 const app = express();
@@ -49,17 +49,31 @@ app.get(
 app.get(
   "/api/maps",
   wrap(async (req, res) => {
-    var maps = await Map.findAll({
-      attributes: ["id", "name", "createdAt", "updatedAt"]
-    });
-    // sort by descending updatedAt
-    var sortedMaps = _.sortBy(maps.map(map => map.toJSON()), [
-      o => Date(o.updatedAt)
-    ]).reverse();
-
-    res.json(sortedMaps);
+    var str = req.query.str;
+    const attributes = ["id", "name", "createdAt", "updatedAt"];
+    const order = [["updatedAt", "DESC"]];
+    let maps;
+    if (str) {
+      maps = await Map.findAll({
+        where: {
+          name: {
+            [Op.iLike]: `%${str}%`
+          }
+        },
+        attributes,
+        order
+      });
+    } else {
+      maps = await Map.findAll({
+        attributes,
+        order
+      });
+    }
+    var mapsJson = maps.map(map => map.toJSON());
+    res.json(mapsJson);
   })
 );
+
 // update map
 app.post(
   "/api/map/:id",

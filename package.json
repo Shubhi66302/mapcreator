@@ -18,7 +18,7 @@
     "mongoose": "^5.2.1",
     "mongoose-plugin-autoinc": "^1.1.9",
     "pg": "^7.4.3",
-    "sequelize": "^4.38.0",
+    "sequelize": "^4.43.1",
     "sequelize-cli": "^4.0.0",
     "supertest": "^3.1.0"
   },

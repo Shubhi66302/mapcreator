@@ -132,6 +132,78 @@ describe("/api/maps", () => {
     var maps = response.body;
     expect(maps).toHaveLength(0);
   });
+
+  test("get maps with names that match substring", async () => {
+    // add three maps
+    await Map.create({ map: dummyGoodMap, name: "first-map" });
+    var map2 = await Map.create({ map: dummyGoodMap, name: "second-map" });
+    var map3 = await Map.create({
+      map: dummyGoodMap,
+      name: "another-second-map"
+    });
+    var expectedMaps = [map3, map2]
+      .map(map => map.toJSON())
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString()
+      }));
+    var response = await request(app)
+      .get("/api/maps?str=second")
+      .expect(200);
+    var maps = response.body;
+    expect(maps).toHaveLength(2);
+    expect(maps).toEqual(expectedMaps);
+  });
+
+  test("should get both second-map and SECOND-map when searching for 'second'", async () => {
+    // add three maps
+    await Map.create({ map: dummyGoodMap, name: "first-map" });
+    var map2 = await Map.create({ map: dummyGoodMap, name: "second-map" });
+    var map3 = await Map.create({
+      map: dummyGoodMap,
+      name: "another-SECOND-map"
+    });
+    var expectedMaps = [map3, map2]
+      .map(map => map.toJSON())
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString()
+      }));
+    var response = await request(app)
+      .get("/api/maps?str=second")
+      .expect(200);
+    var maps = response.body;
+    expect(maps).toHaveLength(2);
+    expect(maps).toEqual(expectedMaps);
+  });
+
+  test("should get all maps when str is empty", async () => {
+    // add two maps
+    var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
+    var map2 = await Map.create({ map: dummyGoodMap, name: "map2" });
+    // delete the map attrs since they are not present, also convert date to strings
+    // reverse order since sorted in descending order of updatedAt
+    var expectedMaps = [map2, map1]
+      .map(map => map.toJSON())
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString()
+      }));
+
+    // test
+    var response = await request(app)
+      .get("/api/maps?str=")
+      .expect(200);
+    var maps = response.body;
+    expect(maps).toHaveLength(2);
+    expect(maps).toEqual(expectedMaps);
+  });
 });
 
 // TODO: add tests for POST '/api/map/:'
