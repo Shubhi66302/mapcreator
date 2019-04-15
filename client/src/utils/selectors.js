@@ -335,8 +335,8 @@ export const getAllInBetweenDistances = (arrOfTuple, direction, barcodesDict) =>
     return 0;
   });
 
-export const getMinInBetweenDistance = (arrOfTuple, direction, barcodesDict) =>
-  _.min(getAllInBetweenDistances(arrOfTuple, direction, barcodesDict));
+export const getMaxInBetweenDistance = (arrOfTuple, direction, barcodesDict) =>
+  _.max(getAllInBetweenDistances(arrOfTuple, direction, barcodesDict));
 
 export const getAllColumnTileIdTuples = ({ maxY, minY }, distanceTileKey) => {
   const i = parseInt(distanceTileKey.match(/c-(.*)/)[1]);
@@ -369,12 +369,12 @@ export const getTileInBetweenDistances = createSelector(
     // columns
     for (var i = minX; i < maxX; i++) {
       let arrOfTuple = getAllColumnTileIdTuples({ maxY, minY }, `c-${i}`);
-      ret.push(getMinInBetweenDistance(arrOfTuple, 3, barcodesDict));
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 3, barcodesDict));
     }
     // rows
     for (var j = minY; j < maxY; j++) {
       let arrOfTuple = getAllRowTileIdTuples({ maxX, minX }, `r-${j}`);
-      ret.push(getMinInBetweenDistance(arrOfTuple, 2, barcodesDict));
+      ret.push(getMaxInBetweenDistance(arrOfTuple, 2, barcodesDict));
     }
     return ret;
   }
