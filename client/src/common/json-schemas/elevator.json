@@ -10,7 +10,7 @@
         "properties": {
           "barcode": { "$ref": "definitions#/barcodeString" },
           "floor_id": { "type": "integer", "minimum": 1 },
-          "boom_barrier_id": { "type": "integer", "enum": [1, 2, 3, 4] }
+          "boom_barrier_id": { "type": "integer", "minimum": 1 }
         }
       }
     }

@@ -26,6 +26,21 @@ describe("valid elevator", () => {
   test("from good-elevators.json", () => {
     goodElevators.forEach(elevator => expect(validate(elevator)).toBe(true));
   });
+  test("valid boom_barrier_id", () => {
+    var elevator = {
+      coordinate_list: [
+        { direction: 2, coordinate: [19, 16] },
+        { direction: 2, coordinate: [19, 16] }
+      ],
+      type: "c_type",
+      entry_barcodes: [{ boom_barrier_id: 7, floor_id: 1, barcode: "015.019" }],
+      exit_barcodes: [{ boom_barrier_id: 10, floor_id: 1, barcode: "017.019" }],
+      elevator_id: 1,
+      position: "016.019",
+      reinit_barcodes: [{ barcodes: ["016.020"], floor_id: 1 }]
+    };
+    expect(validate(elevator)).toBe(true);
+  });
 });
 
 describe("invalid elevator", () => {
@@ -84,6 +99,25 @@ describe("invalid elevator", () => {
       entry_barcodes: [{ floor_id: 1, barcode: "015.019" }],
       exit_barcodes: [{ boom_barrier_id: 3, floor_id: 1, barcode: "017.019" }],
       elevator_id: 1,
+      reinit_barcodes: [{ barcodes: ["016.020"], floor_id: 1 }]
+    };
+    expect(validate(elevator)).toBe(false);
+  });
+  test("invalid boom_barrier_id", () => {
+    var elevator = {
+      coordinate_list: [
+        { direction: 2, coordinate: [19, 16] },
+        { direction: 2, coordinate: [19, 16] }
+      ],
+      type: "c_type",
+      entry_barcodes: [
+        { boom_barrier_id: -1, floor_id: 1, barcode: "015.019" }
+      ],
+      exit_barcodes: [
+        { boom_barrier_id: "abc", floor_id: 1, barcode: "017.019" }
+      ],
+      elevator_id: 1,
+      position: "016.019",
       reinit_barcodes: [{ barcodes: ["016.020"], floor_id: 1 }]
     };
     expect(validate(elevator)).toBe(false);
