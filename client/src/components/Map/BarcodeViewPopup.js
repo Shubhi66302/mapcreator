@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import _ from "lodash";
 // import Form from "react-jsonschema-form";
 import FormModal from "./Forms/Util/FormModal";
@@ -46,70 +46,95 @@ const NeighbourInput = ({ title, fieldKey }) => (
   </div>
 );
 
-export default ({ show, toggle, barcode, onSubmit }) => {
-  if (!barcode) return "";
-  var initialValuesArr = _.zip(barcode.neighbours, barcode.size_info).map(
-    ([nbArr, sizeInfo]) => ({
-      neighbours: `${nbArr}`,
-      sizeInfo
-    })
-  );
-  var initialValues = _.fromPairs(
-    _.zip(["top", "right", "bottom", "left"], initialValuesArr)
-  );
-  return (
-    <div key={1} className="modal fade" tabIndex="-1" role="dialog">
-      <FormModal show={show} toggle={toggle} size="lg">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={values => {
-            onSubmit(values);
-            toggle(false);
-          }}
-          validationSchema={combinedSchema}
-        >
-          <Form>
-            <h3 className="display-5">Barcode View</h3>
-            <div className="container">
-              <div className="row">
-                <div className="col col-6 mx-auto">
-                  <NeighbourInput title="Top" fieldKey="top" />
+class BarcodeViewPopup extends Component {
+  state = {
+    showMore: false
+  };
+  render() {
+    const { show, toggle, barcode, onSubmit } = this.props;
+    if (!barcode) return "";
+    var initialValuesArr = _.zip(barcode.neighbours, barcode.size_info).map(
+      ([nbArr, sizeInfo]) => ({
+        neighbours: `${nbArr}`,
+        sizeInfo
+      })
+    );
+    var initialValues = _.fromPairs(
+      _.zip(["top", "right", "bottom", "left"], initialValuesArr)
+    );
+    return (
+      <div key={1} className="modal fade" tabIndex="-1" role="dialog">
+        <FormModal show={show} toggle={toggle} size="lg">
+          <Formik
+            initialValues={initialValues}
+            onSubmit={values => {
+              onSubmit(values);
+              toggle(false);
+            }}
+            validationSchema={combinedSchema}
+          >
+            <Form>
+              <h3 className="display-5">Barcode View</h3>
+              <div className="container">
+                <div className="row">
+                  <div className="col col-6 mx-auto">
+                    <NeighbourInput title="Top" fieldKey="top" />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col mx-auto my-auto">
+                    <NeighbourInput title="Left" fieldKey="left" />
+                  </div>
+                  <div className="col pr-0 pl-4">
+                    <svg width="200" height="200">
+                      <rect
+                        width="200"
+                        height="200"
+                        stroke="black"
+                        fill="grey"
+                      />
+                      <text
+                        x="50%"
+                        y="50%"
+                        alignmentBaseline="middle"
+                        textAnchor="middle"
+                        fontSize={32}
+                      >
+                        {barcode.barcode}
+                      </text>
+                    </svg>
+                  </div>
+                  <div className="col mx-auto my-auto">
+                    <NeighbourInput title="Right" fieldKey="right" />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col col-6 mx-auto">
+                    <NeighbourInput title="Bottom" fieldKey="bottom" />
+                  </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col mx-auto my-auto">
-                  <NeighbourInput title="Left" fieldKey="left" />
-                </div>
-                <div className="col pr-0 pl-4">
-                  <svg width="200" height="200">
-                    <rect width="200" height="200" stroke="black" fill="grey" />
-                    <text
-                      x="50%"
-                      y="50%"
-                      alignmentBaseline="middle"
-                      textAnchor="middle"
-                      fontSize={32}
-                    >
-                      {barcode.barcode}
-                    </text>
-                  </svg>
-                </div>
-                <div className="col mx-auto my-auto">
-                  <NeighbourInput title="Right" fieldKey="right" />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col col-6 mx-auto">
-                  <NeighbourInput title="Bottom" fieldKey="bottom" />
-                </div>
-              </div>
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </Form>
-        </Formik>
-      </FormModal>
-    </div>
-  );
-};
+              <button
+                className="btn btn-primary mx-2"
+                type="button"
+                onClick={() =>
+                  this.setState({ showMore: !this.state.showMore })
+                }
+              >
+                {this.state.showMore ? "Show Less" : "Show More"}
+              </button>
+              <pre hidden={!this.state.showMore} style={{ paddingTop: "10px" }}>
+                {JSON.stringify(barcode, undefined, 2)}
+              </pre>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </Form>
+          </Formik>
+        </FormModal>
+      </div>
+    );
+  }
+}
+
+export default BarcodeViewPopup;

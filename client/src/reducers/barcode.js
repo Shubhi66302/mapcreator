@@ -188,7 +188,7 @@ export default (state = {}, action) => {
       return { ...state, ...newState };
     }
     case "MODIFY-BARCODE-NEIGHBOURS": {
-      var { values } = action.value;
+      let { values, tileId } = action.value;
       if (!state[tileId]) return state;
       var newBarcode = _.cloneDeep(state[tileId]);
       ["top", "right", "bottom", "left"].forEach((key, idx) => {
