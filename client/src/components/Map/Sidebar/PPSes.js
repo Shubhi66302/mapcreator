@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
 import { removePps, removePpsQueue } from "actions/pps";
-import RemoveItemForm from "../Forms/RemoveItemForm";
-import CardEntry from "./CardEntry";
+import RemoveItemForm from "../Forms/Util/RemoveItemForm";
 
 const PPSes = ({ ppsDict, dispatch }) => {
   const ppses = Object.entries(ppsDict).map(([, val]) => val);
@@ -22,27 +21,21 @@ const PPSes = ({ ppsDict, dispatch }) => {
             Queue Barcodes:{" "}
             {`${queue_barcodes.length !== 0 ? queue_barcodes : "[none]"}`}
             <br />
-            <CardEntry
-              header="Delete Pps Queue"
-              value={
-                <RemoveItemForm
-                  itemName="Pps Queue"
-                  itemId={pps_id}
-                  onSubmit={() => dispatch(removePpsQueue({pps_id}))
-                  }
-                />
-              }
-            />
-            <CardEntry
-              header="Delete Pps"
-              value={
-                <RemoveItemForm
-                  itemName="Pps"
-                  itemId={pps_id}
-                  onSubmit={() => dispatch(removePps({pps_id}))
-                  }
-                />
-              }
+            <div className="mb-1">
+              <RemoveItemForm
+                itemName="Pps Queue"
+                itemId={pps_id}
+                buttonText="Delete PPS Queue"
+                onSubmit={() => dispatch(removePpsQueue({ pps_id }))}
+                wrapInButtonGroup={false}
+              />
+            </div>
+            <RemoveItemForm
+              itemName="Pps"
+              itemId={pps_id}
+              buttonText="Delete PPS"
+              onSubmit={() => dispatch(removePps({ pps_id }))}
+              wrapInButtonGroup={false}
             />
           </BaseCard>
         )

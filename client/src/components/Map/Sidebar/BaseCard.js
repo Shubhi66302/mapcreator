@@ -8,8 +8,8 @@ class BaseCard extends Component {
   render() {
     const { children, title } = this.props;
     return (
-      <div className="card my-2">
-        <div className="card-header">
+      <div className="card my-1">
+        <div className="card-header py-1">
           <h5 className="mb-0">
             <button
               onClick={() => this.setState({ open: !this.state.open })}

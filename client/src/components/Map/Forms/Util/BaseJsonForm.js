@@ -33,7 +33,20 @@ class BaseForm extends Component {
           formData={fullFormData}
           onError={onError}
           validate={validate}
-        />
+        >
+          <div>
+            <button type="submit" className="btn btn-outline-primary mr-1">
+              Submit
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={this.toggle}
+            >
+              Cancel
+            </button>
+          </div>
+        </Form>
       </ButtonForm>
     );
   }

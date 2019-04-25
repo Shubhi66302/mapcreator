@@ -13,11 +13,13 @@ class ButtonForm extends Component {
       toggle,
       small = false,
       btnClass = "btn-outline-primary",
-      show
+      show,
+      wrapInButtonGroup = true
     } = this.props;
     return (
       // adding class and role since nested button groups give a cleaner look for some reason
-      <div className="btn-group" role="group">
+      // making it configurable since single button in a btn-group looks wierd
+      <div className={wrapInButtonGroup ? "btn-group" : undefined} role="group">
         <button
           key={0}
           type="button"

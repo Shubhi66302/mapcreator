@@ -12,7 +12,7 @@ import {
   editElevatorCoordinates,
   removeElevator
 } from "actions/elevator";
-import RemoveItemForm from "../Forms/RemoveItemForm";
+import RemoveItemForm from "../Forms/Util/RemoveItemForm";
 
 const BarcodeList = ({ barcodes }) => (
   <ul>
@@ -98,16 +98,13 @@ const Elevators = ({ elevatorDict, floorIds, dispatch }) => {
                   />
                 }
               />
-              <CardEntry
-                header="Delete Elevator"
-                value={
-                  <RemoveItemForm
-                    itemName="Elevator"
-                    itemId={elevator_id}
-                    onSubmit={() => dispatch(removeElevator({elevator_id}))
-                    }
-                  />
-                }
+              <BarcodeList barcodes={exit_barcodes} />
+              <RemoveItemForm
+                itemName="Elevator"
+                itemId={elevator_id}
+                onSubmit={() => dispatch(removeElevator({ elevator_id }))}
+                buttonText="Delete Elevator"
+                wrapInButtonGroup={false}
               />
             </div>
           </BaseCard>

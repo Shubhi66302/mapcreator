@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
-import {removeCharger} from "actions/charger";
-import CardEntry from "./CardEntry";
-import RemoveItemForm from "../Forms/RemoveItemForm";
+import { removeCharger } from "actions/charger";
+import RemoveItemForm from "../Forms/Util/RemoveItemForm";
 
 const Chargers = ({ chargerDict, dispatch }) => {
   const chargers = Object.entries(chargerDict).map(([, val]) => val);
@@ -35,16 +34,12 @@ const Chargers = ({ chargerDict, dispatch }) => {
             <br />
             Reinit Point: {reinit_point_location}
             <br />
-            <CardEntry
-              header="Delete Charger"
-              value={
-                <RemoveItemForm
-                  itemName="Charger"
-                  itemId={charger_id}
-                  onSubmit={() => dispatch(removeCharger({charger_id}))
-                  }
-                />
-              }
+            <RemoveItemForm
+              itemName="Charger"
+              itemId={charger_id}
+              onSubmit={() => dispatch(removeCharger({ charger_id }))}
+              buttonText="Delete Charger"
+              wrapInButtonGroup={false}
             />
           </BaseCard>
         )

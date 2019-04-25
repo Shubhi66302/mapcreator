@@ -14,7 +14,7 @@ import Chargers from "components/Map/Sidebar/Chargers";
 import { makeState, singleFloor } from "utils/test-helper";
 import { Provider } from "react-redux";
 import { configureStore } from "../store";
-import RemoveItemForm from "components/Map/Forms/RemoveItemForm";
+import RemoveItemForm from "components/Map/Forms/Util/RemoveItemForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const store = configureStore(makeState(singleFloor));
@@ -94,19 +94,21 @@ storiesOf("BarcodeViewPopup", module).add("default", () => (
   />
 ));
 
-storiesOf("Sidebar BaseCard", module).add("default", () => (
+storiesOf("Sidebar/BaseCard", module).add("default", () => (
   <BaseCard title={"test"}>Hello world</BaseCard>
 ));
+storiesOf("Sidebar/ListOfBaseCards", module).add("default", () =>
+  ["1", "2", "3"].map((title, idx) => (
+    <BaseCard title={title} key={idx}>
+      Hello world
+    </BaseCard>
+  ))
+);
 // add chargers
-storiesOf("Sidebar > Chargers", module)
+storiesOf("Sidebar/Chargers", module)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)
   .add("default", () => <Chargers />);
 
-storiesOf("RemoveItemForm", module)
-  .add("default", () => (
-    <RemoveItemForm
-      itemName="Elevator"
-      onSubmit={() => {}}
-      itemId={5}
-    />
-  ));
+storiesOf("RemoveItemForm", module).add("default", () => (
+  <RemoveItemForm itemName="Elevator" onSubmit={() => {}} itemId={5} />
+));

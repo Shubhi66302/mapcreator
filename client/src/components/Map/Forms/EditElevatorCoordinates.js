@@ -88,6 +88,7 @@ class EditElevatorCoordinates extends Component {
         toggle={this.toggle}
         buttonText="Edit"
         small={true}
+        wrapInButtonGroup={false}
       >
         <MyForm
           onSuccess={formValues => {

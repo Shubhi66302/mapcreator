@@ -16,7 +16,7 @@ const FormikedArrayInput = ({
     name={name}
     render={arrayHelpers => (
       <div>
-        {label}:
+        <span className="pr-2">{label}:</span>
         {values[name].map((_something, index) => (
           <div className="card my-1" key={index}>
             <div className="card-body">
