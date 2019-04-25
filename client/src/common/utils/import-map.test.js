@@ -1,12 +1,23 @@
 require("dotenv").config({ path: ".env.test" });
 import getLoadedAjv from "./get-loaded-ajv";
-import importMap from "./import-map";
+import importMap, { detectSingleFloor } from "./import-map";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
+import continental2MapJson from "test-data/test-jsons/continental-2-map.json";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
 import _ from "lodash";
 
 var ajv = getLoadedAjv();
 var mapValidate = ajv.getSchema("map");
+
+describe("detectSingleFloor", () => {
+  test("should detect single floor map (continental)", () => {
+    expect(detectSingleFloor(continentalJsons.mapJson)).toBe(true);
+    expect(detectSingleFloor(continental2MapJson)).toBe(true);
+  });
+  test("should be false for multi floor map (3-7 map)", () => {
+    expect(detectSingleFloor(threeSevenJsons.mapJson)).toBe(false);
+  });
+});
 
 // TODO: write tests for invalid imports
 describe("import good maps", () => {

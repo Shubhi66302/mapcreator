@@ -23,6 +23,12 @@ const validate = (schemaName, jsonFile, throwError = true) => {
   return true;
 };
 
+// if floor_id is present, then its multifloor
+export const detectSingleFloor = mapJson =>
+  Array.isArray(mapJson) &&
+  mapJson.length > 0 &&
+  mapJson[0].floor_id == undefined;
+
 export default ({
   mapJson,
   chargerJson = [],
@@ -46,17 +52,18 @@ export default ({
   var map = {};
   // map.json is required
   if (!mapJson) throw new Error("map.json is required");
-  if (validate("single_floor_map_json", mapJson, false)) {
-    // it is a single floor map, convert it into multifloor
+  // check if mapJson is valid and add it to map. should first detect if single or multi floor
+  if (detectSingleFloor(mapJson)) {
+    validate("single_floor_map_json", mapJson);
     mapJson = [
       {
         floor_id: 1,
         map_values: mapJson
       }
     ];
+  } else {
+    validate("map_json", mapJson);
   }
-  // check if mapJson is valid and add it to map
-  validate("map_json", mapJson);
 
   // convert coordinate to numbers before adding!
   map["floors"] = mapJson.map(({ floor_id, map_values }) => ({
