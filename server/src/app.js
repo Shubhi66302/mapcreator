@@ -3,7 +3,7 @@ import getLoadedAjv from "client/src/common/utils/get-loaded-ajv";
 import { Map } from "server/models/index";
 import wrap from "express-async-handler";
 import getRacksJson from "server/scripts/make-racks-json";
-import { Op } from "sequelize";
+import sequelize, { Op } from "sequelize";
 // HACK: adding cors to fetch data from storybook. should remove this later.
 import cors from "cors";
 const app = express();
@@ -56,9 +56,17 @@ app.get(
     if (str) {
       maps = await Map.findAll({
         where: {
-          name: {
-            [Op.iLike]: `%${str}%`
-          }
+          [Op.or]: [
+            {
+              name: {
+                [Op.iLike]: `%${str}%`
+              }
+            },
+            sequelize.where(
+              sequelize.cast(sequelize.col("Map.id"), "varchar"),
+              { [Op.iLike]: `%${str}%` }
+            )
+          ]
         },
         attributes,
         order

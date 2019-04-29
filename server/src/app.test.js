@@ -181,6 +181,30 @@ describe("/api/maps", () => {
     expect(maps).toEqual(expectedMaps);
   });
 
+  test("should get map with id when searching for its id", async () => {
+    // add three maps
+    await Map.create({ map: dummyGoodMap, name: "first-map" });
+    var map2 = await Map.create({ map: dummyGoodMap, name: "second-map" });
+    await Map.create({
+      map: dummyGoodMap,
+      name: "another-SECOND-map"
+    });
+    var expectedMaps = [map2]
+      .map(map => map.toJSON())
+      .map(map => _.omit(map, "map"))
+      .map(rest => ({
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString()
+      }));
+    var response = await request(app)
+      .get(`/api/maps?str=${map2.id}`)
+      .expect(200);
+    var maps = response.body;
+    expect(maps).toHaveLength(1);
+    expect(maps).toEqual(expectedMaps);
+  });
+
   test("should get all maps when str is empty", async () => {
     // add two maps
     var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });

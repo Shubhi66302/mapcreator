@@ -4,7 +4,7 @@ import debounce from "lodash.debounce";
 const fetchMaps = (query, onResults) => {
   return fetch(`/api/maps?str=${query}`).then(res => onResults(res));
 };
-const debouncedFetchMaps = debounce(fetchMaps, 500, {
+const debouncedFetchMaps = debounce(fetchMaps, 200, {
   leading: false,
   trailing: true
 });
