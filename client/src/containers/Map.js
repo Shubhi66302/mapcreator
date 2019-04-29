@@ -31,6 +31,7 @@ import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
 import AddElevator from "components/Map/Forms/AddElevator";
 import AddZone from "components/Map/Forms/AddZone";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
+import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import CopyMap from "components/Map/Forms/CopyMap";
 
 const QueueCheckbox = ({ val, onChange }) => (
@@ -100,7 +101,8 @@ class Map extends Component {
               ModifyDistanceBwBarcodes,
               AddFloor,
               AddElevator,
-              EditSpecialBarcode
+              EditSpecialBarcode,
+              ShiftBarcode
             ].map((Elm, idx) => (
               <div key={idx} className="pr-1 pt-1">
                 <Elm onError={e => this.setState({ e })} />

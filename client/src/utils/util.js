@@ -62,8 +62,14 @@ export const getNeighbourTiles = tileId => {
   return neighbours;
 };
 
-// NOTE: only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
-export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
+// can add filters to include [1,0,0] elements etc. using nbFilters array
+// eg. if nbFilters = [[1,0,0], [0,0,0]], both of these kinds of neighbours will be excluded
+// if nbFilters = [[0,0,0]], only non existing neighbours will be excluded, but [1,0,0] types will returned
+export const getNeighbouringBarcodesWithNbFilter = (
+  coordinateKey,
+  barcodesDict,
+  nbFilters
+) => {
   // barcodesDict is state.normalizedMap.entities.barcode
   var curBarcode = barcodesDict[coordinateKey];
   if (!curBarcode) return null;
@@ -76,11 +82,26 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   }
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
   return neighbourTileKeys.map((tileKey, idx) =>
-    _.isEqual(curBarcode.neighbours[idx], [0, 0, 0]) ||
-      _.isEqual(curBarcode.neighbours[idx], [1, 0, 0])
+    nbFilters.some(nbFilter => _.isEqual(nbFilter, curBarcode.neighbours[idx]))
       ? null
       : barcodesDict[tileKey]
   );
+};
+// considers [1,0,0] also
+export const getNeighbouringBarcodesIncludingDisconnected = (
+  coordinateKey,
+  barcodesDict
+) => {
+  return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
+    [0, 0, 0]
+  ]);
+};
+// only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
+export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
+  return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
+    [0, 0, 0],
+    [1, 0, 0]
+  ]);
 };
 
 export var isValidCoordinateKey = coordinateKey =>
@@ -273,7 +294,7 @@ export const deleteNeighbourFromBarcode = (
 
 // Func used to convert barcode to coordinate.
 // "500.143" => "143,500"
-export const implicitBarcodeToCoordinate = (barcode) => {
+export const implicitBarcodeToCoordinate = barcode => {
   var [X, Y] = barcode.split(".");
   return parseInt(Y) + "," + parseInt(X);
 };

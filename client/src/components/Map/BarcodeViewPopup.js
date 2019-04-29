@@ -39,8 +39,10 @@ const NeighbourInput = ({ title, fieldKey }) => (
     <CustomError name={`${fieldKey}.neighbours`} />
     <Field
       name={`${fieldKey}.sizeInfo`}
-      className="form-control"
+      className="form-control mt-1"
       placeholder="Size info"
+      // Not allowing direct editing of size_info
+      disabled
     />
     <CustomError name={`${fieldKey}.sizeInfo`} />
   </div>

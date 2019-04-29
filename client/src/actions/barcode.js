@@ -3,19 +3,12 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import {
-  getBarcode,
-  tileBoundsSelector
-} from "utils/selectors";
+import { getBarcode, tileBoundsSelector } from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
+import { setErrorMessage } from "./message";
 import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
 
-export const createNewBarcode = ({
-  coordinate,
-  neighbours,
-  barcode,
-  size_info
-}) => ({
+const createNewBarcode = ({ coordinate, neighbours, barcode, size_info }) => ({
   barcode,
   coordinate,
   neighbours,
@@ -26,7 +19,7 @@ export const createNewBarcode = ({
   bot_id: "null"
 });
 
-export const addNewBarcode = formData => (dispatch, getState) => {
+const addNewBarcode = formData => (dispatch, getState) => {
   const state = getState();
   const { tileId, direction } = formData;
   const nbTileId = getNeighbourTiles(tileId)[direction];
@@ -73,7 +66,7 @@ export const addNewBarcode = formData => (dispatch, getState) => {
   return Promise.resolve();
 };
 
-export const removeBarcodes = (dispatch, getState) => {
+const removeBarcodes = (dispatch, getState) => {
   const {
     selection: { mapTiles },
     currentFloor
@@ -96,7 +89,7 @@ export const removeBarcodes = (dispatch, getState) => {
   dispatch(clearTiles);
 };
 
-export const modifyDistanceBetweenBarcodes = ({ distance }) => (
+const modifyDistanceBetweenBarcodes = ({ distance }) => (
   dispatch,
   getState
 ) => {
@@ -115,7 +108,7 @@ export const modifyDistanceBetweenBarcodes = ({ distance }) => (
   dispatch(clearTiles);
 };
 
-export const modifyNeighbours = (tileId, values) => dispatch => {
+const modifyNeighbours = (tileId, values) => dispatch => {
   dispatch({
     type: "MODIFY-BARCODE-NEIGHBOURS",
     value: {
@@ -124,4 +117,28 @@ export const modifyNeighbours = (tileId, values) => dispatch => {
     }
   });
   dispatch(clearTiles);
+};
+
+const shiftBarcode = ({ tileId, direction, distance }) => dispatch => {
+  try {
+    return dispatch({
+      type: "SHIFT-BARCODE",
+      value: {
+        tileId,
+        direction,
+        distance
+      }
+    });
+  } catch (e) {
+    return dispatch(setErrorMessage(e.message));
+  }
+};
+
+export {
+  createNewBarcode,
+  addNewBarcode,
+  removeBarcodes,
+  modifyDistanceBetweenBarcodes,
+  modifyNeighbours,
+  shiftBarcode
 };

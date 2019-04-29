@@ -12,6 +12,7 @@ import {
   deletePPSQueue,
   deleteElevator
 } from "./delete-entities";
+import shiftBarcode from "./shift-barcode";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -103,6 +104,9 @@ export default (state = {}, action) => {
 
     case "DELETE-ELEVATOR":
       return deleteElevator(state, action);
+
+    case "SHIFT-BARCODE":
+      return shiftBarcode(state, action);
   }
   return state;
 };

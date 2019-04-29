@@ -9,8 +9,11 @@ import { dummyState } from "reducers/util";
 const logger = createLogger({
   // options
   // diff: true,
-  // do not log drag-move messages
-  predicate: (_getState, { type }) => !/DRAG-MOVE/.test(type)
+  // do not log drag, meta key, shift key messages
+  predicate: (_getState, { type }) =>
+    !/(DRAG-MOVE|DRAG-START|DRAG-END|SHIFT-KEY-DOWN|SHIFT-KEY-UP|META-KEY-DOWN|META-KEY-UP)/.test(
+      type
+    )
 });
 
 let middleware = [thunk, entityMiddleware, floorMiddleware];

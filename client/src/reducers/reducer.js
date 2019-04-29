@@ -87,6 +87,7 @@ export const selectedDistanceTilesReducer = (state = {}, action) => {
     case "CLICK-ON-MAP-TILE":
     case "CHANGE-FLOOR":
     case "ADD-ELEVATOR":
+    case "SHIFT-BARCODE":
       return {};
   }
   return state;
@@ -102,6 +103,7 @@ export const selectedMapTilesReducer = (state = {}, action) => {
     case "CLICK-ON-DISTANCE-TILE":
     case "CHANGE-FLOOR":
     case "ADD-ELEVATOR":
+    case "SHIFT-BARCODE":
       return {};
   }
   return state;

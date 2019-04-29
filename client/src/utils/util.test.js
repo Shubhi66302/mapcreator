@@ -11,7 +11,8 @@ import {
   getNeighbourTiles,
   tupleOfIntegersToCoordinateKey,
   addNeighbourToBarcode,
-  deleteNeighbourFromBarcode
+  deleteNeighbourFromBarcode,
+  getNeighbouringBarcodesIncludingDisconnected
 } from "./util";
 import { singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
@@ -163,6 +164,53 @@ describe("getNeighbourTiles", () => {
   test("should give correct neighbour tiles", () => {
     var neighbourTiles = getNeighbourTiles("1,2");
     expect(neighbourTiles).toEqual(["1,1", "0,2", "1,3", "2,2"]);
+  });
+});
+
+describe("getNeighbouringBarcodesIncludingDisconnected", () => {
+  test("should give disconnected barcodes as well but not non existing barcode", () => {
+    var barcodesDict = {
+      // map is:
+      // -      1,1    -
+      //         x
+      // 2,2 .. 1,2 .. 0,2
+      // this one will be tested
+      "1,2": {
+        coordinate: "1,2",
+        neighbours: [[1, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]]
+      },
+      "1,1": {
+        coordinate: "1,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]]
+      },
+      "0,2": {
+        coordinate: "0,2",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]]
+      },
+      "2,2": {
+        coordinate: "2,2",
+        neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]]
+      }
+    };
+    var neighbourBarcodes = getNeighbouringBarcodesIncludingDisconnected(
+      "1,2",
+      barcodesDict
+    );
+    expect(neighbourBarcodes).toMatchObject([
+      {
+        coordinate: "1,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]]
+      },
+      {
+        coordinate: "0,2",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]]
+      },
+      null,
+      {
+        coordinate: "2,2",
+        neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]]
+      }
+    ]);
   });
 });
 
