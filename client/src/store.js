@@ -2,7 +2,11 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import reducer from "reducers/reducer";
-import { entityMiddleware, floorMiddleware } from "actions/middlewares";
+import {
+  entityMiddleware,
+  floorMiddleware,
+  errorPopupMiddleware
+} from "actions/middlewares";
 import { dummyState } from "reducers/util";
 
 // using mapObj as source of truth in store. tiles etc. will be derived from it.
@@ -16,7 +20,12 @@ const logger = createLogger({
     )
 });
 
-let middleware = [thunk, entityMiddleware, floorMiddleware];
+let middleware = [
+  thunk,
+  entityMiddleware,
+  floorMiddleware,
+  errorPopupMiddleware
+];
 if (process.env.NODE_ENV == "development") middleware = [...middleware, logger];
 
 export default createStore(

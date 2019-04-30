@@ -2,6 +2,7 @@
 // middleware to make sure coordinate is there for every entity whenever an ADD-MULTIPLE-X action is sent
 // if not, action is not processed by reducers
 // TODO: add tests
+import { setErrorMessage } from "actions/message";
 export const entityMiddleware = store => next => action => {
   if (/ADD-MULTIPLE-.*/.test(action.type)) {
     if (!action.value.every(({ coordinate }) => coordinate)) {
@@ -31,4 +32,12 @@ export const floorMiddleware = store => next => action => {
     }
   }
   return next(action);
+};
+
+export const errorPopupMiddleware = () => next => action => {
+  try {
+    return next(action);
+  } catch (e) {
+    return next(setErrorMessage(e));
+  }
 };

@@ -3,6 +3,7 @@ import { createFloorFromCoordinateData } from "utils/util";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { addFloor } from "./floor";
+import { setErrorMessage } from "./message";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -26,7 +27,7 @@ describe("addFloor", () => {
       value: createFloorFromCoordinateData(coordinateData)
     });
   });
-  test("should not dispatch anything when some overlap is there", async () => {
+  test("should dispatch error message when overlapping barcodes are present", async () => {
     const initialState = makeState(singleFloorVanilla, 1);
     const store = mockStore(initialState);
     var coordinateData = {
@@ -38,6 +39,9 @@ describe("addFloor", () => {
     };
     await store.dispatch(addFloor(coordinateData));
     const dispatchedActions = store.getActions();
-    expect(dispatchedActions).toHaveLength(0);
+    expect(dispatchedActions).toHaveLength(1);
+    expect(dispatchedActions).toEqual([
+      setErrorMessage("Existing barcodes detected in range.")
+    ]);
   });
 });

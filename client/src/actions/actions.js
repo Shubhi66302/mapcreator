@@ -1,7 +1,6 @@
 // action creator to make clicked-on-tile action from clicked-on-viewport action
 import { worldToTileCoordinate, handleErrors } from "utils/util";
 import {
-  getBarcode,
   tileBoundsSelector,
   tileIdsMapSelector,
   getDragSelectedTiles,
@@ -16,7 +15,6 @@ import exportMap from "common/utils/export-map";
 import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
 import _ from "lodash";
-import { implicitBarcodeToCoordinate } from "../utils/util";
 import { setErrorMessage, setSuccessMessage } from "./message";
 
 // always good idea to return promises from async action creators
@@ -239,21 +237,10 @@ export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   });
 };
 
-export const editSpecialBarcode = ({ coordinate, new_barcode }) => (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-  const implicitCoordinate = implicitBarcodeToCoordinate(new_barcode);
-  if (getBarcode(state, { tileId: implicitCoordinate }) != undefined) {
-    // barcode already exists
-    return Promise.resolve();
-  }
-  return dispatch({
-    type: "EDIT-BARCODE",
-    value: { coordinate, new_barcode }
-  });
-};
+export const editSpecialBarcode = ({ coordinate, new_barcode }) => ({
+  type: "EDIT-BARCODE",
+  value: { coordinate, new_barcode }
+});
 
 export const createMapCopy = ({ name }) => (dispatch, getState) => {
   const state = getState();

@@ -8,9 +8,15 @@ import {
 
 export var editBarcode = (state, action) => {
   const { coordinate, new_barcode } = action.value;
-  if (_.find(state, { barcode: new_barcode }) !== undefined) return state;
-  var newState = _.cloneDeep(state);
   var new_coordinate = implicitBarcodeToCoordinate(new_barcode);
+  if (
+    state[new_coordinate] ||
+    _.find(state, { barcode: new_barcode }) !== undefined
+  ) {
+    // already exists, abort
+    throw new Error("Barcode already exists. Please enter a unique barcode.");
+  }
+  var newState = _.cloneDeep(state);
   var [oldx, oldy] = coordinateKeyToTupleOfIntegers(coordinate);
   var [newx, newy] = coordinateKeyToTupleOfIntegers(new_coordinate);
   var newCoordinateKey = tupleOfIntegersToCoordinateKey([newx, newy]);

@@ -37,16 +37,17 @@ describe("EDIT-BARCODE", () => {
   });
 
   describe("EDIT-BARCODE", () => {
-    test("should not do anything if special barcode to be replaced already exists", () => {
+    test("should throw error if barcode already exists", () => {
       const state = makeState(complicated3x3BarcodeMap);
-      var new_state = editBarcode(state, {
-        type: "EDIT-BARCODE",
-        value: {
-          coordinate: "12,12",
-          new_barcode: "001.002"
-        }
-      });
-      expect(new_state).toEqual(state);
+      expect(() =>
+        editBarcode(state, {
+          type: "EDIT-BARCODE",
+          value: {
+            coordinate: "12,12",
+            new_barcode: "001.002"
+          }
+        })
+      ).toThrowError(/Barcode already exists/);
     });
   });
 });

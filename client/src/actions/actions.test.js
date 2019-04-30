@@ -195,37 +195,6 @@ describe("addQueueBarcodes", () => {
   });
 });
 
-describe("editSpecialBarcode", () => {
-  const { editSpecialBarcode } = actions;
-  test("should dispatch edit barcode action if new_barcode's coordinate doesn't already exist", async () => {
-    var initialState = makeState(singleFloor, 1);
-    const store = mockStore(initialState);
-
-    await store.dispatch(
-      editSpecialBarcode({ coordinate: "12,12", new_barcode: "500.500" })
-    );
-    const dispatchedActions = store.getActions();
-
-    expect(dispatchedActions).toEqual([
-      {
-        type: "EDIT-BARCODE",
-        value: { coordinate: "12,12", new_barcode: "500.500" }
-      }
-    ]);
-  });
-  test("should not dispatch edit barcode action if new_barcode's coordinate already exists", async () => {
-    var initialState = makeState(singleFloor, 1);
-    const store = mockStore(initialState);
-
-    await store.dispatch(
-      editSpecialBarcode({ coordinate: "12,12", new_barcode: "001.001" })
-    );
-    const dispatchedActions = store.getActions();
-
-    expect(dispatchedActions).toEqual([]);
-  });
-});
-
 describe("deleteMap", () => {
   const { deleteMap } = actions;
   afterEach(() => {
