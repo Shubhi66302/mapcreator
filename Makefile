@@ -54,7 +54,7 @@ lint:
 
 test-client:
 	cd client && npm install
-	cd client && CI=true NODE_PATH=src/ npm test -- --reporters=default --reporters=jest-junit
+	cd client && CI=true NODE_PATH=src/ npm test -- --coverage --reporters=default --reporters=jest-junit
 
 test-server:
 	npm install

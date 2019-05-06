@@ -82,7 +82,8 @@
     ],
     "coverageReporters": [
       "text",
-      "html"
+      "html",
+      "cobertura"
     ]
   },
   "engines": {
