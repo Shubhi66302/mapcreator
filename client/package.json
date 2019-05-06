@@ -79,6 +79,10 @@
       "!<rootDir>/src/containers/",
       "!<rootDir>/node_modules/",
       "src/!(components|containers|test-data|stories)/**/*.{js,jsx}"
+    ],
+    "coverageReporters": [
+      "text",
+      "html"
     ]
   },
   "engines": {

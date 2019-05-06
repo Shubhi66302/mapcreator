@@ -54,7 +54,7 @@
     "migrate": "cd server && sequelize db:migrate",
     "start": "node dist/server/index.js",
     "test-server": "jest",
-    "test-server-ci": "jest --ci --reporters=default --reporters=jest-junit",
+    "test-server-ci": "jest --ci --coverage --reporters=default --reporters=jest-junit",
     "test": "jest && cd client/ && CI=true npm test",
     "lint-no-fix": "eslint .",
     "lint": "eslint . --fix"
