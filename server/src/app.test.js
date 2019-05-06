@@ -264,6 +264,41 @@ describe("/api/map:id (save map)", () => {
   });
 });
 
+describe("deleteMap", () => {
+  beforeEach(async () => {
+    // clear maps
+    await Map.destroy({ where: {}, truncate: true });
+  });
+  test("should delete map when it exists", async () => {
+    // setup
+    var map1 = await Map.create({ map: dummyGoodMap, name: "map1" });
+    var map1JSON = map1.toJSON();
+    // adding another map
+    await Map.create({ map: dummyGoodMap, name: "map2" });
+
+    var response = await request(app)
+      .post(`/api/deleteMap/${map1JSON.id}`)
+      .send();
+
+    // test
+    expect(response.text).toBe("ok");
+    var numMapsLeft = (await Map.findAll()).length;
+    expect(numMapsLeft).toBe(1);
+    var map1Deleted = await Map.findById(map1JSON.id);
+    expect(map1Deleted).toBe(null);
+  });
+  test("should return error when map doesn't exist", async () => {
+    // test
+    var response = await request(app)
+      .post("/api/deleteMap/333")
+      .send()
+      .expect(500);
+    expect(response.error.text).toMatch(
+      /was able to delete 0 rows instead of 1/
+    );
+  });
+});
+
 afterAll(async () => {
   // drop all maps
   await Map.destroy({ where: {}, truncate: true });

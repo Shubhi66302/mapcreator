@@ -15,6 +15,8 @@ import { makeState, singleFloor } from "utils/test-helper";
 import { Provider } from "react-redux";
 import { configureStore } from "../store";
 import RemoveItemForm from "components/Map/Forms/Util/RemoveItemForm";
+import DeleteMap from "components/Map/Forms/DeleteMap";
+import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const store = configureStore(makeState(singleFloor));
@@ -112,3 +114,10 @@ storiesOf("Sidebar/Chargers", module)
 storiesOf("RemoveItemForm", module).add("default", () => (
   <RemoveItemForm itemName="Elevator" onSubmit={() => {}} itemId={5} />
 ));
+
+storiesOf("DeleteMap", module)
+  // redux decorator
+  .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+  // react-router decorator
+  .addDecorator(story => <Router>{story()}</Router>)
+  .add("default", () => <DeleteMap />);

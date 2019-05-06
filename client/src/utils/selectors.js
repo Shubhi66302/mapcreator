@@ -511,3 +511,9 @@ export const getNewSpecialCoordinates = createSelector(
 
 export const getElevatorIds = state =>
   state.normalizedMap.entities.map.dummy.elevators;
+
+export const getMapId = state =>
+  Object.values(state.normalizedMap.entities.mapObj)[0].id;
+
+export const getMapName = state =>
+  Object.values(state.normalizedMap.entities.mapObj)[0].name;

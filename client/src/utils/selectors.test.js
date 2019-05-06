@@ -662,3 +662,19 @@ describe("getAllRowTileIdTuples", () => {
     ]);
   });
 });
+
+describe("getMapName", () => {
+  const { getMapName } = selectors;
+  test("should give map name", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    expect(getMapName(state)).toEqual("3x3-vanilla");
+  });
+});
+
+describe("getMapId", () => {
+  const { getMapId } = selectors;
+  test("should give map id", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    expect(getMapId(state)).toEqual(31);
+  });
+});

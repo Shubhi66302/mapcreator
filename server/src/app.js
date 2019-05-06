@@ -102,6 +102,22 @@ app.post(
   })
 );
 
+// delete map
+app.post("/api/deleteMap/:id", (req, res) => {
+  const { id } = req.params;
+  return Map.destroy({
+    where: {
+      id
+    }
+  }).then(numDeleted => {
+    if (numDeleted !== 1)
+      res
+        .status(500)
+        .send(`was able to delete ${numDeleted} rows instead of 1`);
+    else res.send("ok");
+  });
+});
+
 app.get(
   "/api/racksJson/:id",
   wrap(async (req, res) => {

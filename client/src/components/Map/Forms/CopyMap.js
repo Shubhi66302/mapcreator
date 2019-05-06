@@ -3,6 +3,7 @@ import React from "react";
 import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
 import { createMapCopy } from "actions/actions";
+import { getMapName } from "utils/selectors";
 
 const schema = {
   title: "Create Copy",
@@ -34,7 +35,7 @@ const CopyMap = ({ onSubmit, name }) => (
 
 export default connect(
   state => ({
-    name: Object.values(state.normalizedMap.entities.mapObj)[0].name
+    name: getMapName(state)
   }),
   dispatch => ({
     onSubmit: ({ formData }) => {

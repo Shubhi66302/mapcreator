@@ -33,6 +33,7 @@ import AddZone from "components/Map/Forms/AddZone";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import CopyMap from "components/Map/Forms/CopyMap";
+import DeleteMap from "components/Map/Forms/DeleteMap";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label>
@@ -80,10 +81,17 @@ class Map extends Component {
             message={successMessage}
             onConfirm={() => dispatch(clearSuccessMessage())}
           />
-          <div className="row">
-            <h3 className="display-5">
-              {nMap ? nMap.entities.mapObj[mapId].name : "..."}
-            </h3>
+          <div className="row justify-content-between">
+            <div className="col">
+              <h3 className="display-5">
+                {nMap ? nMap.entities.mapObj[mapId].name : "..."}
+              </h3>
+            </div>
+            <div className="col">
+              <div className="float-right">
+                <DeleteMap />
+              </div>
+            </div>
           </div>
           <div className="row py-1">
             {[

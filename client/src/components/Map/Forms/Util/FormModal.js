@@ -1,9 +1,10 @@
 import React from "react";
-import { Modal, ModalBody } from "reactstrap";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
 
-var FormModal = ({ toggle, show, children, ...rest }) => {
+var FormModal = ({ toggle, show, children, title, ...rest }) => {
   return (
     <Modal {...rest} isOpen={show} toggle={toggle}>
+      {title ? <ModalHeader toggle={toggle}>{title}</ModalHeader> : ""}
       <ModalBody>{children}</ModalBody>
     </Modal>
   );

@@ -108,7 +108,7 @@ describe("toggleStorable", () => {
   const { toggleStorable, clearTiles } = actions;
   test("should dispatch assign storable action and also clear tiles action", async () => {
     // setup
-    const selectedMapTiles =  {"1,1": true, "1,2": true};
+    const selectedMapTiles = { "1,1": true, "1,2": true };
     var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
     const store = mockStore(initialState);
 
@@ -119,15 +119,15 @@ describe("toggleStorable", () => {
     expect(dispatchedActions).toEqual([
       {
         type: "TOGGLE-STORABLE",
-        value: {selectedTiles: ["1,1", "1,2"], makeStorable: 1}
+        value: { selectedTiles: ["1,1", "1,2"], makeStorable: 1 }
       },
       clearTiles
     ]);
   });
 
-  test ("should dispatch assign storable action when mixed type of coordinates selected", async () => {
+  test("should dispatch assign storable action when mixed type of coordinates selected", async () => {
     // setup
-    const selectedMapTiles =  {"1,0": true, "1,2": true};
+    const selectedMapTiles = { "1,0": true, "1,2": true };
     var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
     initialState.normalizedMap.entities.barcode["1,2"].store_status = 1;
     const store = mockStore(initialState);
@@ -139,15 +139,15 @@ describe("toggleStorable", () => {
     expect(dispatchedActions).toEqual([
       {
         type: "TOGGLE-STORABLE",
-        value: {selectedTiles: ["1,0", "1,2"], makeStorable: 1}
+        value: { selectedTiles: ["1,0", "1,2"], makeStorable: 1 }
       },
       clearTiles
     ]);
   });
 
-  test ("should dispatch non-storable action when all storables are selected", async () => {
+  test("should dispatch non-storable action when all storables are selected", async () => {
     // setup
-    const selectedMapTiles =  {"1,0": true, "1,2": true};
+    const selectedMapTiles = { "1,0": true, "1,2": true };
     var initialState = makeState(singleFloorVanilla, 1, selectedMapTiles);
     initialState.normalizedMap.entities.barcode["1,2"].store_status = 1;
     initialState.normalizedMap.entities.barcode["1,0"].store_status = 1;
@@ -160,12 +160,11 @@ describe("toggleStorable", () => {
     expect(dispatchedActions).toEqual([
       {
         type: "TOGGLE-STORABLE",
-        value: {selectedTiles: ["1,0", "1,2"], makeStorable: 0}
+        value: { selectedTiles: ["1,0", "1,2"], makeStorable: 0 }
       },
       clearTiles
     ]);
   });
-
 });
 
 // TODO: test for saveMap
@@ -224,5 +223,54 @@ describe("editSpecialBarcode", () => {
     const dispatchedActions = store.getActions();
 
     expect(dispatchedActions).toEqual([]);
+  });
+});
+
+describe("deleteMap", () => {
+  const { deleteMap } = actions;
+  afterEach(() => {
+    fetchMock.reset();
+    fetchMock.restore();
+  });
+  test("should redirect to home when map is successfully deleted", async () => {
+    // setup
+    const initialState = makeState(singleFloor, 1);
+    const store = mockStore(initialState);
+    fetchMock.postOnce("/api/deleteMap/31", 200);
+    const historyPushMock = jest.fn();
+
+    await store.dispatch(deleteMap(31, { push: historyPushMock }));
+    const dispatchedActions = store.getActions();
+
+    // test
+    // post request was made to backend to delete map
+    expect(fetchMock.called("/api/deleteMap/31"));
+    // doesn't dispatch any actions since we will redirect to home page
+    expect(dispatchedActions).toEqual([]);
+    // history.push is called once with path "/"
+    expect(historyPushMock.mock.calls.length).toBe(1);
+    expect(historyPushMock.mock.calls[0][0]).toBe("/");
+  });
+  test("should dispatch error message if delete failed and not redirect to home", async () => {
+    // setup
+    const initialState = makeState(singleFloor, 1);
+    const store = mockStore(initialState);
+    // error response in post
+    fetchMock.postOnce("/api/deleteMap/31", 500);
+    const historyPushMock = jest.fn();
+
+    await store.dispatch(deleteMap(31, { push: historyPushMock }));
+    const dispatchedActions = store.getActions();
+
+    // test
+    // post request was made to backend to delete map
+    expect(fetchMock.called("/api/deleteMap/31"));
+    // dispatched setErrorMessage since post req returned error
+    expect(dispatchedActions).toHaveLength(1);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "SET-ERROR-MESSAGE"
+    });
+    // history.push should not have been called
+    expect(historyPushMock.mock.calls.length).toBe(0);
   });
 });

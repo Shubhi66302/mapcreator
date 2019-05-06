@@ -257,7 +257,7 @@ export const editSpecialBarcode = ({ coordinate, new_barcode }) => (
 
 export const createMapCopy = ({ name }) => (dispatch, getState) => {
   const state = getState();
-  fetch("/api/createMap", {
+  return fetch("/api/createMap", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -270,5 +270,15 @@ export const createMapCopy = ({ name }) => (dispatch, getState) => {
     .then(id =>
       dispatch(setSuccessMessage(`Created new map '${name}' with ID #${id}`))
     )
+    .catch(error => dispatch(setErrorMessage(error)));
+};
+
+export const deleteMap = (id, history) => dispatch => {
+  return fetch(`/api/deleteMap/${id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  })
+    .then(handleErrors)
+    .then(() => history.push("/"))
     .catch(error => dispatch(setErrorMessage(error)));
 };
