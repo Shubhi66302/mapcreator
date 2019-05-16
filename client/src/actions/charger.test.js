@@ -32,12 +32,12 @@ describe("createAllChargerBarcodes", () => {
         },
         {
           botid: "null",
-          neighbours: [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
+          neighbours: [[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]],
           size_info: [750, 750, 205, 750],
           coordinate: "1,0",
           barcode: "000.001",
           zone: "defzone",
-          adjacency: [null, [0, 0], [12, 12], [2, 0]],
+          adjacency: [null, null, [12, 12], null],
           store_status: 0,
           blocked: false
         },

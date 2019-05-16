@@ -92,9 +92,26 @@ export const getNeighbouringBarcodesIncludingDisconnected = (
   coordinateKey,
   barcodesDict
 ) => {
-  return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
-    [0, 0, 0]
-  ]);
+  // barcodesDict is state.normalizedMap.entities.barcode
+  var curBarcode = barcodesDict[coordinateKey];
+  if (!curBarcode) return null;
+  var neighbourTileKeys = getNeighbourTiles(coordinateKey);
+  let nbBarcodes = [null, null, null, null];
+  // if adjacency is present, use that.
+  if (curBarcode.adjacency) {
+    nbBarcodes = curBarcode.adjacency.map(val => {
+      if (!val) return val;
+      return barcodesDict[tupleOfIntegersToCoordinateKey(val)];
+    });
+  }
+  // if nbBarcodes is null somewhere, then try to check if neighbour is [1,0,0]. If so, use tile key for that.
+  [0, 1, 2, 3].forEach(idx => {
+    if (nbBarcodes[idx] == null && curBarcode.neighbours[idx][0] == 1) {
+      // assume its the tile key barcode
+      nbBarcodes[idx] = barcodesDict[neighbourTileKeys[idx]];
+    }
+  });
+  return nbBarcodes;
 };
 // only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
 export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {

@@ -76,13 +76,20 @@ export const createAllChargerBarcodes = (
   // charger barcode
   // TODO: some other neighbour changes to .neighbours; is this even required though since adjacency will now be used for this?
   var chargerBarcode = _.cloneDeep(barcodesDict[tileId]);
+  // remove edges from charger barcode to all other barcodes except special barcode
+  // this is so that butler only leaves the way it has come, eg. for side dock
   chargerBarcode.neighbours[charger_direction][2] = 0;
-  chargerBarcode.adjacency = getNeighbouringBarcodes(tileId, barcodesDict).map(
-    x => (x ? coordinateKeyToTupleOfIntegers(x.coordinate) : null)
-  );
+  chargerBarcode.neighbours.forEach((_nb, idx) => {
+    if (idx != charger_direction) {
+      chargerBarcode.neighbours[idx][1] = 0;
+      chargerBarcode.neighbours[idx][2] = 0;
+    }
+  });
+  chargerBarcode.adjacency = [null, null, null, null];
   chargerBarcode.adjacency[charger_direction] = coordinateKeyToTupleOfIntegers(
     specialTileId
   );
+
   var originalChargerBarcodeSizeInfoInChargerDirection =
     chargerBarcode.size_info[charger_direction];
   chargerBarcode.size_info[charger_direction] = CHARGER_DISTANCE;
@@ -185,11 +192,13 @@ export const addChargers = formData => (dispatch, getState) => {
   return dispatch(clearTiles);
 };
 
-export const removeCharger = ({ charger_id}) => (dispatch, getState) => { 
-  var chargerDetails = _.find(getState().normalizedMap.entities.charger, { "charger_id": charger_id});
+export const removeCharger = ({ charger_id }) => (dispatch, getState) => {
+  var chargerDetails = _.find(getState().normalizedMap.entities.charger, {
+    charger_id: charger_id
+  });
   dispatch({
     type: "DELETE-CHARGER-DATA",
-    value: {chargerDetails}
+    value: { chargerDetails }
   });
   dispatch({
     type: "DELETE-CHARGER-BY-ID",

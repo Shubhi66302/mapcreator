@@ -1,6 +1,7 @@
 import {
   getDirection,
   getNeighbouringBarcodes,
+  getNeighbouringBarcodesIncludingDisconnected,
   implicitCoordinateKeyToBarcode,
   tupleOfIntegersToCoordinateKey,
   implicitBarcodeToCoordinate
@@ -19,7 +20,10 @@ const deleteChargerData = (state, action) => {
   var coorInDirectionOfCharger;
   let newState = _.cloneDeep(state);
   // update neighbours' adjacency such that they no longer point to this barcode.
-  var chargerNeighbours = getNeighbouringBarcodes(chargerCoordinate, newState);
+  var chargerNeighbours = getNeighbouringBarcodesIncludingDisconnected(
+    chargerCoordinate,
+    newState
+  );
   var entryPointNeighbours = getNeighbouringBarcodes(
     entryPointCoordinate,
     newState
@@ -51,25 +55,29 @@ const deleteChargerData = (state, action) => {
       (chargerDirection + 2) % 4
     ] = [1, 1, 1];
   }
-  index = 0;
-  _.forEach(chargerNeighbours, function(chargerNeighbour) {
+  _.forEach(chargerNeighbours, function(chargerNeighbour, dir) {
     if (chargerNeighbour) {
       if (chargerNeighbour.coordinate == entryPointCoordinate) {
         totalDistance +=
           chargerNeighbour.size_info[chargerDirection] +
           newState[entryPointCoordinate].size_info[(chargerDirection + 2) % 4];
       }
-      if (chargerNeighbour.neighbours[index][0] == !0) {
-        chargerNeighbour.neighbours[index] = [1, 1, 1];
+      var oppDir = (dir + 2) % 4;
+      // connect this neighbour back to charger coordinate
+      if (chargerNeighbour.neighbours[oppDir][0] == 1) {
+        chargerNeighbour.neighbours[oppDir] = [1, 1, 1];
       }
       delete chargerNeighbour.adjacency;
+      newState[chargerNeighbour.coordinate] = chargerNeighbour;
     }
-
-    index++;
   });
-  if (newState[chargerCoordinate].neighbours[chargerDirection][0] == 1) {
-    newState[chargerCoordinate].neighbours[chargerDirection] = [1, 1, 1];
-  }
+
+  // update neighbour structure of charger coordinate so its connected with all
+  // existing neighbours now
+  [0, 1, 2, 3].forEach(direction => {
+    if (newState[chargerCoordinate].neighbours[direction][0] == 1)
+      newState[chargerCoordinate].neighbours[direction] = [1, 1, 1];
+  });
   newState[chargerCoordinate].size_info[chargerDirection] = totalDistance / 2;
   newState[coorInDirectionOfCharger].size_info[(chargerDirection + 2) % 4] =
     totalDistance / 2;

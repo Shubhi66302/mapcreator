@@ -212,6 +212,42 @@ describe("getNeighbouringBarcodesIncludingDisconnected", () => {
       }
     ]);
   });
+  test("Should work with adjacency as well; adjacency will have 'null' but neighbour is [1,0,0]; should automatically interpret neighbour?", () => {
+    var barcodesDict = {
+      // 1,1 is adjacency, rest are normal; all are disconnected
+      // 2,1 x 1,1 x 0,1
+      // testing 1,1
+      "2,1": {
+        coordinate: "2,1",
+        neighbours: [[0, 0, 0], [1, 0, 0], [0, 0, 0], [0, 0, 0]]
+      },
+      "1,1": {
+        coordinate: "1,1",
+        neighbours: [[0, 0, 0], [1, 0, 0], [0, 0, 0], [1, 0, 0]],
+        adjacency: [null, null, null, null]
+      },
+      "0,1": {
+        coordinate: "0,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 0, 0]]
+      }
+    };
+    var neighbourBarcodes = getNeighbouringBarcodesIncludingDisconnected(
+      "1,1",
+      barcodesDict
+    );
+    expect(neighbourBarcodes).toMatchObject([
+      null,
+      {
+        coordinate: "0,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 0, 0]]
+      },
+      null,
+      {
+        coordinate: "2,1",
+        neighbours: [[0, 0, 0], [1, 0, 0], [0, 0, 0], [0, 0, 0]]
+      }
+    ]);
+  });
 });
 
 describe("getNeighbouringBarcodes", () => {

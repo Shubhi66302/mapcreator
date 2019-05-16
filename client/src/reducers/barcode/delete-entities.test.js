@@ -34,7 +34,7 @@ describe("deleteChargerData", () => {
       value: { chargerDetails: state.normalizedMap.entities.charger[1] }
     });
     // Sp coordinate(enrty point coordinate) is 500,500
-    //Charger coordinate is "1,1"
+    // Charger coordinate is "1,1"
     // Previously connected coordinate to 1,1 is 1,0
     expect(newState["500,500"]).toBe(undefined);
     expect(newState["1,1"].adjacency).toBe(undefined);
@@ -50,11 +50,30 @@ describe("deleteChargerData", () => {
       [1, 1, 1]
     ]);
     expect(newState["1,0"].adjacency).toBe(undefined);
+    // check neighbour structure of all old neighbours of charger
     expect(newState["1,0"].neighbours).toEqual([
       [0, 0, 0],
       [1, 1, 1],
       [1, 1, 1],
       [1, 1, 1]
+    ]);
+    expect(newState["0,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]);
+    expect(newState["1,2"].neighbours).toEqual([
+      [1, 1, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+    expect(newState["2,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1],
+      [0, 0, 0]
     ]);
     expect(newState["1,1"].size_info).toEqual([750, 750, 750, 750]);
     expect(newState["1,0"].size_info).toEqual([750, 750, 750, 750]);
