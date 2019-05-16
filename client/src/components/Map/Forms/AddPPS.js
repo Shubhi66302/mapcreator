@@ -5,12 +5,21 @@ import { connect } from "react-redux";
 import { addPPSes } from "actions/pps";
 import { directionSchema } from "utils/forms";
 
+const ppsTypeSchema = {
+  type: "string",
+  title: "PPS Type",
+  default: "manual",
+  enum: ["ppp_manual", "ara", "manual"],
+  enumNames: ["PPP (manual)", "ARA", "Manual"]
+};
+
 const schema = {
   title: "Add PPS",
   type: "object",
-  required: ["pick_direction"],
+  required: ["pick_direction", "type"],
   properties: {
-    pick_direction: { ...directionSchema, title: "Pick Direction" }
+    pick_direction: { ...directionSchema, title: "Pick Direction" },
+    type: ppsTypeSchema
   }
 };
 

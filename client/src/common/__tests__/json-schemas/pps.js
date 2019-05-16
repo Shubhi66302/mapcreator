@@ -27,13 +27,31 @@ describe("invalid pps", () => {
       pick_position: "015.015",
       pick_direction: 0,
       pps_url: "http://localhost:8181/pps/5/api/",
-      location: "015.015"
+      location: "015.015",
+      "type": "manual"
     };
     var result = validate(pps);
     expect(result).toBe(false);
     expect(validate.errors).toHaveLength(1);
     expect(validate.errors[0].message).toBe(
       "should be equal to one of the allowed values"
+    );
+  });
+  test("pps type missing", () => {
+    var pps = {
+      queue_barcodes: [],
+      allowed_modes: ["audit"],
+      status: "disconnected",
+      pick_position: "015.015",
+      pick_direction: 0,
+      pps_url: "http://localhost:8181/pps/5/api/",
+      location: "015.015"
+    };
+    var result = validate(pps);
+    expect(result).toBe(false);
+    expect(validate.errors).toHaveLength(1);
+    expect(validate.errors[0].message).toBe(
+      "should have required property 'type'"
     );
   });
 });

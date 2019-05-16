@@ -12,7 +12,7 @@ describe("createNewPPSes", () => {
       "2,2": true,
       "0,2": true
     });
-    const newPPSes = createNewPPSes({ pick_direction: 0 }, initialState);
+    const newPPSes = createNewPPSes({ pick_direction: 0, type: "manual" }, initialState);
     expect(newPPSes).toMatchObject([
       {
         coordinate: "2,2",
@@ -22,7 +22,8 @@ describe("createNewPPSes", () => {
         pick_position: "002.002",
         pick_direction: 0,
         put_docking_positions: [],
-        allowed_modes: ["put", "pick", "audit"]
+        allowed_modes: ["put", "pick", "audit"],
+        type: "manual"
       },
       {
         coordinate: "0,2",
@@ -32,7 +33,8 @@ describe("createNewPPSes", () => {
         pick_position: "002.000",
         pick_direction: 0,
         put_docking_positions: [],
-        allowed_modes: ["put", "pick", "audit"]
+        allowed_modes: ["put", "pick", "audit"],
+        type: "manual"
       }
     ]);
   });

@@ -17,7 +17,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.017"
+    "pick_position": "111.017",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -37,7 +38,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.028"
+    "pick_position": "111.028",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -57,7 +59,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.039"
+    "pick_position": "111.039",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -77,7 +80,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.050"
+    "pick_position": "111.050",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -97,7 +101,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.061"
+    "pick_position": "111.061",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -117,7 +122,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.072"
+    "pick_position": "111.072",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -137,7 +143,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.083"
+    "pick_position": "111.083",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -157,7 +164,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.094"
+    "pick_position": "111.094",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -177,7 +185,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "111.105"
+    "pick_position": "111.105",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -197,7 +206,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "094.141"
+    "pick_position": "094.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -217,7 +227,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "083.141"
+    "pick_position": "083.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -237,7 +248,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "074.141"
+    "pick_position": "074.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -257,7 +269,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "063.141"
+    "pick_position": "063.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -277,7 +290,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "054.141"
+    "pick_position": "054.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -297,7 +311,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "043.141"
+    "pick_position": "043.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -317,7 +332,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "034.141"
+    "pick_position": "034.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -337,7 +353,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "023.141"
+    "pick_position": "023.141",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -357,7 +374,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "015.137"
+    "pick_position": "015.137",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -377,7 +395,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "015.126"
+    "pick_position": "015.126",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -396,7 +415,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.114"
+    "pick_position": "001.114",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -415,7 +435,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.105"
+    "pick_position": "001.105",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -435,7 +456,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.097"
+    "pick_position": "001.097",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -455,7 +477,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.086"
+    "pick_position": "001.086",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -475,7 +498,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.078"
+    "pick_position": "001.078",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -495,7 +519,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.067"
+    "pick_position": "001.067",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -515,7 +540,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.059"
+    "pick_position": "001.059",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -535,7 +561,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.048"
+    "pick_position": "001.048",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -555,7 +582,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.039"
+    "pick_position": "001.039",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -575,7 +603,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.028"
+    "pick_position": "001.028",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -594,7 +623,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.019"
+    "pick_position": "001.019",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -613,7 +643,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.008"
+    "pick_position": "001.008",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -632,7 +663,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "001.003"
+    "pick_position": "001.003",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -651,7 +683,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "009.001"
+    "pick_position": "009.001",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -670,7 +703,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "016.001"
+    "pick_position": "016.001",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -689,7 +723,8 @@
             "pick",
             "audit"
         ],
-    "pick_position": "022.001"
+    "pick_position": "022.001",
+    "type": "manual"
   },
   {
     "status": "disconnected",
@@ -708,6 +743,7 @@
             "pick",
             "audit"
         ],
-    "pick_position": "029.001"
+    "pick_position": "029.001",
+    "type": "manual"
   }
 ]

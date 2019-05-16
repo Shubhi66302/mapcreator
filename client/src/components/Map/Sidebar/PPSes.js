@@ -11,12 +11,14 @@ const PPSes = ({ ppsDict, dispatch }) => {
     <div className="pt-3">
       <h4 className="menu-title">PPS</h4>
       {ppses.map(
-        ({ pps_id, location, pick_direction, queue_barcodes }, idx) => (
+        ({ pps_id, location, pick_direction, type, queue_barcodes }, idx) => (
           <BaseCard key={idx} title={pps_id}>
             PPS ID: {pps_id} <br />
             Location: {location}
             <br />
             Pick Direction: {pick_direction}
+            <br />
+            Type: {type}
             <br />
             Queue Barcodes:{" "}
             {`${queue_barcodes.length !== 0 ? queue_barcodes : "[none]"}`}

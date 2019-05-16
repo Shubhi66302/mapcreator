@@ -94,7 +94,7 @@ describe("deletePPSQueue", () => {
       002.002     002.001  ...
     */
     // add pps
-    await store.dispatch(addPPSes({ pick_direction: 0 }));
+    await store.dispatch(addPPSes({ pick_direction: 0, type: "manual" }));
     // select queue tiles
     addQueueSelectedTilesToState(store, ["1,1", "2,1", "2,0", "1,0", "0,0"]);
     // add queue

@@ -7,7 +7,7 @@ import _ from "lodash";
 import {implicitBarcodeToCoordinate} from "utils/util";
 
 // exported for testing
-export const createNewPPSes = ({ pick_direction }, state) => {
+export const createNewPPSes = ({ pick_direction, type }, state) => {
   const {
     selection: { mapTiles }
   } = state;
@@ -21,7 +21,8 @@ export const createNewPPSes = ({ pick_direction }, state) => {
       pick_position: barcode,
       pick_direction,
       put_docking_positions: [],
-      allowed_modes: ["put", "pick", "audit"]
+      allowed_modes: ["put", "pick", "audit"],
+      type
     };
   });
   var ids = getIdsForNewEntities(state, {

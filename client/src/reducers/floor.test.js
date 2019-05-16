@@ -43,7 +43,7 @@ describe("ADD-ENTITIES-TO-FLOOR", () => {
       makeState(singleFloorVanilla, 1, { "0,1": true, "0,0": true })
     );
     // need to use async/await because of thunk middleware.
-    await store.dispatch(addPPSes({ pick_direction: 0 }, store.getState()));
+    await store.dispatch(addPPSes({ pick_direction: 0, type: "manual" }, store.getState()));
     // take out floor slice from state
     var initialState = store.getState().normalizedMap.entities.floor;
     // 3 is added, 1 and 2 are updated
