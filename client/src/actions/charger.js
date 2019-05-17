@@ -85,7 +85,10 @@ export const createAllChargerBarcodes = (
       chargerBarcode.neighbours[idx][2] = 0;
     }
   });
-  chargerBarcode.adjacency = [null, null, null, null];
+  // we still need neighbour in adjacency even if neighbour structure is [1,0,0]
+  chargerBarcode.adjacency = getNeighbouringBarcodes(tileId, barcodesDict).map(
+    x => (x ? coordinateKeyToTupleOfIntegers(x.coordinate) : null)
+  );
   chargerBarcode.adjacency[charger_direction] = coordinateKeyToTupleOfIntegers(
     specialTileId
   );

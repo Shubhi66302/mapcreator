@@ -37,7 +37,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "1,0",
           barcode: "000.001",
           zone: "defzone",
-          adjacency: [null, null, [12, 12], null],
+          adjacency: [null, [0, 0], [12, 12], [2, 0]],
           store_status: 0,
           blocked: false
         },
