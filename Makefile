@@ -6,7 +6,7 @@ BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
 STAGING:= ${BASENAME}:staging
 LATEST		:= ${BASENAME}:latest
-AWS_CONN	:= root@172.104.160.85
+SERVER_SSH	:= root@mapcreator.labs.greyorange.com
 
 .PHONY: check-uncommitted all
 
@@ -40,10 +40,10 @@ staging:
 	docker push ${STAGING}
 
 deploy-staging:
-		ssh ${AWS_CONN} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d'
+		ssh ${SERVER_SSH} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d'
 
 deploy:
-		ssh ${AWS_CONN} 'cd mapcreator && docker-compose pull web && docker-compose up -d'
+		ssh ${SERVER_SSH} 'cd mapcreator && docker-compose pull web && docker-compose up -d'
 
 login:
 # do this before any other command. set env variables for docker login (contact vivek.r@greyorange.sg)

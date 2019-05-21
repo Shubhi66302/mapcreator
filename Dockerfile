@@ -26,7 +26,10 @@ ENV NODE_ENV production
 
 # babel stuff
 COPY --from=0 /app/client/build/ dist/client/build/
-COPY --from=0 /app/client/src/common/ client/src/common/
+# copy all src files of client since some required in migrations
+# also copy node_modules since they will also be needed... this makes deploy quite bulky though
+COPY --from=0 /app/client/src/ client/src/
+COPY --from=0 /app/client/node_modules/ client/node_modules/
 COPY server/ ./server/
 RUN npm run build
 COPY entrypoint.sh wait-for-it.sh ./ 

@@ -24,7 +24,10 @@ module.exports = {
       }
     });
   },
-  down: queryInterface => {
-    return queryInterface.dropTable("Maps");
+  down: () => {
+    // this is dangerous since it wipes the db. commenting this out
+    // for safety
+    // return queryInterface.dropTable("Maps");
+    return Promise.resolve();
   }
 };

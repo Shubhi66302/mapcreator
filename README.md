@@ -1,5 +1,3 @@
-TODO: write complete readme.
-
 - Sometimes psql might not work on mac after restart. Running this seems to work:
     - rm /usr/local/var/postgresql@9.4/postmaster.pid
     - brew services restart postgresql@9.4
@@ -25,54 +23,55 @@ TODO: write complete readme.
     - `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to gor;`
 NOTE: If you encounter 'sequence relations does not exist' error on creating new map, then use following commands which seem
     to fix the problem:
-    - GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO gor;
+    - `GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO gor;`
 
 - Install packages
     - `npm install`
     - `cd client && npm install`
 - Apply migrations
-    - `cd server`
-    - `NODE_ENV=development ../node_modules/.bin/sequelize db:migrate`
-    - `NODE_ENV=test ../node_modules/.bin/sequelize db:migrate`
+    - cd to root of repository
+    - `NODE_ENV=development npm run migrate`
+    - `NODE_ENV=test npm run migrate`
 - Run server
     - `npm run start-dev`
 - Run client dev server
     - `cd client`
     - `npm start`
 
-Open 192.168.x.x:3000/ for mapcreator dev server. Hot reloading is enabled so editing any js file in `client/` will reload page in browser 
+Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so editing any js file in `client/` will reload page in browser 
 
-## Creating pull request for a feature
-- For each feature, create a new branch that looks like `feature/some-feature`. Once you are confident with the code do `git push origin feature/some-feature`. This will push the branch to remote where you can create a pull request for it.
-- Bitbucket pipelines runs unit tests and linting on each commit, so run tests and linting locally to find any problems. Run `npm run test` for running unit tests, and `npm run lint` for `eslint` which will also try autofix any linting errors. Fix any remaining errors before pushing.
-
-
-## Pro tip
+## Testing
+- On MacOs, install watchman `brew install watchman`. TODO: linux machine?
 - `cd` into client in a new tab and run `npm test`. This will run a watcher that will rerun relevant tests when you make changes to a file. It's helpful to write tests for reducer functions as you can iterate quickly without making up the whole scenario in the browser.
-- To iterate fast on a UI component, `cd` into client in a new tab and run `npm run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react. 
+- To iterate fast on a UI component, `cd` into client in a new tab and run `npm run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react.
+- Tests/linting is automatically done on Phabricator
 
 # Deployment
 - Deployment is done through Dockerfile. There are two deployments on VM:
-    - staging server on `172.104.160.85:3002`
-    - production server on `172.104.160.85:9982`
+    - production server on `mapcreator.labs.greyorange.com`
+    - staging server on `mapcreator.labs.greyorange.com:3002`
 - Both have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
 - To make staging image, run `make staging`. This will build image with `staging` tag and push to repo.
 - To make production image, run `make all`. This will build image with `latest` tag and push to repo.
     - Building an image will be slow for the first time or when either `package.json` changes.
 - To just make a image with just current commit id as tag, run `make build push`.
 - For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running and test it out.
+    - Deployment to staging can also be done through bitbucket pipelines. Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy. This requires you to first push your feature branch to bitbucket.
 - For deploying to production, run `make deploy`. Then check production server to see if build is runnig.
-- Deployment can also be done through bitbucket pipelines. Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy
-    - TODO: how to do this
+- By default, you don't need to deploy to production manually. Once pushed to `master`, bitbucket will automatically run tests and then deploy to `mapcreator.labs.greyorange.com`
 
 # Modifying JSON schemas
 
 - Schema files are present in `client/common/json-schemas` and tests in `client/common/__tests__/json-schemas`
 - Change schema .json files and also change `export-map.js` and `import-map.js` so that maps are imported/exported correctly with new fields
 - Change map .json files in `client/test-data/test-maps`
-- After modifying schema .json files and import-map.js and export-map.js functions, you need to update existing maps in db to reflect the changed schema
-- Create a script in `server/map-json-migrations/` which will run over all rows in db and modify the map json (eg. see add-floor-metadata.js)
-- To change dev database (use `babel-node` if your script uses es6 syntax, otherwise just use `node`):
-    - `babel-node server/map-json-migrations/<yourscript>.js`
-- To change prod database:
-    - `NODE_ENV=production babel-node server/map-json-migrations/<yourscript>.js`
+- You need to update existing maps in the db to reflect the changed schemas
+    - cd to root of repository
+    - Create a migration file: `npm run generate-migration -- --name <name-of-migration>`. eg. `npm run generate-migration -- --name add-type-to-pps` will generate a file `2019xxxx-add-type-to-pps.js` in `server/migrations` folder.
+    - Modify the `up()` and `down()` functions respectively to modify database maps (see `20190520142453-special-barcode-zone.js`)
+    - To locally modify your own databases with this migration, run:
+        - `npm run migrate` for dev db
+        - `NODE_ENV=test npm run migrate` for test db
+    - To undo the latest migration (eg. for testing during development), run `npm run undo-migrate`. Then running `npm run migrate` will run the migration again.
+    - You don't need to manually run the migration script in prod/staging server, it is automatically run during docker deployment
+    - Before pushing to master, make sure to push to staging first (see Deployment) and check that databases are modified correctly. It's possible that migrations run correctly on your local machine but crash in docker container...
