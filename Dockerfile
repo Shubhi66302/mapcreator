@@ -1,10 +1,12 @@
 FROM node:9.11.1-alpine
-USER root
 RUN apk update && apk add bash
 # client
 WORKDIR /app/client
 COPY client/package.json client/package-lock.json ./
 RUN npm install
+# to fix https://bitbucket.org/site/master/issues/17319/docker-builds-started-failing-with
+# fix described here: https://community.atlassian.com/t5/Bitbucket-articles/Changes-to-make-your-containers-more-secure-on-Bitbucket/ba-p/998464
+RUN chown -R root:root /app/client/node_modules
 COPY client/ .
 ENV NODE_PATH ./src/
 ENV NODE_ENV production
