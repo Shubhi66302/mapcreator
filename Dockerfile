@@ -1,4 +1,5 @@
 FROM node:9.11.1-alpine
+USER root
 RUN apk update && apk add bash
 # client
 WORKDIR /app/client
@@ -14,6 +15,7 @@ RUN npm run build
 
 # server
 FROM node:9.11.1-alpine
+USER root
 RUN apk update && apk add bash
 WORKDIR /app
 ENV PORT 3001
