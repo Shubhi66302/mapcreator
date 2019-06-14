@@ -12,8 +12,10 @@ import { normalizeMap } from "../../client/src/utils/normalizr";
 module.exports = {
   up: () => {
     return Map.findAll().then(maps => {
-      return Promise.all(
-        maps.map(map => {
+      // DONT DO Promise.all! it gives OOM in docker container when theres ~700 maps
+      // TODO: figure out more permanent solution so people don't make this mistake again
+      return maps.reduce((previousPromise, map) => {
+        previousPromise.then(() => {
           const { map: mapObj } = map;
           // normalize map so barcodes can be accessed by keys. this will just be used
           // for easy access to barcodes instead of doing a linear search through array
@@ -35,13 +37,13 @@ module.exports = {
               );
               // just using first available neighbour
               var adjacentBarcode = neighbours.find(x => x != null);
-              // set the zone equal to this adjacent's zone
-              specialBarcode.zone = adjacentBarcode.zone;
+              // set the zone equal to this adjacent's zone (only if it exists!)
+              if (adjacentBarcode) specialBarcode.zone = adjacentBarcode.zone;
             });
           });
           return map.update({ map: mapObj });
-        })
-      );
+        });
+      }, Promise.resolve());
     });
   },
 

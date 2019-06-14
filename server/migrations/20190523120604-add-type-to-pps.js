@@ -5,8 +5,9 @@ import { Map } from "../models/index";
 module.exports = {
   up: () => {
     return Map.findAll().then(maps => {
-      return Promise.all(
-        maps.map(map => {
+      /// DONT DO Promise.all! it gives OOM in docker container when theres ~700 maps
+      return maps.reduce((previousPromise, map) => {
+        previousPromise.then(() => {
           const { map: mapObj } = map;
           mapObj.floors = mapObj.floors.map(floor => {
             floor.ppses = floor.ppses.map(pps => {
@@ -16,14 +17,13 @@ module.exports = {
                   ...pps,
                   type: "manual"
                 };
-              else
-                return pps;
+              else return pps;
             });
             return floor;
           });
           return map.update({ map: mapObj });
-        })
-      );
+        });
+      }, Promise.resolve());
     });
   },
 
