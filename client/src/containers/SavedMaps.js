@@ -3,6 +3,8 @@ import { handleErrors } from "utils/util";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import SearchBar from "components/SavedMaps/SearchBar";
+import { getAllMaps } from "utils/api";
+
 class SavedMaps extends Component {
   state = {
     maps: [],
@@ -10,7 +12,7 @@ class SavedMaps extends Component {
   };
   componentDidMount() {
     // fetch maps
-    fetch("/api/maps")
+    getAllMaps()
       .then(handleErrors)
       .then(res => res.json())
       .then(maps => this.setState({ maps }))

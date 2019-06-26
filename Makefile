@@ -5,6 +5,10 @@ REPO		:= repo.labs.greyorange.com
 BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
 STAGING:= ${BASENAME}:staging
+# testing is only for phab diffs
+REVISION_WITH_D := D${REVISION}
+REVISION_WITH_D_LOWERCASE := $(shell echo $(REVISION_WITH_D) | tr A-Z a-z)
+TESTING := ${BASENAME}:${REVISION_WITH_D}
 LATEST		:= ${BASENAME}:latest
 SERVER_SSH	:= root@mapcreator.labs.greyorange.com
 
@@ -34,6 +38,23 @@ push-as-staging:
 	docker push ${STAGING}
 
 all: build push push-as-latest
+
+testing:
+	docker build -t ${TESTING} --build-arg version=${REVISION_WITH_D} --build-arg public_url="http://mapcreator.labs.greyorange.com:5000/${REVISION_WITH_D}/" --build-arg basename="/${REVISION_WITH_D}" .
+	docker push ${TESTING}
+
+generate-deploy-testing-script:
+	echo "export REVISION=${REVISION_WITH_D} && export REVISION_LOWERCASE=${REVISION_WITH_D_LOWERCASE} \
+		&& mkdir -p ${REVISION_WITH_D}/ \
+		&& cd ${REVISION_WITH_D} \
+		&& cp ../docker-compose.yml.template docker-compose.yml \
+		&& docker-compose pull web \
+		&& docker-compose up -d" > deploy-testing-script.sh
+	chmod +x deploy-testing-script.sh
+
+deploy-testing: generate-deploy-testing-script
+	scp deploy-testing-script.sh ${SERVER_SSH}:~/testing-instance-provisioner/
+	ssh ${SERVER_SSH} "cd testing-instance-provisioner && ./deploy-testing-script.sh && rm deploy-testing-script.sh"
 
 staging:
 	docker build -t ${STAGING} --build-arg version=${VERSION} .
@@ -68,3 +89,9 @@ test-tag:
 
 test-version:
 	echo ${VERSION}
+
+test-testing-tag:
+	echo ${TESTING}
+
+test-lowercase-revision-tag:
+	echo ${REVISION_WITH_D_LOWERCASE}

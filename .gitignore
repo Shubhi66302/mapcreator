@@ -4,6 +4,7 @@ client/coverage/
 coverage/
 dist/
 junit.xml
+deploy-testing-script.sh
 .env
 .vscode
 .DS_Store

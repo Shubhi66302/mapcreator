@@ -4,6 +4,7 @@ import JSONFileInput from "components/JSONFileInput";
 import { handleErrors } from "utils/util";
 import { withRouter } from "react-router-dom";
 import SweetAlertError from "components/SweetAlertError";
+import { createMap } from "utils/api";
 import _ from "lodash";
 
 class ImportMap extends Component {
@@ -36,14 +37,7 @@ class ImportMap extends Component {
     // save
     const { name } = this.state;
     const { history } = this.props;
-    fetch("/api/createMap", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        map: imported,
-        name
-      })
-    })
+    createMap(imported, name)
       .then(handleErrors)
       .then(res => res.json())
       .then(id => history.push(`/map/${id}`))

@@ -6,6 +6,7 @@ import { createMapFromCoordinateData, handleErrors } from "utils/util";
 import SweetAlertError from "components/SweetAlertError";
 import { string, object, ref } from "yup";
 import { yupNonNegIntSchema } from "utils/forms";
+import { createMap } from "utils/api";
 // form html
 const InnerForm = ({ handleSubmit, isSubmitting }) => {
   return (
@@ -72,14 +73,7 @@ const Form = withFormik({
       col_end
     );
     const { onServerError, onSuccess } = props;
-    fetch("/api/createMap", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        map,
-        name
-      })
-    })
+    createMap(map, name)
       .then(handleErrors)
       .then(res => res.json())
       .then(id => {

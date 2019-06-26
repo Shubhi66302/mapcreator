@@ -16,6 +16,12 @@ import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
 import _ from "lodash";
 import { setErrorMessage, setSuccessMessage } from "./message";
+import {
+  getMap,
+  updateMap,
+  createMap,
+  deleteMap as deleteMapApi
+} from "utils/api";
 
 // always good idea to return promises from async action creators
 
@@ -108,7 +114,7 @@ export const clearMap = {
 
 export const fetchMap = mapId => dispatch => {
   dispatch(clearMap);
-  return fetch(`/api/map/${mapId}`)
+  return getMap(mapId)
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
@@ -209,13 +215,7 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   // denormalize it
   const mapObj = denormalizeMap(normalizedMap);
-  return fetch(`/api/map/${mapObj.id}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      map: mapObj.map
-    })
-  })
+  return updateMap(mapObj.id, mapObj.map)
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
@@ -244,14 +244,7 @@ export const editSpecialBarcode = ({ coordinate, new_barcode }) => ({
 
 export const createMapCopy = ({ name }) => (dispatch, getState) => {
   const state = getState();
-  return fetch("/api/createMap", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      map: denormalizeMap(state.normalizedMap).map,
-      name
-    })
-  })
+  return createMap(denormalizeMap(state.normalizedMap).map, name)
     .then(handleErrors)
     .then(res => res.json())
     .then(id =>
@@ -261,10 +254,7 @@ export const createMapCopy = ({ name }) => (dispatch, getState) => {
 };
 
 export const deleteMap = (id, history) => dispatch => {
-  return fetch(`/api/deleteMap/${id}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" }
-  })
+  return deleteMapApi(id)
     .then(handleErrors)
     .then(() => history.push("/"))
     .catch(error => dispatch(setErrorMessage(error)));

@@ -12,6 +12,12 @@ ENV NODE_PATH ./src/
 ENV NODE_ENV production
 ARG version=unknown
 ENV REACT_APP_VERSION ${version}
+# public_url for testing server (needed so static file urls are correct in index.html)
+ARG public_url
+ENV PUBLIC_URL ${public_url}
+# basename for testing server (needed for react router to work)
+ARG basename
+ENV REACT_APP_BASENAME ${basename}
 RUN npm run build
 
 

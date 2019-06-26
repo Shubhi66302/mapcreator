@@ -13,7 +13,7 @@ import CreateMap from "./containers/CreateMap";
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router basename={process.env.REACT_APP_BASENAME || ""}>
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/version" component={SavedMaps} />
