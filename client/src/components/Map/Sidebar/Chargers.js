@@ -18,7 +18,8 @@ const Chargers = ({ chargerDict, dispatch }) => {
             mode,
             entry_point_location,
             reinit_point_location,
-            charger_direction
+            charger_direction,
+            charger_type
           },
           idx
         ) => (
@@ -29,6 +30,8 @@ const Chargers = ({ chargerDict, dispatch }) => {
             Mode: {mode}
             <br />
             Direction: {charger_direction}
+            <br />
+            Charger Type: {charger_type}
             <br />
             Entry Point: {entry_point_location}
             <br />

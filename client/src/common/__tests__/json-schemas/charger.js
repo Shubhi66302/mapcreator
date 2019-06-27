@@ -26,6 +26,26 @@ describe("valid chargers", () => {
   });
 });
 
+describe("valid chargers", () => {
+  test("bottom_doc charger", () => {
+    var charger = {
+      charger_location: "041.043",
+      entry_point_location: "060.060",
+      charger_direction: 0,
+      entry_point_direction: 0,
+      reinit_point_direction: 0,
+      mode: "manual",
+      charger_type: "bottom_dock",
+      reinit_point_location: "060.060",
+      charger_id: 3,
+      status: "disconnected"
+    };
+    var result = validate(charger);
+    expect(validate.errors).toBeNull();
+    expect(result).toBe(true);
+  });
+});
+
 describe("invalid chargers", () => {
   test("invalid charger_type", () => {
     var charger = {

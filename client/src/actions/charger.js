@@ -14,7 +14,7 @@ import { CHARGER_DISTANCE } from "../constants";
 import _ from "lodash";
 // exported for testing
 export const createNewCharger = (
-  { charger_direction },
+  { charger_direction, charger_type },
   tileId,
   specialTileId,
   state
@@ -28,7 +28,7 @@ export const createNewCharger = (
   reinit_point_direction: charger_direction,
   status: "disconnected",
   mode: "manual",
-  charger_type: "rectangular_plate_charger"
+  charger_type: charger_type
 });
 
 // TODO: test and fixes as explained below

@@ -29,6 +29,7 @@
         "rectangular_plate_charger",
         "circular_plate_charger",
         "side_dock",
+        "bottom_dock",
         "normal"
       ]
     }

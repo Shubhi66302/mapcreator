@@ -5,15 +5,27 @@ import { connect } from "react-redux";
 import { addChargers } from "actions/charger";
 import { directionSchema } from "utils/forms";
 
+const chargerTypes = ["bottom_dock","side_dock"];
+const chargerNames = ["Bottom Dock", "Side Dock"];
+
+const chargerTypeSchema = {
+  type: "string",
+  title: "Charger Type",
+  default: "bottom_dock",
+  enum: chargerTypes,
+  enumNames: chargerNames
+};
+
 const schema = {
   title: "Add Charger",
   type: "object",
-  required: ["charger_direction"],
+  required: ["charger_direction", "charger_type"],
   properties: {
     charger_direction: {
       ...directionSchema,
-      title: "Pick Direction"
-    }
+      title: "Charger Direction"
+    },
+    charger_type: chargerTypeSchema
   }
 };
 
