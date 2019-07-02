@@ -1,6 +1,6 @@
 NAME		:= mapcreator
 TAG			:= $$(echo $${BITBUCKET_COMMIT:-$$(git rev-parse HEAD)} | cut -c1-7)
-VERSION			:= `git describe --dirty`
+VERSION			:=  $(shell git describe --dirty)
 REPO		:= repo.labs.greyorange.com
 BASENAME	:= ${REPO}/${NAME}
 IMG			:= ${BASENAME}:${TAG}
@@ -40,7 +40,11 @@ push-as-staging:
 all: build push push-as-latest
 
 testing:
-	docker build -t ${TESTING} --build-arg version=${REVISION_WITH_D} --build-arg public_url="http://mapcreator.labs.greyorange.com:5000/${REVISION_WITH_D}/" --build-arg basename="/${REVISION_WITH_D}" .
+	docker build -t ${TESTING} \
+		--build-arg version="${REVISION_WITH_D}-${VERSION}" \
+		--build-arg public_url="http://mapcreator.labs.greyorange.com:5000/${REVISION_WITH_D}/" \
+		--build-arg basename="/${REVISION_WITH_D}" \
+		--build-arg keep_redux_logger=true .
 	docker push ${TESTING}
 
 generate-deploy-testing-script:

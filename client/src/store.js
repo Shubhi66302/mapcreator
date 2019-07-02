@@ -26,7 +26,11 @@ let middleware = [
   floorMiddleware,
   errorPopupMiddleware
 ];
-if (process.env.NODE_ENV == "development") middleware = [...middleware, logger];
+if (
+  process.env.NODE_ENV == "development" ||
+  process.env.REACT_APP_KEEP_REDUX_LOGGER
+)
+  middleware = [...middleware, logger];
 
 export default createStore(
   reducer,
