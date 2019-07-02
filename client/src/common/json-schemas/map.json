@@ -40,7 +40,7 @@
           "map_values",
           "chargers",
           "ppses",
-          "odses",
+          "odsExcludeds",
           "dockPoints",
           "fireEmergencies"
         ],
@@ -84,19 +84,19 @@
               ]
             }
           },
-          "odses": {
+          "odsExcludeds": {
             "type": "array",
             "items": {
               "allOf": [
                 {
                   "type": "object",
-                  "required": ["ods_id", "coordinate"],
+                  "required": ["ods_excluded_id", "coordinate"],
                   "properties": {
-                    "ods_id": { "type": "integer" },
+                    "ods_excluded_id": { "type": "integer" },
                     "coordinate": { "$ref": "definitions#/coordinateKey" }
                   }
                 },
-                { "$ref": "ods" }
+                { "$ref": "odsExcluded" }
               ]
             }
           },

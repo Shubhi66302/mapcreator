@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "$id": "ods",
-  "title": "ODS schema",
+  "$id": "odsExcluded",
+  "title": "ODS Excluded schema",
   "type": "object",
   "required": ["excluded", "ods_tuple"],
   "properties": {

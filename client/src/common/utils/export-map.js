@@ -40,7 +40,12 @@ export default (map, singleFloor = false) => {
     ["charger", "chargers", e => e, null],
     ["pps", "ppses", e => e.map(ppsConverter), null],
     ["fire_emergency", "fireEmergencies", e => e, "fire_emergency_id"],
-    ["ods_excluded", "odses", e => ({ ods_excluded_list: e }), "ods_id"],
+    [
+      "ods_excluded",
+      "odsExcludeds",
+      e => ({ ods_excluded_list: e }),
+      "ods_excluded_id"
+    ],
     ["dock_point", "dockPoints", e => e, "dock_field"]
   ].forEach(([outKey, floorKey, convert, idFieldNotRequired]) => {
     // start with empty list

@@ -224,7 +224,7 @@ export var createFloorFromCoordinateData = ({
     floor_id,
     chargers: [],
     ppses: [],
-    odses: [],
+    odsExcludeds: [],
     dockPoints: [],
     fireEmergencies: [],
     map_values

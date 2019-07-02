@@ -4,7 +4,7 @@ import barcodeWithStringCoordinate from "common/json-schemas/barcodeWithStringCo
 import barcodeWithNumberCoordinate from "common/json-schemas/barcodeWithNumberCoordinate.json";
 import charger from "common/json-schemas/charger.json";
 import pps from "common/json-schemas/pps.json";
-import ods from "common/json-schemas/ods.json";
+import odsExcluded from "common/json-schemas/odsExcluded.json";
 import queueData from "common/json-schemas/queueData.json";
 import zone from "common/json-schemas/zone.json";
 import elevator from "common/json-schemas/elevator.json";
@@ -23,7 +23,7 @@ export default () =>
       barcodeWithNumberCoordinate,
       charger,
       pps,
-      ods,
+      odsExcluded,
       queueData,
       zone,
       elevator,

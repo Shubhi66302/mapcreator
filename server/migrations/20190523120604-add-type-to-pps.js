@@ -7,7 +7,7 @@ module.exports = {
     return Map.findAll().then(maps => {
       /// DONT DO Promise.all! it gives OOM in docker container when theres ~700 maps
       return maps.reduce((previousPromise, map) => {
-        previousPromise.then(() => {
+        return previousPromise.then(() => {
           const { map: mapObj } = map;
           mapObj.floors = mapObj.floors.map(floor => {
             floor.ppses = floor.ppses.map(pps => {

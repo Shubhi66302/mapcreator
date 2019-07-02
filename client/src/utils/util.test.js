@@ -43,7 +43,7 @@ describe("createFloorFromCoordinateData", () => {
       floor_id: 2,
       chargers: [],
       ppses: [],
-      odses: [],
+      odsExcludeds: [],
       dockPoints: [],
       fireEmergencies: []
     });

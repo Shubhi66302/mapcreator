@@ -19,7 +19,7 @@ ENV PUBLIC_URL ${public_url}
 ARG basename
 ENV REACT_APP_BASENAME ${basename}
 # to indicate that redux logger should be kept in the build (eg. for testing instance build)
-ARG keep_redux_logger=false
+ARG keep_redux_logger
 ENV REACT_APP_KEEP_REDUX_LOGGER ${keep_redux_logger}
 RUN npm run build
 

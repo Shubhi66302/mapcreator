@@ -101,7 +101,7 @@
     "properties": {
       "ods_excluded_list": {
         "type": "array",
-        "items": { "$ref": "ods" }
+        "items": { "$ref": "odsExcluded" }
       }
     }
   }

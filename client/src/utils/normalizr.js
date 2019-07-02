@@ -16,7 +16,11 @@ const queueData = new schema.Entity(
 
 const charger = new schema.Entity("charger", {}, { idAttribute: "charger_id" });
 const pps = new schema.Entity("pps", {}, { idAttribute: "pps_id" });
-const ods = new schema.Entity("ods", {}, { idAttribute: "ods_id" });
+const odsExcluded = new schema.Entity(
+  "odsExcluded",
+  {},
+  { idAttribute: "ods_excluded_id" }
+);
 const dockPoint = new schema.Entity(
   "dockPoint",
   {},
@@ -34,7 +38,7 @@ const floor = new schema.Entity(
     map_values: [barcode],
     chargers: [charger],
     ppses: [pps],
-    odses: [ods],
+    odsExcludeds: [odsExcluded],
     dockPoints: [dockPoint],
     fireEmergencies: [fireEmergency]
   },

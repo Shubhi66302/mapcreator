@@ -1,6 +1,6 @@
 require("dotenv").config({ path: ".env.test" });
 import getLoadedAjv from "./get-loaded-ajv";
-import importMap, { detectSingleFloor } from "./import-map";
+import importMap, { detectSingleFloor, getOdsExcludedBarcode } from "./import-map";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import continental2MapJson from "test-data/test-jsons/continental-2-map.json";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
@@ -102,6 +102,26 @@ describe("import good maps", () => {
       }
     ]);
   });
+
+  test("import 3-7 map with ods_excluded.json also present", () => {
+    var map = importMap({
+      ...threeSevenJsons,
+      odsExcludedJson: {
+        "ods_excluded_list":[
+          {"excluded":true,"ods_tuple":"010.010--0"},
+          {"excluded":true,"ods_tuple":"010.010--1"},
+          {"excluded":true,"ods_tuple":"010.011--1"}
+        ]}
+    });
+    var result = mapValidate(map);
+    expect(mapValidate.errors).toBeNull();
+    expect(result).toBe(true);
+    expect(map.floors[0].odsExcludeds).toMatchObject([
+      {"ods_excluded_id": 1, "coordinate": "10,10", "excluded":true,"ods_tuple":"010.010--0"},
+      {"ods_excluded_id": 2, "coordinate": "10,10", "excluded":true,"ods_tuple":"010.010--1"},
+      {"ods_excluded_id": 3, "coordinate": "11,10", "excluded":true,"ods_tuple":"010.011--1"}
+    ]);
+  });
 });
 
 describe("import bad maps", () => {
@@ -154,5 +174,12 @@ describe("import bad maps", () => {
     expect(() => importMap(badMap)).toThrowError(
       /Duplicate barcodes having same coordinate found in map\.json/
     );
+  });
+});
+
+describe("getOdsExcludedBarcode", () => {
+  test("good ods tuple", () => {
+    expect(getOdsExcludedBarcode({ods_tuple: "000.000--0", excluded: true})).toBe("000.000");
+    expect(getOdsExcludedBarcode({ods_tuple: "001.002--1", excluded: true})).toBe("001.002");
   });
 });

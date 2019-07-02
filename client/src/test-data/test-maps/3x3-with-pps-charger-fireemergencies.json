@@ -134,7 +134,7 @@
             "fire_emergency_id": 2
           }
         ],
-        "odses": [],
+        "odsExcludeds": [],
         "ppses": [
           {
             "location": "000.001",

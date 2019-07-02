@@ -481,6 +481,47 @@ describe("getIdsForNewEntities", () => {
     var ids = getIdsForNewEntities(state, { entityName: "pps", newEntities });
     expect(ids).toEqual([3, 4, 1]);
   });
+  test("should give correct entity ids when uniqueKey is provided", () => {
+    var singleFloorVanillaWithOdsExcludeds = singleFloorVanilla.updateIn(
+      ["map", "floors", 0, "odsExcludeds"],
+      (odsExcludeds = []) => [
+        ...odsExcludeds,
+        {
+          coordinate: "1,1",
+          ods_excluded_id: 1,
+          excluded: true,
+          ods_tuple: "001.001--0"
+        },
+        {
+          coordinate: "2,1",
+          ods_excluded_id: 2,
+          excluded: true,
+          ods_tuple: "002.001--1"
+        },
+      ]
+    );
+    var state = makeState(singleFloorVanillaWithOdsExcludeds, 1);
+    var newEntities = [
+      {
+        coordinate: "1,1",
+        excluded: true,
+        ods_tuple: "001.001--1"
+      },
+      {
+        coordinate: "1,1",
+        excluded: true,
+        ods_tuple: "001.001--0"
+      },
+      {
+        coordinate: "2,2",
+        excluded: true,
+        ods_tuple: "002.002--1"
+      }
+    ];
+    // order is important
+    var ids = getIdsForNewEntities(state, { entityName: "odsExcluded", newEntities, uniqueKey: "ods_tuple" });
+    expect(ids).toEqual([3, 1, 4]);
+  });
 });
 
 describe("specialBarcodesCoordinateSelector", () => {

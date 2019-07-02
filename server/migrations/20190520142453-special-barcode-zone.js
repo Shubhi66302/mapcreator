@@ -15,7 +15,7 @@ module.exports = {
       // DONT DO Promise.all! it gives OOM in docker container when theres ~700 maps
       // TODO: figure out more permanent solution so people don't make this mistake again
       return maps.reduce((previousPromise, map) => {
-        previousPromise.then(() => {
+        return previousPromise.then(() => {
           const { map: mapObj } = map;
           // normalize map so barcodes can be accessed by keys. this will just be used
           // for easy access to barcodes instead of doing a linear search through array

@@ -2,15 +2,15 @@
 import React from "react";
 import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
-// import { addEntities } from "actions/actions";
+import { addOdsExcludeds } from "actions/odsExcluded";
 import { directionSchema } from "utils/forms";
 
 const schema = {
   title: "Assign ODS Excluded",
   type: "object",
-  required: ["excludeddr"],
+  required: ["direction"],
   properties: {
-    excludeddr: {
+    direction: {
       ...directionSchema,
       title: "ODS Excluded direction"
     }
@@ -30,10 +30,10 @@ export default connect(
   state => ({
     disabled: Object.keys(state.selection.mapTiles).length === 0
   }),
-  () => ({
-    onSubmit: () => {
+  dispatch => ({
+    onSubmit: ({ formData }) => {
       // state is not accessible here so using a workaround to access it in action creator...
-      // TODO: define what needs to be done
+      dispatch(addOdsExcludeds(formData));
     }
   })
 )(AssignODSExcluded);

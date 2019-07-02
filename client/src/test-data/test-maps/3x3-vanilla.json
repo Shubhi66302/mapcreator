@@ -10,7 +10,7 @@
         "floor_id": 1,
         "chargers": [],
         "ppses": [],
-        "odses": [],
+        "odsExcludeds": [],
         "dockPoints": [],
         "fireEmergencies": [],
         "map_values": [

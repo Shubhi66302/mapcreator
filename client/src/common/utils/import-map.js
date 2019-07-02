@@ -23,6 +23,9 @@ const validate = (schemaName, jsonFile, throwError = true) => {
   return true;
 };
 
+// exported for testing
+export const getOdsExcludedBarcode = ({ods_tuple}) => ods_tuple.match(/^(.+)--\d$/)[1];
+
 // if floor_id is present, then its multifloor
 export const detectSingleFloor = mapJson =>
   Array.isArray(mapJson) &&
@@ -74,7 +77,7 @@ export default ({
     })),
     chargers: [],
     fireEmergencies: [],
-    odses: [],
+    odsExcludeds: [],
     ppses: [],
     dockPoints: []
   }));
@@ -160,10 +163,10 @@ export default ({
     [
       odsExcludedJson,
       "ods_excluded_json",
-      "odses",
+      "odsExcludeds",
       e => e.ods_excluded_list,
-      "barcode",
-      "ods_id"
+      getOdsExcludedBarcode,
+      "ods_excluded_id"
     ],
     [ppsJson, "pps_json", "ppses", e => e, "location", "pps_id"],
     // TODO: not tested dock_point jsons, should probably do that
@@ -176,23 +179,24 @@ export default ({
       "dock_point_id"
     ]
   ].forEach(
-    ([jsonFile, schemaName, key, convert, barcodeStringField, idField]) => {
+    ([jsonFile, schemaName, key, convert, barcodeFindFnOrString, idField]) => {
       validate(schemaName, jsonFile);
       // go through list of things and find correct floor for them, and then add
       // to that floor
       var listOfThings = convert(jsonFile);
       listOfThings.forEach((thing, idx) => {
-        var floorIdx = findFloorIndex(map.floors, thing[barcodeStringField]);
+        var barcode = typeof barcodeFindFnOrString == "string" ? thing[barcodeFindFnOrString]: barcodeFindFnOrString(thing);
+        var floorIdx = findFloorIndex(map.floors, barcode);
         if (floorIdx == -1)
           throw new Error(
             `Could not find floor for barcode ${
-              listOfThings[barcodeStringField]
+              barcode
             } referenced in ${schemaName}`
           );
         // assign coordinate to thing. this will be used throughout mapcreator to find its position instead of barcode
         thing.coordinate = findCoordinateForBarcode(
           map.floors[floorIdx].map_values,
-          thing[barcodeStringField]
+          barcode
         );
         // pps, charger already have ids i think
         if (idField && !thing[idField]) thing[idField] = idx + 1;

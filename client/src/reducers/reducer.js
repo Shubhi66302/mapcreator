@@ -24,7 +24,7 @@ export const entitiesReducer = combineReducers({
   queueData: createEntityReducer("QUEUE-DATA", "queue_data_id"),
   charger: reduceReducers(charger, baseChargerReducer),
   pps: reduceReducers(basePPSReducer, ppsReducer),
-  ods: createEntityReducer("ODS", "ods_id"),
+  odsExcluded: createEntityReducer("ODS-EXCLUDED", "ods_excluded_id"),
   dockPoint: createEntityReducer("DOCK-POINT", "dock_point_id"),
   fireEmergency: createEntityReducer("FIRE-EMERGENCY", "fire_emergency_id"),
   barcode: reduceReducers(barcodeReducer, baseBarcodeReducer),
