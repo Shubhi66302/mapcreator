@@ -39,7 +39,7 @@ app.get(
   "/api/map/:id",
   wrap(async (req, res) => {
     const { id } = req.params;
-    var map = await Map.findById(id);
+    var map = await Map.findByPk(id);
     if (!map) throw new Error(`could not find map for id ${id}`);
     res.json(map.toJSON());
   })
@@ -88,7 +88,7 @@ app.post(
   wrap(async (req, res) => {
     const { id } = req.params;
     const { map: reqMap } = req.body;
-    var map = await Map.findById(id);
+    var map = await Map.findByPk(id);
     if (!map) throw new Error(`could not find map for id ${id}`);
     // TODO: run validation here?
     var validate = getLoadedAjv().getSchema("map");
@@ -97,7 +97,7 @@ app.post(
     }
     await map.update({ map: reqMap });
     // send back the new map?
-    var newMap = await Map.findById(id);
+    var newMap = await Map.findByPk(id);
     res.json(newMap.toJSON());
   })
 );
@@ -122,7 +122,7 @@ app.get(
   "/api/racksJson/:id",
   wrap(async (req, res) => {
     const { id } = req.params;
-    var map = await Map.findById(id);
+    var map = await Map.findByPk(id);
     if (!map) throw new Error(`could not find map for id ${id}`);
     var racksJson = await getRacksJson(id);
     res.json(racksJson);

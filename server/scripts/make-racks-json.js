@@ -7,7 +7,7 @@ var getRacksJson = async (id, racktype = "11") => {
     console.log("pass map id");
     return;
   }
-  var map = await Map.findById(id);
+  var map = await Map.findByPk(id);
   if (!map) {
     console.log("map not found");
     return;

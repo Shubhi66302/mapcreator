@@ -11,6 +11,8 @@ import { normalizeMap } from "../../client/src/utils/normalizr";
 
 module.exports = {
   up: () => {
+    // DEPRECATED! Following method of iterating over maps and applying migration won't work
+    // on large dbs. see rename-ods-to-ods-excluded migration for correct way of doing this.
     return Map.findAll().then(maps => {
       // DONT DO Promise.all! it gives OOM in docker container when theres ~700 maps
       // TODO: figure out more permanent solution so people don't make this mistake again

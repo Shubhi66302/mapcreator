@@ -13,7 +13,7 @@ describe("/api/createMap", () => {
     expect(response.statusCode).toBe(200);
     const responseId = response.body;
     expect(responseId).toBeTruthy();
-    var dbMap = await Map.findById(responseId);
+    var dbMap = await Map.findByPk(responseId);
     const { id, createdAt, updatedAt, map: mapObj } = dbMap.dataValues;
     expect(id).toBeTruthy();
     expect(createdAt).toBeTruthy();
@@ -284,7 +284,7 @@ describe("deleteMap", () => {
     expect(response.text).toBe("ok");
     var numMapsLeft = (await Map.findAll()).length;
     expect(numMapsLeft).toBe(1);
-    var map1Deleted = await Map.findById(map1JSON.id);
+    var map1Deleted = await Map.findByPk(map1JSON.id);
     expect(map1Deleted).toBe(null);
   });
   test("should return error when map doesn't exist", async () => {
