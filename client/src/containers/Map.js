@@ -34,6 +34,7 @@ import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import CopyMap from "components/Map/Forms/CopyMap";
 import DeleteMap from "components/Map/Forms/DeleteMap";
+import SampleRacksJson from "components/Map/SampleRacksJson";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label>
@@ -89,6 +90,7 @@ class Map extends Component {
             </div>
             <div className="col">
               <div className="float-right">
+                <SampleRacksJson />
                 <DeleteMap />
               </div>
             </div>

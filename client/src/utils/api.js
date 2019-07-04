@@ -26,4 +26,14 @@ const deleteMap = mapId =>
 const getMaps = query => fetch(`${BASENAME}/api/maps?str=${query}`);
 const getAllMaps = () => fetch(`${BASENAME}/api/maps`);
 
-export { getMap, updateMap, createMap, deleteMap, getMaps, getAllMaps };
+const getSampleRacksJson = mapId => fetch(`${BASENAME}/api/racksJson/${mapId}`);
+
+export {
+  getMap,
+  updateMap,
+  createMap,
+  deleteMap,
+  getMaps,
+  getAllMaps,
+  getSampleRacksJson
+};
