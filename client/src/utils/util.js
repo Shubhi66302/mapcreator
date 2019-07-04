@@ -209,12 +209,14 @@ export var createFloorFromCoordinateData = ({
       };
       if (row == row_start) {
         unit.neighbours[0] = [0, 0, 0];
-      } else if (row == row_end) {
+      } 
+      if (row == row_end) {
         unit.neighbours[2] = [0, 0, 0];
       }
       if (column == column_start) {
         unit.neighbours[1] = [0, 0, 0];
-      } else if (column == column_end) {
+      }  
+      if (column == column_end) {
         unit.neighbours[3] = [0, 0, 0];
       }
       map_values.push(unit);

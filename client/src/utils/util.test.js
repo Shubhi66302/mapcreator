@@ -49,6 +49,29 @@ describe("createFloorFromCoordinateData", () => {
     });
     expect(floor.map_values).toHaveLength(121);
   });
+  test("create a single row floor; both top and bottom neighbours should be [0,0,0] for all barcodes!", () => {
+    var floor = createFloorFromCoordinateData({
+      floor_id: 1,
+      row_start: 1,
+      row_end: 1,
+      column_start: 1,
+      column_end: 10
+    });
+    expect(floor).toMatchObject({
+      floor_id: 1,
+      chargers: [],
+      ppses: [],
+      odsExcludeds: [],
+      dockPoints: [],
+      fireEmergencies: []
+    });
+    expect(floor.map_values).toHaveLength(10);
+    // all coordinates have neighbours in direction 0 and 2 as [0,0,0]
+    floor.map_values.forEach(({ neighbours }) => {
+      expect(neighbours[0]).toEqual([0, 0, 0]);
+      expect(neighbours[2]).toEqual([0, 0, 0]);
+    });
+  });
 });
 
 describe("createMapFromCoordinateData", () => {
