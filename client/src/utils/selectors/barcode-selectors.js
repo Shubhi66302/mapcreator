@@ -16,6 +16,7 @@ export const getCurrentFloorBarcodes = createSelector(
     return currentFloorBarcodes;
   }
 );
+export const getFloors = state => state.normalizedMap.entities.floor || {};
 
 export const getBarcodeSize = createSelector(
   getBarcode,
@@ -118,5 +119,27 @@ export const getNewCoordinate = createSelector(
       }
     }
     throw new Error("No coordinate available in between {1,1} to {999, 999}");
+  }
+);
+
+export const barcodeStringToFloorsSelector = createSelector(
+  getBarcodes,
+  getFloors,
+  (_state, { barcodeString }) => barcodeString,
+  (barcodesDict, floorsDict, barcodeString) => {
+    var floors = [];
+    Object.entries(floorsDict).forEach(([floorId, floorDict]) => {
+      const { map_values: floorCoordinates } = floorDict;
+      for (var coordinate of floorCoordinates) {
+        if (
+          barcodesDict[coordinate] &&
+          barcodesDict[coordinate].barcode == barcodeString
+        ) {
+          floors.push(parseInt(floorId));
+          break;
+        }
+      }
+    });
+    return floors;
   }
 );

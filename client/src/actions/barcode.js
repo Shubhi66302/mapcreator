@@ -3,14 +3,27 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode, getTileIdsForDistanceTiles } from "utils/selectors";
+import {
+  getBarcode,
+  getTileIdsForDistanceTiles,
+  currentFloorBarcodeToCoordinateKeySelector,
+  tileToWorldCoordinate,
+  getTileSpriteScale,
+  barcodeStringToFloorsSelector
+} from "utils/selectors";
+import { changeFloor } from "./currentFloor";
 import {
   getUpdatedAndTransitBarcodes,
   validateTransitBarcodeForm
 } from "./add-transit-barcode";
 import { addEntitiesToFloor, clearTiles } from "./actions";
+import { snapToCoordinate } from "./viewport";
 import { setErrorMessage } from "./message";
-import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
+import {
+  DEFAULT_BOT_WITH_RACK_THRESHOLD,
+  TILE_SPRITE_WIDTH,
+  TILE_SPRITE_HEIGHT
+} from "../constants.js";
 
 // TODO: should create a folder "actions/barcode" and move this file
 // and "add-transit-barcode.js" in it since this is getting big
@@ -180,6 +193,38 @@ const shiftBarcode = ({ tileId, direction, distance }) => dispatch => {
   }
 };
 
+const locateBarcode = barcodeString => async (dispatch, getState) => {
+  var state = getState();
+  const floors = barcodeStringToFloorsSelector(state, { barcodeString });
+  if (!floors.length) {
+    return dispatch(setErrorMessage(`Barcode ${barcodeString} not found.`));
+  }
+  if (!floors.find(floorId => floorId == state.currentFloor)) {
+    // barcode is not present on current floor, switch first
+    await dispatch(changeFloor(floors[0]));
+    // need to get state again! since we will be using it for selectors later
+    state = getState();
+  }
+  const coordinate = currentFloorBarcodeToCoordinateKeySelector(state, {
+    barcode: barcodeString
+  });
+  const renderCoordinate = tileToWorldCoordinate(state, {
+    tileId: coordinate
+  });
+  const { xScale, yScale } = getTileSpriteScale(state, {
+    tileId: coordinate,
+    spriteIdx: 0
+  });
+  // 5 times the max of (width, height) of the tile
+  // TODO: should fix selectors and make a `getTileDimensions` selector. right now lots of copy paste @amar.c
+  return dispatch(
+    snapToCoordinate(
+      renderCoordinate,
+      Math.max(TILE_SPRITE_WIDTH * xScale, TILE_SPRITE_HEIGHT * yScale) * 5
+    )
+  );
+};
+
 export {
   createNewBarcode,
   addNewBarcode,
@@ -187,5 +232,6 @@ export {
   modifyDistanceBetweenBarcodes,
   modifyNeighbours,
   shiftBarcode,
-  addTransitBarcode
+  addTransitBarcode,
+  locateBarcode
 };

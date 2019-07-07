@@ -4,6 +4,7 @@ import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
 import { removePps, removePpsQueue } from "actions/pps";
 import RemoveItemForm from "../Forms/Util/RemoveItemForm";
+import ClickableBarcodeString from "./ClickableBarcodeString";
 
 const PPSes = ({ ppsDict, dispatch }) => {
   const ppses = Object.entries(ppsDict).map(([, val]) => val);
@@ -14,7 +15,7 @@ const PPSes = ({ ppsDict, dispatch }) => {
         ({ pps_id, location, pick_direction, type, queue_barcodes }, idx) => (
           <BaseCard key={idx} title={pps_id}>
             PPS ID: {pps_id} <br />
-            Location: {location}
+            Location: {<ClickableBarcodeString barcodeString={location} />}
             <br />
             Pick Direction: {pick_direction}
             <br />

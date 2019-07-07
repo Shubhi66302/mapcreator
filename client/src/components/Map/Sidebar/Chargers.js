@@ -4,13 +4,14 @@ import BaseCard from "./BaseCard";
 import { getParticularEntity } from "utils/selectors";
 import { removeCharger } from "actions/charger";
 import RemoveItemForm from "../Forms/Util/RemoveItemForm";
+import ClickableBarcodeString from "./ClickableBarcodeString";
 
 const Chargers = ({ chargerDict, dispatch }) => {
   const chargers = Object.entries(chargerDict).map(([, val]) => val);
   return (
     <div className="pt-3">
       <h4 className="menu-title">Chargers</h4>
-      
+
       {chargers.map(
         (
           {
@@ -23,11 +24,11 @@ const Chargers = ({ chargerDict, dispatch }) => {
             charger_type
           },
           idx
-
         ) => (
           <BaseCard key={idx} title={charger_id}>
             Charger ID: {charger_id} <br />
-            Location: {charger_location}
+            Location:{" "}
+            {<ClickableBarcodeString barcodeString={charger_location} />}
             <br />
             Mode: {mode}
             <br />
@@ -35,9 +36,11 @@ const Chargers = ({ chargerDict, dispatch }) => {
             <br />
             Charger Type: {charger_type}
             <br />
-            Entry Point: {entry_point_location}
+            Entry Point:{" "}
+            {<ClickableBarcodeString barcodeString={entry_point_location} />}
             <br />
-            Reinit Point: {reinit_point_location}
+            Reinit Point:{" "}
+            {<ClickableBarcodeString barcodeString={reinit_point_location} />}
             <br />
             <RemoveItemForm
               itemName="Charger"

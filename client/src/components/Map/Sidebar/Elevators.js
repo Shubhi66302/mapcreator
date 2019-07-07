@@ -13,6 +13,7 @@ import {
   removeElevator
 } from "actions/elevator";
 import RemoveItemForm from "../Forms/Util/RemoveItemForm";
+import ClickableBarcodeString from "./ClickableBarcodeString";
 
 const BarcodeList = ({ barcodes }) => (
   <ul>
@@ -46,7 +47,10 @@ const Elevators = ({ elevatorDict, floorIds, dispatch }) => {
           <BaseCard key={idx} title={elevator_id}>
             <div className="container">
               <CardEntry header="Elevator ID" value={elevator_id} />
-              <CardEntry header="Position" value={position} />
+              <CardEntry
+                header="Position"
+                value={<ClickableBarcodeString barcodeString={position} />}
+              />
               <CardEntry header="Type" value={type} />
               <CardEntry
                 header="Coordinates"

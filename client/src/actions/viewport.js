@@ -13,18 +13,30 @@ export const registerMinimap = instance => ({
   value: instance
 });
 
-export const fitToViewport = (_dispatch, getState) => {
+export const fitToViewport = (dispatch, getState) => {
+  const state = getState();
+  const { top, right, bottom, left } = getFitToSizeViewportRect(state);
+  return dispatch(
+    snapToCoordinate(
+      { x: (right + left) / 2, y: (top + bottom) / 2 },
+      right - left
+    )
+  );
+};
+
+export const snapToCoordinate = ({ x, y }, width) => (_dispatch, getState) => {
   const state = getState();
   const {
     viewport: { viewportInstance }
   } = state;
   if (viewportInstance) {
-    const { top, right, bottom, left } = getFitToSizeViewportRect(state);
     viewportInstance.snapZoom({
-      width: right - left,
-      bullshit: true,
-      center: new PIXI.Point((right + left) / 2, (top + bottom) / 2),
-      removeOnComplete: true
+      width,
+      center: new PIXI.Point(x, y),
+      removeOnComplete: true,
+      forceStart: true,
+      interrupt: true,
+      removeOnInterrupt: true
     });
   }
   return Promise.resolve();

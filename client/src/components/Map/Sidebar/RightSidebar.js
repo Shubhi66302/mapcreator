@@ -19,6 +19,7 @@ import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import ReactTooltip from "react-tooltip";
 import AddTransitBarcode from "components/Map/Forms/AddTransitBarcode";
+import LocateBarcode from "components/Map/Forms/LocateBarcode";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label
@@ -127,6 +128,13 @@ class RightSidebar extends Component {
                 val={zoneViewMode}
                 onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
               />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <div style={{ margin: "0% 5% 3% 5%" }}>
+                <LocateBarcode />
+              </div>
             </div>
           </div>
         </div>

@@ -84,3 +84,37 @@ describe("currentFloorBarcodeToCoordinateKeySelector", () => {
     expect(coordinate).toBeUndefined();
   });
 });
+
+describe("barcodeStringToFloorsSelector", () => {
+  const { barcodeStringToFloorsSelector } = barcodeSelectors;
+  test("should give floor 1 for a barcode that only exists on 1st floor", () => {
+    var state = makeState(twoFloors, 1);
+    var floors = barcodeStringToFloorsSelector(state, {
+      barcodeString: "002.002"
+    });
+    expect(floors).toEqual([1]);
+  });
+  test("should give floor 2 for a barcode that only exists on 2nd floor, even when currently on first floor", () => {
+    var state = makeState(twoFloors, 1);
+    var floors = barcodeStringToFloorsSelector(state, {
+      barcodeString: "017.013"
+    });
+    expect(floors).toEqual([2]);
+  });
+  test("should give empty array if barcode doesn't exist", () => {
+    var state = makeState(twoFloors, 1);
+    var floors = barcodeStringToFloorsSelector(state, {
+      barcodeString: "099.099"
+    });
+    expect(floors).toEqual([]);
+  });
+  test("should give both floors if barcode exists on both floors (with different coordinates obviously)", () => {
+    var state = makeState(twoFloors, 1);
+    // change barcode string of 11,17 on second floor to 002.002
+    state.normalizedMap.entities.barcode["11,17"].barcode = "002.002";
+    var floors = barcodeStringToFloorsSelector(state, {
+      barcodeString: "002.002"
+    });
+    expect(floors).toEqual([1, 2]);
+  });
+});

@@ -42,7 +42,8 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
           coordinate: "15,12",
           store_status: 0,
           barcode: "012.015",
-          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          neighbours: [[1, 1, 1], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+          adjacency: [[11, 17], null, null, null],
           size_info: [750, 750, 750, 750],
           botid: "null"
         },
@@ -52,7 +53,8 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
           coordinate: "11,17",
           store_status: 0,
           barcode: "017.013",
-          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 1], [0, 0, 0]],
+          adjacency: [null, null, [15, 12], null],
           size_info: [750, 750, 750, 750],
           botid: "null"
         }
@@ -68,24 +70,36 @@ export var twoFloors = singleFloor.updateIn(["map", "floors"], floors =>
 
 export var singleFloorVanillaWithOneTransitBarcode = (() => {
   var normalizedMap = normalizeMap(singleFloorVanilla.toJS());
-  normalizedMap.entities.barcode["1,3"] =
-    {
-      store_status: 0,
-      zone: "defzone",
-      barcode: "003.001",
-      botid: "null",
-      neighbours: [ [ 0, 0, 0 ], [ 1, 1, 1 ], [ 0, 0, 0 ], [ 1, 1, 1 ] ],
-      coordinate: "1,3",
-      blocked: false,
-      size_info: [ 750, 375, 750, 375 ],
-      adjacency: [null, [ 0, 0 ], null, [ 1, 0 ]]
-    },
+  normalizedMap.entities.barcode["1,3"] = {
+    store_status: 0,
+    zone: "defzone",
+    barcode: "003.001",
+    botid: "null",
+    neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+    coordinate: "1,3",
+    blocked: false,
+    size_info: [750, 375, 750, 375],
+    adjacency: [null, [0, 0], null, [1, 0]]
+  };
   // Modify adjacency and size info of neighbours of transit barcode
-  normalizedMap.entities.barcode["0,0"].size_info = [ 750, 750, 750, 375 ];
-  normalizedMap.entities.barcode["0,0"].adjacency = [null, null, [0, 1], [ 1, 3 ]];
-  normalizedMap.entities.barcode["1,0"].size_info = [ 750, 375, 750, 750 ];
-  normalizedMap.entities.barcode["1,0"].adjacency = [null, [1, 3], [1, 1], [ 2, 0 ]];
-  normalizedMap.entities.floor["1"].map_values = [...normalizedMap.entities.floor["1"].map_values, "1,3"];
+  normalizedMap.entities.barcode["0,0"].size_info = [750, 750, 750, 375];
+  normalizedMap.entities.barcode["0,0"].adjacency = [
+    null,
+    null,
+    [0, 1],
+    [1, 3]
+  ];
+  normalizedMap.entities.barcode["1,0"].size_info = [750, 375, 750, 750];
+  normalizedMap.entities.barcode["1,0"].adjacency = [
+    null,
+    [1, 3],
+    [1, 1],
+    [2, 0]
+  ];
+  normalizedMap.entities.floor["1"].map_values = [
+    ...normalizedMap.entities.floor["1"].map_values,
+    "1,3"
+  ];
   return fromJS(denormalizeMap(normalizedMap));
 })();
 
@@ -94,25 +108,39 @@ export var singleFloorVanillaWithOneTransitBarcode = (() => {
 // 2,1        1,1           0,1
 // 2,2        1,2    1,4    0,2
 export var singleFloorVanillaWithTwoTransitBarcodes = (() => {
-  var normalizedMap = normalizeMap(singleFloorVanillaWithOneTransitBarcode.toJS());
-  normalizedMap.entities.barcode["1,4"] =
-    {
-      store_status: 0,
-      zone: "defzone",
-      barcode: "004.001",
-      botid: "null",
-      neighbours: [ [ 0, 0, 0 ], [ 1, 1, 1 ], [ 0, 0, 0 ], [ 1, 1, 1 ] ],
-      coordinate: "1,4",
-      blocked: false,
-      size_info: [ 750, 375, 750, 375 ],
-      adjacency: [null, [ 0, 2 ], null, [ 1, 2 ]]
-    },
+  var normalizedMap = normalizeMap(
+    singleFloorVanillaWithOneTransitBarcode.toJS()
+  );
+  normalizedMap.entities.barcode["1,4"] = {
+    store_status: 0,
+    zone: "defzone",
+    barcode: "004.001",
+    botid: "null",
+    neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+    coordinate: "1,4",
+    blocked: false,
+    size_info: [750, 375, 750, 375],
+    adjacency: [null, [0, 2], null, [1, 2]]
+  };
   // Modify adjacency and size info of neighbours of transit barcode
-  normalizedMap.entities.barcode["0,2"].size_info = [ 750, 750, 750, 375 ];
-  normalizedMap.entities.barcode["0,2"].adjacency = [null, null, [0, 1], [ 1, 4 ]];
-  normalizedMap.entities.barcode["1,2"].size_info = [ 750, 375, 750, 750 ];
-  normalizedMap.entities.barcode["1,2"].adjacency = [null, [1, 4], [1, 1], [ 2, 0 ]];
-  normalizedMap.entities.floor["1"].map_values = [...normalizedMap.entities.floor["1"].map_values, "1,4"];
+  normalizedMap.entities.barcode["0,2"].size_info = [750, 750, 750, 375];
+  normalizedMap.entities.barcode["0,2"].adjacency = [
+    null,
+    null,
+    [0, 1],
+    [1, 4]
+  ];
+  normalizedMap.entities.barcode["1,2"].size_info = [750, 375, 750, 750];
+  normalizedMap.entities.barcode["1,2"].adjacency = [
+    null,
+    [1, 4],
+    [1, 1],
+    [2, 0]
+  ];
+  normalizedMap.entities.floor["1"].map_values = [
+    ...normalizedMap.entities.floor["1"].map_values,
+    "1,4"
+  ];
   return fromJS(denormalizeMap(normalizedMap));
 })();
 

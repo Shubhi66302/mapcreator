@@ -30,7 +30,8 @@ export {
   getCurrentFloorBarcodesList,
   coordinateKeyToBarcodeSelector,
   currentFloorBarcodeToCoordinateMap,
-  currentFloorBarcodeToCoordinateKeySelector
+  currentFloorBarcodeToCoordinateKeySelector,
+  barcodeStringToFloorsSelector
 } from "./barcode-selectors";
 export {
   getTileSpriteScale,
