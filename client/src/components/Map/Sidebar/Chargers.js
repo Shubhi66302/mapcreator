@@ -10,6 +10,7 @@ const Chargers = ({ chargerDict, dispatch }) => {
   return (
     <div className="pt-3">
       <h4 className="menu-title">Chargers</h4>
+      
       {chargers.map(
         (
           {
@@ -22,6 +23,7 @@ const Chargers = ({ chargerDict, dispatch }) => {
             charger_type
           },
           idx
+
         ) => (
           <BaseCard key={idx} title={charger_id}>
             Charger ID: {charger_id} <br />

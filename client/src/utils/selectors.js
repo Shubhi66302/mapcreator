@@ -44,6 +44,8 @@ export const coordinateKeyToBarcodeSelector = createSelector(
   barcode => barcode.barcode
 );
 
+
+
 // assumed that there is one-to-one relationship b/w barcode string and coordinate on a floor
 export const currentFloorBarcodeToCoordinateMap = createSelector(
   getCurrentFloorBarcodeIds,
@@ -509,6 +511,26 @@ export const getNewSpecialCoordinates = createSelector(
   }
 );
 
+
+export const getStorableCoordinates = state => 
+{ 
+  const storables = _.filter(state.normalizedMap.entities.barcode,(b) => 
+  {
+    return b.store_status === 1;
+  }
+  );
+  return storables;
+};
+
+
+
+export const getStorableCoordinatesCount = createSelector(
+  getBarcodes,
+  (barcodesDict) => Object.values(barcodesDict).filter(({store_status}) => store_status).length
+);
+
+
+
 export const getElevatorIds = state =>
   state.normalizedMap.entities.map.dummy.elevators;
 
@@ -517,3 +539,5 @@ export const getMapId = state =>
 
 export const getMapName = state =>
   Object.values(state.normalizedMap.entities.mapObj)[0].name;
+
+

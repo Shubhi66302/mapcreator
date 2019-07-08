@@ -1,37 +1,37 @@
 {
-  "$schema": "http://json-schema.org/schema#",
-  "$id": "charger",
-  "title": "Charger schema",
-  "type": "object",
-  "required": [
-    "charger_direction",
-    "entry_point_direction",
-    "mode",
-    "reinit_point_direction",
-    "entry_point_location",
-    "status",
-    "charger_location",
-    "reinit_point_location",
-    "charger_type"
-  ],
-  "properties": {
-    "charger_direction": { "$ref": "definitions#/direction" },
-    "entry_point_direction": { "$ref": "definitions#/direction" },
-    "mode": { "type": "string" },
-    "reinit_point_direction": { "$ref": "definitions#/direction" },
-    "entry_point_location": { "$ref": "definitions#/barcodeString" },
-    "status": { "type": "string" },
-    "charger_location": { "$ref": "definitions#/barcodeString" },
-    "reinit_point_location": { "$ref": "definitions#/barcodeString" },
-    "charger_type": {
-      "type": "string",
-      "enum": [
-        "rectangular_plate_charger",
-        "circular_plate_charger",
-        "side_dock",
-        "bottom_dock",
-        "normal"
-      ]
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "charger",
+    "title": "Charger schema",
+    "type": "object",
+    "required": [
+      "charger_direction",
+      "entry_point_direction",
+      "mode",
+      "reinit_point_direction",
+      "entry_point_location",
+      "status",
+      "charger_location",
+      "reinit_point_location",
+      "charger_type"
+    ],
+    "properties": {
+      "charger_direction": { "$ref": "definitions#/direction" },
+      "entry_point_direction": { "$ref": "definitions#/direction" },
+      "mode": { "type": "string" },
+      "reinit_point_direction": { "$ref": "definitions#/direction" },
+      "entry_point_location": { "$ref": "definitions#/barcodeString" },
+      "status": { "type": "string" },
+      "charger_location": { "$ref": "definitions#/barcodeString" },
+      "reinit_point_location": { "$ref": "definitions#/barcodeString" },
+      "charger_type": {
+        "type": "string",
+        "enum": [
+          "rectangular_plate_charger",
+          "circular_plate_charger",
+          "side_dock",
+          "bottom_dock",
+          "normal"
+        ]
+      }
     }
   }
-}
