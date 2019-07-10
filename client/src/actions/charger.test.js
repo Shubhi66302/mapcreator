@@ -55,7 +55,7 @@ describe("createAllChargerBarcodes", () => {
         {
           botid: "null",
           neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
-          size_info: [205, 1000, 205, 1000],
+          size_info: [205, 750, 205, 750],
           coordinate: "12,12",
           barcode: "012.012",
           zone: "defzone",

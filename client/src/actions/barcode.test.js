@@ -54,21 +54,23 @@ describe("modifyDistanceBetweenBarcodes", () => {
   const { modifyDistanceBetweenBarcodes } = barcode;
   const { clearTiles } = actions;
   test("should dispatch action with all the required keys", async () => {
-    const initialState = makeState(singleFloorVanilla, 1, {}, { "c-0": true });
-    const store = mockStore(initialState);
+    const globalState = makeState(singleFloorVanilla, 1, {}, { "c-0": true });
+    const store = mockStore(globalState);
     await store.dispatch(
       modifyDistanceBetweenBarcodes({
-        distance: 200
+        distance: 200,
+        direction: 3
       })
     );
+    const tileIds = ["0,0", "0,1", "0,2"];
     const dispatchedActions = store.getActions();
     expect(dispatchedActions).toHaveLength(2);
     expect(dispatchedActions[0]).toEqual({
       type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
       value: {
         distance: 200,
-        tileBounds: { maxX: 2, maxY: 2, minX: 0, minY: 0 },
-        distanceTiles: { "c-0": true }
+        tileIds,
+        direction: 3
       }
     });
     expect(dispatchedActions[1]).toEqual(clearTiles);

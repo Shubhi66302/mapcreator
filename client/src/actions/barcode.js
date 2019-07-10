@@ -3,7 +3,7 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode, tileBoundsSelector } from "utils/selectors";
+import { getBarcode, getTileIdsForDistanceTiles} from "utils/selectors";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import { setErrorMessage } from "./message";
 import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
@@ -89,20 +89,19 @@ const removeBarcodes = (dispatch, getState) => {
   dispatch(clearTiles);
 };
 
-const modifyDistanceBetweenBarcodes = ({ distance }) => (
+const modifyDistanceBetweenBarcodes = ({ distance, direction }) => (
   dispatch,
   getState
 ) => {
-  const state = getState();
-  const {
-    selection: { distanceTiles }
-  } = state;
+  const globalState = getState();
+  const { selection: { distanceTiles } } = globalState;
+  const tileIds = getTileIdsForDistanceTiles(distanceTiles, globalState, direction);
   dispatch({
     type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
     value: {
       distance,
-      tileBounds: tileBoundsSelector(state),
-      distanceTiles
+      tileIds,
+      direction
     }
   });
   dispatch(clearTiles);

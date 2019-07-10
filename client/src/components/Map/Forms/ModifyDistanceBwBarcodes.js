@@ -4,32 +4,33 @@ import BaseJsonForm from "./Util/BaseJsonForm";
 import { connect } from "react-redux";
 import { modifyDistanceBetweenBarcodes } from "actions/barcode";
 
-const schema = {
-  title: "Modify distance between barcodes",
+const getSchema = (directionSchema) => ({
+  title: "Modify distance in given direction for barcodes",
   type: "object",
-  required: ["distance"],
+  required: ["distance", "direction"],
   properties: {
     distance: {
       title: "Distance",
-      type: "integer",
-      minimum: 0
-    }
+      type: "integer"
+    },
+    direction: directionSchema || {title: "Direction"}
   }
-};
+});
+
 
 const tooltipData = {
-  id: "modify-distance-bw-barcodes",
-  title: "Modify distances between barcodes",
+  id: "modify-distance-in-given-direction-for-barcodes",
+  title: "Modify distance in given direction for barcodes",
   bulletPoints: [
-    "Will not modify distances between charger entry and charger, or other special barcodes.",
-    "Hence the distance number will look the same even though other barcode distances have been modified."
+    "Will increase the distance by given distance value for all barcodes for" +
+    "selected distance tile in given direction"
   ]
 };
 
-const ModifyDistanceBwBarcodes = ({ dispatch, disabled }) => (
+const ModifyDistanceBwBarcodes = ({ dispatch, disabled, direction }) => (
   <BaseJsonForm
     disabled={disabled}
-    schema={schema}
+    schema={getSchema(direction)}
     onSubmit={({ formData }) =>
       dispatch(modifyDistanceBetweenBarcodes(formData))
     }
@@ -38,6 +39,44 @@ const ModifyDistanceBwBarcodes = ({ dispatch, disabled }) => (
   />
 );
 
-export default connect(state => ({
-  disabled: Object.keys(state.selection.distanceTiles).length === 0
-}))(ModifyDistanceBwBarcodes);
+export const getUpdatedSchema = state => {
+  var isRowDistanceTileSelected = false;
+  var isColumnDistanceTileSelected = false;
+  const selectedDistanceTiles = state.selection.distanceTiles;
+  for(var key in selectedDistanceTiles){
+    if(/c-.*/.test(key)) {isColumnDistanceTileSelected = true;};
+    if(/r-.*/.test(key)) {isRowDistanceTileSelected = true;};
+  };
+  if((isRowDistanceTileSelected && isColumnDistanceTileSelected) ||
+    ((!isRowDistanceTileSelected) && (!isColumnDistanceTileSelected))){
+    return {disabled: true};
+  };
+  if (isColumnDistanceTileSelected){
+    // column distance tiles selected
+    return {
+      disabled: false,
+      direction: {
+        type: "integer",
+        title: "Direction",
+        default: 1,
+        enum: [1, 3],
+        enumNames: ["Right", "Left"]
+      }
+    };
+  };
+  // row distance tiles selected
+  return {
+    disabled: false,
+    direction: {
+      type: "integer",
+      title: "Direction",
+      default: 0,
+      enum: [0, 2],
+      enumNames: ["Top", "Down"]
+    }
+  };
+};
+
+export default connect(state => {
+  return getUpdatedSchema(state);
+})(ModifyDistanceBwBarcodes);

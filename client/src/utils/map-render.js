@@ -1,12 +1,12 @@
 // helper methods for rendering. impure methods (kind of) since reselect was not
 // efficient enough. need information of previous state to work correctly
 import {
-  spriteRenderCoordinateSelector,
   tileSpriteNamesWithoutEntityData,
   tileNameWithoutEntityDataSelector,
-  specialTileSpritesMapSelector,
-  tileIdsSelector,
-  getBarcodes
+  spriteRenderCoordinateSelector,
+  getTileSpriteScale,
+  getCurrentFloorBarcodes,
+  specialTileSpritesMapSelector
 } from "../utils/selectors";
 import { dummyState } from "reducers/util";
 import * as PIXI from "pixi.js";
@@ -15,22 +15,23 @@ import * as PIXI from "pixi.js";
 
 export var createOrUpdateAllSprites = (container, state, tileId) => {
   var spriteNames = tileSpriteNamesWithoutEntityData(state, { tileId });
-  for (var idx = 0; idx < 8; idx++) {
-    var { x, y } = spriteRenderCoordinateSelector(state, {
-      tileId,
-      spriteIdx: idx
-    });
+  for (var idx = 0; idx < 9; idx++)
+  {
+    var {xScale, yScale} = getTileSpriteScale(state, {tileId, spriteIdx: idx});
+    var { x, y } = spriteRenderCoordinateSelector(state, {tileId, spriteIdx: idx});
     let sprite = container.spriteMap[`${tileId}-${idx}`];
-    if (!sprite) {
+    if (!sprite)
+    {
       // make new sprite.
-      sprite = new PIXI.Sprite(
-        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]
-      );
+      sprite = new PIXI.Sprite(PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]);
+      sprite.scale.x = xScale;
+      sprite.scale.y = yScale;
       container.addChild(sprite);
       container.spriteMap[`${tileId}-${idx}`] = sprite;
-    } else {
-      sprite.texture =
-        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
+    }
+    else
+    {
+      sprite.texture = PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
       sprite.alpha = 1;
     }
     sprite.x = x;
@@ -45,39 +46,20 @@ export var createOrUpdateAllSprites = (container, state, tileId) => {
 
 // called whenever tileIds change.
 export var tileIdsUpdate = (container, state, prevState) => {
-  var prevTileIds = tileIdsSelector(prevState);
-  var tileIds = tileIdsSelector(state);
-  if (prevTileIds === tileIds) return; // nothing to do.
+  var prevBarcodes = getCurrentFloorBarcodes(prevState);
+  var barcodes = getCurrentFloorBarcodes(state);
+  if (prevBarcodes === barcodes) return; // nothing to do.
   // remove childrend and set spritemap to empty... actually pretty efficient.
   container.removeChildren();
   container.spriteMap = {};
-  for (let tileId of tileIds) {
-    createOrUpdateAllSprites(container, state, tileId);
-    // the entity data and selected data will be updated later.
-  }
+  for (var barcodeId in barcodes) {
+    const barcodeInfo = barcodes[barcodeId];
+    createOrUpdateAllSprites(container, state, barcodeInfo.coordinate);
+  };
   return container;
 };
 
-// called on barcode changed (eg. store status changed for barcodes, barcode string changed)
-export var barcodeUpdate = (container, state, prevState) => {
-  var prevBarcodes = getBarcodes(prevState);
-  var barcodes = getBarcodes(state);
-  if (prevBarcodes === barcodes) return; // since barcodes are same this was not needed.
-  var tileIds = tileIdsSelector(state);
-  // var specialTileSpritesMap = specialTileSpritesMapSelector(state);
-  for (let tileId of tileIds) {
-    if (prevBarcodes[tileId]) {
-      if (prevBarcodes[tileId].barcode !== barcodes[tileId].barcode) {
-        // re render everything for this tile
-        createOrUpdateAllSprites(container, state, tileId);
-      }
-    }
-    // special tile sprites are not done here.
-    var tileName = tileNameWithoutEntityDataSelector(state, { tileId });
-    container.spriteMap[`${tileId}-0`].texture =
-      PIXI.loader.resources["mySpritesheet"].textures[tileName];
-  }
-};
+
 
 // updater that does all the entity (pps, charger, queue etc.) and selected tile rendering.
 // almost always run...
@@ -112,7 +94,6 @@ export var tileSpriteUpdate = (container, state, prevState) => {
 var allUpdates = (container, state) => {
   var prevState = container.prevState || dummyState;
   tileIdsUpdate(container, state, prevState);
-  barcodeUpdate(container, state, prevState);
   tileSpriteUpdate(container, state, prevState);
   container.prevState = state;
 };

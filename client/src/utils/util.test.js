@@ -4,8 +4,6 @@ import {
   encode_barcode,
   coordinateKeyToTupleOfIntegers,
   implicitCoordinateKeyToBarcode,
-  tileToWorldCoordinate,
-  worldToTileCoordinate,
   getIdsForEntities,
   getNeighbouringBarcodes,
   getNeighbourTiles,
@@ -16,7 +14,6 @@ import {
 } from "./util";
 import { singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
-import * as constants from "../constants";
 
 var ajv = getLoadedAjv();
 var mapValidate = ajv.getSchema("map");
@@ -123,58 +120,6 @@ describe("getIdsForEntities", () => {
   });
 });
 
-describe("tileToWorldCoordinate", () => {
-  test("good stuff", () => {
-    expect(
-      tileToWorldCoordinate("1,2", { maxX: 2, maxY: 2, minX: 0, minY: 0 })
-    ).toEqual({
-      x: -1 * constants.TILE_WIDTH,
-      y: 2 * constants.TILE_HEIGHT
-    });
-  });
-});
-
-describe("worldToTileCoordinate", () => {
-  test("good stuff", () => {
-    expect(
-      worldToTileCoordinate(
-        { x: -constants.TILE_WIDTH * 2, y: constants.TILE_HEIGHT * 3 },
-        { maxX: 5, maxY: 5, minX: 0, minY: 1 }
-      )
-    ).toBe("2,4");
-  });
-  test("should be undefined if coordinate is between some tiles", () => {
-    var { x: topLeftX, y: topLeftY } = tileToWorldCoordinate("2,4", {
-      maxX: 5,
-      maxY: 5,
-      minX: 0,
-      minY: 1
-    });
-    expect(
-      worldToTileCoordinate(
-        {
-          x:
-            topLeftX +
-            (constants.TILE_WIDTH - constants.TILE_SPRITE_WIDTH) / 2 +
-            constants.TILE_SPRITE_WIDTH,
-          y: topLeftY
-        },
-        { maxX: 5, maxY: 5, minX: 0, minY: 1 }
-      )
-    ).toBeUndefined();
-  });
-});
-
-describe("matching between tileToWorldCoordinate and worldToTileCoordinate", () => {
-  // x = f1(f2(x))
-  test("should match", () => {
-    var tile = "7,6";
-    var tileBounds = { maxX: 10, maxY: 20, minX: 5, minY: 2 };
-    expect(
-      worldToTileCoordinate(tileToWorldCoordinate(tile, tileBounds), tileBounds)
-    ).toBe(tile);
-  });
-});
 
 describe("tupleOfIntegersToCoordinateKey", () => {
   test("should give correct coordinateKey for tuple", () => {

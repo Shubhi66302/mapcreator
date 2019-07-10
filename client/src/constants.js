@@ -4,25 +4,22 @@ export var TILE_HEIGHT = 220;
 // tile sprite dimensions used to calculate actual hitbox for registering clicks
 export var TILE_SPRITE_WIDTH = 150;
 export var TILE_SPRITE_HEIGHT = 150;
+
+// Distance tile and number related constants
 export var DISTANCE_TILE_WIDTH = 120;
-export var DISTANCE_TILE_HEIGHT = 50;
-export var DISTANCE_TILE_OFFSETS = {
-  top: {
-    x: -75,
-    y: -200,
-    yText: -100
-  },
-  left: {
-    x: -150,
-    y: 110,
-    yText: -50
-  }
-};
+export var DISTANCE_TILE_HEIGHT =  300;
+// scale 2 if distance is 200 and 3 if distance is 1500
+// for other distances use linear interpolation
+export var DISTANCE_NUMBER_SCALE_MAP = {min: [200, 2], max: [1500, 3]};
+
+// Gap between barcode tile sprite
+export var DEFAULT_DISTANCE_BW_BARCODES = 1500;
+export var BARCODE_SPRITE_GAP = 500;
 export var SCALE = 4;
+export var BARCODE_DIGIT_OFFSET = 5; // in y
+export var BARCODE_DIGIT_HEIGHT = 36;
+export var BARCODE_DIGIT_WIDTH = 23;
 // constants for offsetting barcode string sprites
-export var BARCODE_SPRITE_Y_OFFSET = -50;
-export var BARCODE_SPRITE_X_OFFSET = 24;
-export var DOT_SPRITE_Y_OFFSET = 30;
 export var AFTER_DOT_SPRITE_X_OFFSET = -10;
 // approx ~320k sprites are created for a map of size 200x200. if more than MAX_SPRITES
 // sprites are present, they won't be rendered and mapcreator won't work.
@@ -56,7 +53,7 @@ export var EDGE_SPRITES = ["0.png", "1.png", "2.png", "3.png"];
 export var CHARGER_DISTANCE = 205;
 
 // Viewport
-export var VIEWPORT_MAX_SIZE_PADDING_RATIO = 1.3;
+export var VIEWPORT_MAX_SIZE_PADDING_RATIO = 2;
 export var VIEWPORT_WIDTH = 1000;
 export var VIEWPORT_HEIGHT = 600;
 export var DEFAULT_BOT_WITH_RACK_THRESHOLD = 750;

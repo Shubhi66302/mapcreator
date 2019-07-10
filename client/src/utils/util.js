@@ -1,4 +1,3 @@
-import * as constants from "../constants";
 import _ from "lodash";
 
 export var handleErrors = response => {
@@ -141,41 +140,6 @@ export var implicitCoordinateKeyToBarcode = coordinateKey => {
 export var tupleOfIntegersToCoordinateKey = tuple => {
   return `${tuple[0]},${tuple[1]}`;
 };
-
-export var tileToWorldCoordinate = (tileId, { minX, minY }) => {
-  const coordinate = coordinateKeyToTupleOfIntegers(tileId);
-  var xCoord = -(coordinate[0] - minX) * constants.TILE_WIDTH;
-  var yCoord = (coordinate[1] - minY) * constants.TILE_HEIGHT;
-  return { x: xCoord, y: yCoord };
-};
-
-// clicks between tiles are not registed as 'clicked'
-export var worldToTileCoordinate = ({ x, y }, { minX, minY }) => {
-  // need to ceil xTile since tile is actually to the left of the coordinate
-  var xTile = Math.ceil(-x / constants.TILE_WIDTH + minX);
-  var yTile = parseInt(y / constants.TILE_HEIGHT + minY);
-  var tileId = `${xTile},${yTile}`;
-  // make sure valid coordinates
-  try {
-    var { x: tileTopLeftX, y: tileTopLeftY } = tileToWorldCoordinate(tileId, {
-      minX,
-      minY
-    });
-  } catch (error) {
-    // not a valid coordinate
-    return undefined;
-  }
-  // check if the world coordinate is within [TILE_SPRITE_WIDTH, TILE_SPRITE_HEIGHT] of the top left coordinate
-  if (
-    x <= tileTopLeftX + constants.TILE_SPRITE_WIDTH &&
-    x >= tileTopLeftX &&
-    y <= tileTopLeftY + constants.TILE_SPRITE_HEIGHT &&
-    y >= tileTopLeftY
-  )
-    return tileId;
-  return undefined;
-};
-
 // gets unique ids for number of entities
 //  existingEntities is map!
 export const getIdsForEntities = (numEntities = 0, existingEntities = {}) => {

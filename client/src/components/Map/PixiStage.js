@@ -9,13 +9,12 @@ import { connect } from "react-redux";
 import {
   getRectFromDiagonalPoints,
   distanceTileSpritesSelector,
-  getTileInBetweenDistances
+  getRowColumnInBetweenDistancesAndCoordinates
 } from "utils/selectors";
 import { clickOnDistanceTile } from "actions/actions";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
 import PixiDistanceTileRectange from "./PixiDistanceTileRectange";
 import PixiNumberSprite from "./PixiNumberSprite";
-import _ from "lodash";
 // this removes anti-aliasing somehow
 PIXI.settings.PRECISION_FRAGMENT = "highp"; // this makes text looks better
 
@@ -48,22 +47,27 @@ class PixiStage extends Component {
             [
               // TODO: optimize this rendering even more, maybe using ParticleContainer
               <PixiMapContainer key={"first"} store={store} />,
-              ..._.zip(distanceTiles, inBetweenDistances).map(
-                ([{ x, y, width, height, key }, dist], idx) => [
-                  <PixiDistanceTileRectange
-                    key={key}
-                    rect={{ x, y, width, height }}
-                    fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
-                    onClick={() => dispatch(clickOnDistanceTile(key))}
-                  />,
-                  <PixiNumberSprite
-                    key={2 * idx + 1}
-                    number={dist}
-                    x={x}
-                    y={y - 40}
-                    scale={0.8}
-                  />
-                ]
+              ...distanceTiles.map(
+                ({ x, y, width, height, key }) => 
+                  [
+                    <PixiDistanceTileRectange
+                      key={key}
+                      rect={{ x, y, width, height }}
+                      fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
+                      onClick={() => dispatch(clickOnDistanceTile(key))}
+                    />
+                  ]
+              ),
+              ...inBetweenDistances.map(
+                ({x, y, distance}, idx) =>
+                  [
+                    <PixiNumberSprite
+                      key = {2 * idx + 1}
+                      number = {distance}
+                      x = {x}
+                      y = {y}
+                    />
+                  ]
               )
             ]
           ) : (
@@ -97,6 +101,6 @@ export default connect(state => ({
     ? getRectFromDiagonalPoints(state.selectedArea)
     : { top: 0, left: 0, right: 0, bottom: 0 },
   distanceTiles: distanceTileSpritesSelector(state),
-  inBetweenDistances: getTileInBetweenDistances(state),
+  inBetweenDistances: getRowColumnInBetweenDistancesAndCoordinates(state),
   selectedDistanceTiles: state.selection.distanceTiles || {}
 }))(PixiStage);

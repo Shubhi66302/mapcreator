@@ -1,7 +1,8 @@
 // action creator to make clicked-on-tile action from clicked-on-viewport action
-import { worldToTileCoordinate, handleErrors } from "utils/util";
+import {handleErrors} from "utils/util";
 import {
-  tileBoundsSelector,
+  worldToTileCoordinate,
+  getTileIdToWorldCoordMapFunc,
   tileIdsMapSelector,
   getDragSelectedTiles,
   distanceTileSpritesSelector,
@@ -42,12 +43,11 @@ export const clickOnViewport = (worldCoordinate, onShiftClickOnMapTile) => (
 ) => {
   const state = getState();
   const tileIdsMap = tileIdsMapSelector(state);
-  const tileBounds = tileBoundsSelector(state);
   const distanceTileRects = distanceTileSpritesSelector(state);
   const isPointOnADistanceTile = distanceTileRects.some(rect =>
     isPointInRect(rect, worldCoordinate)
   );
-  var tileId = worldToTileCoordinate(worldCoordinate, tileBounds);
+  var tileId = worldToTileCoordinate(state, worldCoordinate);
   // make sure the tileId is actually part of current floor's tiles
   if (tileId && tileIdsMap[tileId]) {
     if (state.selection.shiftKey) return onShiftClickOnMapTile(tileId);
@@ -211,6 +211,31 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   return dispatch(clearTiles);
 };
 
+export const addWorldCoordinateToMap = normalizedMap => {
+  var entities = normalizedMap.entities;
+  const oldBarcodeDict = entities.barcode;
+  const floorInfo = entities.floor;
+  var newbarcodeDict = {};
+  for(var floorId in floorInfo){
+    var currentFloorBarcodeDict = {};
+    const barcodeKeys = floorInfo[floorId].map_values;
+    barcodeKeys.forEach(barcodeKey => {
+      currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
+    });
+    const tileToWorldCoordinateMap = getTileIdToWorldCoordMapFunc(currentFloorBarcodeDict);
+    for(var barcode in currentFloorBarcodeDict){
+      var barcodeInfo = currentFloorBarcodeDict[barcode];
+      const worldCoordinate = tileToWorldCoordinateMap[barcode];
+      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${worldCoordinate.y}]`;
+      currentFloorBarcodeDict[barcode] = barcodeInfo;
+    };
+    newbarcodeDict = {...newbarcodeDict, ...currentFloorBarcodeDict};
+  };
+  entities.barcode = newbarcodeDict;
+  normalizedMap.entities = entities;
+  return normalizedMap;
+};
+
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   // denormalize it
@@ -224,7 +249,8 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
 };
 
 export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
-  const { normalizedMap } = getState();
+  var { normalizedMap } = getState();
+  normalizedMap = addWorldCoordinateToMap(normalizedMap);
   // denormalize it
   const mapObj = denormalizeMap(normalizedMap);
   const exportedJson = exportMap(mapObj.map, singleFloor);

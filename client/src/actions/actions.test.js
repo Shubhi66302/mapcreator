@@ -1,6 +1,5 @@
-import { tileToWorldCoordinate } from "utils/util";
+import { tileToWorldCoordinate, getTileIdToWorldCoordMap} from "utils/selectors";
 import thunk from "redux-thunk";
-import { tileBoundsSelector } from "utils/selectors";
 import configureStore from "redux-mock-store";
 import { makeState, singleFloor, singleFloorVanilla } from "utils/test-helper";
 import * as actions from "./actions";
@@ -9,16 +8,16 @@ import fetchMock from "fetch-mock";
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
+
 // TODO: test click-between-tiles functionality more thoroughly
 describe("clickOnViewport", () => {
   const { clickOnViewport, mapTileClick, outsideTilesClick } = actions;
   test("dispatches click on tile action when an existing tile is clicked", async () => {
     // setup
     const initialState = makeState(singleFloor, 1);
+    const tileIdToWorldCoordinateMap = getTileIdToWorldCoordMap(initialState);
     const store = mockStore(initialState);
-    const tileBounds = tileBoundsSelector(initialState);
-    var clickPoint = tileToWorldCoordinate("1,0", tileBounds);
-
+    var clickPoint = tileToWorldCoordinate("1,0", tileIdToWorldCoordinateMap);
     await store.dispatch(clickOnViewport(clickPoint));
     const dispatchedActions = store.getActions();
 
@@ -29,9 +28,7 @@ describe("clickOnViewport", () => {
     // setup
     const initialState = makeState(singleFloor, 1);
     const store = mockStore(initialState);
-    const tileBounds = tileBoundsSelector(initialState);
-    var clickPoint = tileToWorldCoordinate("100,100", tileBounds);
-
+    var clickPoint = {x: 40000, y: 50000};
     await store.dispatch(clickOnViewport(clickPoint));
     const dispatchedActions = store.getActions();
 

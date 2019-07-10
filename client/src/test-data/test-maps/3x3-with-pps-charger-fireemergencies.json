@@ -89,7 +89,7 @@
             "coordinate": "2,2"
           },
           {
-            "size_info": [205, 1000, 205, 1000],
+            "size_info": [205, 750, 205, 750],
             "zone": "defzone",
             "adjacency": [[2, 1], null, [2, 2], null],
             "neighbours": [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],

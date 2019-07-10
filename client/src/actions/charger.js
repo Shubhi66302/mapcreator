@@ -50,6 +50,7 @@ export const createAllChargerBarcodes = (
     );
   var entryTileId = getNeighbourTiles(tileId)[charger_direction];
   // special barcode
+  // TODO: can ask user to add this, using transit barcode button
   var specialBarcode = {
     store_status: 0,
     zone: "defzone",
@@ -58,10 +59,11 @@ export const createAllChargerBarcodes = (
     neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
     coordinate: specialTileId,
     blocked: false,
-    size_info: [1000, 1000, 1000, 1000],
+    size_info: [750, 750, 750, 750],
     adjacency: [null, null, null, null],
     special: true
   };
+  var chargerBarcode = _.cloneDeep(barcodesDict[tileId]);
   specialBarcode.neighbours[charger_direction] = [1, 1, 0];
   specialBarcode.neighbours[(charger_direction + 2) % 4] = [1, 1, 0];
   specialBarcode.adjacency[charger_direction] = coordinateKeyToTupleOfIntegers(
@@ -70,12 +72,17 @@ export const createAllChargerBarcodes = (
   specialBarcode.adjacency[
     (charger_direction + 2) % 4
   ] = coordinateKeyToTupleOfIntegers(tileId);
-  specialBarcode.size_info[charger_direction] = CHARGER_DISTANCE;
-  specialBarcode.size_info[(charger_direction + 2) % 4] = CHARGER_DISTANCE;
-
+  // Size Info:
+  for(var dir = 0; dir < 4; dir ++){
+    if(dir == charger_direction || dir == (charger_direction + 2) % 4){
+      specialBarcode.size_info[dir] = CHARGER_DISTANCE;
+    }else{
+      // Use charger barcode size info for perpendicular directions
+      specialBarcode.size_info[dir] = chargerBarcode.size_info[dir];
+    };
+  };
   // charger barcode
   // TODO: some other neighbour changes to .neighbours; is this even required though since adjacency will now be used for this?
-  var chargerBarcode = _.cloneDeep(barcodesDict[tileId]);
   // remove edges from charger barcode to all other barcodes except special barcode
   // this is so that butler only leaves the way it has come, eg. for side dock
   chargerBarcode.neighbours[charger_direction][2] = 0;
