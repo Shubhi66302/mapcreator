@@ -8,25 +8,6 @@ import {
 } from "../test-helper";
 import { fromJS } from "immutable";
 
-describe("getCurrentFloorBarcodeIds", () => {
-  test("should return special barcode tile also since sampleMapJson has one special", () => {
-    var state = makeState(singleFloor);
-    var tileIds = selectors.getCurrentFloorBarcodeIds(state);
-    expect(tileIds).toHaveLength(9);
-  });
-  test("should get 9 barcodes on first floor of 2 floor map", () => {
-    var state = makeState(twoFloors, 1);
-    var tileIds = selectors.getCurrentFloorBarcodeIds(state);
-    expect(tileIds).toHaveLength(9);
-  });
-  test("should get 2 barcode when on 2nd floor of 2 floor map", () => {
-    var state = makeState(twoFloors, 2);
-    var tileIds = selectors.getCurrentFloorBarcodeIds(state);
-    expect(tileIds).toHaveLength(2);
-    expect(tileIds).toEqual(["15,12", "11,17"]);
-  });
-});
-
 describe("tileIdsMapSelector", () => {
   const { tileIdsMapSelector } = selectors;
   test("should get 9 out of 9 barcodes for first floor", () => {
@@ -61,252 +42,6 @@ describe("tileIdsMapSelector", () => {
     expect(tileIdsMapSelector.recomputations()).toBe(1);
   });
 });
-
-describe("coordinateKeyToBarcodeSelector", () => {
-  const { coordinateKeyToBarcodeSelector } = selectors;
-  test("should give correct barcode for a tile id", () => {
-    var state = makeState(twoFloors, 2);
-    var barcodeString = coordinateKeyToBarcodeSelector(state, {
-      tileId: "15,12"
-    });
-    expect(barcodeString).toBe("012.015");
-  });
-  test("should give correct barcode for tile id when barcode string != tile id", () => {
-    var state = makeState(twoFloors, 2);
-    var barcodeString = coordinateKeyToBarcodeSelector(state, {
-      tileId: "11,17"
-    });
-    expect(barcodeString).toBe("017.013");
-  });
-});
-
-describe("currentFloorBarcodeToCoordinateMap", () => {
-  const { currentFloorBarcodeToCoordinateMap } = selectors;
-  test("should compute a correct map for current floor barcodes", () => {
-    var state = makeState(twoFloors, 2);
-    var barcodeToCoordinateMap = currentFloorBarcodeToCoordinateMap(state);
-    expect(barcodeToCoordinateMap).toMatchObject({
-      "012.015": "15,12",
-      "017.013": "11,17"
-    });
-  });
-  test("should not recompute on repeated calls", () => {
-    var state = makeState(twoFloors, 2);
-    currentFloorBarcodeToCoordinateMap.resetRecomputations();
-    // it's a single argument call, but adding a second argument shouldn't change things
-    currentFloorBarcodeToCoordinateMap(state);
-    currentFloorBarcodeToCoordinateMap(state, { barcode: "something" });
-    currentFloorBarcodeToCoordinateMap(state, { barcode: "somethingelse" });
-    currentFloorBarcodeToCoordinateMap(state, { notused: "ok" });
-    expect(currentFloorBarcodeToCoordinateMap.recomputations()).toBe(1);
-  });
-});
-
-describe("barcodeToCoordinateKeySelector", () => {
-  const { barcodeToCoordinateKeySelector } = selectors;
-  test("should give correct coordinate for a barcode string", () => {
-    var state = makeState(twoFloors, 2);
-    var coordinate = barcodeToCoordinateKeySelector(state, {
-      barcode: "012.015"
-    });
-    expect(coordinate).toBe("15,12");
-  });
-  test("should give correct coordinate when barcode does not match coordinate", () => {
-    var state = makeState(twoFloors, 2);
-    var coordinate = barcodeToCoordinateKeySelector(state, {
-      barcode: "017.013"
-    });
-    expect(coordinate).toBe("11,17");
-  });
-  test("should return undefined when querying for a barcode that doesn't exist on current floor", () => {
-    var state = makeState(twoFloors, 1);
-    var coordinate = barcodeToCoordinateKeySelector(state, {
-      barcode: "012.015"
-    });
-    expect(coordinate).toBeUndefined();
-  });
-});
-
-describe("tileNameWithoutEntityDataSelector", () => {
-  const { tileNameWithoutEntityDataSelector } = selectors;
-  test("should give correct tile name without entity info", () => {
-    var state = makeState(twoFloors, 1);
-    expect(tileNameWithoutEntityDataSelector(state, { tileId: "2,0" })).toBe(
-      constants.STORABLE
-    );
-    expect(tileNameWithoutEntityDataSelector(state, { tileId: "1,0" })).toBe(
-      constants.NORMAL
-    );
-    expect(tileNameWithoutEntityDataSelector(state, { tileId: "1,2" })).toBe(
-      constants.NORMAL
-    );
-  });
-});
-
-describe("tileSpriteNamesWithoutEntityData", () => {
-  const { tileSpriteNamesWithoutEntityData } = selectors;
-  test("should give correct barcode sprite names for normal tile", () => {
-    var state = makeState(twoFloors, 1);
-    var sprites = tileSpriteNamesWithoutEntityData(state, { tileId: "1,2" });
-    expect(sprites).toEqual([
-      constants.NORMAL,
-      "0.png",
-      "0.png",
-      "2.png",
-      "dot.png",
-      "0.png",
-      "0.png",
-      "1.png",
-      "dot.png"
-    ]);
-  });
-  test("should give correct barcode sprite names for storable tile", () => {
-    var state = makeState(twoFloors, 1);
-    var sprites = tileSpriteNamesWithoutEntityData(state, { tileId: "2,0" });
-    expect(sprites).toEqual([
-      constants.STORABLE,
-      "0.png",
-      "0.png",
-      "0.png",
-      "dot.png",
-      "0.png",
-      "0.png",
-      "2.png",
-      "dot.png"
-    ]);
-  });
-});
-
-describe("getParticularEntityMap", () => {
-  const { getParticularEntityMap } = selectors;
-  test("should get correct entity map for ppses", () => {
-    var state = makeState(twoFloors, 1);
-    var entityMap = getParticularEntityMap(state, { entityName: "pps" });
-    expect(entityMap).toMatchObject({
-      "1,0": constants.PPS,
-      "1,1": constants.PPS
-    });
-  });
-  test("should get correct entity map for fire emergency", () => {
-    var state = makeState(twoFloors, 1);
-    var entityMap = getParticularEntityMap(state, {
-      entityName: "fireEmergency"
-    });
-    expect(entityMap).toMatchObject({
-      "0,2": constants.EMERGENCY_EXIT,
-      "0,1": constants.EMERGENCY_EXIT
-    });
-  });
-  test("should not recompute entities even when alternating betweeen them", () => {
-    // using re-reselect so shouldn't recompute
-    var state = makeState(twoFloors, 1);
-    var ppsSelector = getParticularEntityMap.getMatchingSelector(state, {
-      entityName: "pps"
-    });
-    var fireEmergencySelector = getParticularEntityMap.getMatchingSelector(
-      state,
-      { entityName: "fireEmergency" }
-    );
-    ppsSelector.resetRecomputations();
-    fireEmergencySelector.resetRecomputations();
-    getParticularEntityMap(state, { entityName: "pps" });
-    getParticularEntityMap(state, { entityName: "pps" });
-    getParticularEntityMap(state, { entityName: "pps" });
-    getParticularEntityMap(state, { entityName: "pps" });
-    getParticularEntityMap(state, { entityName: "fireEmergency" });
-    getParticularEntityMap(state, { entityName: "pps" });
-    getParticularEntityMap(state, { entityName: "fireEmergency" });
-    expect(ppsSelector.recomputations()).toBe(1);
-    expect(fireEmergencySelector.recomputations()).toBe(1);
-  });
-});
-
-describe("getQueueMap", () => {
-  const { getQueueMap } = selectors;
-  var twoFloorsWithQueueData = twoFloors.setIn(
-    ["map", "queueDatas"],
-    [
-      {
-        queue_data_id: 1,
-        coordinates: ["1,0", "2,0"],
-        data: [["001.000", 0], ["000.002", 4]]
-      }
-    ]
-  );
-  test("should get correct queue map for queues", () => {
-    var state = makeState(twoFloorsWithQueueData, 1);
-    var queueMap = getQueueMap(state);
-    expect(queueMap).toMatchObject({
-      "1,0": constants.QUEUE,
-      "2,0": constants.QUEUE
-    });
-  });
-  test("should be empty map when there is no queue data", () => {
-    var state = makeState(twoFloors, 1);
-    var queueMap = getQueueMap(state);
-    expect(queueMap).toMatchObject({});
-  });
-  test("should not recompute on multiple calls with same state", () => {
-    var state = makeState(twoFloorsWithQueueData, 1);
-    getQueueMap.resetRecomputations();
-    getQueueMap(state);
-    getQueueMap(state);
-    getQueueMap(state);
-    expect(getQueueMap.recomputations()).toBe(1);
-  });
-});
-
-describe("specialTileSpritesMapSelector", () => {
-  const { specialTileSpritesMapSelector } = selectors;
-  test("should give correct map for 3x3 test map with no selected tiles", () => {
-    var state = makeState(twoFloors, 1);
-    var specialMap = specialTileSpritesMapSelector(state);
-    expect(specialMap).toMatchObject({
-      "2,2": constants.CHARGER,
-      "0,2": constants.EMERGENCY_EXIT,
-      "0,1": constants.EMERGENCY_EXIT,
-      "1,0": constants.PPS,
-      "1,1": constants.PPS
-    });
-  });
-  test("should give correct map for 3x3 test map with some selected tiles", () => {
-    var state = makeState(twoFloors, 1, { "2,2": {}, "2,0": {} });
-    var specialMap = specialTileSpritesMapSelector(state);
-    expect(specialMap).toMatchObject({
-      "2,2": constants.SELECTED,
-      "0,2": constants.EMERGENCY_EXIT,
-      "0,1": constants.EMERGENCY_EXIT,
-      "1,0": constants.PPS,
-      "1,1": constants.PPS,
-      "2,0": constants.SELECTED
-    });
-  });
-});
-
-describe("getCurrentFloorMaxCoordinate", () => {
-  const { getCurrentFloorMaxCoordinate } = selectors;
-  test("should give correct max coordinate when no special barcode", () => {
-    // 2nd floor does not have special barcode
-    var state = makeState(twoFloors, 2);
-    var maxTileCoordinate = getCurrentFloorMaxCoordinate(state);
-    expect(maxTileCoordinate).toEqual([15, 17]);
-  });
-  test("should give correct max coordinate when there is special barcode", () => {
-    var state = makeState(twoFloors, 1);
-    var maxTileCoordinate = getCurrentFloorMaxCoordinate(state);
-    expect(maxTileCoordinate).toEqual([12, 12]);
-  });
-  test("should not recompute", () => {
-    var state = makeState(twoFloors, 1);
-    getCurrentFloorMaxCoordinate.resetRecomputations();
-    getCurrentFloorMaxCoordinate(state);
-    getCurrentFloorMaxCoordinate(state);
-    getCurrentFloorMaxCoordinate(state);
-    expect(getCurrentFloorMaxCoordinate.recomputations()).toBe(1);
-  });
-});
-
-// TODO: test for getChargerEntryMap
 
 describe("getIdsForNewEntities", () => {
   const { getIdsForNewEntities } = selectors;
@@ -404,7 +139,7 @@ describe("getIdsForNewEntities", () => {
           ods_excluded_id: 2,
           excluded: true,
           ods_tuple: "002.001--1"
-        },
+        }
       ]
     );
     var state = makeState(singleFloorVanillaWithOdsExcludeds, 1);
@@ -426,7 +161,11 @@ describe("getIdsForNewEntities", () => {
       }
     ];
     // order is important
-    var ids = getIdsForNewEntities(state, { entityName: "odsExcluded", newEntities, uniqueKey: "ods_tuple" });
+    var ids = getIdsForNewEntities(state, {
+      entityName: "odsExcluded",
+      newEntities,
+      uniqueKey: "ods_tuple"
+    });
     expect(ids).toEqual([3, 1, 4]);
   });
 });
@@ -543,77 +282,6 @@ describe("getNewSpecialCoordinates", () => {
   });
 });
 
-describe("distanceTileSpritesSelector", () => {
-  const { distanceTileSpritesSelector } = selectors;
-  // TODO: better tests that check if rects are correct
-  test("should give correct number of distance tiles", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var distanceTilesArr = distanceTileSpritesSelector(state);
-    expect(distanceTilesArr).toHaveLength(6);
-    // should have key property
-    distanceTilesArr.forEach(distanceTile => {
-      expect(distanceTile).toHaveProperty("key");
-    });
-  });
-});
-
-describe("getRowColumnInBetweenDistancesAndCoordinates", () => {
-  const { getRowColumnInBetweenDistancesAndCoordinates } = selectors;
-  test("should give correct distances when no special tile id in between", () => {
-    var state = makeState(singleFloorVanilla, 1); // 3 columns and 3 rows
-    const inBetweenDistances = getRowColumnInBetweenDistancesAndCoordinates(state);
-    // Total in between distances => 2 (bw 3 columns) + 2 (bw 3 rows)
-    for(var i = 0; i < 4; i++){
-      expect(inBetweenDistances[i].distance).toEqual(1500);
-      expect(inBetweenDistances[i]).toHaveProperty("x");
-      expect(inBetweenDistances[i]).toHaveProperty("y");
-    };
-    // TODO: can add test cases to match coordinate of a distance tile
-  });
-  test("Should give correct distances when there is a special barcode (charger entry) in between some tiles", () => {
-    var state = makeState(singleFloor, 1); // 3 columns and 4 rows (one special coordinate)
-    const inBetweenDistances = getRowColumnInBetweenDistancesAndCoordinates(state);
-    // Total in between distances => 2 (bw 3 columns) + 3 (bw 4 rows)
-    const allInBetweenDistances = [1500,1500,1500,1090,410];
-    for(var i = 0; i < 5; i++){
-      expect(inBetweenDistances[i].distance).toEqual(allInBetweenDistances[i]);
-    };
-  });
-});
-
-describe("getAllColumnTileIdTuples", () => {
-  const { getAllColumnTileIdTuples } = selectors;
-  test("should give correct list of tileId when selecting a edge column", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var arrOfTuples = getAllColumnTileIdTuples(state, "c-0");
-    expect(arrOfTuples).toEqual(["0,0", "0,1", "0,2"]);
-  });
-  test("should give correct list of tileId when selecting a normal column", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var arrOfTuples = getAllColumnTileIdTuples(state, "c-1");
-    expect(arrOfTuples).toEqual(["1,0", "1,1", "1,2"]);
-  });
-});
-
-describe("getAllRowTileIdTuples", () => {
-  const { getAllRowTileIdTuples } = selectors;
-  test("should give correct list of tileId when selecting a edge row", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var arrOfTuples = getAllRowTileIdTuples(state, "r-0");
-    expect(arrOfTuples).toEqual(["0,0", "1,0", "2,0"]);
-  });
-  test("should give correct list of tileId when selecting a normal row", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var arrOfTuples = getAllRowTileIdTuples(state, "r-1");
-    expect(arrOfTuples).toEqual(["0,1", "1,1", "2,1"]);
-  });
-  test("should give correct list of tileIds when selecting a row which have special barcode", () => {
-    var state = makeState(singleFloor);
-    var arrOfTuples = getAllRowTileIdTuples(state, "r-2");
-    expect(arrOfTuples).toEqual(["12,12"]);
-  });
-});
-
 describe("getMapName", () => {
   const { getMapName } = selectors;
   test("should give map name", () => {
@@ -627,22 +295,6 @@ describe("getMapId", () => {
   test("should give map id", () => {
     var state = makeState(singleFloorVanilla, 1);
     expect(getMapId(state)).toEqual(31);
-  });
-});
-
-describe("getDistinctXAndYDistances", () => {
-  const { getDistinctXAndYDistances } = selectors;
-  test("should return distinct distances in x and y direction in sorted order, when no special barcode present in map", () => {
-    var state = makeState(singleFloorVanilla, 1);
-    var xAndYDistances = getDistinctXAndYDistances(state);
-    expect(xAndYDistances.x).toEqual([0, -1500, -3000]);
-    expect(xAndYDistances.y).toEqual([0, 1500, 3000]);
-  });
-  test("should return distinct distances in x and y direction in sorted order, when special barcode present in map", () => {
-    var state = makeState(singleFloor, 1);
-    var xAndYDistances = getDistinctXAndYDistances(state);
-    expect(xAndYDistances.x).toEqual([1500, 0, -1500]);
-    expect(xAndYDistances.y).toEqual([0, 1500, 2590, 3000]);
   });
 });
 
