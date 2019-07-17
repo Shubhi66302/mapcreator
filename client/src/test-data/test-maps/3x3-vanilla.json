@@ -3,7 +3,7 @@
   "name": "3x3-vanilla",
   "map": {
     "elevators": [],
-    "zones": [],
+    "zones": [{"zone_id": "defzone", "paused": false, "blocked": false}],
     "queueDatas": [],
     "floors": [
       {

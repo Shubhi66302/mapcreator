@@ -61,3 +61,10 @@ export const currentFloorBarcodeToCoordinateKeySelector = createSelector(
   (_state, { barcode }) => barcode,
   (barcodeCoordinateMap, barcode) => barcodeCoordinateMap[barcode]
 );
+
+export const getCurrentFloorBarcodesList = createSelector(
+  getCurrentFloorBarcodeIds,
+  getBarcodes,
+  (currentFloorBarcodeIds, barcodesDict) =>
+    currentFloorBarcodeIds.map(coordinate => barcodesDict[coordinate])
+);

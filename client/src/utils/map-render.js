@@ -3,10 +3,12 @@
 import {
   tileSpriteNamesWithoutEntityData,
   tileNameWithoutEntityDataSelector,
+  tileTintSelector,
   spriteRenderCoordinateSelector,
   getTileSpriteScale,
   getCurrentFloorBarcodes,
-  specialTileSpritesMapSelector
+  specialTileSpritesMapSelector,
+  getZoneToColorMap
 } from "../utils/selectors";
 import { dummyState } from "reducers/util";
 import * as PIXI from "pixi.js";
@@ -15,27 +17,34 @@ import * as PIXI from "pixi.js";
 
 export var createOrUpdateAllSprites = (container, state, tileId) => {
   var spriteNames = tileSpriteNamesWithoutEntityData(state, { tileId });
-  for (var idx = 0; idx < 9; idx++)
-  {
-    var {xScale, yScale} = getTileSpriteScale(state, {tileId, spriteIdx: idx});
-    var { x, y } = spriteRenderCoordinateSelector(state, {tileId, spriteIdx: idx});
+  for (var idx = 0; idx < 9; idx++) {
+    var { xScale, yScale } = getTileSpriteScale(state, {
+      tileId,
+      spriteIdx: idx
+    });
+    var { x, y } = spriteRenderCoordinateSelector(state, {
+      tileId,
+      spriteIdx: idx
+    });
+    var tint = tileTintSelector(state, { tileId });
     let sprite = container.spriteMap[`${tileId}-${idx}`];
-    if (!sprite)
-    {
+    if (!sprite) {
       // make new sprite.
-      sprite = new PIXI.Sprite(PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]);
+      sprite = new PIXI.Sprite(
+        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]]
+      );
       sprite.scale.x = xScale;
       sprite.scale.y = yScale;
       container.addChild(sprite);
       container.spriteMap[`${tileId}-${idx}`] = sprite;
-    }
-    else
-    {
-      sprite.texture = PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
+    } else {
+      sprite.texture =
+        PIXI.loader.resources["mySpritesheet"].textures[spriteNames[idx]];
       sprite.alpha = 1;
     }
     sprite.x = x;
     sprite.y = y;
+    sprite.tint = tint;
   }
 };
 
@@ -48,18 +57,22 @@ export var createOrUpdateAllSprites = (container, state, tileId) => {
 export var tileIdsUpdate = (container, state, prevState) => {
   var prevBarcodes = getCurrentFloorBarcodes(prevState);
   var barcodes = getCurrentFloorBarcodes(state);
-  if (prevBarcodes === barcodes) return; // nothing to do.
+  // add explicit check for zone view since we'll need to render when it changes...
+  if (
+    prevBarcodes === barcodes &&
+    prevState.selection.zoneViewMode === state.selection.zoneViewMode &&
+    getZoneToColorMap(prevState) === getZoneToColorMap(state)
+  )
+    return; // nothing to do.
   // remove childrend and set spritemap to empty... actually pretty efficient.
   container.removeChildren();
   container.spriteMap = {};
   for (var barcodeId in barcodes) {
     const barcodeInfo = barcodes[barcodeId];
     createOrUpdateAllSprites(container, state, barcodeInfo.coordinate);
-  };
+  }
   return container;
 };
-
-
 
 // updater that does all the entity (pps, charger, queue etc.) and selected tile rendering.
 // almost always run...

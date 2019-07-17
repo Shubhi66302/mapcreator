@@ -63,9 +63,9 @@ export const dummyState = {
     distanceTiles: {},
     shiftKey: false,
     metaKey: false,
-    queueMode: false
+    queueMode: false,
+    zoneViewMode : false,
   },
-  zoneView: false,
   selectedArea: null,
   viewport: {
     viewportInstance: null,

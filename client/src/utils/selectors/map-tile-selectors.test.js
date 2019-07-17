@@ -1,6 +1,6 @@
 import * as mapTileSelectors from "./map-tile-selectors";
 import * as constants from "../../constants";
-import { makeState, twoFloors } from "../test-helper";
+import { makeState, twoFloors, singleFloorVanilla } from "../test-helper";
 
 describe("tileNameWithoutEntityDataSelector", () => {
   const { tileNameWithoutEntityDataSelector } = mapTileSelectors;
@@ -13,6 +13,13 @@ describe("tileNameWithoutEntityDataSelector", () => {
       constants.NORMAL
     );
     expect(tileNameWithoutEntityDataSelector(state, { tileId: "1,2" })).toBe(
+      constants.NORMAL
+    );
+  });
+  test("should not give storables when in zone view mode", () => {
+    var state = makeState(twoFloors, 1);
+    state.selection.zoneViewMode = true;
+    expect(tileNameWithoutEntityDataSelector(state, { tileId: "2,0" })).toBe(
       constants.NORMAL
     );
   });
@@ -157,5 +164,37 @@ describe("specialTileSpritesMapSelector", () => {
       "1,1": constants.PPS,
       "2,0": constants.SELECTED
     });
+  });
+  test("should give only selected tiles when in zone view mode", () => {
+    var state = makeState(twoFloors, 1, { "2,2": {}, "2,0": {} });
+    state.selection.zoneViewMode = true;
+    var specialMap = specialTileSpritesMapSelector(state);
+    expect(specialMap).toEqual({
+      "2,2": constants.SELECTED,
+      "2,0": constants.SELECTED
+    });
+  });
+});
+
+describe("strToHex", () => {
+  const { strToHex } = mapTileSelectors;
+  test("works", () => {
+    expect(strToHex("#aaf3d3")).toBe(11203539);
+  });
+});
+
+describe("tileTintSelector", () => {
+  const { tileTintSelector } = mapTileSelectors;
+  test("should give 0xffffff when not in zone view mode", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    var tint = tileTintSelector(state, { tileId: "1,1" });
+    expect(tint).toBe(0xffffff);
+  });
+  test("should NOT be 0xfffffff when in zone view mode", () => {
+    var state = makeState(singleFloorVanilla, 1);
+    state.selection.zoneViewMode = true;
+    var tint = tileTintSelector(state, { tileId: "1,1" });
+    expect(tint).toBeTruthy();
+    expect(tint).not.toBe(0xffffff);
   });
 });

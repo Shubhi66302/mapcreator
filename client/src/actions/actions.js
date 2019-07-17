@@ -1,5 +1,5 @@
 // action creator to make clicked-on-tile action from clicked-on-viewport action
-import {handleErrors} from "utils/util";
+import { handleErrors } from "utils/util";
 import {
   worldToTileCoordinate,
   getTileIdToWorldCoordMapFunc,
@@ -216,21 +216,25 @@ export const addWorldCoordinateToMap = normalizedMap => {
   const oldBarcodeDict = entities.barcode;
   const floorInfo = entities.floor;
   var newbarcodeDict = {};
-  for(var floorId in floorInfo){
+  for (var floorId in floorInfo) {
     var currentFloorBarcodeDict = {};
     const barcodeKeys = floorInfo[floorId].map_values;
     barcodeKeys.forEach(barcodeKey => {
       currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
     });
-    const tileToWorldCoordinateMap = getTileIdToWorldCoordMapFunc(currentFloorBarcodeDict);
-    for(var barcode in currentFloorBarcodeDict){
+    const tileToWorldCoordinateMap = getTileIdToWorldCoordMapFunc(
+      currentFloorBarcodeDict
+    );
+    for (var barcode in currentFloorBarcodeDict) {
       var barcodeInfo = currentFloorBarcodeDict[barcode];
       const worldCoordinate = tileToWorldCoordinateMap[barcode];
-      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${worldCoordinate.y}]`;
+      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${
+        worldCoordinate.y
+      }]`;
       currentFloorBarcodeDict[barcode] = barcodeInfo;
-    };
-    newbarcodeDict = {...newbarcodeDict, ...currentFloorBarcodeDict};
-  };
+    }
+    newbarcodeDict = { ...newbarcodeDict, ...currentFloorBarcodeDict };
+  }
   entities.barcode = newbarcodeDict;
   normalizedMap.entities = entities;
   return normalizedMap;

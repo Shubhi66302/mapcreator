@@ -1,6 +1,7 @@
 // main mapcreator page
 import React, { Component } from "react";
 import MapViewport from "components/Map/MapViewport";
+import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import { modifyNeighbours } from "actions/barcode";
@@ -13,7 +14,6 @@ import {
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
 import Sidebar from "components/Map/Sidebar/Sidebar";
-
 import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
@@ -42,6 +42,22 @@ const QueueCheckbox = ({ val, onChange }) => (
     <input name="queuemode" type="checkbox" checked={val} onChange={onChange} />
   </label>
 );
+
+const ZoneViewCheckBox = ({ val, onChange }) => (
+  <div>
+    <ReactTooltip effect="solid" delayShow={1000} />
+    <label data-tip="See summary tab in sidebar for zone color legend.">
+      Zone View:
+      <input
+        name="zoneview"
+        type="checkbox"
+        checked={val}
+        onChange={onChange}
+      />
+    </label>
+  </div>
+);
+
 class Map extends Component {
   state = {
     barcodeView: {
@@ -63,6 +79,7 @@ class Map extends Component {
     const {
       nMap,
       queueMode,
+      zoneViewMode,
       dispatch,
       errorMessage,
       successMessage
@@ -122,7 +139,12 @@ class Map extends Component {
               val={queueMode}
               onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
             />
+            <ZoneViewCheckBox
+              val={zoneViewMode}
+              onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
+            />
           </div>
+
           <div className="row py-1">
             <ChangeFloorDropdown />
           </div>
@@ -200,9 +222,11 @@ class Map extends Component {
     );
   }
 }
+
 export default connect(state => ({
   nMap: state.normalizedMap,
   queueMode: state.selection.queueMode,
   successMessage: state.successMessage,
-  errorMessage: state.errorMessage
+  errorMessage: state.errorMessage,
+  zoneViewMode: state.selection.zoneViewMode
 }))(Map);

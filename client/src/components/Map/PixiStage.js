@@ -13,11 +13,10 @@ import {
 } from "utils/selectors";
 import { clickOnDistanceTile } from "actions/actions";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
-import PixiDistanceTileRectange from "./PixiDistanceTileRectange";
+import PixiDistanceTileRectangle from "./PixiDistanceTileRectangle";
 import PixiNumberSprite from "./PixiNumberSprite";
 // this removes anti-aliasing somehow
 PIXI.settings.PRECISION_FRAGMENT = "highp"; // this makes text looks better
-
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 class PixiStage extends Component {
@@ -33,6 +32,7 @@ class PixiStage extends Component {
       dispatch,
       ...rest
     } = this.props;
+
     return (
       <Stage
         options={{
@@ -47,28 +47,22 @@ class PixiStage extends Component {
             [
               // TODO: optimize this rendering even more, maybe using ParticleContainer
               <PixiMapContainer key={"first"} store={store} />,
-              ...distanceTiles.map(
-                ({ x, y, width, height, key }) => 
-                  [
-                    <PixiDistanceTileRectange
-                      key={key}
-                      rect={{ x, y, width, height }}
-                      fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
-                      onClick={() => dispatch(clickOnDistanceTile(key))}
-                    />
-                  ]
-              ),
-              ...inBetweenDistances.map(
-                ({x, y, distance}, idx) =>
-                  [
-                    <PixiNumberSprite
-                      key = {2 * idx + 1}
-                      number = {distance}
-                      x = {x}
-                      y = {y}
-                    />
-                  ]
-              )
+              ...distanceTiles.map(({ x, y, width, height, key }) => [
+                <PixiDistanceTileRectangle
+                  key={key}
+                  rect={{ x, y, width, height }}
+                  fill={selectedDistanceTiles[key] ? 0x0000ff : 0x000000}
+                  onClick={() => dispatch(clickOnDistanceTile(key))}
+                />
+              ]),
+              ...inBetweenDistances.map(({ x, y, distance }, idx) => [
+                <PixiNumberSprite
+                  key={2 * idx + 1}
+                  number={distance}
+                  x={x}
+                  y={y}
+                />
+              ])
             ]
           ) : (
             <Text
@@ -81,7 +75,7 @@ class PixiStage extends Component {
               }}
             />
           )}
-
+          {}
           <PixiSelectionRectangle
             fill={0x0000ff}
             alpha={0.5}

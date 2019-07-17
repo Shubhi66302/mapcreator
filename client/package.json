@@ -24,6 +24,7 @@
     "pixi-viewport": "^3.2.1",
     "pixi.js": "^4.8.1",
     "prop-types": "^15.6.2",
+    "randomcolor": "^0.5.4",
     "re-reselect": "^2.1.0",
     "react": "^16.4.1",
     "react-bootstrap-sweetalert": "^4.4.1",

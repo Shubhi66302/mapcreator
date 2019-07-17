@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { randomColor } from "randomcolor";
 
 export var handleErrors = response => {
   if (!response.ok) {
@@ -173,13 +174,13 @@ export var createFloorFromCoordinateData = ({
       };
       if (row == row_start) {
         unit.neighbours[0] = [0, 0, 0];
-      } 
+      }
       if (row == row_end) {
         unit.neighbours[2] = [0, 0, 0];
       }
       if (column == column_start) {
         unit.neighbours[1] = [0, 0, 0];
-      }  
+      }
       if (column == column_end) {
         unit.neighbours[3] = [0, 0, 0];
       }
@@ -280,4 +281,17 @@ export const deleteNeighbourFromBarcode = (
 export const implicitBarcodeToCoordinate = barcode => {
   var [X, Y] = barcode.split(".");
   return parseInt(Y) + "," + parseInt(X);
+};
+
+// uses random color library to generate random colors and maps each zone to color
+export const zoneToColorMapper = zones => {
+  const colors = randomColor({
+    count: Object.keys(zones).length
+  });
+  const zoneIds = Object.keys(zones);
+  const zoneToColoroMap = {};
+  for (var i = 0; i < colors.length; i++) {
+    zoneToColoroMap[zoneIds[i]] = colors[i];
+  }
+  return zoneToColoroMap;
 };

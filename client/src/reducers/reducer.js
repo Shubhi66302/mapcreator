@@ -12,8 +12,6 @@ import zoneReducer from "./zone";
 import charger from "./charger";
 import { successMessageReducer, errorMessageReducer } from "./message";
 import _ from "lodash";
-
-// exporting reducers for testing
 export var baseBarcodeReducer = createEntityReducer("BARCODE", "coordinate");
 export var basePPSReducer = createEntityReducer("PPS", "pps_id");
 export var baseElevatorReducer = createEntityReducer("ELEVATOR", "elevator_id");
@@ -115,10 +113,19 @@ const QueueModeReducer = (state = false, action) => {
   }
   return state;
 };
+
+const ZoneViewModeReducer = (state = false, action) => {
+  switch (action.type) {
+    case "TOGGLE-ZONE-VIEW-MODE":
+      return !state;
+  }
+  return state;
+};
 export const baseSelectionReducer = combineReducers({
   mapTiles: selectedMapTilesReducer,
   distanceTiles: selectedDistanceTilesReducer,
   queueMode: QueueModeReducer,
+  zoneViewMode: ZoneViewModeReducer,
   metaKey: (e = false) => e,
   shiftKey: (e = false) => e
 });
@@ -136,7 +143,8 @@ export const selectionReducer = (
     distanceTiles: {},
     metaKey: false,
     shiftKey: false,
-    queueMode: false
+    queueMode: false,
+    zoneViewMode: false
   },
   action
 ) => {
@@ -227,27 +235,6 @@ export const spritesheetLoadedReducer = (state = false, action) => {
   }
   return state;
 };
-
-export const metaKeyReducer = (state = false, action) => {
-  switch (action.type) {
-    case "META-KEY-DOWN":
-      return true;
-    case "META-KEY-UP":
-      return false;
-  }
-  return state;
-};
-
-export const shiftKeyReducer = (state = false, action) => {
-  switch (action.type) {
-    case "SHIFT-KEY-DOWN":
-      return true;
-    case "SHIFT-KEY-UP":
-      return false;
-  }
-  return state;
-};
-
 export const selectedAreaReducer = (state = null, action) => {
   switch (action.type) {
     case "DRAG-START": {
@@ -289,7 +276,6 @@ export default combineReducers({
   normalizedMap: normalizedMapReducer,
   currentFloor: currentFloorReducer,
   selection: reduceReducers(selectionReducer, baseSelectionReducer),
-  zoneView: z => z || false,
   spritesheetLoaded: spritesheetLoadedReducer,
   selectedArea: selectedAreaReducer,
   viewport: viewportReducer,

@@ -24,11 +24,11 @@ export {
   getBarcodes,
   getBarcode,
   getCurrentFloorBarcodes,
+  getCurrentFloorBarcodesList,
   coordinateKeyToBarcodeSelector,
   currentFloorBarcodeToCoordinateMap,
   currentFloorBarcodeToCoordinateKeySelector
 } from "./barcode-selectors";
-
 export {
   getTileSpriteScale,
   tileRenderCoordinateSelector,
@@ -53,7 +53,9 @@ export {
   tileNameWithoutEntityDataSelector,
   tileSpriteNamesWithoutEntityData,
   getParticularEntity,
-  specialTileSpritesMapSelector
+  specialTileSpritesMapSelector,
+  getZoneToColorMap,
+  tileTintSelector
 } from "./map-tile-selectors";
 
 // just a map of tileIds instead of array. useful to key if tileId is good or not

@@ -16,6 +16,10 @@ export default PixiComponent("DistanceTileRectangle", {
     // clean up before removal
   },
   applyProps: (instance, oldProps, newProps) => {
+    if(oldProps === newProps){
+      return;
+    }
+    
     if (!newProps.rect) {
       instance.clear();
       return;

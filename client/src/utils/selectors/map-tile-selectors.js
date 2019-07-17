@@ -9,14 +9,17 @@ import {
 import * as constants from "../../constants";
 import {
   tupleOfIntegersToCoordinateKey,
-  getNeighbouringBarcodes
+  getNeighbouringBarcodes,
+  zoneToColorMapper
 } from "../util";
 
 export const tileNameWithoutEntityDataSelector = createSelector(
   getBarcode,
-  barcode => {
+  state => state.selection.zoneViewMode,
+  (barcode, zoneViewMode) => {
     var tileSprite = constants.NORMAL;
-    if (barcode.store_status) tileSprite = constants.STORABLE;
+    // don't show storables in zone view mode; otherwise their darker color messes with the tint
+    if (barcode.store_status && !zoneViewMode) tileSprite = constants.STORABLE;
     return tileSprite;
   }
 );
@@ -150,11 +153,37 @@ export const tileEntitySpritesMapSelector = state => {
 export const specialTileSpritesMapSelector = createSelector(
   tileEntitySpritesMapSelector,
   state => state.selection.mapTiles,
-  (entitySpritesMap, selectedMapTiles) => {
+  state => state.selection.zoneViewMode,
+  (entitySpritesMap, selectedMapTiles, zoneViewMode) => {
     var ret = {};
     Object.keys(selectedMapTiles).forEach(
       key => (ret[key] = constants.SELECTED)
     );
+    // if in zone view, don't render any entities, just selections; otherwise they mess with the tint
+    if (zoneViewMode) return ret;
     return { ...entitySpritesMap, ...ret };
   }
+);
+
+export const getZones = state => state.normalizedMap.entities.zone || {};
+export const getZoneToColorMap = createSelector(
+  getZones,
+  zones => {
+    const newZoneMap = zoneToColorMapper(zones);
+    return newZoneMap;
+  }
+);
+
+export function strToHex(s) {
+  return parseInt(s.substr(1), 16);
+}
+
+export const tileTintSelector = createSelector(
+  getZoneToColorMap,
+  getBarcode,
+  state => state.selection.zoneViewMode,
+  (zoneToColorMap, barcode, zoneViewMode) =>
+    zoneViewMode
+      ? strToHex(zoneToColorMap[barcode.zone] || "#ffffff")
+      : 0xffffff
 );
