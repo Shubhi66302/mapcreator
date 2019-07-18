@@ -1,6 +1,7 @@
 import { getFitToSizeViewportRect } from "utils/selectors";
+import { getCanvasSize } from "utils/util";
+
 import * as PIXI from "pixi.js";
-import * as constants from "../constants";
 
 export const registerViewport = instance => ({
   type: "REGISTER-PIXI-VIEWPORT",
@@ -36,10 +37,11 @@ export const setViewportClamp = (_dispatch, getState) => {
   } = state;
   if (viewportInstance) {
     const { top, right, bottom, left } = getFitToSizeViewportRect(state);
+    const { width, height } = getCanvasSize();
     viewportInstance.clampZoom({
-      minWidth: constants.VIEWPORT_WIDTH,
+      minWidth: width,
       maxWidth: right - left,
-      minHeight: constants.VIEWPORT_HEIGHT,
+      minHeight: height,
       maxHeight: bottom - top
     });
   }

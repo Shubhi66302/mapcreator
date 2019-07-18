@@ -12,10 +12,11 @@ class ButtonForm extends Component {
       },
       toggle,
       small = false,
-      btnClass = "btn-outline-primary",
+      btnClass = "btn-secondary",
       show,
       wrapInButtonGroup = true,
-      title = undefined
+      title = undefined,
+      bcolor = "orange"
     } = this.props;
     return (
       // adding class and role since nested button groups give a cleaner look for some reason
@@ -31,6 +32,7 @@ class ButtonForm extends Component {
           className={`btn ${btnClass} ${
             small ? "btn-sm" : ""
           } tooltip-wrapper btn-group`}
+          style={{ textAlign:"-webkit-center", color:bcolor }}
           disabled={disabled}
           onClick={() => toggle()}
           data-tip

@@ -42,7 +42,7 @@ const ShiftBarcode = ({ onSubmit, disabled, initialData }) => (
     uiSchema={uiSchema}
     onSubmit={onSubmit}
     buttonText={"Shift Barcode"}
-    btnClass="btn-outline-primary"
+    btnClass="btn-secondary"
     initialData={initialData}
     tooltipData={tooltipData}
   />

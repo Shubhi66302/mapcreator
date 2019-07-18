@@ -30,6 +30,7 @@ const CopyMap = ({ onSubmit, name }) => (
     btnClass="btn-outline-secondary"
     initialData={{ name: `${name} (copy)` }}
     tooltipData={tooltipData}
+    bcolor="grey"
   />
 );
 

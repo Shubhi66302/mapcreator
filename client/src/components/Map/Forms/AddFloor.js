@@ -96,6 +96,7 @@ class AddFloor extends Component {
           toggle={this.toggle}
           tooltipData={{ id: "add-floor", title: "Add Floor" }}
           buttonText="Add Floor"
+          bcolor = "orange"
         >
           <Form
             onSuccess={() => this.toggle()}

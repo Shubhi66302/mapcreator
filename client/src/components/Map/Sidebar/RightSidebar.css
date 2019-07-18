@@ -1,0 +1,43 @@
+.rightsidebar-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+#rightsidebar {
+  position: fixed;
+  width: 300px;
+  top: 0;
+  right: -300px;
+  height: 100vh;
+  z-index: 999;
+  background: #545c64;
+  transition: all 0.3s;
+  margin-top: 0px; 
+  margin-left: 30px;
+}
+
+#rightsidebar.active {
+  right: 0px;
+}
+
+#rightsidebar-button {
+  position: relative;
+  left: -35px; /* TODO: fix this to be relative, right now hardcoded to button width */
+  padding: 20px 15px 0px 0px;
+}
+
+#rightsidebar-button:focus {
+  box-shadow: none;
+}
+
+.rightsidebar-icon.active {
+  color: orange;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color:orange;
+}
+.rightsidebar-icon {
+  color: orange;
+  padding-bottom: 10px;
+  text-align: center;
+}

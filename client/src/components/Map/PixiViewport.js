@@ -2,23 +2,25 @@ import Viewport from "pixi-viewport";
 import { clickOnViewport, dragStart, dragMove, dragEnd } from "actions/actions";
 import { registerViewport } from "actions/viewport";
 import { PixiComponent, withPixiApp } from "@inlet/react-pixi";
-
+import { getCanvasSize } from "utils/util";
 // TODO: add drag support
 var PixiViewport = PixiComponent("PixiViewport", {
   create: props => {
+    const { width, height } = getCanvasSize();
     var instance = new Viewport({
       // without this zoom in happens to wrong coordinate
       // https://github.com/davidfig/pixi-viewport/issues/74
       interaction: props.app.renderer.plugins.interaction,
       // TODO: find correct values for these, right now just copy pasted
-      screenWidth: 1000,
-      screenHeight: 600,
+      screenWidth: width,
+      screenHeight: height,
       worldWidth: 10000,
       worldHeight: 10000
     });
-    window.addEventListener("resize", () =>
-      instance.resize(window.innerWidth, window.innerHeight)
-    );
+    window.addEventListener("resize", () => {
+      const { width, height } = getCanvasSize();
+      instance.resize(width, height);
+    });
 
     const { store, onShiftClickOnMapTile } = props;
 

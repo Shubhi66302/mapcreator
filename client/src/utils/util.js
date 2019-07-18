@@ -1,6 +1,11 @@
 import _ from "lodash";
 import { randomColor } from "randomcolor";
 
+export const getCanvasSize = () => ({
+  width: window.innerWidth,
+  height: window.innerHeight - 120
+});
+
 export var handleErrors = response => {
   if (!response.ok) {
     return response.text().then(text => Promise.reject(text));

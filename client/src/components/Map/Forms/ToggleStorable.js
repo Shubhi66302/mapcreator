@@ -6,7 +6,8 @@ const StorableButton = ({ onClick, disabled }) => (
   <button
     disabled={disabled}
     type="button"
-    className="btn btn-outline-primary"
+    className="btn btn-secondary"
+    style={{textAlign:"-webkit-center", color:"orange"}}
     onClick={() => {
       onClick();
     }}

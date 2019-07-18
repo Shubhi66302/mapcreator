@@ -1,7 +1,6 @@
 // main mapcreator page
 import React, { Component } from "react";
 import MapViewport from "components/Map/MapViewport";
-import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import { fetchMap, saveMap, downloadMap } from "actions/actions";
 import { modifyNeighbours } from "actions/barcode";
@@ -13,50 +12,14 @@ import {
 } from "actions/message";
 import SweetAlertError from "components/SweetAlertError";
 import SweetAlertSuccess from "components/SweetAlertSuccess";
-import Sidebar from "components/Map/Sidebar/Sidebar";
-import AddPPS from "components/Map/Forms/AddPPS";
-import AddCharger from "components/Map/Forms/AddCharger";
-import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
-import ToggleStorable from "components/Map/Forms/ToggleStorable";
-import AddQueueBarcode from "components/Map/Forms/AddQueueBarcode";
-import AssignZone from "components/Map/Forms/AssignZone";
-import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
-import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
-import AddBarcode from "components/Map/Forms/AddBarcode";
-import AddFloor from "components/Map/Forms/AddFloor";
-import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
-import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
+
+import LeftSidebar from "components/Map/Sidebar/LeftSidebar";
+import RightSidebar from "components/Map/Sidebar/RightSidebar";
 import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
-import AddElevator from "components/Map/Forms/AddElevator";
-import AddZone from "components/Map/Forms/AddZone";
-import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
-import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import CopyMap from "components/Map/Forms/CopyMap";
 import DeleteMap from "components/Map/Forms/DeleteMap";
 import SampleRacksJson from "components/Map/SampleRacksJson";
-
-const QueueCheckbox = ({ val, onChange }) => (
-  <label>
-    Queue mode:
-    <input name="queuemode" type="checkbox" checked={val} onChange={onChange} />
-  </label>
-);
-
-const ZoneViewCheckBox = ({ val, onChange }) => (
-  <div>
-    <ReactTooltip effect="solid" delayShow={1000} />
-    <label data-tip="See summary tab in sidebar for zone color legend.">
-      Zone View:
-      <input
-        name="zoneview"
-        type="checkbox"
-        checked={val}
-        onChange={onChange}
-      />
-    </label>
-  </div>
-);
 
 class Map extends Component {
   state = {
@@ -78,112 +41,87 @@ class Map extends Component {
   render() {
     const {
       nMap,
-      queueMode,
-      zoneViewMode,
       dispatch,
       errorMessage,
       successMessage
     } = this.props;
+
     // mapId may be different from params since it may not have been fetched yet...
 
     const mapId = nMap ? Object.entries(nMap.entities.mapObj)[0][1].id : 0;
     return (
-      <div className="sidebar-wrapper">
-        <Sidebar />
-        <div className="container content">
-          <SweetAlertError
-            error={errorMessage}
-            onConfirm={() => dispatch(clearErrorMessage())}
-          />
-          <SweetAlertSuccess
-            message={successMessage}
-            onConfirm={() => dispatch(clearSuccessMessage())}
-          />
-          <div className="row justify-content-between">
-            <div className="col">
-              <h3 className="display-5">
-                {nMap ? nMap.entities.mapObj[mapId].name : "..."}
-              </h3>
-            </div>
-            <div className="col">
-              <div className="float-right">
-                <SampleRacksJson />
-                <DeleteMap />
+      <div>
+        <div style={{ float: "left" }}>
+          <div className="container content">
+            <SweetAlertError
+              error={errorMessage}
+              onConfirm={() => dispatch(clearErrorMessage())}
+            />
+            <SweetAlertSuccess
+              message={successMessage}
+              onConfirm={() => dispatch(clearSuccessMessage())}
+            />
+            <div className="row justify-content-between">
+              <div className="col">
+                <h3 className="display-5">
+                  {nMap ? nMap.entities.mapObj[mapId].name : "..."}
+                </h3>
+              </div>
+              <div className="col">
+                <div className="float-right">
+		              <SampleRacksJson />
+                  <DeleteMap />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row py-1">
-            {[
-              ToggleStorable,
-              AddPPS,
-              AddCharger,
-              AssignDockPoint,
-              AddZone,
-              AssignZone,
-              AssignODSExcluded,
-              AssignEmergencyBarcode,
-              AddBarcode,
-              RemoveBarcode,
-              AddQueueBarcode,
-              ModifyDistanceBwBarcodes,
-              AddFloor,
-              AddElevator,
-              EditSpecialBarcode,
-              ShiftBarcode
-            ].map((Elm, idx) => (
-              <div key={idx} className="pr-1 pt-1">
-                <Elm onError={e => this.setState({ e })} />
-              </div>
-            ))}
-            <QueueCheckbox
-              val={queueMode}
-              onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
-            />
-            <ZoneViewCheckBox
-              val={zoneViewMode}
-              onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
-            />
-          </div>
-
-          <div className="row py-1">
-            <ChangeFloorDropdown />
-          </div>
-          <div className="row py-1">
-            <div className="btn-group" role="group">
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={() =>
-                  dispatch(
-                    saveMap(
-                      error => dispatch(setErrorMessage(error)),
-                      () =>
-                        dispatch(setSuccessMessage("Successfully saved map."))
+            <div className="leftsidebar-wrapper">
+              <LeftSidebar />
+            </div>
+            <div className="rightsidebar-wrapper">
+              <RightSidebar dispatch={dispatch} />
+            </div>
+            <div className="row py-1">
+              <div className="btn-group col" role="group">
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  style={{ textAlign: "-webkit-center", color: "grey" }}
+                  onClick={() =>
+                    dispatch(
+                      saveMap(
+                        error => dispatch(setErrorMessage(error)),
+                        () =>
+                          dispatch(setSuccessMessage("Successfully saved map."))
+                      )
                     )
-                  )
-                }
-              >
-                Save
-              </button>
-              <CopyMap />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={() => {
-                  dispatch(downloadMap());
-                }}
-              >
-                Download
-              </button>
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={() => {
-                  dispatch(downloadMap(true));
-                }}
-              >
-                Download as Single Floor
-              </button>
+                  }
+                >
+                  Save
+                </button>
+                <CopyMap />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  bcolor="orange"
+                  onClick={() => {
+                    dispatch(downloadMap());
+                  }}
+                >
+                  Download
+                </button>
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={() => {
+                    dispatch(downloadMap(true));
+                  }}
+                >
+                  Download as Single Floor
+                </button>
+              </div>
+              <div className='col float-right'>
+                <ChangeFloorDropdown />
+              </div>
             </div>
           </div>
           <div className="row">

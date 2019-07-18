@@ -26,7 +26,9 @@ class DeleteMap extends Component {
         wrapInButtonGroup={false}
         show={show}
         toggle={this.toggle}
+        style={{textAlign:"-webkit-center", color:"black"}}
         title="Are you absolutely sure?"
+        bcolor = "red"
       >
         <span>
           This will permanently delete map #{mapId}. This action cannot be

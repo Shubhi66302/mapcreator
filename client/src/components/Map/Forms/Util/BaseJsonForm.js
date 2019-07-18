@@ -21,7 +21,7 @@ class BaseForm extends Component {
     const { formData } = this.state;
     const fullFormData = { ...initialData, ...formData };
     return (
-      <ButtonForm {...rest} show={this.state.show} toggle={this.toggle}>
+      <ButtonForm {...rest} show={this.state.show} toggle={this.toggle} >
         <Form
           schema={schema}
           uiSchema={uiSchema}

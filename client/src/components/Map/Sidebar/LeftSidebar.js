@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Sidebar.css";
+import "./LeftSidebar.css";
 import Chargers from "./Chargers";
 import PPSes from "./PPSes";
 import Elevators from "./Elevators";
@@ -9,7 +9,7 @@ var Menu = ({ menuItems }) => (
   <div className="row">
     {menuItems.map(({ name, isActive, onClick }, idx) => (
       <div
-        className={`col sidebar-icon ${isActive ? "active" : ""}`}
+        className={`col leftsidebar-icon ${isActive ? "active" : ""}`}
         key={idx}
         onClick={onClick}
       >
@@ -19,7 +19,7 @@ var Menu = ({ menuItems }) => (
   </div>
 );
 
-class Sidebar extends Component {
+class LeftSidebar extends Component {
   state = {
     open: false,
     activeIdx: 0
@@ -35,9 +35,9 @@ class Sidebar extends Component {
     ];
     var DataToShow = menuItems[activeIdx][1];
     return (
-      <nav id="sidebar" className={open ? "active" : ""}>
+      <nav id="leftsidebar" className={open ? "active" : ""}>
         <button
-          id="sidebar-button"
+          id="leftsidebar-button"
           className="btn"
           onClick={() => this.setState({ open: !this.state.open })}
         >
@@ -61,4 +61,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+export default LeftSidebar;

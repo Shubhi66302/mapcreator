@@ -29,6 +29,7 @@ const AddPPS = ({ onSubmit, disabled }) => (
     schema={schema}
     onSubmit={onSubmit}
     buttonText={"Assign PPS"}
+    style={{ marginLeft:"20%", textAlign:"-webkit-center", color:"orange"}}
   />
 );
 

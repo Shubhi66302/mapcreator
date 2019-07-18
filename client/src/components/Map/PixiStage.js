@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Stage, Text } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
-import * as constants from "../../constants";
 import PixiMapContainer from "./PixiMapContainer";
 import PixiViewport from "./PixiViewport";
 import PropTypes from "prop-types";
@@ -15,11 +14,26 @@ import { clickOnDistanceTile } from "actions/actions";
 import PixiSelectionRectangle from "./PixiSelectionRectangle";
 import PixiDistanceTileRectangle from "./PixiDistanceTileRectangle";
 import PixiNumberSprite from "./PixiNumberSprite";
+
+import { getCanvasSize } from "utils/util";
 // this removes anti-aliasing somehow
 PIXI.settings.PRECISION_FRAGMENT = "highp"; // this makes text looks better
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 class PixiStage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = getCanvasSize();
+  }
+  handleResize = () => {
+    this.setState(getCanvasSize());
+  };
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
   render() {
     const { store } = this.context;
     const {
@@ -39,8 +53,8 @@ class PixiStage extends Component {
           antialias: false,
           transparent: true
         }}
-        width={constants.VIEWPORT_WIDTH}
-        height={constants.VIEWPORT_HEIGHT}
+        width={this.state.width}
+        height={this.state.height}
       >
         <PixiViewport {...rest} store={store}>
           {spriteSheetLoaded && isMapLoaded ? (
