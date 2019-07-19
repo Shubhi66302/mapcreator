@@ -4,23 +4,27 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import SearchBar from "components/SavedMaps/SearchBar";
 import { getAllMaps } from "utils/api";
+import ContentLoader from "components/SavedMaps/ContentLoader";
 
 class SavedMaps extends Component {
   state = {
     maps: [],
-    loading: true
+    loading: false
   };
   componentDidMount() {
+    this.setState({ loading: true });
     // fetch maps
     getAllMaps()
       .then(handleErrors)
       .then(res => res.json())
-      .then(maps => this.setState({ maps }))
+      .then(maps => this.setState({ maps, loading: false }))
       // TODO: not doing anything with error right now
-      .catch(() => {});
+      .catch(() => {
+        this.setState({ loading: false });
+      });
   }
   render() {
-    const { maps } = this.state;
+    const { maps, loading } = this.state;
 
     return (
       <div className="container">
@@ -30,28 +34,34 @@ class SavedMaps extends Component {
             results.json().then(maps => this.setState({ maps }))
           }
         />
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Created on</th>
-              <th scope="col">Updated on</th>
-            </tr>
-          </thead>
-          <tbody>
-            {maps.map(({ id, name, createdAt, updatedAt }, idx) => (
-              <tr key={idx}>
-                <th scope="row">{id}</th>
-                <td>
-                  <Link to={`/map/${id}`}>{name}</Link>
-                </td>
-                <td>{moment(createdAt).format("lll")}</td>
-                <td>{moment(updatedAt).format("lll")}</td>
+        {loading ? (
+          <ContentLoader />
+        ) : maps.length ? (
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Created on</th>
+                <th scope="col">Updated on</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {maps.map(({ id, name, createdAt, updatedAt }, idx) => (
+                <tr key={idx}>
+                  <th scope="row">{id}</th>
+                  <td>
+                    <Link to={`/map/${id}`}>{name}</Link>
+                  </td>
+                  <td>{moment(createdAt).format("lll")}</td>
+                  <td>{moment(updatedAt).format("lll")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No maps found.</p>
+        )}
       </div>
     );
   }

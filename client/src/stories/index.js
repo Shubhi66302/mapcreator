@@ -18,6 +18,8 @@ import RemoveItemForm from "components/Map/Forms/Util/RemoveItemForm";
 import DeleteMap from "components/Map/Forms/DeleteMap";
 import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { BulletList } from "react-content-loader";
+import ContentLoader from "components/SavedMaps/ContentLoader";
 
 const store = configureStore(makeState(singleFloor));
 
@@ -121,3 +123,7 @@ storiesOf("DeleteMap", module)
   // react-router decorator
   .addDecorator(story => <Router>{story()}</Router>)
   .add("default", () => <DeleteMap />);
+
+storiesOf("ReactPlaceholder", module)
+  .add("BulletList", () => <BulletList height={70} />)
+  .add("MyContentLoader", () => <ContentLoader />);
