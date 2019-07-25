@@ -18,14 +18,19 @@ import AddZone from "components/Map/Forms/AddZone";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import ReactTooltip from "react-tooltip";
+import AddTransitBarcode from "components/Map/Forms/AddTransitBarcode";
 
 const QueueCheckbox = ({ val, onChange }) => (
   <label
-    style={{ textAlign: "-webkit-center", margin: "3% 5% 3% 5%", color: "orange" }}
+    style={{
+      textAlign: "-webkit-center",
+      margin: "3% 5% 3% 5%",
+      color: "orange"
+    }}
   >
     Queue mode:
     <input
-      style={{marginLeft: "10px"}}
+      style={{ marginLeft: "10px" }}
       name="queuemode"
       type="checkbox"
       checked={val}
@@ -39,11 +44,15 @@ const ZoneViewCheckBox = ({ val, onChange }) => (
     <ReactTooltip effect="solid" delayShow={1000} />
     <label
       data-tip="See summary tab in sidebar for zone color legend."
-      style={{ textAlign: "-webkit-center", margin: "0% 5% 3% 5%", color: "orange" }}
+      style={{
+        textAlign: "-webkit-center",
+        margin: "0% 5% 3% 5%",
+        color: "orange"
+      }}
     >
       Zone View:
       <input
-        style={{marginLeft: "10px"}}
+        style={{ marginLeft: "10px" }}
         name="zoneview"
         type="checkbox"
         checked={val}
@@ -59,11 +68,7 @@ class RightSidebar extends Component {
   };
 
   render() {
-    const {
-      queueMode,
-      zoneViewMode,
-      dispatch
-    } = this.props;
+    const { queueMode, zoneViewMode, dispatch } = this.props;
     const { open } = this.state;
 
     return (
@@ -75,7 +80,10 @@ class RightSidebar extends Component {
         >
           <i className="fa fa-lg fa-bars" />
         </button>
-        <div className="row py-1" style={{ margin: "0% 5% 0%", marginTop: "0%" }}>
+        <div
+          className="row py-1"
+          style={{ margin: "0% 5% 0%", marginTop: "0%" }}
+        >
           {[
             ToggleStorable,
             AddPPS,
@@ -92,14 +100,17 @@ class RightSidebar extends Component {
             AddFloor,
             AddElevator,
             EditSpecialBarcode,
-            ShiftBarcode
+            ShiftBarcode,
+            AddTransitBarcode
           ].map((Elm, idx) => (
-            <div key={idx} className="pr-1 pt-1" style={{ backgroundColor: "#545c64" }}>
+            <div
+              key={idx}
+              className="pr-1 pt-1"
+              style={{ backgroundColor: "#545c64" }}
+            >
               <Elm onError={e => this.setState({ e })} />
             </div>
           ))}
-
-
         </div>
         <div className="row">
           <div className="col">

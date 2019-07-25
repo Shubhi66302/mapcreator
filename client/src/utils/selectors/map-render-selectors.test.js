@@ -1,29 +1,15 @@
 import * as mapRenderSelectors from "./map-render-selectors";
-import {tileToWorldCoordinate, getTileIdToWorldCoordMap} from "./world-coordinate-utils-selectors";
+import {tileToWorldCoordinate} from "./world-coordinate-utils-selectors";
 import { fromJS } from "immutable";
 import { makeState, singleFloor, singleFloorVanilla } from "../test-helper";
 import * as constants from "../../constants";
 
-describe("tileRenderCoordinateSelector", () => {
-  const {tileRenderCoordinateSelector} = mapRenderSelectors;
-  test("should give correct render coordinate for a floor 1 tile", () => {
-    var state = makeState(singleFloor, 1);
-    const tileIdToWorldCoordinateMap = getTileIdToWorldCoordMap(state);
-    var coordinates = tileRenderCoordinateSelector(state, { tileId: "1,0" });
-    expect(coordinates).toEqual(tileToWorldCoordinate("1,0", tileIdToWorldCoordinateMap));
-    coordinates = tileRenderCoordinateSelector(state, { tileId: "2,2" });
-    expect(coordinates).toEqual(tileToWorldCoordinate("2,2", tileIdToWorldCoordinateMap));
-    coordinates = tileRenderCoordinateSelector(state, { tileId: "12,12" });
-    expect(coordinates).toEqual(tileToWorldCoordinate("12,12", tileIdToWorldCoordinateMap));
-  });
-});
-
 describe("spriteRenderCoordinateSelector", () => {
-  const {spriteRenderCoordinateSelector, tileRenderCoordinateSelector} = mapRenderSelectors;
+  const {spriteRenderCoordinateSelector} = mapRenderSelectors;
   test("should give correct render coordinate for main sprite of top left barcode", () => {
     var state = makeState(singleFloor, 1);
     var coordinates = spriteRenderCoordinateSelector(state, {tileId: "2,0",spriteIdx: 0});
-    var worldCoordinate = tileRenderCoordinateSelector(state, { tileId: "2,0" });
+    var worldCoordinate = tileToWorldCoordinate(state, { tileId: "2,0" });
     // Size of "2.0" is 1500
     var topLeftPointX = worldCoordinate.x - (1500 - constants.BARCODE_SPRITE_GAP) / 2;
     var topLeftPointY = worldCoordinate.y - (1500 - constants.BARCODE_SPRITE_GAP) / 2;
@@ -32,7 +18,7 @@ describe("spriteRenderCoordinateSelector", () => {
   test("should give correct render coordinate for main sprite of bottom right barcode", () => {
     var state = makeState(singleFloor, 1);
     var coordinates = spriteRenderCoordinateSelector(state, {tileId: "0,2", spriteIdx: 0});
-    var worldCoordinate = tileRenderCoordinateSelector(state, { tileId: "0,2" });
+    var worldCoordinate = tileToWorldCoordinate(state, { tileId: "0,2" });
     var topLeftPointX = worldCoordinate.x - (1500 - constants.BARCODE_SPRITE_GAP) / 2;
     var topLeftPointY = worldCoordinate.y - (1500 - constants.BARCODE_SPRITE_GAP) / 2;
     expect(coordinates).toEqual({"x": topLeftPointX, "y": topLeftPointY});
@@ -40,7 +26,7 @@ describe("spriteRenderCoordinateSelector", () => {
   test("should give correct render coordinate for main sprite of special barcode", () => {
     var state = makeState(singleFloor, 1);
     var coordinates = spriteRenderCoordinateSelector(state, {tileId: "12,12",spriteIdx: 0});
-    var worldCoordinate = tileRenderCoordinateSelector(state, { tileId: "12,12" });
+    var worldCoordinate = tileToWorldCoordinate(state, { tileId: "12,12" });
     // TODO: should use barcode size instead of hardcoding ?
     var topLeftPointX = worldCoordinate.x - (1500 - constants.BARCODE_SPRITE_GAP) / 2;
     var topLeftPointY = worldCoordinate.y - 205 * ((1500 - constants.BARCODE_SPRITE_GAP)/1500);
@@ -49,7 +35,7 @@ describe("spriteRenderCoordinateSelector", () => {
   test("should give correct render coordinate for center dot sprite of a barcode", () => {
     var state = makeState(singleFloor, 1);
     var coordinates = spriteRenderCoordinateSelector(state, {tileId: "12,12",spriteIdx: 8});
-    var worldCoordinate = tileRenderCoordinateSelector(state, { tileId: "12,12" });
+    var worldCoordinate = tileToWorldCoordinate(state, { tileId: "12,12" });
     // TODO: should use barcode size instead of hardcoding ?
     expect(coordinates).toEqual({"x": worldCoordinate.x, "y": worldCoordinate.y});
   });

@@ -86,12 +86,15 @@ export const getTileIdToWorldCoordMap = createSelector(
   }
 );
 
-export var tileToWorldCoordinate = (tileId, tileIdToWorldCoordinateMap) => {
-  var xCoord = (tileIdToWorldCoordinateMap[tileId].x);
-  var yCoord = (tileIdToWorldCoordinateMap[tileId].y);
-  return { x: xCoord, y: yCoord };
-};
-
+export const tileToWorldCoordinate = createSelector(
+  getTileIdToWorldCoordMap,
+  (_state, props) => props.tileId,
+  (tileIdToWorldCoordinateMap, tileId) => {
+    var xCoord = (tileIdToWorldCoordinateMap[tileId].x);
+    var yCoord = (tileIdToWorldCoordinateMap[tileId].y);
+    return { x: xCoord, y: yCoord };
+  }
+);
 
 export var worldToTileCoordinate = createSelector(
   getTileIdToWorldCoordMap,
@@ -115,6 +118,25 @@ export var worldToTileCoordinate = createSelector(
           return tileId;
         }
       }
+    };
+    return undefined;
+  }
+);
+
+// search and return exact tile id at given world coordinate if any
+export const getTileIdHavingWorldCoordinate = createSelector(
+  getTileIdToWorldCoordMap,
+  (_state, worldCoordinate) => worldCoordinate,
+  (tileIdToWorldCoordinateMap, worldCoordinate) =>{
+    for (var key in tileIdToWorldCoordinateMap) {
+      // check if the property/key is defined in the object itself, not in parent
+      if (tileIdToWorldCoordinateMap.hasOwnProperty(key)) {
+        var worldX = tileIdToWorldCoordinateMap[key].x;
+        var worldY = tileIdToWorldCoordinateMap[key].y;
+        if(worldCoordinate.x == worldX && worldCoordinate.y == worldY){
+          return key;
+        };
+      };
     };
     return undefined;
   }

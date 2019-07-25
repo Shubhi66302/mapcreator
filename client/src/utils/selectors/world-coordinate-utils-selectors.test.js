@@ -54,15 +54,14 @@ describe("getWorldCoordUsingNeighbour", () => {
 });
 
 describe("tileToWorldCoordinate", () => {
-  const { tileToWorldCoordinate, getTileIdToWorldCoordMap} = worldCoordinateUtils;
+  const { tileToWorldCoordinate} = worldCoordinateUtils;
   var state = makeState(singleFloor, 1);
-  const tileIdToWorldCoordinateMap = getTileIdToWorldCoordMap(state);
   test("should give correct world coordinate for non-special tile id", () => {
-    const worldCoordinate = tileToWorldCoordinate("0,1", tileIdToWorldCoordinateMap);
+    const worldCoordinate = tileToWorldCoordinate(state, {"tileId": "0,1"});
     expect(worldCoordinate).toEqual({x: 1500, y: 1500});
   });
   test("should give correct world coordinate for special tile id", () => {
-    const worldCoordinate = tileToWorldCoordinate("12,12", tileIdToWorldCoordinateMap);
+    const worldCoordinate = tileToWorldCoordinate(state, {"tileId": "12,12"});
     expect(worldCoordinate).toEqual({x: -1500, y: 2590});
   });
 });

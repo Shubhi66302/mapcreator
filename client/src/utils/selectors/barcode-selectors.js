@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import { encode_barcode, coordinateKeyToTupleOfIntegers } from "../util";
 export const getCurrentFloorBarcodeIds = state =>
   state.normalizedMap.entities.floor[state.currentFloor].map_values;
 export const getBarcodes = state => state.normalizedMap.entities.barcode || {};
@@ -67,4 +68,55 @@ export const getCurrentFloorBarcodesList = createSelector(
   getBarcodes,
   (currentFloorBarcodeIds, barcodesDict) =>
     currentFloorBarcodeIds.map(coordinate => barcodesDict[coordinate])
+);
+export const getExistingBarcodesAndCoordinates = createSelector(
+  getBarcodes,
+  barcodeInfoList => {
+    var barcodes = {};
+    var coordinates = {};
+    for (var key in barcodeInfoList) {
+      if (barcodeInfoList.hasOwnProperty(key)) {
+        barcodes[barcodeInfoList[key].barcode] = true;
+        coordinates[
+          coordinateKeyToTupleOfIntegers(barcodeInfoList[key].coordinate)
+        ] = true;
+      }
+    }
+    return { barcodes: barcodes, coordinates: coordinates };
+  }
+);
+
+// start from top right corner
+export const getNewBarcode = createSelector(
+  getExistingBarcodesAndCoordinates,
+  existingBarcodesAndCoordinates => {
+    const existingBarcodes = existingBarcodesAndCoordinates.barcodes;
+    for (var i = 999; i > 0; i--) {
+      for (var j = 1; j < 1000; j++) {
+        const barcode = encode_barcode(j, i);
+        if (existingBarcodes.hasOwnProperty(barcode)) {
+          continue;
+        }
+        return barcode;
+      }
+    }
+    throw new Error("No barcode available in between 001.001 to 999.999");
+  }
+);
+
+export const getNewCoordinate = createSelector(
+  getExistingBarcodesAndCoordinates,
+  existingBarcodesAndCoordinates => {
+    const existingCoordinates = existingBarcodesAndCoordinates.coordinates;
+    for (var i = 999; i > 0; i--) {
+      for (var j = 1; j < 1000; j++) {
+        const coordinate = [i, j];
+        if (existingCoordinates.hasOwnProperty(coordinate)) {
+          continue;
+        }
+        return coordinate;
+      }
+    }
+    throw new Error("No coordinate available in between {1,1} to {999, 999}");
+  }
 );

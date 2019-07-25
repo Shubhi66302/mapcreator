@@ -3,10 +3,7 @@
 import {getBarcodeSize} from "./barcode-selectors";
 import { createSelector } from "reselect";
 import * as constants from "../../constants";
-import {
-  getTileIdToWorldCoordMap,
-  tileToWorldCoordinate
-} from "./world-coordinate-utils-selectors";
+import {tileToWorldCoordinate} from "./world-coordinate-utils-selectors";
 
 export const getTileSpriteScale = createSelector(
   getBarcodeSize,
@@ -20,16 +17,8 @@ export const getTileSpriteScale = createSelector(
   }
 );
 
-export const tileRenderCoordinateSelector = createSelector(
-  getTileIdToWorldCoordMap,
-  (state_, props) => props.tileId,
-  (tileIdToWorldCoordinateMap, tileId) => {
-    return tileToWorldCoordinate(tileId, tileIdToWorldCoordinateMap);
-  }
-);
-
 export const spriteRenderCoordinateSelector = createSelector(
-  tileRenderCoordinateSelector,
+  tileToWorldCoordinate,
   getTileSpriteScale,
   getBarcodeSize,
   (state_, {spriteIdx }) => ({ spriteIdx }),

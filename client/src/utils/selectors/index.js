@@ -24,6 +24,9 @@ export {
   getBarcodes,
   getBarcode,
   getCurrentFloorBarcodes,
+  getExistingBarcodesAndCoordinates,
+  getNewCoordinate,
+  getNewBarcode,
   getCurrentFloorBarcodesList,
   coordinateKeyToBarcodeSelector,
   currentFloorBarcodeToCoordinateMap,
@@ -31,7 +34,6 @@ export {
 } from "./barcode-selectors";
 export {
   getTileSpriteScale,
-  tileRenderCoordinateSelector,
   spriteRenderCoordinateSelector
 } from "./map-render-selectors";
 
@@ -39,7 +41,8 @@ export {
   getTileIdToWorldCoordMapFunc,
   getTileIdToWorldCoordMap,
   tileToWorldCoordinate,
-  worldToTileCoordinate
+  worldToTileCoordinate,
+  getTileIdHavingWorldCoordinate
 } from "./world-coordinate-utils-selectors";
 
 export {
@@ -132,12 +135,10 @@ export const getDragSelectedTiles = createSelector(
     if (!selectedArea) return [];
     const selectionRect = getRectFromDiagonalPoints(selectedArea);
     const selectedMapTiles = tileIds.filter(tileId => {
-      const worldXCoordinate = tileToWorldCoordinate(
-        tileId,
-        tileIdToWorldCoordinateMap
-      );
+      const worldXCoordinate = tileToWorldCoordinate(state, { tileId });
       const barcodeSizeInfo = getBarcodeSize(state, { tileId });
       const defDistance = constants.DEFAULT_DISTANCE_BW_BARCODES;
+      // TODO: This copy paste needs to go... this logic is copy-pasted 3 times in the code. Make a sensible selector for it
       const topLeftPointX =
         worldXCoordinate.x -
         (barcodeSizeInfo[3] * (defDistance - constants.BARCODE_SPRITE_GAP)) /

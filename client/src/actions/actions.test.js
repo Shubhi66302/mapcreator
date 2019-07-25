@@ -1,4 +1,4 @@
-import { tileToWorldCoordinate, getTileIdToWorldCoordMap} from "utils/selectors";
+import { tileToWorldCoordinate} from "utils/selectors";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { makeState, singleFloor, singleFloorVanilla } from "utils/test-helper";
@@ -14,10 +14,9 @@ describe("clickOnViewport", () => {
   const { clickOnViewport, mapTileClick, outsideTilesClick } = actions;
   test("dispatches click on tile action when an existing tile is clicked", async () => {
     // setup
-    const initialState = makeState(singleFloor, 1);
-    const tileIdToWorldCoordinateMap = getTileIdToWorldCoordMap(initialState);
-    const store = mockStore(initialState);
-    var clickPoint = tileToWorldCoordinate("1,0", tileIdToWorldCoordinateMap);
+    const state = makeState(singleFloor, 1);
+    const store = mockStore(state);
+    var clickPoint = tileToWorldCoordinate(state, {"tileId": "1,0"});
     await store.dispatch(clickOnViewport(clickPoint));
     const dispatchedActions = store.getActions();
 
@@ -26,8 +25,8 @@ describe("clickOnViewport", () => {
   });
   test("dispatches outside click action when clicking on a non existing tile (i.e. outside map)", async () => {
     // setup
-    const initialState = makeState(singleFloor, 1);
-    const store = mockStore(initialState);
+    const state = makeState(singleFloor, 1);
+    const store = mockStore(state);
     var clickPoint = {x: 40000, y: 50000};
     await store.dispatch(clickOnViewport(clickPoint));
     const dispatchedActions = store.getActions();

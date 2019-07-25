@@ -2,11 +2,15 @@ import * as barcode from "./barcode";
 import * as actions from "./actions";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { makeState, singleFloorVanilla } from "utils/test-helper";
 import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
-
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
+import {
+  makeState,
+  singleFloorVanilla,
+  singleFloorVanillaWithOneTransitBarcode,
+  singleFloorVanillaWithTwoTransitBarcodes
+} from "utils/test-helper";
 
 describe("addNewBarcode", () => {
   const { addNewBarcode, createNewBarcode } = barcode;
@@ -49,6 +53,339 @@ describe("addNewBarcode", () => {
   });
 });
 // TODO: test for removeBarcodes
+
+
+describe("addTransitBarcode", () => {
+  const { addTransitBarcode, createNewBarcode } = barcode;
+  test("Should add transit barcode horizontally", async () => {
+    const { clearTiles } = actions;
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...initialState.normalizedMap.entities.barcode["0,1"],
+          adjacency: [[0, 0], null, [0, 2], [999, 1]],
+          size_info: [750, 750, 750, 375]
+        },
+        {
+          ...initialState.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[1, 0], [999, 1], [1, 2], [2, 1]],
+          size_info: [750, 375, 750, 750]
+        },
+        createNewBarcode({
+          coordinate: "999,1",
+          neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+          barcode: "003.003",
+          size_info: [750, 375, 750, 375],
+          adjacency: [null, [ 0, 1 ], null, [ 1, 1 ]]
+        })
+      ]
+    });
+    expect(dispatchedActions[1]).toMatchObject({
+      type: "ADD-ENTITIES-TO-FLOOR",
+      value: {
+        currentFloor: 1,
+        floorKey: "map_values",
+        ids: ["999,1"]
+      }
+    });
+    expect(dispatchedActions[2]).toMatchObject(clearTiles);
+  });
+  test("Should add transit barcode vertically", async () => {
+    const { clearTiles } = actions;
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 0,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...initialState.normalizedMap.entities.barcode["1,0"],
+          adjacency: [null, [0, 0], [999, 1], [2, 0]],
+          size_info: [750, 750, 375, 750]
+        },
+        {
+          ...initialState.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[999, 1], [0, 1], [1, 2], [2, 1]],
+          size_info: [375, 750, 750, 750]
+        },
+        createNewBarcode({
+          coordinate: "999,1",
+          neighbours: [[1, 1, 1], [0, 0, 0], [1, 1, 1], [0,0,0]],
+          barcode: "003.003",
+          size_info: [375, 750, 375, 750],
+          adjacency: [[1, 0], null, [1, 1], null]
+        })
+      ]
+    });
+    expect(dispatchedActions[1]).toMatchObject({
+      type: "ADD-ENTITIES-TO-FLOOR",
+      value: {
+        currentFloor: 1,
+        floorKey: "map_values",
+        ids: ["999,1"]
+      }
+    });
+    expect(dispatchedActions[2]).toMatchObject(clearTiles);
+  });
+  test("Should add and connect transit barcode with aligned barcode in perpendicular direction (when only one exist)", async () => {
+    const stateWithOneTransitBarcode = makeState(singleFloorVanillaWithOneTransitBarcode, 1);
+    // Map with one transit barcode
+    // 2,0        1,0    1,3     0,0
+    // 2,1        1,1            0,1
+    // 2,2        1,2            0,2
+    const store = mockStore(stateWithOneTransitBarcode);
+    // Map after adding new transit barcode
+    // 2,0        1,0      1,3       0,0
+    // 2,1        1,1    999,999     0,1
+    // 2,2        1,2                0,2
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...stateWithOneTransitBarcode.normalizedMap.entities.barcode["1,3"], // Old Transit barcode
+          adjacency: [null, [ 0, 0 ], [999, 1], [ 1, 0 ]],
+          neighbours: [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          size_info: [ 750, 375, 750, 375 ]
+        },
+        {
+          ...stateWithOneTransitBarcode.normalizedMap.entities.barcode["0,1"],
+          adjacency: [[0, 0], null, [0, 2], [999, 1]],
+          size_info: [750, 750, 750, 375]
+        },
+        {
+          ...stateWithOneTransitBarcode.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[1, 0], [999, 1], [1, 2], [2, 1]],
+          size_info: [750, 375, 750, 750]
+        },
+        createNewBarcode({  // New Transit barcode
+          coordinate: "999,1",
+          neighbours: [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+          barcode: "003.003",
+          size_info: [750, 375, 750, 375],
+          adjacency: [[1,3], [0, 1], null, [1, 1]]
+        })
+      ]
+    });
+  });
+  test("Should add and connect transit barcode with aligned barcode in perpendicular direction (when both exist)", async () => {
+    const stateWithTwoTransitBarcode = makeState(singleFloorVanillaWithTwoTransitBarcodes, 1);
+    // Map with two transit barcode
+    // 2,0        1,0    1,3    0,0
+    // 2,1        1,1           0,1
+    // 2,2        1,2    1,4    0,2
+    const store = mockStore(stateWithTwoTransitBarcode);
+    // Map after adding a new transit barcode
+    // 2,0        1,0      1,3      0,0
+    // 2,1        1,1    999,999    0,1
+    // 2,2        1,2      1,4      0,2
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...stateWithTwoTransitBarcode.normalizedMap.entities.barcode["1,3"], // Old Transit barcode in 0 direction
+          adjacency: [null, [ 0, 0 ], [999, 1], [ 1, 0 ]],
+          neighbours: [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          size_info: [ 750, 375, 750, 375 ]
+        },
+        {
+          ...stateWithTwoTransitBarcode.normalizedMap.entities.barcode["0,1"],
+          adjacency: [[0, 0], null, [0, 2], [999, 1]],
+          size_info: [750, 750, 750, 375]
+        },
+        {
+          ...stateWithTwoTransitBarcode.normalizedMap.entities.barcode["1,4"], // Old Transit barcode in 1 direction
+          adjacency: [[999, 1], [ 0, 2 ], null, [ 1, 2 ]],
+          neighbours: [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+          size_info: [ 750, 375, 750, 375 ]
+        },
+        {
+          ...stateWithTwoTransitBarcode.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[1, 0], [999, 1], [1, 2], [2, 1]],
+          size_info: [750, 375, 750, 750]
+        },
+        createNewBarcode({  // New Transit barcode
+          coordinate: "999,1",
+          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]], // connected in all 4 directions
+          barcode: "003.003",
+          size_info: [750, 375, 750, 375],
+          adjacency: [[1,3], [0, 1], [1, 4], [1, 1]]
+        })
+      ]
+    });
+
+  });
+  test("Should add but not connect transit barcode with misaligned barcode in perpendicular direction", async () => {
+    const stateWithOneTransitBarcode = makeState(singleFloorVanillaWithOneTransitBarcode, 1);
+    const store = mockStore(stateWithOneTransitBarcode);
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 800  // OLD transit barcode was added at distance 750
+      })
+    );
+    // Map after adding a new transit barcode
+    // 2,0          1,0    1,3         0,0
+    // 2,1          1,1      999,999   0,1
+    // 2,2          1,2                0,2
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...stateWithOneTransitBarcode.normalizedMap.entities.barcode["0,1"],
+          adjacency: [[0, 0], null, [0, 2], [999, 1]],
+          size_info: [750, 750, 750, 350]
+        },
+        {
+          ...stateWithOneTransitBarcode.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[1, 0], [999, 1], [1, 2], [2, 1]],
+          size_info: [750, 400, 750, 750]
+        },
+        createNewBarcode({  // New Transit barcode
+          coordinate: "999,1",
+          neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+          barcode: "003.003",
+          size_info: [750, 350, 750, 400],
+          adjacency: [[1,3], [0, 1], null, [1, 1]]
+        })
+      ]
+    });
+
+  });
+  test("Should add transit with neighbour structure in both directions same as the old neighbour structure b/w the 2 barcodes", async () => {
+    const initialState = makeState(singleFloorVanilla, 1);
+    // Modify neighbour structure in 1 direction for ref barcode
+    initialState.normalizedMap.entities.barcode["1,1"].neighbours = [[1, 1, 1], [1, 1, 0], [1, 1, 1], [1, 1, 1]];
+    // Modify neighbour structure in 3 direction for old neighbour of ref barcode
+    initialState.normalizedMap.entities.barcode["0,1"].neighbours = [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 0]];
+    const store = mockStore(initialState);
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...initialState.normalizedMap.entities.barcode["0,1"],
+          adjacency: [[0, 0], null, [0, 2], [999, 1]],
+          size_info: [750, 750, 750, 375]
+        },
+        {
+          ...initialState.normalizedMap.entities.barcode["1,1"],
+          adjacency: [[1, 0], [999, 1], [1, 2], [2, 1]],
+          size_info: [750, 375, 750, 750]
+        },
+        createNewBarcode({
+          coordinate: "999,1",
+          neighbours: [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
+          barcode: "003.003",
+          size_info: [750, 375, 750, 375],
+          adjacency: [null, [ 0, 1 ], null, [ 1, 1 ]]
+        })
+      ]
+    });
+  });
+  test("Should NOT add transit barcode at boundary ", async () => {
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    await store.dispatch(
+      addTransitBarcode({
+        tileId: "0,0",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 750
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "SET-ERROR-MESSAGE",
+      value: "Cannot Add transit barcode in direction: 1 of coordinate: 0,0"
+    });
+  });
+  test("Should throw error when distance provided in form makes size_info negative for a neighbour barcode", async () => {
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "003.003",
+        distance: 1500
+      }));
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "SET-ERROR-MESSAGE",
+      value: "Transit barcode will overlap with existing barcode in direction: 1"
+    });
+  });
+  test("Should throw error when barcode provided in form already exists in maps", async () => {
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    store.dispatch(
+      addTransitBarcode({
+        tileId: "1,1",
+        direction: 1,
+        newBarcode: "002.002",
+        distance: 750
+      }));
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "SET-ERROR-MESSAGE",
+      value: "Barcode:  002.002 already exists in map"
+    });
+  });
+});
 
 describe("modifyDistanceBetweenBarcodes", () => {
   const { modifyDistanceBetweenBarcodes } = barcode;

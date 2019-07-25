@@ -3,10 +3,17 @@ import {
   implicitCoordinateKeyToBarcode,
   addNeighbourToBarcode
 } from "../utils/util";
-import { getBarcode, getTileIdsForDistanceTiles} from "utils/selectors";
+import { getBarcode, getTileIdsForDistanceTiles } from "utils/selectors";
+import {
+  getUpdatedAndTransitBarcodes,
+  validateTransitBarcodeForm
+} from "./add-transit-barcode";
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import { setErrorMessage } from "./message";
 import { DEFAULT_BOT_WITH_RACK_THRESHOLD } from "../constants.js";
+
+// TODO: should create a folder "actions/barcode" and move this file
+// and "add-transit-barcode.js" in it since this is getting big
 
 const createNewBarcode = ({ coordinate, neighbours, barcode, size_info }) => ({
   barcode,
@@ -16,8 +23,42 @@ const createNewBarcode = ({ coordinate, neighbours, barcode, size_info }) => ({
   zone: "defzone",
   store_status: 0,
   size_info,
-  bot_id: "null"
+  botid: "null"
 });
+
+const addTransitBarcode = formData => (dispatch, getState) => {
+  const state = getState();
+  const isValidFormData = validateTransitBarcodeForm(formData, state);
+  if (isValidFormData != true) {
+    const { error } = isValidFormData;
+    return dispatch(setErrorMessage(error));
+  }
+  var [updatedBarcodes, transitBarcode] = getUpdatedAndTransitBarcodes(
+    state,
+    formData
+  );
+  // TODO: should do add barcode and add barcode to floor in a single action.
+  // i.e. handle "ADD-MULTIPLE-BARCODE" in floor reducer itself.
+  // add to barcodes
+  dispatch({
+    type: "ADD-MULTIPLE-BARCODE",
+    value: [...updatedBarcodes, transitBarcode]
+  });
+  // add to floor
+  dispatch(
+    addEntitiesToFloor({
+      currentFloor: state.currentFloor,
+      floorKey: "map_values",
+      entities: [transitBarcode],
+      idField: "coordinate"
+    })
+  );
+  // clear selection
+  dispatch(clearTiles);
+  return Promise.resolve();
+};
+
+// TODO: (MUST) choose barcode and coordinate which doesn't exit in current map
 
 const addNewBarcode = formData => (dispatch, getState) => {
   const state = getState();
@@ -94,8 +135,14 @@ const modifyDistanceBetweenBarcodes = ({ distance, direction }) => (
   getState
 ) => {
   const globalState = getState();
-  const { selection: { distanceTiles } } = globalState;
-  const tileIds = getTileIdsForDistanceTiles(distanceTiles, globalState, direction);
+  const {
+    selection: { distanceTiles }
+  } = globalState;
+  const tileIds = getTileIdsForDistanceTiles(
+    distanceTiles,
+    globalState,
+    direction
+  );
   dispatch({
     type: "MODIFY-DISTANCE-BETWEEN-BARCODES",
     value: {
@@ -139,5 +186,6 @@ export {
   removeBarcodes,
   modifyDistanceBetweenBarcodes,
   modifyNeighbours,
-  shiftBarcode
+  shiftBarcode,
+  addTransitBarcode
 };

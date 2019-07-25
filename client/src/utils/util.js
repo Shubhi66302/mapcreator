@@ -126,8 +126,25 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   ]);
 };
 
+export const getNeighbourBarcodeIncludingDisconnectedInDirection = (
+  coordinateKey,
+  barcodesDict,
+  direction
+) => {
+  const neighbouringBarcodes = getNeighbouringBarcodesIncludingDisconnected(
+    coordinateKey,
+    barcodesDict
+  );
+  return neighbouringBarcodes[direction];
+};
+
 export var isValidCoordinateKey = coordinateKey =>
   /^\d*,\d*$/.test(coordinateKey);
+
+export var implicitBarcodeToCoordinateTuple = barcode => {
+  const coordinateKey = implicitBarcodeToCoordinate(barcode);
+  return coordinateKeyToTupleOfIntegers(coordinateKey);
+};
 
 export var coordinateKeyToTupleOfIntegers = coordinateKey => {
   // '12,3' => [12, 3]
