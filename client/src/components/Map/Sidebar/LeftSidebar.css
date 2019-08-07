@@ -51,6 +51,7 @@
   position: relative;
   height: 100vh;
   overflow: auto;
+  padding-bottom: 60px;
 }
 
 #version-text {
