@@ -15,7 +15,10 @@ var PixiViewport = PixiComponent("PixiViewport", {
       screenWidth: width,
       screenHeight: height,
       worldWidth: 10000,
-      worldHeight: 10000
+      worldHeight: 10000,
+      // divWheel to prevent scrolling when another element is overlayed on canvas.
+      // default was document.body
+      divWheel: document.getElementById("pixi-canvas-wrapper")
     });
     window.addEventListener("resize", () => {
       const { width, height } = getCanvasSize();

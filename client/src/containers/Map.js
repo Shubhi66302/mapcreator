@@ -39,12 +39,7 @@ class Map extends Component {
   }
 
   render() {
-    const {
-      nMap,
-      dispatch,
-      errorMessage,
-      successMessage
-    } = this.props;
+    const { nMap, dispatch, errorMessage, successMessage } = this.props;
 
     // mapId may be different from params since it may not have been fetched yet...
 
@@ -69,17 +64,13 @@ class Map extends Component {
               </div>
               <div className="col">
                 <div className="float-right">
-		              <SampleRacksJson />
+                  <SampleRacksJson />
                   <DeleteMap />
                 </div>
               </div>
             </div>
-            <div className="leftsidebar-wrapper">
-              <LeftSidebar />
-            </div>
-            <div className="rightsidebar-wrapper">
-              <RightSidebar dispatch={dispatch} />
-            </div>
+            <LeftSidebar />
+            <RightSidebar dispatch={dispatch} />
             <div className="row py-1">
               <div className="btn-group col" role="group">
                 <button
@@ -119,12 +110,12 @@ class Map extends Component {
                   Download as Single Floor
                 </button>
               </div>
-              <div className='col float-right'>
+              <div className="col float-right">
                 <ChangeFloorDropdown />
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row" id="pixi-canvas-wrapper">
             <MapViewport
               onShiftClickOnMapTile={tileId =>
                 this.setState({

@@ -47,6 +47,12 @@
   left: 0;
 }
 
+.menu-data-container {
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+}
+
 #version-text {
   position: absolute;
   bottom: 10px;

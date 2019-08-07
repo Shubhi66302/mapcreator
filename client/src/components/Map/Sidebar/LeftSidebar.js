@@ -27,11 +27,10 @@ class LeftSidebar extends Component {
   render() {
     const { open, activeIdx } = this.state;
     var menuItems = [
-      ["fa-bars",Summary],
+      ["fa-bars", Summary],
       ["fa-chevron-up", Elevators],
       ["fa-charging-station", Chargers],
-      ["fa-archive", PPSes],
-   
+      ["fa-archive", PPSes]
     ];
     var DataToShow = menuItems[activeIdx][1];
     return (
@@ -51,7 +50,9 @@ class LeftSidebar extends Component {
               onClick: () => this.setState({ activeIdx: idx })
             }))}
           />
-          {DataToShow ? <DataToShow /> : ""}
+          <div className="menu-data-container">
+            {DataToShow ? <DataToShow /> : ""}
+          </div>
         </div>
         <small id="version-text">
           {process.env.REACT_APP_VERSION || "unknown version"}
