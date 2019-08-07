@@ -80,52 +80,54 @@ class RightSidebar extends Component {
         >
           <i className="fa fa-lg fa-bars" />
         </button>
-        <div
-          className="row py-1"
-          style={{ margin: "0% 5% 0%", marginTop: "0%" }}
-        >
-          {[
-            ToggleStorable,
-            AddPPS,
-            AddCharger,
-            AssignDockPoint,
-            AddZone,
-            AssignZone,
-            AssignODSExcluded,
-            AssignEmergencyBarcode,
-            AddBarcode,
-            RemoveBarcode,
-            AddQueueBarcode,
-            ModifyDistanceBwBarcodes,
-            AddFloor,
-            AddElevator,
-            EditSpecialBarcode,
-            ShiftBarcode,
-            AddTransitBarcode
-          ].map((Elm, idx) => (
-            <div
-              key={idx}
-              className="pr-1 pt-1"
-              style={{ backgroundColor: "#545c64" }}
-            >
-              <Elm onError={e => this.setState({ e })} />
-            </div>
-          ))}
-        </div>
-        <div className="row">
-          <div className="col">
-            <QueueCheckbox
-              val={queueMode}
-              onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
-            />
+        <div className="menu-data-container">
+          <div
+            className="row py-1"
+            style={{ margin: "0% 5% 0%", marginTop: "0%" }}
+          >
+            {[
+              ToggleStorable,
+              AddPPS,
+              AddCharger,
+              AssignDockPoint,
+              AddZone,
+              AssignZone,
+              AssignODSExcluded,
+              AssignEmergencyBarcode,
+              AddBarcode,
+              RemoveBarcode,
+              AddQueueBarcode,
+              ModifyDistanceBwBarcodes,
+              AddFloor,
+              AddElevator,
+              EditSpecialBarcode,
+              ShiftBarcode,
+              AddTransitBarcode
+            ].map((Elm, idx) => (
+              <div
+                key={idx}
+                className="pr-1 pt-1"
+                style={{ backgroundColor: "#545c64" }}
+              >
+                <Elm onError={e => this.setState({ e })} />
+              </div>
+            ))}
           </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <ZoneViewCheckBox
-              val={zoneViewMode}
-              onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
-            />
+          <div className="row">
+            <div className="col">
+              <QueueCheckbox
+                val={queueMode}
+                onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <ZoneViewCheckBox
+                val={zoneViewMode}
+                onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
+              />
+            </div>
           </div>
         </div>
         <small id="version-text">
