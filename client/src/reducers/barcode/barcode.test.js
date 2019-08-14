@@ -1,4 +1,5 @@
 import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
+import withCharger3x3 from "test-data/test-maps/3x3-with-pps-charger-fireemergencies.json";
 import { normalizeMap } from "utils/normalizr";
 import { fromJS } from "immutable";
 import barcodeReducer from "./index";
@@ -6,6 +7,10 @@ import { createFloorFromCoordinateData } from "utils/util";
 import _ from "lodash";
 
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
+const withCharger3x3BarcodeMap = fromJS(
+  normalizeMap(withCharger3x3).entities.barcode
+);
+
 // TODO: this function has same name as test-helper/makeState, change to make less confusing
 const makeState = immutableMap => immutableMap.toJS();
 
@@ -105,6 +110,38 @@ describe("DELETE-BARCODE", () => {
     // middle one is important
     expect(newState["1,1"].neighbours).toEqual([
       [0, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+  });
+  test("deleting a barcode with disconnected neighbours should also fix their neighbour structure", () => {
+    // eg. a charger barcode (2,2 in this case)
+    // 2,1   -   1,1
+    //  |         |
+    // 12,12 (s)  |
+    //  |         |
+    // 2,2  -x-  1,2
+    // 2,2 and 1,2 have each other as [1,0,0] neighbours (i.e. disconnected)
+    // deleting 1,2 should fix neighbour structure of 2,2 to [0,0,0] and also remove 1,2 from its adjacency
+    var state = makeState(withCharger3x3BarcodeMap);
+    var tileIdMap = { "1,2": true };
+    var newState = barcodeReducer(state, {
+      type: "DELETE-BARCODES",
+      value: tileIdMap
+    });
+    expect(newState["1,2"]).not.toBeTruthy();
+    // charger barcode is important (BSS-16329)
+    expect(newState["2,2"].neighbours).toEqual([
+      [1, 1, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ]);
+    expect(newState["2,2"].adjacency).toEqual([[12, 12], null, null, null]);
+    // check 1,1 also just in case
+    expect(newState["1,1"].neighbours).toEqual([
+      [1, 1, 1],
       [1, 1, 1],
       [0, 0, 0],
       [1, 1, 1]

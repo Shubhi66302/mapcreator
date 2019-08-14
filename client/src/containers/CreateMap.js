@@ -33,7 +33,7 @@ const InnerForm = ({ handleSubmit, isSubmitting }) => {
       <Field
         name="col_end"
         component={FormikedInput}
-        label="Column"
+        label="Column End"
         type="number"
       />
       <button type="submit" disabled={isSubmitting} className="btn btn-primary">

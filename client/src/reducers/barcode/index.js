@@ -1,7 +1,4 @@
-import {
-  getNeighbouringBarcodes,
-  deleteNeighbourFromBarcode
-} from "utils/util";
+import { deleteNeighbourFromBarcode } from "utils/util";
 import _ from "lodash";
 import { addQueueBarcodesToPps } from "./queue-barcodes";
 import { addElevator, editElevatorCoordinates } from "./elevator-barcodes";
@@ -13,6 +10,7 @@ import {
   deleteElevator
 } from "./delete-entities";
 import shiftBarcode from "./shift-barcode";
+import { getNeighbouringBarcodesIncludingDisconnected } from "../../utils/util";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -34,7 +32,10 @@ export default (state = {}, action) => {
       var tileIdMap = action.value;
       for (let key of Object.keys(tileIdMap)) {
         if (state[key]) {
-          var neighbours = getNeighbouringBarcodes(key, state);
+          var neighbours = getNeighbouringBarcodesIncludingDisconnected(
+            key,
+            state
+          );
           for (const [idx, nb] of neighbours.entries()) {
             if (nb && !tileIdMap[nb.coordinate]) {
               // its a valid neighbour of the deleted barcode that itself won't be deleted
