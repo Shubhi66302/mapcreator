@@ -7,7 +7,6 @@ IMG			:= ${BASENAME}:${TAG}
 STAGING:= ${BASENAME}:staging
 # testing is only for phab diffs
 REVISION_WITH_D := D${REVISION}
-REVISION_WITH_D_LOWERCASE := $(shell echo $(REVISION_WITH_D) | tr A-Z a-z)
 TESTING := ${BASENAME}:${REVISION_WITH_D}
 LATEST		:= ${BASENAME}:latest
 SERVER_SSH	:= root@mapcreator.labs.greyorange.com
@@ -47,28 +46,17 @@ testing:
 		--build-arg keep_redux_logger=true .
 	docker push ${TESTING}
 
-generate-deploy-testing-script:
-	echo "export REVISION=${REVISION_WITH_D} && export REVISION_LOWERCASE=${REVISION_WITH_D_LOWERCASE} \
-		&& mkdir -p ${REVISION_WITH_D}/ \
-		&& cd ${REVISION_WITH_D} \
-		&& cp ../docker-compose.yml.template docker-compose.yml \
-		&& docker-compose pull web \
-		&& docker-compose up -d" > deploy-testing-script.sh
-	chmod +x deploy-testing-script.sh
-
-deploy-testing: generate-deploy-testing-script
-	scp deploy-testing-script.sh ${SERVER_SSH}:~/testing-instance-provisioner/
-	ssh ${SERVER_SSH} "cd testing-instance-provisioner && ./deploy-testing-script.sh && rm deploy-testing-script.sh"
-
 staging:
 	docker build -t ${STAGING} --build-arg version=${VERSION} .
 	docker push ${STAGING}
 
 deploy-staging:
-		ssh ${SERVER_SSH} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d'
+	# adding prune to clear up old images
+	ssh ${SERVER_SSH} 'cd mapcreator-staging && docker-compose pull web && docker-compose up -d && docker image prune -af'
 
 deploy:
-		ssh ${SERVER_SSH} 'cd mapcreator && docker-compose pull web && docker-compose up -d'
+	# adding prune to clear up old images
+	ssh ${SERVER_SSH} 'cd mapcreator && docker-compose pull web && docker-compose up -d && docker image prune -af'
 
 login:
 # do this before any other command. set env variables for docker login (contact vivek.r@greyorange.sg)
@@ -96,6 +84,3 @@ test-version:
 
 test-testing-tag:
 	echo ${TESTING}
-
-test-lowercase-revision-tag:
-	echo ${REVISION_WITH_D_LOWERCASE}

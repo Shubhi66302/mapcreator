@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=apj0702
+      - POSTGRES_USER=gor
+      - POSTGRES_DB=mapcreator
+    stop_signal: SIGINT
+    networks:
+      - default
+  web:
+    image: "repo.labs.greyorange.com/mapcreator:${REVISION}"
+    depends_on:
+      - db
+    networks:
+      default:
+      testing_instance_net:
+        aliases:
+          - "web_${REVISION}"
+          - "web_${REVISION_LOWERCASE}"
+
+networks:
+  testing_instance_net:
+    external: true
