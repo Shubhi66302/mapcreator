@@ -47,6 +47,7 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
 - Tests/linting is automatically done on Phabricator
 
 # Deployment
+
 - Deployment is done through Dockerfile. There are two deployments on VM:
     - production server on `mapcreator.labs.greyorange.com`
     - staging server on `mapcreator.labs.greyorange.com:3002`
