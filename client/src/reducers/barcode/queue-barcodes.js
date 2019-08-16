@@ -3,7 +3,6 @@ import _ from "lodash";
 
 export const addQueueBarcodesToPps = (state = {}, action) => {
   const tileIds = action.value.coordinates;
-  const pps_coordinate = action.value.pps_coordinate;
   var newState = _.cloneDeep(state);
   for (var i = 0; i < tileIds.length; i++) {
     var tileId = tileIds[i];
@@ -16,12 +15,12 @@ export const addQueueBarcodesToPps = (state = {}, action) => {
         QueueDirection = getDirection(tileId, tileIds[i + 1]);
       }
       var allNeighbours = getNeighbouringBarcodes(tileId, state);
-      var filteredNeighbours = _.filter(allNeighbours, function(tile) {
+      var nonQueueNeighbours = _.filter(allNeighbours, function(tile) {
         return tile != null && !_.includes(tileIds, tile.coordinate);
       });
-      // if pps is a neighbour, do not allow movement there
+      // disallow movement to all neighbours which are queue barcodes and not in queue direction.
       allNeighbours.forEach((nb, idx) => {
-        if (nb && pps_coordinate == nb.coordinate) {
+        if (nb && _.includes(tileIds, nb.coordinate) && idx != QueueDirection) {
           newState[tileId].neighbours[idx][2] = 0;
         }
       });
@@ -35,13 +34,12 @@ export const addQueueBarcodesToPps = (state = {}, action) => {
             newState[tileId].neighbours[Remaining[j]][2] = 0;
           }
 
-          filteredNeighbours.forEach(neighbouringTileIdobject => {
+          nonQueueNeighbours.forEach(neighbouringTileIdobject => {
             var neighbouringTileId = neighbouringTileIdobject.coordinate;
             var current_neighbour_dir = getDirection(
               tileId,
               neighbouringTileId
             );
-            // var prevQueDir = getDirection(tileIds[i-1],tileId);
             var neighbour_current_dir = (current_neighbour_dir + 2) % 4;
             newState[neighbouringTileId].neighbours[
               neighbour_current_dir
@@ -51,13 +49,12 @@ export const addQueueBarcodesToPps = (state = {}, action) => {
           var endQueuedir = getDirection(tileIds[i - 1], tileId);
           var endoppQuedir = (endQueuedir + 2) % 4;
           newState[tileId].neighbours[endoppQuedir][2] = 0;
-          filteredNeighbours.forEach(neighbouringTileIdobjectend => {
+          nonQueueNeighbours.forEach(neighbouringTileIdobjectend => {
             var neighbouringTileIdend = neighbouringTileIdobjectend.coordinate;
             var endcurrdir = getDirection(tileId, neighbouringTileIdend);
             var endnbrdir = (endcurrdir + 2) % 4;
-            if (endcurrdir != endQueuedir && endcurrdir != endoppQuedir) {
-              newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
-            }
+            // do NOT allow any non-queue neighbour to enter exit barcode
+            newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
           });
         }
       }
