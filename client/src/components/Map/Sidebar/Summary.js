@@ -8,6 +8,7 @@ import {
   getZoneToColorMap
 } from "utils/selectors";
 import _ from "lodash";
+import CopyJSONsCard from "./CopyJSONsCard";
 
 const Summary = ({
   chargerDict,
@@ -116,6 +117,7 @@ const Summary = ({
           })}
         </NonCollapsibleBaseCard>
       }
+      <CopyJSONsCard />
     </div>
   );
 };

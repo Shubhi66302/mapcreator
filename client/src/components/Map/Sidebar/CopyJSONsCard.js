@@ -1,0 +1,33 @@
+import React from "react";
+import { connect } from "react-redux";
+import BaseCard from "./BaseCard";
+import { copyJSONToClipboard } from "actions/actions";
+
+const CopyJSONsCard = ({ dispatch }) => (
+  <BaseCard
+    key="copy-jsons-card"
+    title={"Copy JSONs to clipboard"}
+    isCollapsible={true}
+  >
+    {[
+      ["map.json (multifloor)", ["map", false]],
+      ["map.json (singlefloor)", ["map", true]],
+      ["pps.json", ["pps", false]],
+      ["charger.json", ["charger", false]],
+      ["elevator.json", ["elevator", false]],
+      ["zone.json", ["zone", false]]
+    ].map(([text, [arg1, arg2]], idx) => (
+      <div key={idx} className="row py-1">
+        <span className="col-auto">{text}</span>
+        <div className="col float-right" />
+        <button
+          type="button"
+          className="btn btn-light far fa-copy"
+          onClick={() => dispatch(copyJSONToClipboard(arg1, arg2))}
+        />
+      </div>
+    ))}
+  </BaseCard>
+);
+
+export default connect()(CopyJSONsCard);

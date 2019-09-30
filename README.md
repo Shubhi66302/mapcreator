@@ -46,20 +46,36 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
 - To iterate fast on a UI component, `cd` into client in a new tab and run `npm run storybook`. Go to `localhost:9009` to see list of components (see `BarcodeViewPopup` for an example). Stories are defined in `stores/index.js`. Stories reload much faster than hot reload of react.
 - Tests/linting is automatically done on Phabricator
 
-# Deployment
+# Deployment:
 
-- Deployment is done through Dockerfile. There are two deployments on VM:
+- Deployment is done through Dockerfile. There are three deployments on VM:
     - production server on `mapcreator.labs.greyorange.com`
     - staging server on `mapcreator.labs.greyorange.com:3002`
-- Both have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
+    - testing server(s) on `mapcreator.labs.greyorange.com:5000`
+
+## Recommended workflow
+- When a diff is raised, a testing instance will be created automatically (see testing server below). This can be used for manual testing/code review.
+- Deployment to staging can be done through phabricator. Go to `https://phab.greyorange.com/harbormaster/plan/10/` and click on "Run Plan Manually". Enter your diff id and run. You can save this URL as a favorite in phabricator so its easy to access. Check staging server to confirm its done
+- By default, you don't need to deploy to production manually. Once diff is landed (i.e. pushed to `master`), bitbucket will automatically run tests and then deploy to `mapcreator.labs.greyorange.com`
+
+## Production and Staging Server: Manual Workflow (Not Recommended)
+
+- Both production and staging have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
 - To make staging image, run `make staging`. This will build image with `staging` tag and push to repo.
 - To make production image, run `make all`. This will build image with `latest` tag and push to repo.
     - Building an image will be slow for the first time or when either `package.json` changes.
 - To just make a image with just current commit id as tag, run `make build push`.
 - For deploying build to staging, run `make deploy-staging`. Then check staging server if build is running and test it out.
-    - Deployment to staging can also be done through bitbucket pipelines. Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy. This requires you to first push your feature branch to bitbucket.
-- For deploying to production, run `make deploy`. Then check production server to see if build is runnig.
-- By default, you don't need to deploy to production manually. Once pushed to `master`, bitbucket will automatically run tests and then deploy to `mapcreator.labs.greyorange.com`
+    - It can also be done through bitbucket pipelines . Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy. This requires you to first push your feature branch to bitbucket.
+- To deploy to production, run `make deploy`. Then check production server to see if build is running.
+
+## Testing Server(s)
+- A testing nginx server is running on `mapcreator.labs.greyorange.com`. Whenever a diff is created, a `mapcreator-testing` job runs on jenkins that creates a build for the diff and deploys it on the testing server. Eg. if your diff name is `D5768`, then after build completes, jenkins will post a comment on your diff saying `Testing instance is available at http://mapcreator.labs.greyorange.com:5000/D5678`. Go to that URL to access your testing instance. This is useful for code reviews.
+- TODO: document how this setup works (nginx, testing docker network, scripts, jobs)
+- Right now testing instances need to be manually cleaned up once the code gets landed (otherwise disk gets full after a while). TODO: automate this properly!
+    - `ssh root@mapcreator.labs.greyorange.com`
+    - `cd testing-instance-provisioner`
+    - `REVISION=D5678 make -f Makefile.testing cleanup-testing`
 
 # Modifying JSON schemas
 

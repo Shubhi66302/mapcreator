@@ -20,6 +20,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BulletList } from "react-content-loader";
 import ContentLoader from "components/SavedMaps/ContentLoader";
+import CopyJSONsCard from "../components/Map/Sidebar/CopyJSONsCard";
 
 const store = configureStore(makeState(singleFloor));
 
@@ -29,6 +30,10 @@ storiesOf("Welcome", module).add("to Storybook", () => (
 
 const BootstrapDecorator = storyFn => (
   <div className="container">{storyFn()}</div>
+);
+
+const SidebarWidthDecorator = storyFn => (
+  <div style={{ width: "300px" }}>{storyFn()}</div>
 );
 
 storiesOf("Button", module)
@@ -112,6 +117,12 @@ storiesOf("Sidebar/ListOfBaseCards", module).add("default", () =>
 storiesOf("Sidebar/Chargers", module)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)
   .add("default", () => <Chargers />);
+
+storiesOf("Sidebar/Summary/CopyJSONsCard", module)
+  .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+  .addDecorator(BootstrapDecorator)
+  .addDecorator(SidebarWidthDecorator)
+  .add("default", () => <CopyJSONsCard />);
 
 storiesOf("RemoveItemForm", module).add("default", () => (
   <RemoveItemForm itemName="Elevator" onSubmit={() => {}} itemId={5} />

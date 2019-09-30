@@ -1242,7 +1242,7 @@
       {
         "barcode": "013.021",
         "zone": "defzone",
-        "neighbours": [null, null, null, null],
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
         "blocked": false,
@@ -1252,7 +1252,7 @@
       {
         "barcode": "013.023",
         "zone": "defzone",
-        "neighbours": [null, null, null, null],
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
         "blocked": false,
@@ -1262,7 +1262,7 @@
       {
         "barcode": "013.022",
         "zone": "defzone",
-        "neighbours": [null, null, null, null],
+        "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
         "blocked": false,

@@ -2,7 +2,6 @@
 import { handleErrors } from "utils/util";
 import {
   worldToTileCoordinate,
-  getTileIdToWorldCoordMapFunc,
   tileIdsMapSelector,
   getDragSelectedTiles,
   distanceTileSpritesSelector,
@@ -12,6 +11,7 @@ import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
 import JSZip from "jszip";
 import { saveAs } from "file-saver/FileSaver";
+import copy from "copy-to-clipboard";
 import exportMap from "common/utils/export-map";
 import { SPRITESHEET_PATH } from "../constants";
 import { fitToViewport, setViewportClamp } from "./viewport";
@@ -211,35 +211,6 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   return dispatch(clearTiles);
 };
 
-export const addWorldCoordinateToMap = normalizedMap => {
-  var entities = normalizedMap.entities;
-  const oldBarcodeDict = entities.barcode;
-  const floorInfo = entities.floor;
-  var newbarcodeDict = {};
-  for (var floorId in floorInfo) {
-    var currentFloorBarcodeDict = {};
-    const barcodeKeys = floorInfo[floorId].map_values;
-    barcodeKeys.forEach(barcodeKey => {
-      currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
-    });
-    const tileToWorldCoordinateMap = getTileIdToWorldCoordMapFunc(
-      currentFloorBarcodeDict
-    );
-    for (var barcode in currentFloorBarcodeDict) {
-      var barcodeInfo = currentFloorBarcodeDict[barcode];
-      const worldCoordinate = tileToWorldCoordinateMap[barcode];
-      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${
-        worldCoordinate.y
-      }]`;
-      currentFloorBarcodeDict[barcode] = barcodeInfo;
-    }
-    newbarcodeDict = { ...newbarcodeDict, ...currentFloorBarcodeDict };
-  }
-  entities.barcode = newbarcodeDict;
-  normalizedMap.entities = entities;
-  return normalizedMap;
-};
-
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   // denormalize it
@@ -254,17 +225,25 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
 
 export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   var { normalizedMap } = getState();
-  normalizedMap = addWorldCoordinateToMap(normalizedMap);
-  // denormalize it
-  const mapObj = denormalizeMap(normalizedMap);
-  const exportedJson = exportMap(mapObj.map, singleFloor);
+  const exportedJson = exportMap(normalizedMap, singleFloor);
   var zip = new JSZip();
   Object.keys(exportedJson).forEach(fileName => {
     zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
   });
   return zip.generateAsync({ type: "blob" }).then(content => {
-    saveAs(content, mapObj.id + ".zip");
+    saveAs(content, Object.keys(normalizedMap.entities.mapObj)[0] + ".zip");
   });
+};
+
+export const copyJSONToClipboard = (fieldName, singleFloor = false) => (
+  dispatch,
+  getState
+) => {
+  var { normalizedMap } = getState();
+  const exportedJson = exportMap(normalizedMap, singleFloor);
+  if (exportedJson[fieldName]) {
+    copy(JSON.stringify(exportedJson[fieldName]));
+  } else dispatch(setErrorMessage("Invalid JSON file name"));
 };
 
 export const editSpecialBarcode = ({ coordinate, new_barcode }) => ({

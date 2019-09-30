@@ -1,4 +1,5 @@
 require("dotenv").config({ path: ".env.test" });
+import { normalizeMap } from "utils/normalizr";
 import getLoadedAjv from "./get-loaded-ajv";
 import importMap from "./import-map";
 import exportMap from "./export-map";
@@ -18,14 +19,14 @@ var convertFileNames = map => ({
   dockPointJson: map.dock_point
 });
 
-
 describe("export good maps", () => {
   test("3-7", () => {
     var ajv = getLoadedAjv();
     // import first, then export, then import again?
     expect(threeSevenJsons.mapJson).toBeTruthy();
     var map = importMap(threeSevenJsons);
-    var exported = exportMap(map);
+    var normalizedMap = normalizeMap({ id: 1, map });
+    var exported = exportMap(normalizedMap);
 
     // individually check each file to not be empty
     expect(exported.map).toBeTruthy();
@@ -71,9 +72,8 @@ describe("export good maps", () => {
 
   test("queue_data.json should be exported correctly for 3-7 map", () => {
     expect(threeSevenJsons.mapJson).toBeTruthy();
-    var map = importMap(threeSevenJsons);
-    var exported = exportMap({
-      ...map,
+    var map = {
+      ...importMap(threeSevenJsons),
       queueDatas: [
         {
           queue_data_id: 1,
@@ -81,7 +81,9 @@ describe("export good maps", () => {
           data: [["012.012", 0], ["012.013", 0], ["012.014", 4]]
         }
       ]
-    });
+    };
+    var normalizedMap = normalizeMap({ id: 1, map });
+    var exported = exportMap(normalizedMap);
     expect(exported.queue_data).toBeTruthy();
     expect(exported.queue_data).toMatchObject([
       [["012.012", 0], ["012.013", 0], ["012.014", 4]]
@@ -92,7 +94,8 @@ describe("export good maps", () => {
     var ajv = getLoadedAjv();
     // import first, then export, then import again?
     var map = importMap(continentalJsons);
-    var exported = exportMap(map);
+    var normalizedMap = normalizeMap({ id: 1, map });
+    var exported = exportMap(normalizedMap);
 
     // individually check each file to be correct
     expect(exported.map).toBeTruthy();
@@ -121,7 +124,7 @@ describe("export good maps", () => {
 
 describe("export single floor maps", () => {
   test("vanilla 3x3", () => {
-    var map = vanilla3x3Map.map;
+    var map = normalizeMap(vanilla3x3Map);
     var exported = exportMap(map, true);
     expect(exported.map).toBeTruthy();
     expect(exported.map).toHaveLength(9);
