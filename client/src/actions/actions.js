@@ -5,7 +5,8 @@ import {
   tileIdsMapSelector,
   getDragSelectedTiles,
   distanceTileSpritesSelector,
-  coordinateKeyToBarcodeSelector
+  coordinateKeyToBarcodeSelector,
+  getMapId
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import { loader as PIXILoader } from "pixi.js";
@@ -21,7 +22,8 @@ import {
   getMap,
   updateMap,
   createMap,
-  deleteMap as deleteMapApi
+  deleteMap as deleteMapApi,
+  getSampleRacksJson
 } from "utils/api";
 
 // always good idea to return promises from async action creators
@@ -244,6 +246,17 @@ export const copyJSONToClipboard = (fieldName, singleFloor = false) => (
   if (exportedJson[fieldName]) {
     copy(JSON.stringify(exportedJson[fieldName]));
   } else dispatch(setErrorMessage("Invalid JSON file name"));
+};
+
+export const copySampleRacksJsonToClipboard = (dispatch, getState) => {
+  const state = getState();
+  const mapId = getMapId(state);
+  getSampleRacksJson(mapId)
+    .then(res => res.json())
+    .then(racksJson => copy(JSON.stringify(racksJson)))
+    .catch(() =>
+      dispatch(setErrorMessage("Could not copy racks JSON (bad response)"))
+    );
 };
 
 export const editSpecialBarcode = ({ coordinate, new_barcode }) => ({
