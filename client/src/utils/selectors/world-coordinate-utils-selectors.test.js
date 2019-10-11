@@ -1,11 +1,9 @@
 import * as worldCoordinateUtils from "./world-coordinate-utils-selectors";
-import {
-  makeState,
-  singleFloor
-} from "../test-helper";
+import { makeState, singleFloor } from "../test-helper";
+import * as constants from "../../constants";
 
 describe("getTileIdToWorldCoordMap", () => {
-  const { getTileIdToWorldCoordMap} = worldCoordinateUtils;
+  const { getTileIdToWorldCoordMap } = worldCoordinateUtils;
   var state = makeState(singleFloor, 1);
   test("should give tile ids to world coordinate map", () => {
     const tileIdToWorldCoordinateMap = getTileIdToWorldCoordMap(state);
@@ -20,49 +18,63 @@ describe("getTileIdToWorldCoordMap", () => {
       "0,1": { x: 1500, y: 1500 },
       "0,2": { x: 1500, y: 3000 }
     };
-    expect(tileIdToWorldCoordinateMap).toEqual(expectedTileIdToWorldCoordinateMap);
+    expect(tileIdToWorldCoordinateMap).toEqual(
+      expectedTileIdToWorldCoordinateMap
+    );
   });
 });
 
 describe("getWorldCoordUsingNeighbour", () => {
-  const { getWorldCoordUsingNeighbour} = worldCoordinateUtils;
+  const { getWorldCoordUsingNeighbour } = worldCoordinateUtils;
   var barcodeSizeInfo = [750, 550, 450, 350];
-  var neighbourWithWorldCoordinate ={
+  var neighbourWithWorldCoordinate = {
     direction: "0",
-    worldcoordinate: {"x": 1500, "y": 1500},
+    worldcoordinate: { x: 1500, y: 1500 },
     distanceInfo: [100, 200, 300, 400]
   };
   test("should give correct world coordinate using neighbour in direction 0", () => {
-    const worldCoordinate = getWorldCoordUsingNeighbour(barcodeSizeInfo, neighbourWithWorldCoordinate);
-    expect(worldCoordinate).toEqual({x: 1500, y: 2550});
+    const worldCoordinate = getWorldCoordUsingNeighbour(
+      barcodeSizeInfo,
+      neighbourWithWorldCoordinate
+    );
+    expect(worldCoordinate).toEqual({ x: 1500, y: 2550 });
   });
   test("should give correct world coordinate using neighbour in direction 1", () => {
     neighbourWithWorldCoordinate.direction = "1";
-    const worldCoordinate = getWorldCoordUsingNeighbour(barcodeSizeInfo, neighbourWithWorldCoordinate);
-    expect(worldCoordinate).toEqual({x: 550, y: 1500});
+    const worldCoordinate = getWorldCoordUsingNeighbour(
+      barcodeSizeInfo,
+      neighbourWithWorldCoordinate
+    );
+    expect(worldCoordinate).toEqual({ x: 550, y: 1500 });
   });
   test("should give correct world coordinate using neighbour in direction 2", () => {
     neighbourWithWorldCoordinate.direction = "2";
-    const worldCoordinate = getWorldCoordUsingNeighbour(barcodeSizeInfo, neighbourWithWorldCoordinate);
-    expect(worldCoordinate).toEqual({x: 1500, y: 950});
+    const worldCoordinate = getWorldCoordUsingNeighbour(
+      barcodeSizeInfo,
+      neighbourWithWorldCoordinate
+    );
+    expect(worldCoordinate).toEqual({ x: 1500, y: 950 });
   });
   test("should give correct world coordinate using neighbour in direction 3", () => {
     neighbourWithWorldCoordinate.direction = "3";
-    const worldCoordinate = getWorldCoordUsingNeighbour(barcodeSizeInfo, neighbourWithWorldCoordinate);
-    expect(worldCoordinate).toEqual({x: 2050, y: 1500});
+    const worldCoordinate = getWorldCoordUsingNeighbour(
+      barcodeSizeInfo,
+      neighbourWithWorldCoordinate
+    );
+    expect(worldCoordinate).toEqual({ x: 2050, y: 1500 });
   });
 });
 
 describe("tileToWorldCoordinate", () => {
-  const { tileToWorldCoordinate} = worldCoordinateUtils;
+  const { tileToWorldCoordinate } = worldCoordinateUtils;
   var state = makeState(singleFloor, 1);
   test("should give correct world coordinate for non-special tile id", () => {
-    const worldCoordinate = tileToWorldCoordinate(state, {"tileId": "0,1"});
-    expect(worldCoordinate).toEqual({x: 1500, y: 1500});
+    const worldCoordinate = tileToWorldCoordinate(state, { tileId: "0,1" });
+    expect(worldCoordinate).toEqual({ x: 1500, y: 1500 });
   });
   test("should give correct world coordinate for special tile id", () => {
-    const worldCoordinate = tileToWorldCoordinate(state, {"tileId": "12,12"});
-    expect(worldCoordinate).toEqual({x: -1500, y: 2590});
+    const worldCoordinate = tileToWorldCoordinate(state, { tileId: "12,12" });
+    expect(worldCoordinate).toEqual({ x: -1500, y: 2590 });
   });
 });
 
@@ -70,15 +82,52 @@ describe("worldToTileCoordinate", () => {
   const { worldToTileCoordinate } = worldCoordinateUtils;
   var state = makeState(singleFloor, 1);
   test("should give correct tile id when exact world coordinate is selected", () => {
-    const tileId = worldToTileCoordinate(state, {x: 1500, y: 1500});
+    const tileId = worldToTileCoordinate(state, { x: 1500, y: 1500 });
     expect(tileId).toEqual("0,1");
   });
   test("should give correct tile id exact world coordinate is selected, but intersects the tile size", () => {
-    const tileId = worldToTileCoordinate(state, {x: 1400, y: 1300});
+    const tileId = worldToTileCoordinate(state, { x: 1400, y: 1300 });
     expect(tileId).toEqual("0,1");
   });
   test("should return undefined when there is no tile on world world coordinate", () => {
-    const tileId = worldToTileCoordinate(state, {x: 4500, y: 4500});
+    const tileId = worldToTileCoordinate(state, { x: 4500, y: 4500 });
     expect(tileId).toEqual(undefined);
+  });
+});
+
+describe("getTileBoundingBox", () => {
+  const { getTileBoundingBox, tileToWorldCoordinate } = worldCoordinateUtils;
+  var state = makeState(singleFloor, 1);
+  test("should give correct bounding box for 0,1", () => {
+    const boundingBox = getTileBoundingBox(state, { tileId: "0,1" });
+    const { x, y } = tileToWorldCoordinate(state, { tileId: "0,1" });
+    expect(boundingBox.top).toBeCloseTo(
+      y - 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.bottom).toBeCloseTo(
+      y + 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.left).toBeCloseTo(
+      x - 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.right).toBeCloseTo(
+      x + 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+  });
+  test("should give correct bounding box for 12,12 (which is a smaller special barcode)", () => {
+    const boundingBox = getTileBoundingBox(state, { tileId: "12,12" });
+    const { x, y } = tileToWorldCoordinate(state, { tileId: "12,12" });
+    expect(boundingBox.top).toBeCloseTo(
+      y - 205 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.bottom).toBeCloseTo(
+      y + 205 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.left).toBeCloseTo(
+      x - 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
+    expect(boundingBox.right).toBeCloseTo(
+      x + 750 * constants.BARCODE_CLICKABLE_AREA_RATIO
+    );
   });
 });

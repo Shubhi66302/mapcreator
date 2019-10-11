@@ -60,7 +60,7 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
 
 ## Production and Staging Server: Manual Workflow (Not Recommended)
 
-- Both production and staging have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir
+- Both production and staging have separate `docker-compose.yml` in `mapcreator` and `mapcreator-staging` folder at home dir on mapcreator VM.
 - To make staging image, run `make staging`. This will build image with `staging` tag and push to repo.
 - To make production image, run `make all`. This will build image with `latest` tag and push to repo.
     - Building an image will be slow for the first time or when either `package.json` changes.
@@ -70,12 +70,12 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
 - To deploy to production, run `make deploy`. Then check production server to see if build is running.
 
 ## Testing Server(s)
-- A testing nginx server is running on `mapcreator.labs.greyorange.com`. Whenever a diff is created, a `mapcreator-testing` job runs on jenkins that creates a build for the diff and deploys it on the testing server. Eg. if your diff name is `D5768`, then after build completes, jenkins will post a comment on your diff saying `Testing instance is available at http://mapcreator.labs.greyorange.com:5000/D5678`. Go to that URL to access your testing instance. This is useful for code reviews.
+- A testing nginx server is running on `mapcreator.labs.greyorange.com:5000`. Whenever a diff is created, a `mapcreator-testing` job runs on jenkins that creates a build for the diff and deploys it on the testing server. Eg. if your diff name is `D9999`, then after build completes, jenkins will post a comment on your diff saying `Testing instance is available at http://mapcreator.labs.greyorange.com:5000/D9999`. Go to that URL to access your testing instance. This is useful for code reviews.
 - TODO: document how this setup works (nginx, testing docker network, scripts, jobs)
 - Right now testing instances need to be manually cleaned up once the code gets landed (otherwise disk gets full after a while). TODO: automate this properly!
     - `ssh root@mapcreator.labs.greyorange.com`
     - `cd testing-instance-provisioner`
-    - `REVISION=D5678 make -f Makefile.testing cleanup-testing`
+    - `REVISION=D9999 make -f Makefile.testing cleanup-testing`
 
 # Modifying JSON schemas
 
@@ -91,4 +91,8 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
         - `NODE_ENV=test npm run migrate` for test db
     - To undo the latest migration (eg. for testing during development), run `npm run undo-migrate`. Then running `npm run migrate` will run the migration again.
     - You don't need to manually run the migration script in prod/staging server, it is automatically run during docker deployment
-    - Before pushing to master, make sure to push to staging first (see Deployment) and check that databases are modified correctly. It's possible that migrations run correctly on your local machine but crash in docker container...
+    - Before pushing to master, make sure to push to staging first (see Deployment) and check that databases are modified correctly. It's possible that migrations run correctly on your local machine but crash in docker container (eg. it might timeout/OOM on large number of maps)...
+
+# Adding new sprites
+  - Mapcreator uses PixiJS as rendering engine for the actual map
+  - To add new images (sprites) see `client/src/sprites/_README`

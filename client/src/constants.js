@@ -7,15 +7,30 @@ export var TILE_SPRITE_HEIGHT = 150;
 
 // Distance tile and number related constants
 export var DISTANCE_TILE_WIDTH = 120;
-export var DISTANCE_TILE_HEIGHT =  300;
+export var DISTANCE_TILE_HEIGHT = 300;
 // scale 2 if distance is 200 and 3 if distance is 1500
 // for other distances use linear interpolation
-export var DISTANCE_NUMBER_SCALE_MAP = {min: [200, 2], max: [1500, 3]};
+export var DISTANCE_NUMBER_SCALE_MAP = { min: [200, 2], max: [1500, 3] };
 
-// Gap between barcode tile sprite
 export var DEFAULT_DISTANCE_BW_BARCODES = 1500;
+// Gap between barcode tile sprite
 export var BARCODE_SPRITE_GAP = 500;
-export var SCALE = 4;
+// The rendered barcode does not occupy the full 1500x1500 area (for default size), but a smaller one
+// defined by this value. Right now its about 67%
+export const BARCODE_CLICKABLE_AREA_RATIO =
+  (DEFAULT_DISTANCE_BW_BARCODES - BARCODE_SPRITE_GAP) /
+  DEFAULT_DISTANCE_BW_BARCODES;
+// Default scale for converting from sprite pixels to world coordinates
+// Scale is for stretching out the barcode.png sprite to exactly fit the tile
+// bounding box. Hence it is not {1,1} for the default sprite but some other value.
+// These values are not dimensionless! They're in world-coordinate/pixels
+export const DEFAULT_X_SCALE =
+  (BARCODE_CLICKABLE_AREA_RATIO * DEFAULT_DISTANCE_BW_BARCODES) /
+  TILE_SPRITE_WIDTH;
+export const DEFAULT_Y_SCALE =
+  (BARCODE_CLICKABLE_AREA_RATIO * DEFAULT_DISTANCE_BW_BARCODES) /
+  TILE_SPRITE_HEIGHT;
+
 export var BARCODE_DIGIT_OFFSET = 5; // in y
 export var BARCODE_DIGIT_HEIGHT = 36;
 export var BARCODE_DIGIT_WIDTH = 23;
@@ -39,10 +54,6 @@ export var CHARGER = "charger.png";
 export var CHARGER_ENTRY = "charger-entry.png";
 export var QUEUE = "queue.png";
 export var DOCK_POINT = "normal.png";
-// TODO: figure out how to display zones with limited number of colors?
-// eg. continental has 16 zones.
-// right now just using 1 color? actually zone view is not implemented.
-export var ZONE_BASE = "not_implemented.png";
 export var ODS_EXCLUDED = "normal.png";
 export var EMERGENCY_EXIT = "emergency-exit.png";
 export var ELEVATOR = "elevator.png";

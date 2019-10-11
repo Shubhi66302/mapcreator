@@ -1,15 +1,8 @@
 // using reselect for memoization
 import { createSelector } from "reselect";
-import {
-  getBarcodeSize,
-  getCurrentFloorBarcodeIds,
-  getBarcodes
-} from "./barcode-selectors";
+import { getCurrentFloorBarcodeIds, getBarcodes } from "./barcode-selectors";
 import { intersectRect } from "../util";
-import {
-  getTileIdToWorldCoordMap,
-  tileToWorldCoordinate
-} from "./world-coordinate-utils-selectors";
+import { getTileBoundingBox } from "./world-coordinate-utils-selectors";
 import {
   distanceTileSpritesSelector,
   getDistinctXAndYDistances
@@ -43,7 +36,8 @@ export {
   getTileIdToWorldCoordMap,
   tileToWorldCoordinate,
   worldToTileCoordinate,
-  getTileIdHavingWorldCoordinate
+  getTileIdHavingWorldCoordinate,
+  getTileBoundingBox
 } from "./world-coordinate-utils-selectors";
 
 export {
@@ -122,46 +116,14 @@ export const getRectFromDiagonalPoints = ({ startPoint, endPoint }) => ({
 
 export const getDragSelectedTiles = createSelector(
   getCurrentFloorBarcodeIds,
-  getTileIdToWorldCoordMap,
   distanceTileSpritesSelector,
   state => state.selectedArea,
   state => state,
-  (
-    tileIds,
-    tileIdToWorldCoordinateMap,
-    distanceTileRects,
-    selectedArea,
-    state
-  ) => {
+  (tileIds, distanceTileRects, selectedArea, state) => {
     if (!selectedArea) return [];
     const selectionRect = getRectFromDiagonalPoints(selectedArea);
     const selectedMapTiles = tileIds.filter(tileId => {
-      const worldXCoordinate = tileToWorldCoordinate(state, { tileId });
-      const barcodeSizeInfo = getBarcodeSize(state, { tileId });
-      const defDistance = constants.DEFAULT_DISTANCE_BW_BARCODES;
-      // TODO: This copy paste needs to go... this logic is copy-pasted 3 times in the code. Make a sensible selector for it
-      const topLeftPointX =
-        worldXCoordinate.x -
-        (barcodeSizeInfo[3] * (defDistance - constants.BARCODE_SPRITE_GAP)) /
-          defDistance;
-      const topRightPointX =
-        worldXCoordinate.x +
-        (barcodeSizeInfo[1] * (defDistance - constants.BARCODE_SPRITE_GAP)) /
-          defDistance;
-      const topLeftPointY =
-        worldXCoordinate.y -
-        (barcodeSizeInfo[0] * (defDistance - constants.BARCODE_SPRITE_GAP)) /
-          defDistance;
-      const bottomLeftPointY =
-        worldXCoordinate.y +
-        (barcodeSizeInfo[2] * (defDistance - constants.BARCODE_SPRITE_GAP)) /
-          defDistance;
-      var rect = {
-        left: topLeftPointX,
-        right: topRightPointX,
-        top: topLeftPointY,
-        bottom: bottomLeftPointY
-      };
+      var rect = getTileBoundingBox(state, { tileId });
       return intersectRect(selectionRect, rect);
     });
     const selectedDistanceTiles = distanceTileRects

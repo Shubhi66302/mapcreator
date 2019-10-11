@@ -1,0 +1,9 @@
+This folder contains the *source* images that are then *compiled* to create `client/public/sheet.json` and `client/public/sheet.png` which are used for rendering in PixiJS.
+By compile I mean they are imported into TexturePacker (or any other packing tool) and then exported as json+png.
+If you're using TexturePacker, you can open up mapcreator.tps and it will automatically have the correct export settings. (It probably won't be able to find the images so you'll have to delete and import again).
+The settings should be:
+  - Framework: PixiJS
+  - Texture Format: PNG-32
+  - Pixel Format: RGBA8888
+
+For adding new sprites, just add another image in this folder, import it in TexturePacker and then export as sheet.json and sheet.png. Replace these two files in `client/public` and it should work.
