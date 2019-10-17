@@ -28,7 +28,8 @@ export {
 } from "./barcode-selectors";
 export {
   getTileSpriteScale,
-  spriteRenderCoordinateSelector
+  spriteRenderCoordinateSelector,
+  getAllSpritesData
 } from "./map-render-selectors";
 
 export {

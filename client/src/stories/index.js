@@ -21,6 +21,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BulletList } from "react-content-loader";
 import ContentLoader from "components/SavedMaps/ContentLoader";
 import CopyJSONsCard from "../components/Map/Sidebar/CopyJSONsCard";
+import DirectionViewTooltip from "../components/Map/Sidebar/DirectionViewTooltip";
 
 const store = configureStore(makeState(singleFloor));
 
@@ -138,3 +139,14 @@ storiesOf("DeleteMap", module)
 storiesOf("ReactPlaceholder", module)
   .add("BulletList", () => <BulletList height={70} />)
   .add("MyContentLoader", () => <ContentLoader />);
+
+storiesOf("DirectionViewCheckbox", module).add("default", () => {
+  return (
+    <div>
+      <DirectionViewTooltip />
+      <p data-tip data-for="direction-view-tooltip">
+        hover here
+      </p>
+    </div>
+  );
+});

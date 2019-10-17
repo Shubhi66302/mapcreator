@@ -57,8 +57,15 @@ export var DOCK_POINT = "normal.png";
 export var ODS_EXCLUDED = "normal.png";
 export var EMERGENCY_EXIT = "emergency-exit.png";
 export var ELEVATOR = "elevator.png";
-// graph edge sprites
-export var EDGE_SPRITES = ["0.png", "1.png", "2.png", "3.png"];
+export var BARCODE_DOT_SPRITE = "dot.png";
+export var BARCODE_CENTRE_SPRITE = "dot.png";
+// graph directionality edge sprites
+export const DIRECTIONALITY_SPRITES_MAP = {
+  "1,0,0": "100.png", // not allowed edge
+  "1,1,0": "110.png", // only lift down allowed edge
+  "1,1,1": "111.png", // all allowed edge
+  "0,0,0": null // won't be drawing any sprite for this case
+};
 
 // Constants for map charger_location
 export var CHARGER_DISTANCE = 205;

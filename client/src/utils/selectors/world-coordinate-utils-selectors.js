@@ -2,6 +2,7 @@ import { getCurrentFloorBarcodes, getBarcodeSize } from "./barcode-selectors";
 import * as constants from "../../constants";
 import { createSelector } from "reselect";
 import { getNeighbouringBarcodesIncludingDisconnected } from "../util";
+import createCachedSelector from "re-reselect";
 
 var getNeighbourWithValidWorldCoord = (
   barcode,
@@ -112,7 +113,7 @@ export const getTileIdToWorldCoordMap = createSelector(
   }
 );
 
-export const tileToWorldCoordinate = createSelector(
+export const tileToWorldCoordinate = createCachedSelector(
   getTileIdToWorldCoordMap,
   (_state, props) => props.tileId,
   (tileIdToWorldCoordinateMap, tileId) => {
@@ -120,7 +121,7 @@ export const tileToWorldCoordinate = createSelector(
     var yCoord = tileIdToWorldCoordinateMap[tileId].y;
     return { x: xCoord, y: yCoord };
   }
-);
+)((state, { tileId }) => tileId);
 
 export var worldToTileCoordinate = createSelector(
   getTileIdToWorldCoordMap,
@@ -163,13 +164,13 @@ export const getTileIdHavingWorldCoordinate = createSelector(
 );
 
 // bounding box for main tile sprite (i.e. the barcode square) in world coordinates
-export const getTileBoundingBox = createSelector(
+export const getTileBoundingBox = createCachedSelector(
   tileToWorldCoordinate,
   getBarcodeSize,
   (worldCoordinate, barcodeSizeInfo) => {
     return getTileBoundingBoxInternal(worldCoordinate, barcodeSizeInfo);
   }
-);
+)((state, { tileId }) => tileId);
 
 // exported for testing
 export const getTileBoundingBoxInternal = ({ x, y }, barcodeSizeInfo) => {

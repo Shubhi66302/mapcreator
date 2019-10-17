@@ -5,7 +5,8 @@ import * as PIXI from "pixi.js";
 var PixiMapContainer = PixiComponent("PixiMapContainer", {
   create: props => {
     var container = new PIXI.particles.ParticleContainer(400000, {
-      uvs: true
+      uvs: true,
+      rotation: true
     });
     const { store } = props;
     var state = store.getState();

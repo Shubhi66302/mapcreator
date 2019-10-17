@@ -4,6 +4,7 @@ deploy-testing:
 	mkdir -p ${REVISION}
 	cd ${REVISION}; \
 	export REVISION_LOWERCASE=${REVISION_LOWERCASE} && envsubst < ../docker-compose.testing.yml.template > docker-compose.yml; \
+	docker-compose pull web; \
 	docker-compose up -d; \
 	docker image prune -af;
 

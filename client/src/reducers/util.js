@@ -64,7 +64,8 @@ export const dummyState = {
     shiftKey: false,
     metaKey: false,
     queueMode: false,
-    zoneViewMode : false,
+    zoneViewMode: false,
+    directionViewMode: false
   },
   selectedArea: null,
   viewport: {

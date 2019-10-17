@@ -39,7 +39,15 @@ class Map extends Component {
   }
 
   render() {
-    const { nMap, dispatch, errorMessage, successMessage } = this.props;
+    const {
+      nMap,
+      dispatch,
+      errorMessage,
+      successMessage,
+      queueMode,
+      zoneViewMode,
+      directionViewMode
+    } = this.props;
 
     // mapId may be different from params since it may not have been fetched yet...
 
@@ -70,7 +78,12 @@ class Map extends Component {
               </div>
             </div>
             <LeftSidebar />
-            <RightSidebar dispatch={dispatch} />
+            <RightSidebar
+              dispatch={dispatch}
+              queueMode={queueMode}
+              zoneViewMode={zoneViewMode}
+              directionViewMode={directionViewMode}
+            />
             <div className="row py-1">
               <div className="btn-group col" role="group">
                 <button
@@ -157,5 +170,6 @@ export default connect(state => ({
   queueMode: state.selection.queueMode,
   successMessage: state.successMessage,
   errorMessage: state.errorMessage,
-  zoneViewMode: state.selection.zoneViewMode
+  zoneViewMode: state.selection.zoneViewMode,
+  directionViewMode: state.selection.directionViewMode
 }))(Map);

@@ -17,51 +17,14 @@ import AddElevator from "components/Map/Forms/AddElevator";
 import AddZone from "components/Map/Forms/AddZone";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
-import ReactTooltip from "react-tooltip";
 import AddTransitBarcode from "components/Map/Forms/AddTransitBarcode";
 import LocateBarcode from "components/Map/Forms/LocateBarcode";
+import {
+  QueueCheckbox,
+  ZoneViewCheckbox,
+  DirectionViewCheckbox
+} from "./Checkboxes";
 
-const QueueCheckbox = ({ val, onChange }) => (
-  <label
-    style={{
-      textAlign: "-webkit-center",
-      margin: "3% 5% 3% 5%",
-      color: "orange"
-    }}
-  >
-    Queue mode:
-    <input
-      style={{ marginLeft: "10px" }}
-      name="queuemode"
-      type="checkbox"
-      checked={val}
-      onChange={onChange}
-    />
-  </label>
-);
-
-const ZoneViewCheckBox = ({ val, onChange }) => (
-  <div>
-    <ReactTooltip effect="solid" delayShow={1000} />
-    <label
-      data-tip="See summary tab in sidebar for zone color legend."
-      style={{
-        textAlign: "-webkit-center",
-        margin: "0% 5% 3% 5%",
-        color: "orange"
-      }}
-    >
-      Zone View:
-      <input
-        style={{ marginLeft: "10px" }}
-        name="zoneview"
-        type="checkbox"
-        checked={val}
-        onChange={onChange}
-      />
-    </label>
-  </div>
-);
 class RightSidebar extends Component {
   state = {
     open: false,
@@ -69,7 +32,7 @@ class RightSidebar extends Component {
   };
 
   render() {
-    const { queueMode, zoneViewMode, dispatch } = this.props;
+    const { queueMode, zoneViewMode, directionViewMode, dispatch } = this.props;
     const { open } = this.state;
 
     return (
@@ -124,9 +87,19 @@ class RightSidebar extends Component {
           </div>
           <div className="row">
             <div className="col">
-              <ZoneViewCheckBox
+              <ZoneViewCheckbox
                 val={zoneViewMode}
                 onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <DirectionViewCheckbox
+                val={directionViewMode}
+                onChange={() =>
+                  dispatch({ type: "TOGGLE-DIRECTION-VIEW-MODE" })
+                }
               />
             </div>
           </div>

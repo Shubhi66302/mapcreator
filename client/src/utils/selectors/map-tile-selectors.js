@@ -32,8 +32,10 @@ export const tileSpriteNamesWithoutEntityData = createSelector(
     // TODO: should replace it with a 'x' sprite
     var spriteNames = barcode.barcode
       .split("")
-      .map(char => (char !== "." ? `${char}.png` : "dot.png"));
-    return [tileName, ...spriteNames, "dot.png"];
+      .map(char =>
+        char !== "." ? `${char}.png` : constants.BARCODE_DOT_SPRITE
+      );
+    return [tileName, ...spriteNames, constants.BARCODE_CENTRE_SPRITE];
   }
 );
 
