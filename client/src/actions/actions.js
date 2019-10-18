@@ -175,7 +175,12 @@ export const toggleStorable = () => (dispatch, getState) => {
   return dispatch(clearTiles);
 };
 
-export const addQueueBarcodes = () => (dispatch, getState) => {
+const getOrderedQueueCoordinates = mapTiles =>
+  Object.keys(mapTiles).sort(function(a, b) {
+    return mapTiles[a] - mapTiles[b];
+  });
+
+export const addPPSQueue = () => (dispatch, getState) => {
   const state = getState();
   const {
     selection: { mapTiles },
@@ -193,9 +198,7 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
   if (intersectionresult.length == 1) {
     var pps_id = _.findKey(pps, { coordinate: intersectionresult[0] });
 
-    var queue_barcodes_array = Object.keys(mapTiles).sort(function(a, b) {
-      return mapTiles[a] - mapTiles[b];
-    });
+    var queue_barcodes_array = getOrderedQueueCoordinates(mapTiles);
     var asBarcodes = queue_barcodes_array.map(asCoordinate =>
       coordinateKeyToBarcodeSelector(state, { tileId: asCoordinate })
     );
@@ -209,8 +212,19 @@ export const addQueueBarcodes = () => (dispatch, getState) => {
       }
     });
   }
+};
 
-  return dispatch(clearTiles);
+export const addHighwayQueue = () => (dispatch, getState) => {
+  const state = getState();
+  const {
+    selection: { mapTiles }
+  } = state;
+  return dispatch({
+    type: "ADD-QUEUE-BARCODES-TO-HIGHWAY",
+    value: {
+      coordinates: getOrderedQueueCoordinates(mapTiles)
+    }
+  });
 };
 
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {

@@ -102,6 +102,8 @@ export const selectedMapTilesReducer = (state = {}, action) => {
     case "CHANGE-FLOOR":
     case "ADD-ELEVATOR":
     case "SHIFT-BARCODE":
+    case "ADD-QUEUE-BARCODES-TO-HIGHWAY":
+    case "ADD-QUEUE-BARCODES-TO-PPS":
       return {};
   }
   return state;
@@ -211,14 +213,6 @@ export const selectionReducer = (
         };
       }
 
-    case "ADD-QUEUE-BARCODES-TO-PPS":
-      if (!state.queueMode) {
-        return { ...state };
-      } else {
-        var newState = {};
-
-        return Object.assign({}, state, newState);
-      }
     case "DRAG-END": {
       const { mapTilesArr = [], distanceTilesArr = [] } = action.value;
       // if both map tiles and distance tiles are selected, consider only map tiles as selected

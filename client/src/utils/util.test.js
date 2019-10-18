@@ -6,6 +6,7 @@ import {
   implicitCoordinateKeyToBarcode,
   getIdsForEntities,
   getNeighbouringBarcodes,
+  getNeighbouringCoordinateKeys,
   getNeighbourTiles,
   tupleOfIntegersToCoordinateKey,
   addNeighbourToBarcode,
@@ -119,7 +120,6 @@ describe("getIdsForEntities", () => {
     expect(getIdsForEntities(5, undefined)).toEqual([1, 2, 3, 4, 5]);
   });
 });
-
 
 describe("tupleOfIntegersToCoordinateKey", () => {
   test("should give correct coordinateKey for tuple", () => {
@@ -294,6 +294,52 @@ describe("getNeighbouringBarcodes", () => {
     };
     var neighbourBarcodes = getNeighbouringBarcodes("2,2", barcodesDict);
     expect(neighbourBarcodes).toEqual(["a", undefined, null, null]);
+  });
+});
+
+// just copying from previous test but testing for coordinate keys instead of the whole barcode obj
+describe("getNeighbouringCoordinateKeys", () => {
+  test("should give correct neighbour coordinate keys for a corner barcode", () => {
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    var neighbourBarcodes = getNeighbouringCoordinateKeys("0,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject(["0,1", null, null, "1,2"]);
+  });
+  test("should give correct neighbour barcodes when neighbour is there but edge is [1,0,0]", () => {
+    var barcodesDict = {
+      // map is:
+      // -      1,1    -
+      //         x
+      // 2,2 .. 1,2 .. 0,2
+      // this one will be tested
+      "1,2": {
+        coordinate: "1,2",
+        neighbours: [[1, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]]
+      },
+      "1,1": {
+        coordinate: "1,1",
+        neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]]
+      },
+      "0,2": {
+        coordinate: "0,2",
+        neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]]
+      },
+      "2,2": {
+        coordinate: "2,2",
+        neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]]
+      }
+    };
+    var neighbourBarcodes = getNeighbouringCoordinateKeys("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([null, "0,2", null, "2,2"]);
+  });
+  test("should give correct neighbours if adjacency is present", () => {
+    var barcodesDict = {
+      "2,2": { adjacency: [[12, 12], [1, 2], null, null] },
+      "12,12": { coordinate: "12,12" },
+      "2,1": { coordinate: "2,1" }
+    };
+    var neighbourBarcodes = getNeighbouringCoordinateKeys("2,2", barcodesDict);
+    expect(neighbourBarcodes).toEqual(["12,12", null, null, null]);
   });
 });
 

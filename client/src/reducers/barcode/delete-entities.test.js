@@ -11,7 +11,7 @@ import {
 } from "utils/test-helper";
 import { addChargers } from "actions/charger";
 import { addPPSes } from "actions/pps.js";
-import { addQueueBarcodes } from "actions/actions";
+import { addPPSQueue } from "actions/actions";
 
 import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
 import { normalizeMap } from "utils/normalizr";
@@ -98,7 +98,7 @@ describe("deletePPSQueue", () => {
     // select queue tiles
     addQueueSelectedTilesToState(store, ["1,1", "2,1", "2,0", "1,0", "0,0"]);
     // add queue
-    await store.dispatch(addQueueBarcodes());
+    await store.dispatch(addPPSQueue());
 
     var initialState = store.getState().normalizedMap.entities.barcode;
 

@@ -1,6 +1,6 @@
 import { deleteNeighbourFromBarcode } from "utils/util";
 import _ from "lodash";
-import { addQueueBarcodesToPps } from "./queue-barcodes";
+import { addPPSQueue, addHighwayQueue } from "./queue-barcodes";
 import { addElevator, editElevatorCoordinates } from "./elevator-barcodes";
 import { editBarcode } from "./edit-barcode";
 import { modifyDistanceBetweenBarcodes } from "./distance-between-barcodes";
@@ -15,7 +15,10 @@ import { getNeighbouringBarcodesIncludingDisconnected } from "../../utils/util";
 export default (state = {}, action) => {
   switch (action.type) {
     case "ADD-QUEUE-BARCODES-TO-PPS":
-      return addQueueBarcodesToPps(state, action);
+      return addPPSQueue(state, action);
+
+    case "ADD-QUEUE-BARCODES-TO-HIGHWAY":
+      return addHighwayQueue(state, action);
 
     case "TOGGLE-STORABLE": {
       const { selectedTiles, makeStorable } = action.value;

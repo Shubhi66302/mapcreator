@@ -126,6 +126,13 @@ export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   ]);
 };
 
+export const getNeighbouringCoordinateKeys = (coordinateKey, barcodesDict) => {
+  return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
+    [0, 0, 0],
+    [1, 0, 0]
+  ]).map(elm => (elm == null ? null : elm.coordinate));
+};
+
 export const getNeighbourBarcodeIncludingDisconnectedInDirection = (
   coordinateKey,
   barcodesDict,

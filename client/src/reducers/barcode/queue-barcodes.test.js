@@ -1,4 +1,8 @@
-import { addQueueBarcodesToPps } from "./queue-barcodes";
+import {
+  addPPSQueue,
+  addHighwayQueue,
+  validateBarcodesFormAQueue
+} from "./queue-barcodes";
 import { fromJS } from "immutable";
 import { normalizeMap } from "utils/normalizr";
 import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
@@ -6,7 +10,7 @@ import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
 const vanilla3x3BarcodeMap = fromJS(normalizeMap(vanilla3x3).entities.barcode);
 const makeState = immutableMap => immutableMap.toJS();
 
-describe("addQueueBarcodesToPps", () => {
+describe("addPPSQueue", () => {
   // (kind of weird test case because we're no longer using pps information)
   test("should correctly modify multiple queue barcodes with neighbour changes when first queue coordinate is not next to pps", () => {
     // TODO: actually queues going straight into pps with turn are wrong and should not be made in the first place
@@ -24,7 +28,7 @@ describe("addQueueBarcodesToPps", () => {
         pps_coordinate: "1,0"
       }
     };
-    var newState = addQueueBarcodesToPps(state, action);
+    var newState = addPPSQueue(state, action);
     expect(newState["1,2"].neighbours).toEqual(state["1,2"].neighbours);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 1],
@@ -90,7 +94,7 @@ describe("addQueueBarcodesToPps", () => {
         pps_coordinate: "1,0"
       }
     };
-    var newState = addQueueBarcodesToPps(state, action);
+    var newState = addPPSQueue(state, action);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 0],
       [1, 1, 1],
@@ -151,7 +155,7 @@ describe("addQueueBarcodesToPps", () => {
         pps_coordinate: "0,0"
       }
     };
-    var newState = addQueueBarcodesToPps(state, action);
+    var newState = addPPSQueue(state, action);
     // queue entry i.e. 1
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 0],
@@ -213,7 +217,7 @@ describe("addQueueBarcodesToPps", () => {
         pps_coordinate: "2,0"
       }
     };
-    var newState = addQueueBarcodesToPps(state, action);
+    var newState = addPPSQueue(state, action);
     // just testing exit barcode and its neighbours
     // exit barcode
     expect(newState["1,0"].neighbours).toEqual([
@@ -235,5 +239,105 @@ describe("addQueueBarcodesToPps", () => {
       [1, 1, 1],
       [1, 1, 0]
     ]);
+  });
+});
+
+describe("validateBarcodesFormAQueue", () => {
+  // vanilla 3x3 state
+  var state = makeState(vanilla3x3BarcodeMap);
+  test("should be false when only 1 barcode selected", () => {
+    const { error, reason } = validateBarcodesFormAQueue(["1,1"], state);
+    expect(error).toBeTruthy();
+    expect(reason).toEqual("Atleast 2 barcodes required");
+  });
+  test("should be false when 0 barcodes selected", () => {
+    const { error, reason } = validateBarcodesFormAQueue([], state);
+    expect(error).toBeTruthy();
+    expect(reason).toEqual("Atleast 2 barcodes required");
+  });
+  test("should be false when barcodes selected in non-consecutive order", () => {
+    // 3x3 vanilla map, queue barcodes are as
+    // 1  3  2
+    // x  x  x
+    // x  x  x
+    const { error, reason } = validateBarcodesFormAQueue(
+      ["2,0", "0,0", "1,0"],
+      state
+    );
+    expect(error).toBeTruthy();
+    expect(reason).toEqual("Some barcodes are not consecutive or disconnected");
+  });
+  test("should be true when barcodes are selected in consecutive order", () => {
+    // 3x3 vanilla map, queue barcodes are as
+    // 1  2  3
+    // x  5  4
+    // x  x  x
+    const { error, reason } = validateBarcodesFormAQueue(
+      ["2,0", "1,0", "0,0", "0,1", "1,1"],
+      state
+    );
+    expect(error).toBeFalsy();
+    expect(reason).toBeFalsy();
+  });
+});
+
+describe("addHighwayQueue", () => {
+  describe("simple queue in 3x3 map", () => {
+    // 3x3 vanilla map, queue barcodes are as
+    // 1  2  3
+    // x  5  4
+    // x  x  x
+    var state = makeState(vanilla3x3BarcodeMap);
+    var action = {
+      type: "ADD-QUEUE-BARCODES-TO-HIGHWAY",
+      value: {
+        coordinates: ["2,0", "1,0", "0,0", "0,1", "1,1"]
+      }
+    };
+    var newState = addHighwayQueue(state, action);
+    test("should disallow movement in non-queue directions for first n-1 barcodes", () => {
+      // only right
+      expect(newState["2,0"].neighbours).toEqual([
+        [0, 0, 0],
+        [1, 1, 1],
+        [1, 0, 0],
+        [0, 0, 0]
+      ]);
+      // only right
+      expect(newState["1,0"].neighbours).toEqual([
+        [0, 0, 0],
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 0, 0]
+      ]);
+      // only down
+      expect(newState["0,0"].neighbours).toEqual([
+        [0, 0, 0],
+        [0, 0, 0],
+        [1, 1, 1],
+        [1, 0, 0]
+      ]);
+      // only left
+      expect(newState["0,1"].neighbours).toEqual([
+        [1, 0, 0],
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 1, 1]
+      ]);
+    });
+    test("for last queue barcode, should allow movement to all directions except backwards", () => {
+      expect(newState["1,1"].neighbours).toEqual([
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 1, 1],
+        [1, 1, 1]
+      ]);
+    });
+    test("all non-queue barcodes should remain untouched", () => {
+      expect(newState["2,1"]).toEqual(state["2,1"]);
+      expect(newState["2,2"]).toEqual(state["2,2"]);
+      expect(newState["1,2"]).toEqual(state["1,2"]);
+      expect(newState["0,2"]).toEqual(state["0,2"]);
+    });
   });
 });

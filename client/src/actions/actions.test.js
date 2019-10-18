@@ -165,14 +165,14 @@ describe("toggleStorable", () => {
 
 // TODO: test for saveMap
 
-describe("addQueueBarcodes", () => {
-  const { addQueueBarcodes, clearTiles } = actions;
+describe("addPPSQueue", () => {
+  const { addPPSQueue } = actions;
   test("should make queue barcodes with both barcodes and coordinates in values", async () => {
     var selectedMapTiles = { "2,2": 1, "1,2": 2, "1,1": 3 };
     var initialState = makeState(singleFloor, 1, selectedMapTiles);
     const store = mockStore(initialState);
 
-    await store.dispatch(addQueueBarcodes());
+    await store.dispatch(addPPSQueue());
     const dispatchedActions = store.getActions();
 
     // test
@@ -185,8 +185,29 @@ describe("addQueueBarcodes", () => {
           coordinates: ["2,2", "1,2", "1,1"],
           pps_coordinate: "1,1"
         }
-      },
-      clearTiles
+      }
+    ]);
+  });
+});
+
+describe("addHighwayQueue", () => {
+  const { addHighwayQueue } = actions;
+  test("should make list of coordinates in actoin value", async () => {
+    var selectedMapTiles = { "2,2": 1, "1,2": 2, "1,1": 3 };
+    var initialState = makeState(singleFloor, 1, selectedMapTiles);
+    const store = mockStore(initialState);
+
+    await store.dispatch(addHighwayQueue());
+    const dispatchedActions = store.getActions();
+
+    // test
+    expect(dispatchedActions).toEqual([
+      {
+        type: "ADD-QUEUE-BARCODES-TO-HIGHWAY",
+        value: {
+          coordinates: ["2,2", "1,2", "1,1"],
+        }
+      }
     ]);
   });
 });
