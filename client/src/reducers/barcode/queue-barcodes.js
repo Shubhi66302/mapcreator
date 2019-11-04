@@ -1,8 +1,8 @@
 import {
-  getDirection,
   getNeighbouringBarcodes,
   getNeighbouringCoordinateKeys
 } from "utils/util";
+import { getDirection } from "./util";
 import _ from "lodash";
 
 export const addPPSQueue = (state = {}, action) => {
@@ -20,7 +20,7 @@ export const addPPSQueue = (state = {}, action) => {
       if (i == tileIds.length - 1) {
         QueueDirection = 5;
       } else {
-        QueueDirection = getDirection(tileId, tileIds[i + 1]);
+        QueueDirection = getDirection(tileId, tileIds[i + 1], newState);
       }
       var allNeighbours = getNeighbouringBarcodes(tileId, state);
       var nonQueueNeighbours = _.filter(allNeighbours, function(tile) {
@@ -46,7 +46,8 @@ export const addPPSQueue = (state = {}, action) => {
             var neighbouringTileId = neighbouringTileIdobject.coordinate;
             var current_neighbour_dir = getDirection(
               tileId,
-              neighbouringTileId
+              neighbouringTileId,
+              newState
             );
             var neighbour_current_dir = (current_neighbour_dir + 2) % 4;
             newState[neighbouringTileId].neighbours[
@@ -54,12 +55,16 @@ export const addPPSQueue = (state = {}, action) => {
             ][2] = 0;
           });
         } else {
-          var endQueuedir = getDirection(tileIds[i - 1], tileId);
+          var endQueuedir = getDirection(tileIds[i - 1], tileId, newState);
           var endoppQuedir = (endQueuedir + 2) % 4;
           newState[tileId].neighbours[endoppQuedir][2] = 0;
           nonQueueNeighbours.forEach(neighbouringTileIdobjectend => {
             var neighbouringTileIdend = neighbouringTileIdobjectend.coordinate;
-            var endcurrdir = getDirection(tileId, neighbouringTileIdend);
+            var endcurrdir = getDirection(
+              tileId,
+              neighbouringTileIdend,
+              newState
+            );
             var endnbrdir = (endcurrdir + 2) % 4;
             // do NOT allow any non-queue neighbour to enter exit barcode
             newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
@@ -118,7 +123,7 @@ export const addHighwayQueue = (state = {}, action) => {
   for (var i = 0; i < tileIds.length - 1; i++) {
     const tileId = tileIds[i];
     newState[tileId] = _.clone(state[tileId]);
-    const queueDirection = getDirection(tileId, tileIds[i + 1]);
+    const queueDirection = getDirection(tileId, tileIds[i + 1], state);
     // disable movement completely in all directions except queue direction
     [0, 1, 2, 3].forEach(direction => {
       if (direction != queueDirection) {
@@ -129,7 +134,11 @@ export const addHighwayQueue = (state = {}, action) => {
   }
   // for last element, get the queue reverse direction, and disable that only
   const length = tileIds.length;
-  var forwardDirection = getDirection(tileIds[length - 2], tileIds[length - 1]);
+  var forwardDirection = getDirection(
+    tileIds[length - 2],
+    tileIds[length - 1],
+    state
+  );
   var backwardDirection = (forwardDirection + 2) % 4;
   var lastTileId = tileIds[length - 1];
   newState[lastTileId] = _.clone(state[lastTileId]);

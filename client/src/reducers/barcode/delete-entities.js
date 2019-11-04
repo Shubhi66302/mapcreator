@@ -1,11 +1,11 @@
 import {
-  getDirection,
   getNeighbouringBarcodes,
   getNeighbouringBarcodesIncludingDisconnected,
   implicitCoordinateKeyToBarcode,
   tupleOfIntegersToCoordinateKey,
   implicitBarcodeToCoordinate
 } from "utils/util";
+import { getDirection } from "./util";
 import _ from "lodash";
 
 const deleteChargerData = (state, action) => {
@@ -101,7 +101,7 @@ const deletePPSQueue = (state, action) => {
     );
     _.forEach(neighboursOfQueueCoordinate, function(neighbour) {
       if (neighbour) {
-        direction = getDirection(neighbour.coordinate, queuePoint);
+        direction = getDirection(neighbour.coordinate, queuePoint, state);
         if (neighbour.neighbours[direction][0] == !0) {
           neighbour.neighbours[direction] = [1, 1, 1];
         }
