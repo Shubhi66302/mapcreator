@@ -36,9 +36,9 @@ export const addPPSQueue = (state = {}, action) => {
         if (QueueDirection != 5) {
           newState[tileId].neighbours[QueueDirection][1] = 1;
           newState[tileId].neighbours[QueueDirection][2] = 1;
-          var Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
+          let Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
 
-          for (var j = 0; j < Remaining.length; j++) {
+          for (let j = 0; j < Remaining.length; j++) {
             newState[tileId].neighbours[Remaining[j]][2] = 0;
           }
 
@@ -64,6 +64,12 @@ export const addPPSQueue = (state = {}, action) => {
             // do NOT allow any non-queue neighbour to enter exit barcode
             newState[neighbouringTileIdend].neighbours[endnbrdir][2] = 0;
           });
+        }
+      } else {
+        // disable movement from starting barcode to other non-queue barcodes
+        let Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
+        for (let j = 0; j < Remaining.length; j++) {
+          newState[tileId].neighbours[Remaining[j]][2] = 0;
         }
       }
     }

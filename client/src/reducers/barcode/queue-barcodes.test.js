@@ -29,7 +29,9 @@ describe("addPPSQueue", () => {
       }
     };
     var newState = addPPSQueue(state, action);
-    expect(newState["1,2"].neighbours).toEqual(state["1,2"].neighbours);
+    expect(newState["1,2"].neighbours).toEqual([
+      [1,1,1], [1,1,0], [0,0,0], [1,1,0]
+    ]);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 1],
       [1, 1, 0],
@@ -97,8 +99,8 @@ describe("addPPSQueue", () => {
     var newState = addPPSQueue(state, action);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 0],
-      [1, 1, 1],
-      [1, 1, 1],
+      [1, 1, 0],
+      [1, 1, 0],
       [1, 1, 1]
     ]);
     expect(newState["2,1"].neighbours).toEqual([
@@ -160,7 +162,7 @@ describe("addPPSQueue", () => {
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 0],
       [1, 1, 0],
-      [1, 1, 1],
+      [1, 1, 0],
       [1, 1, 1]
     ]);
     // checking some (not all) queue barcodes
