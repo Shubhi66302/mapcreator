@@ -1,5 +1,6 @@
 import React from "react";
 import GenericTooltip from "../Forms/Util/GenericTooltip";
+import NoBarcodePng from "sprites/000.png";
 import NotAllowedPng from "sprites/100.png";
 import LiftDownAllowedPng from "sprites/110.png";
 import AllAllowed from "sprites/111.png";
@@ -11,6 +12,14 @@ export default () => {
         Marker meanings:
         <table>
           <tbody>
+            <tr>
+              <td>
+                <img style={imgStyle} src={NoBarcodePng} />
+              </td>
+              <td>
+                No barcode exists in that direction ([0,0,0] nb structure)
+              </td>
+            </tr>
             <tr>
               <td>
                 <img style={imgStyle} src={NotAllowedPng} />
@@ -39,8 +48,7 @@ export default () => {
         If no markers are drawn on a barcode, it means it has default neighbour
         structure
         <br />
-        (i.e. [1,1,1] and [0,0,0] edges). Not drawn just to reduce screen
-        clutter.
+        (i.e. [1,1,1] edges). Not drawn just to reduce screen clutter.
       </div>
     </GenericTooltip>
   );

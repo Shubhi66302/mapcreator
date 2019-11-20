@@ -115,8 +115,8 @@ export const getDirectionalitySpritesNames = createSelector(
     const { neighbours } = barcode;
     // if all neighbours are either [1,1,1] or [0,0,0], no need to draw direciotnality sprites for this barcode
     // they won't really add any new formation, just clutter
-    const shouldNotDrawSprites = neighbours.every(
-      nb => _.isEqual(nb, [1, 1, 1]) || _.isEqual(nb, [0, 0, 0])
+    const shouldNotDrawSprites = neighbours.every(nb =>
+      _.isEqual(nb, [1, 1, 1])
     );
     if (shouldNotDrawSprites) return [null, null, null, null];
     return neighbours.map(nb => constants.DIRECTIONALITY_SPRITES_MAP[nb]);

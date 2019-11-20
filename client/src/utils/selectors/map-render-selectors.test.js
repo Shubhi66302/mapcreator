@@ -205,23 +205,32 @@ describe("getBarcodeDigitSpritesData", () => {
 
 describe("getDirectionalitySpritesNames", () => {
   const { getDirectionalitySpritesNames } = mapRenderSelectors;
-  test("should give [null, null, null, null] for sprite 0,0 in vanilla map which is normal", () => {
-    // 0,0 has only 0,0,0 or 1,1,1 neighbours so all names should be null
+  test("should give [\"000.png\", \"000.png\", \"111.png\", \"111.png\"] for sprite 0,0 in vanilla map which is normal", () => {
     var state = makeState(singleFloorVanilla, 1);
     expect(getDirectionalitySpritesNames(state, { tileId: "0,0" })).toEqual([
+      "000.png",
+      "000.png",
+      "111.png",
+      "111.png"
+    ]);
+  });
+  test("should give [null, null, null, null] for sprite 1,1 in vanilla map", () => {
+    // 1,1 has only 0,0,0 or 1,1,1 neighbours so all names should be null
+    var state = makeState(singleFloorVanilla, 1);
+    expect(getDirectionalitySpritesNames(state, { tileId: "1,1" })).toEqual([
       null,
       null,
       null,
       null
     ]);
   });
-  test("should give sprite name 110.png in top and bottom direction for 12,12", () => {
+  test("should give sprite name 110.png in all direction for 12,12", () => {
     var state = makeState(singleFloor, 1);
     expect(getDirectionalitySpritesNames(state, { tileId: "12,12" })).toEqual([
-      constants.DIRECTIONALITY_SPRITES_MAP[[1, 1, 0]],
-      null,
-      constants.DIRECTIONALITY_SPRITES_MAP[[1, 1, 0]],
-      null
+      "110.png",
+      "000.png",
+      "110.png",
+      "000.png"
     ]);
   });
   test("should have all direction names in case of 2,1", () => {
@@ -230,7 +239,7 @@ describe("getDirectionalitySpritesNames", () => {
       constants.DIRECTIONALITY_SPRITES_MAP[[1, 1, 1]],
       constants.DIRECTIONALITY_SPRITES_MAP[[1, 1, 1]],
       constants.DIRECTIONALITY_SPRITES_MAP[[1, 1, 0]],
-      null
+      constants.DIRECTIONALITY_SPRITES_MAP[[0, 0, 0]]
     ]);
   });
 });
@@ -288,17 +297,17 @@ describe("getDirectionalitySpriteCoordinateData", () => {
 
 describe("getDirectionalitySpritesData", () => {
   const { getDirectionalitySpritesData } = mapRenderSelectors;
-  test("should be an empty object for 0,0 in vanilla map since no sprites to be drawn for it", () => {
+  test("should be an empty object for 1,1 in vanilla map since no sprites to be drawn for it", () => {
     var state = makeState(singleFloorVanilla, 1);
-    var sprites = getDirectionalitySpritesData(state, { tileId: "0,0" });
+    var sprites = getDirectionalitySpritesData(state, { tileId: "1,1" });
     expect(sprites).toEqual({});
   });
-  describe("should be top left and right sprite for 1,2", () => {
+  describe("should be top left right bottom sprite for 1,2", () => {
     var state = makeState(singleFloor, 1);
     var sprites = getDirectionalitySpritesData(state, { tileId: "1,2" });
     expect(sprites).toHaveProperty("top");
     expect(sprites).toHaveProperty("right");
-    expect(sprites).not.toHaveProperty("bottom");
+    expect(sprites).toHaveProperty("bottom");
     expect(sprites).toHaveProperty("left");
     test("left one shouldn't have rotation", () => {
       ["name", "x", "y", "xScale", "yScale"].forEach(key =>
@@ -310,13 +319,13 @@ describe("getDirectionalitySpritesData", () => {
   describe("correct data for 12,12", () => {
     var state = makeState(singleFloor, 1);
     var sprites = getDirectionalitySpritesData(state, { tileId: "12,12" });
-    test("should have keys top and bottom only", () => {
+    test("should have all keys", () => {
       expect(sprites).toHaveProperty("top");
-      expect(sprites).not.toHaveProperty("right");
+      expect(sprites).toHaveProperty("right");
       expect(sprites).toHaveProperty("bottom");
-      expect(sprites).not.toHaveProperty("left");
+      expect(sprites).toHaveProperty("left");
     });
-    test("should have all names as well has the coordinate data", () => {
+    test("should have all names as well has the coordinate data for top, bottom", () => {
       ["top", "bottom"].forEach(dirSpriteKey => {
         expect(sprites).toHaveProperty(dirSpriteKey);
         ["name", "x", "y", "xScale", "yScale", "rotation"].forEach(key =>

@@ -64,7 +64,7 @@ export const DIRECTIONALITY_SPRITES_MAP = {
   "1,0,0": "100.png", // not allowed edge
   "1,1,0": "110.png", // only lift down allowed edge
   "1,1,1": "111.png", // all allowed edge
-  "0,0,0": null // won't be drawing any sprite for this case
+  "0,0,0": "000.png" // won't be drawing any sprite for this case
 };
 
 // Constants for map charger_location
