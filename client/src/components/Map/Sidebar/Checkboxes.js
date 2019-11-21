@@ -23,9 +23,8 @@ const QueueCheckbox = ({ val, onChange }) => (
 
 const ZoneViewCheckbox = ({ val, onChange }) => (
   <div>
-    <ReactTooltip effect="solid" delayShow={1000} />
+    <ReactTooltip effect="solid" delayShow={100} />
     <label
-      data-tip="See summary tab in sidebar for zone color legend."
       style={{
         textAlign: "-webkit-center",
         margin: "0% 5% 3% 5%",
@@ -40,6 +39,11 @@ const ZoneViewCheckbox = ({ val, onChange }) => (
         checked={val}
         onChange={onChange}
       />
+      <i
+        className="fa fa-question-circle"
+        style={{ marginLeft: "10px", color: "darkgrey" }}
+        data-tip="See summary tab in left sidebar for zone color legend."
+      />
     </label>
   </div>
 );
@@ -48,8 +52,6 @@ const DirectionViewCheckbox = ({ val, onChange }) => (
   <div>
     <DirectionViewTooltip />
     <label
-      data-tip
-      data-for="direction-view-tooltip"
       style={{
         textAlign: "-webkit-center",
         margin: "0% 5% 3% 5%",
@@ -63,6 +65,12 @@ const DirectionViewCheckbox = ({ val, onChange }) => (
         type="checkbox"
         checked={val}
         onChange={onChange}
+      />
+      <i
+        className="fa fa-question-circle"
+        style={{ marginLeft: "10px", color: "darkgrey" }}
+        data-tip
+        data-for="direction-view-tooltip"
       />
     </label>
   </div>

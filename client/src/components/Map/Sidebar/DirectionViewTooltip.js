@@ -6,7 +6,7 @@ import AllAllowed from "sprites/111.png";
 
 export default () => {
   return (
-    <GenericTooltip id="direction-view-tooltip">
+    <GenericTooltip id="direction-view-tooltip" delayShow={100}>
       <div>
         Marker meanings:
         <table>
