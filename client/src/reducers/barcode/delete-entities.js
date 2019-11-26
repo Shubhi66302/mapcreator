@@ -24,7 +24,7 @@ const deleteChargerData = (state, action) => {
     chargerCoordinate,
     newState
   );
-  var entryPointNeighbours = getNeighbouringBarcodes(
+  var entryPointNeighbours = getNeighbouringBarcodesIncludingDisconnected(
     entryPointCoordinate,
     newState
   );

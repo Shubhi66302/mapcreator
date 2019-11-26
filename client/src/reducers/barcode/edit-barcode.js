@@ -1,6 +1,6 @@
 import _ from "lodash";
 import {
-  getNeighbouringBarcodes,
+  getNeighbouringBarcodesIncludingDisconnected,
   tupleOfIntegersToCoordinateKey,
   implicitBarcodeToCoordinate,
   coordinateKeyToTupleOfIntegers
@@ -20,7 +20,10 @@ export var editBarcode = (state, action) => {
   var [oldx, oldy] = coordinateKeyToTupleOfIntegers(coordinate);
   var [newx, newy] = coordinateKeyToTupleOfIntegers(new_coordinate);
   var newCoordinateKey = tupleOfIntegersToCoordinateKey([newx, newy]);
-  var allNeighbours = getNeighbouringBarcodes(coordinate, newState);
+  var allNeighbours = getNeighbouringBarcodesIncludingDisconnected(
+    coordinate,
+    newState
+  );
   for (var indx in allNeighbours) {
     // list of neighbours like {0:null, 1:{store..}...}
     // TODO: there can be unidirectional edges to this barcode which aren't updated currently

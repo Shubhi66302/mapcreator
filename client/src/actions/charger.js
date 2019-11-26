@@ -1,6 +1,7 @@
 import {
   getNeighbourTiles,
   getNeighbouringBarcodes,
+  getNeighbouringBarcodesIncludingDisconnected,
   implicitCoordinateKeyToBarcode,
   coordinateKeyToTupleOfIntegers
 } from "utils/util";
@@ -12,6 +13,7 @@ import {
 import { addEntitiesToFloor, clearTiles } from "./actions";
 import { CHARGER_DISTANCE } from "../constants";
 import _ from "lodash";
+
 // exported for testing
 export const createNewCharger = (
   { charger_direction, charger_type },
@@ -73,14 +75,14 @@ export const createAllChargerBarcodes = (
     (charger_direction + 2) % 4
   ] = coordinateKeyToTupleOfIntegers(tileId);
   // Size Info:
-  for(var dir = 0; dir < 4; dir ++){
-    if(dir == charger_direction || dir == (charger_direction + 2) % 4){
+  for (var dir = 0; dir < 4; dir++) {
+    if (dir == charger_direction || dir == (charger_direction + 2) % 4) {
       specialBarcode.size_info[dir] = CHARGER_DISTANCE;
-    }else{
+    } else {
       // Use charger barcode size info for perpendicular directions
       specialBarcode.size_info[dir] = chargerBarcode.size_info[dir];
-    };
-  };
+    }
+  }
   // charger barcode
   // TODO: some other neighbour changes to .neighbours; is this even required though since adjacency will now be used for this?
   // remove edges from charger barcode to all other barcodes except special barcode
@@ -93,9 +95,10 @@ export const createAllChargerBarcodes = (
     }
   });
   // we still need neighbour in adjacency even if neighbour structure is [1,0,0]
-  chargerBarcode.adjacency = getNeighbouringBarcodes(tileId, barcodesDict).map(
-    x => (x ? coordinateKeyToTupleOfIntegers(x.coordinate) : null)
-  );
+  chargerBarcode.adjacency = getNeighbouringBarcodesIncludingDisconnected(
+    tileId,
+    barcodesDict
+  ).map(x => (x ? coordinateKeyToTupleOfIntegers(x.coordinate) : null));
   chargerBarcode.adjacency[charger_direction] = coordinateKeyToTupleOfIntegers(
     specialTileId
   );
