@@ -30,7 +30,10 @@ describe("addPPSQueue", () => {
     };
     var newState = addPPSQueue(state, action);
     expect(newState["1,2"].neighbours).toEqual([
-      [1,1,1], [1,1,0], [0,0,0], [1,1,0]
+      [1, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0],
+      [1, 1, 0]
     ]);
     expect(newState["1,1"].neighbours).toEqual([
       [1, 1, 1],
@@ -297,37 +300,36 @@ describe("addHighwayQueue", () => {
       }
     };
     var newState = addHighwayQueue(state, action);
-    test("should disallow movement in non-queue directions for first n-1 barcodes", () => {
-      // only right
+    test("should disallow in the backward direction only for all barcodes except first", () => {
+      // nothing changed on first barcode
       expect(newState["2,0"].neighbours).toEqual([
         [0, 0, 0],
         [1, 1, 1],
-        [1, 0, 0],
+        [1, 1, 1],
         [0, 0, 0]
       ]);
-      // only right
+      // only left blocked
       expect(newState["1,0"].neighbours).toEqual([
         [0, 0, 0],
         [1, 1, 1],
-        [1, 0, 0],
+        [1, 1, 1],
         [1, 0, 0]
       ]);
-      // only down
+      // only left blocked
       expect(newState["0,0"].neighbours).toEqual([
         [0, 0, 0],
         [0, 0, 0],
         [1, 1, 1],
         [1, 0, 0]
       ]);
-      // only left
+      // only up blocked
       expect(newState["0,1"].neighbours).toEqual([
         [1, 0, 0],
         [0, 0, 0],
-        [1, 0, 0],
+        [1, 1, 1],
         [1, 1, 1]
       ]);
-    });
-    test("for last queue barcode, should allow movement to all directions except backwards", () => {
+      // only right blocked
       expect(newState["1,1"].neighbours).toEqual([
         [1, 1, 1],
         [1, 0, 0],

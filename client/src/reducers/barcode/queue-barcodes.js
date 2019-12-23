@@ -119,30 +119,15 @@ export const addHighwayQueue = (state = {}, action) => {
     throw new Error(`Cannot add queue: ${reason}`);
   }
   const newState = {};
-  // looping over all barcodes except for queue exit barcode
-  for (var i = 0; i < tileIds.length - 1; i++) {
+  // looping over all barcodes except first
+  for (var i = 1; i < tileIds.length; i++) {
     const tileId = tileIds[i];
     newState[tileId] = _.clone(state[tileId]);
-    const queueDirection = getDirection(tileId, tileIds[i + 1], state);
-    // disable movement completely in all directions except queue direction
-    [0, 1, 2, 3].forEach(direction => {
-      if (direction != queueDirection) {
-        newState[tileId].neighbours[direction][1] = 0;
-        newState[tileId].neighbours[direction][2] = 0;
-      }
-    });
+    const queueDirection = getDirection(tileIds[i - 1], tileId, state);
+    // disable movement completely only in the queue-opposite direction
+    const backwardDirection = (queueDirection + 2) % 4;
+    newState[tileId].neighbours[backwardDirection][1] = 0;
+    newState[tileId].neighbours[backwardDirection][2] = 0;
   }
-  // for last element, get the queue reverse direction, and disable that only
-  const length = tileIds.length;
-  var forwardDirection = getDirection(
-    tileIds[length - 2],
-    tileIds[length - 1],
-    state
-  );
-  var backwardDirection = (forwardDirection + 2) % 4;
-  var lastTileId = tileIds[length - 1];
-  newState[lastTileId] = _.clone(state[lastTileId]);
-  newState[lastTileId].neighbours[backwardDirection][1] = 0;
-  newState[lastTileId].neighbours[backwardDirection][2] = 0;
   return { ...state, ...newState };
 };
