@@ -49,13 +49,18 @@ pipelines:
           services: 
             - postgres
       - step:
-          name: Deploy Production
-          deployment: production
+          name: Build and Push
           services:
             - docker
           script:
             - make login
-            - make all
+            - make build
+            - make push
+            - make push-as-latest
+      - step:
+          name: Deploy Production
+          deployment: production
+          script:
             - make deploy  
 
 definitions: 
