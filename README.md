@@ -52,6 +52,7 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
     - production server on `mapcreator.labs.greyorange.com`
     - staging server on `mapcreator.labs.greyorange.com:3002`
     - testing server(s) on `mapcreator.labs.greyorange.com:5000`
+- You can ssh into VM using `root@mapcreator.labs.greyorange.com`. You already know the password.
 
 ## Recommended workflow
 - When a diff is raised, a testing instance will be created automatically (see testing server below). This can be used for manual testing/code review.
@@ -69,13 +70,8 @@ Open localhost:3000/ for mapcreator dev server. Hot reloading is enabled so edit
     - It can also be done through bitbucket pipelines . Go to Pipelines in bitbucket repo and click on the pipeline run you want to deploy. This requires you to first push your feature branch to bitbucket.
 - To deploy to production, run `make deploy`. Then check production server to see if build is running.
 
-## Testing Server(s)
-- A testing nginx server is running on `mapcreator.labs.greyorange.com:5000`. Whenever a diff is created, a `mapcreator-testing` job runs on jenkins that creates a build for the diff and deploys it on the testing server. Eg. if your diff name is `D9999`, then after build completes, jenkins will post a comment on your diff saying `Testing instance is available at http://mapcreator.labs.greyorange.com:5000/D9999`. Go to that URL to access your testing instance. This is useful for code reviews.
-- TODO: document how this setup works (nginx, testing docker network, scripts, jobs)
-- Right now testing instances need to be manually cleaned up once the code gets landed (otherwise disk gets full after a while). TODO: automate this properly!
-    - `ssh root@mapcreator.labs.greyorange.com`
-    - `cd testing-instance-provisioner`
-    - `REVISION=D9999 make -f Makefile.testing cleanup-testing`
+# CI Setup
+See `README-CI.md`
 
 # Modifying JSON schemas
 
