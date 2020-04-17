@@ -38,6 +38,17 @@ export const mapUpdateReducer = combineReducers({
   result: r => r || null
 });
 
+// reducer for data sanity
+// eslint-disable-next-line
+export const runSanityReducer = (state = {}, action) => {
+  switch (action.type) {
+    //case "CHARGER-SANITY":
+    //  return validateChargersLayout;
+    case "NONE":
+      return "true";
+  }
+};
+
 // for full map updates eg. clear, new
 export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
   switch (action.type) {

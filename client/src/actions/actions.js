@@ -26,6 +26,8 @@ import {
   getSampleRacksJson
 } from "utils/api";
 
+//import runSanityReducer from "reducers/reducer";
+
 // always good idea to return promises from async action creators
 
 export const mapTileClick = tileId => ({
@@ -294,4 +296,10 @@ export const deleteMap = (id, history) => dispatch => {
     .then(handleErrors)
     .then(() => history.push("/"))
     .catch(error => dispatch(setErrorMessage(error)));
+};
+
+// eslint-disable-next-line
+export const runSanity = (dispatch, getState) => {
+  //return runSanityReducer("NONE");
+  return setSuccessMessage("true");
 };

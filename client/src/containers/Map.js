@@ -20,6 +20,7 @@ import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
 import CopyMap from "components/Map/Forms/CopyMap";
 import DeleteMap from "components/Map/Forms/DeleteMap";
 import SampleRacksJson from "components/Map/SampleRacksJson";
+import { runSanity } from "actions/actions";
 
 class Map extends Component {
   state = {
@@ -36,7 +37,7 @@ class Map extends Component {
       dispatch
     } = this.props;
     dispatch(fetchMap(id));
-  }
+  };
 
   render() {
     const {
@@ -112,6 +113,15 @@ class Map extends Component {
                   }}
                 >
                   Download
+                </button>
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={() => {
+                    dispatch(runSanity(this.state.nMap));
+                  }}
+                >
+                  Run Data Sanity
                 </button>
                 <button
                   className="btn btn-outline-secondary"
