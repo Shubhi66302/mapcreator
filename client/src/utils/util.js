@@ -152,6 +152,34 @@ export const getNeighboursThatAllowAccess = (coordinateKey, barcodesDict) => {
   return neighboursThatAllowAccess;
 };
 
+export const getNeighboursThatAllowAccessWithLiftState = (coordinateKey, barcodesDict,liftState) => {
+  var neighbours = getNeighbouringBarcodesIncludingDisconnected(coordinateKey, barcodesDict);
+  var neighboursThatAllowAccess = [];
+  for (let neighbour of neighbours) {
+    if (neighbour != null) {
+      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(coordinateKey, neighbour.coordinate, barcodesDict);
+      const opp_coordinate_to_neighbour_direction = (coordinate_to_neighbour_direction + 2) % 4;
+      const neighbour_ns = neighbour.neighbours;
+      const neighbour_to_coordinate_ns = neighbour_ns[opp_coordinate_to_neighbour_direction];
+      const neighbourToCoordinateLiftStateMovement = neighbour_to_coordinate_ns[liftState+1];
+      if (neighbourToCoordinateLiftStateMovement == 1 ) {
+        neighboursThatAllowAccess.push(neighbour);
+      }
+      else {
+        neighboursThatAllowAccess.push(null);
+      }
+
+
+    }
+
+    else {
+
+      neighboursThatAllowAccess.push(neighbour);
+    }
+  };
+  return neighboursThatAllowAccess;
+};
+
 export const getNeighbourBarcodeIncludingDisconnectedInDirection = (
   coordinateKey,
   barcodesDict,
