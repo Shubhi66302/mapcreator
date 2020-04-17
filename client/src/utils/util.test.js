@@ -11,7 +11,8 @@ import {
   tupleOfIntegersToCoordinateKey,
   addNeighbourToBarcode,
   deleteNeighbourFromBarcode,
-  getNeighbouringBarcodesIncludingDisconnected
+  getNeighbouringBarcodesIncludingDisconnected,
+  getNeighboursThatAllowAccess
 } from "./util";
 import { singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
@@ -294,6 +295,84 @@ describe("getNeighbouringBarcodes", () => {
     };
     var neighbourBarcodes = getNeighbouringBarcodes("2,2", barcodesDict);
     expect(neighbourBarcodes).toEqual(["a", undefined, null, null]);
+  });
+});
+
+describe("getNeighboursThatAllowAccess", () => {
+  test("if 2 neighbours allow access to the coordinate irrespective of movement from coordinate", () => {
+    // map is:
+    // -    1,1    -
+    //         
+    // 2,2  1,2  0,2
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    barcodesDict["1,2"].neighbours = [[1, 1, 0], [1, 0, 0], [0, 0, 0], [1, 0, 0]];
+    barcodesDict["2,2"].neighbours[1] = [1, 1, 0];
+    barcodesDict["1,1"].neighbours[2] = [1, 0, 0];
+    var neighbourBarcodes = getNeighboursThatAllowAccess("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      null,
+      { "barcode": "002.000", "blocked": false, "botid": "null", "coordinate": "0,2", "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]], "size_info": [750, 750, 750, 750], "store_status": 0, "zone": "defzone" },
+      null,
+      { "barcode": "002.002", "blocked": false, "botid": "null", "coordinate": "2,2", "neighbours": [[1, 1, 1], [1, 1, 0], [0, 0, 0], [0, 0, 0]], "size_info": [750, 750, 750, 750], "store_status": 0, "zone": "defzone" }
+    ]);
+  });
+  test("if only one neighbour allows access irrespective of movement from coordinate (allowed)", () => {
+    // map is:
+    // -    1,1    -
+    //         
+    // 2,2  1,2  0,2
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    barcodesDict["1,2"].neighbours = [[1, 1, 0], [1, 0, 0], [0, 0, 0], [1, 0, 0]];
+    barcodesDict["2,2"].neighbours[1] = [1, 0, 0];
+    barcodesDict["1,1"].neighbours[2] = [1, 1, 0];
+    barcodesDict["0,2"].neighbours[3] = [1, 0, 0];
+    var neighbourBarcodes = getNeighboursThatAllowAccess("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      { "barcode": "001.001", "blocked": false, "botid": "null", "coordinate": "1,1", "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 0], [1, 1, 1]], "size_info": [750, 750, 750, 750], "store_status": 0, "zone": "defzone" },
+      null,
+      null,
+      null
+    ]);
+  });
+  test("if only one neighbour allows access irrespective of movement from coordinate (not allowed)", () => {
+    // map is:
+    // -    1,1    -
+    //         
+    // 2,2  1,2  0,2
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    barcodesDict["1,2"].neighbours = [[1, 0, 0], [1, 0, 0], [0, 0, 0], [1, 0, 0]];
+    barcodesDict["2,2"].neighbours[1] = [1, 0, 0];
+    barcodesDict["1,1"].neighbours[2] = [1, 1, 0];
+    barcodesDict["0,2"].neighbours[3] = [1, 0, 0];
+    var neighbourBarcodes = getNeighboursThatAllowAccess("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      { "barcode": "001.001", "blocked": false, "botid": "null", "coordinate": "1,1", "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 0], [1, 1, 1]], "size_info": [750, 750, 750, 750], "store_status": 0, "zone": "defzone" },
+      null,
+      null,
+      null
+    ]);
+  });
+  test("if no neighbour neighbour allows access irrespective of movement from coordinate", () => {
+    // map is:
+    // -    1,1    -
+    //         
+    // 2,2  1,2  0,2
+    var barcodesDict = makeState(singleFloorVanilla, 1).normalizedMap.entities
+      .barcode;
+    barcodesDict["1,2"].neighbours = [[1, 0, 0], [1, 0, 0], [0, 0, 0], [1, 0, 0]];
+    barcodesDict["2,2"].neighbours[1] = [1, 0, 0];
+    barcodesDict["1,1"].neighbours[2] = [1, 0, 0];
+    barcodesDict["0,2"].neighbours[3] = [1, 0, 0];
+    var neighbourBarcodes = getNeighboursThatAllowAccess("1,2", barcodesDict);
+    expect(neighbourBarcodes).toMatchObject([
+      null,
+      null,
+      null,
+      null
+    ]);
   });
 });
 

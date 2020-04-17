@@ -9,6 +9,7 @@ import {
   getMapId
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
+import {runCompleteDataSanity} from "../utils/data_sanity";
 import { loader as PIXILoader } from "pixi.js";
 import JSZip from "jszip";
 import { saveAs } from "file-saver/FileSaver";
@@ -160,7 +161,7 @@ export const toggleStorable = () => (dispatch, getState) => {
     selection: { mapTiles }
   } = state;
   const selectedTiles = Object.keys(mapTiles);
-  var allStorable = _.every(selectedTiles, function(coordinate) {
+  var allStorable = _.every(selectedTiles, function (coordinate) {
     return state.normalizedMap.entities.barcode[coordinate].store_status == 1;
   });
   if (allStorable == true) {
@@ -178,7 +179,7 @@ export const toggleStorable = () => (dispatch, getState) => {
 };
 
 const getOrderedQueueCoordinates = mapTiles =>
-  Object.keys(mapTiles).sort(function(a, b) {
+  Object.keys(mapTiles).sort(function (a, b) {
     return mapTiles[a] - mapTiles[b];
   });
 
@@ -299,7 +300,9 @@ export const deleteMap = (id, history) => dispatch => {
 };
 
 // eslint-disable-next-line
-export const runSanity = (dispatch, getState) => {
+export const runSanity = () => (dispatch, getState) => {
   //return runSanityReducer("NONE");
-  return setSuccessMessage("true");
+  const { normalizedMap } = getState();
+  var CompleteDataSanity = runCompleteDataSanity(normalizedMap);
+  return dispatch(setSuccessMessage(JSON.stringify(CompleteDataSanity)));
 };

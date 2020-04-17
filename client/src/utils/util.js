@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { randomColor } from "randomcolor";
+import { getDirectionIncludingDisconnected } from "../reducers/barcode/util";
 
 export const getCanvasSize = () => ({
   width: window.innerWidth,
@@ -54,8 +55,11 @@ export const getNeighbouringBarcodesWithNbFilter = (
   nbFilters
 ) => {
   // barcodesDict is state.normalizedMap.entities.barcode
+
   var curBarcode = barcodesDict[coordinateKey];
-  if (!curBarcode) return null;
+  if (!curBarcode) {
+    return null;
+  };
   // if adjacency is present, use that instead.
   if (curBarcode.adjacency) {
     return curBarcode.adjacency.map(val => {
@@ -98,6 +102,7 @@ export const getNeighbouringBarcodesIncludingDisconnected = (
 };
 // only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
 export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
+
   return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
     [0, 0, 0],
     [1, 0, 0]
@@ -109,6 +114,42 @@ export const getNeighbouringCoordinateKeys = (coordinateKey, barcodesDict) => {
     [0, 0, 0],
     [1, 0, 0]
   ]).map(elm => (elm == null ? null : elm.coordinate));
+};
+
+export const getNeighbouringCoordinateKeysIncludingDisconnected = (coordinateKey, barcodesDict) => {
+  return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
+    [0, 0, 0],
+  ]).map(elm => (elm == null ? null : elm.coordinate));
+};
+
+
+export const getNeighboursThatAllowAccess = (coordinateKey, barcodesDict) => {
+  var neighbours = getNeighbouringBarcodesIncludingDisconnected(coordinateKey, barcodesDict);
+  var neighboursThatAllowAccess = [];
+  for (let neighbour of neighbours) {
+    if (neighbour != null) {
+      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(coordinateKey, neighbour.coordinate, barcodesDict);
+      const opp_coordinate_to_neighbour_direction = (coordinate_to_neighbour_direction + 2) % 4;
+      const neighbour_ns = neighbour.neighbours;
+      const neighbour_to_coordinate_ns = neighbour_ns[opp_coordinate_to_neighbour_direction];
+      const neighbourToCoordinateBotMovement = neighbour_to_coordinate_ns[1];
+      const neighbourToCoordinateRackMovement = neighbour_to_coordinate_ns[2];
+      if (neighbourToCoordinateBotMovement == 1 || neighbourToCoordinateRackMovement == 1) {
+        neighboursThatAllowAccess.push(neighbour);
+      }
+      else {
+        neighboursThatAllowAccess.push(null);
+      }
+
+
+    }
+
+    else {
+
+      neighboursThatAllowAccess.push(neighbour);
+    }
+  };
+  return neighboursThatAllowAccess;
 };
 
 export const getNeighbourBarcodeIncludingDisconnectedInDirection = (

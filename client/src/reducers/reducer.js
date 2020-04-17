@@ -44,9 +44,15 @@ export const runSanityReducer = (state = {}, action) => {
   switch (action.type) {
     //case "CHARGER-SANITY":
     //  return validateChargersLayout;
-    case "NONE":
-      return "true";
+    case "RUN-DATA-SANITY":
+      //var finalDataSanityResult = runCompleteDataSanity(state);
+      //console.log("running data sanity");
+      //console.log(finalDataSanityResult);
+      return state;
+      
+
   }
+  return state;
 };
 
 // for full map updates eg. clear, new
@@ -62,7 +68,8 @@ export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
 
 export const normalizedMapReducer = reduceReducers(
   mapUpdateReducer,
-  mapChangeReducer
+  mapChangeReducer,
+  runSanityReducer
 );
 
 // helper exported for testing
@@ -77,7 +84,7 @@ export const toggleKeyInMap = (theMap, key) => {
 export const toggleKeyInMapWhenQueueMode = (state, tileId) => {
   var a = _.reduce(
     state,
-    function(acc, value) {
+    function (acc, value) {
       return Math.max(acc, value);
     },
     0
@@ -205,7 +212,7 @@ export const selectionReducer = (
         }
         var a = _.reduce(
           state.mapTiles,
-          function(acc, value) {
+          function (acc, value) {
             return Math.max(acc, value);
           },
           0
