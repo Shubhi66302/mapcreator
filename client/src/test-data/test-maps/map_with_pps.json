@@ -1,0 +1,77 @@
+{
+  "id": 30,
+  "name": "map_with_pps",
+  "map": {
+    "floors": [
+      {
+        "floor_id": 1,
+        "map_values": [
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 0, 0]],
+            "barcode": "000.001",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "1,0"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
+            "barcode": "000.002",
+            "store_status": 1,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "2,0"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 0, 0]],
+            "barcode": "000.000",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "0,0"
+          },
+          {
+            "size_info": [750, 750, 750, 750],
+            "zone": "defzone",
+            "neighbours": [[1, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            "barcode": "001.001",
+            "store_status": 0,
+            "botid": "null",
+            "blocked": false,
+            "coordinate": "1,1"
+          }
+        ],
+        "chargers": [],
+        "fireEmergencies": [],
+        "odsExcludeds": [],
+        "ppses": [
+          {
+            "location": "000.001",
+            "pick_direction": 0,
+            "allowed_modes": ["put", "pick", "audit"],
+            "pps_id": 1,
+            "pick_position": "000.001",
+            "status": "disconnected",
+            "put_docking_positions": [],
+            "pps_url": "http://localhost:8181/pps/1/api/",
+            "queue_barcodes": ["000.002", "000.001", "000.000"],
+            "coordinate": "1,0",
+            "type": "manual"
+          }
+        ],
+        "dockPoints": []
+      }
+    ],
+    "elevators": [],
+    "zones": [],
+    "queueDatas": []
+  },
+  "createdAt": "2020-04-17T11:19:22.022Z",
+  "updatedAt": "2020-04-17T11:19:22.022Z"
+}

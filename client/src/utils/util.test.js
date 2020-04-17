@@ -14,8 +14,9 @@ import {
   getNeighbouringBarcodesIncludingDisconnected,
   getNeighboursThatAllowAccess
 } from "./util";
-import { singleFloorVanilla, makeState } from "./test-helper";
+import { singleFloorPps, singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
+import { validatePpsQueue } from "utils/pps_validation";
 
 var ajv = getLoadedAjv();
 var mapValidate = ajv.getSchema("map");
@@ -521,5 +522,14 @@ describe("deleteNeighbourFromBarcode", () => {
   test("should not be mutating old object", () => {
     var newBarcode = deleteNeighbourFromBarcode(testingBarcode, 0, true);
     expect(newBarcode).not.toBe(testingBarcode);
+  });
+});
+
+describe("validatePpsQueue", () => {
+  test("should test pps sanity", () => {
+    const barcodesDict = makeState(singleFloorPps, 1).normalizedMap.entities.barcode;
+    const ppses = makeState(singleFloorPps, 1).normalizedMap.entities.pps;
+    const val = validatePpsQueue(barcodesDict, ppses[1]);
+    expect(val).toEqual({"finalPpsSanityResult": true});
   });
 });
