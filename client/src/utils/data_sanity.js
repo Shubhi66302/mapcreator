@@ -1,8 +1,11 @@
 import { validateChargersLayout } from "./charger_data_sanity";
+import { validateNeighbours } from "./map_validation";
 
 
 export const runCompleteDataSanity = (normalizedMap) => {
   var barcodesDict = normalizedMap.entities.barcode;
   var chargers = normalizedMap.entities.charger;
-  return validateChargersLayout(chargers, barcodesDict);
+  var chargerLayoutResult = validateChargersLayout(chargers, barcodesDict);
+  var mapLayoutResult = validateNeighbours( barcodesDict);
+  return {"chargerSanityResult" : chargerLayoutResult,"mapSanityResult" : mapLayoutResult};
 };
