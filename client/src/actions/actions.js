@@ -304,5 +304,5 @@ export const runSanity = () => (dispatch, getState) => {
   //return runSanityReducer("NONE");
   const { normalizedMap } = getState();
   var CompleteDataSanity = runCompleteDataSanity(normalizedMap);
-  return dispatch(setSuccessMessage(JSON.stringify(CompleteDataSanity)));
+  return dispatch(setSuccessMessage(JSON.stringify(CompleteDataSanity, undefined, 4)));
 };
