@@ -55,6 +55,7 @@ const deleteChargerData = (state, action) => {
       (chargerDirection + 2) % 4
     ] = [1, 1, 1];
   }
+
   _.forEach(chargerNeighbours, function(chargerNeighbour, dir) {
     if (chargerNeighbour) {
       if (chargerNeighbour.coordinate == entryPointCoordinate) {
@@ -67,7 +68,10 @@ const deleteChargerData = (state, action) => {
       if (chargerNeighbour.neighbours[oppDir][0] == 1) {
         chargerNeighbour.neighbours[oppDir] = [1, 1, 1];
       }
-      delete chargerNeighbour.adjacency;
+      // delete adjacency only for 
+      if (dir == chargerDirection){
+        delete chargerNeighbour.adjacency;
+      }
       newState[chargerNeighbour.coordinate] = chargerNeighbour;
     }
   });

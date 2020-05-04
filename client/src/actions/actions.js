@@ -9,7 +9,7 @@ import {
   getMapId
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
-import {runCompleteDataSanity} from "../utils/data_sanity";
+import {runCompleteDataSanity} from "../utils/data-sanity";
 import { loader as PIXILoader } from "pixi.js";
 import JSZip from "jszip";
 import { saveAs } from "file-saver/FileSaver";

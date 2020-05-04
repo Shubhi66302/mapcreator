@@ -1,4 +1,4 @@
-import { getNeighbouringCoordinateKeys, getNeighbouringCoordinateKeysIncludingDisconnected } from "utils/util";
+import { getNeighbouringCoordinateKeys, getNeighbouringCoordinateKeysIncludingDisconnected } from "../../utils/util";
 
 export function getDirection(
   sourceCoordinate,

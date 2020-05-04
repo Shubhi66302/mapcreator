@@ -16,7 +16,7 @@ import {
 } from "./util";
 import { singleFloorPps, singleFloorVanilla, makeState } from "./test-helper";
 import getLoadedAjv from "common/utils/get-loaded-ajv";
-import { validatePpsQueue } from "utils/pps_validation";
+import { validatePpsQueue } from "utils/pps-validation";
 
 var ajv = getLoadedAjv();
 var mapValidate = ajv.getSchema("map");

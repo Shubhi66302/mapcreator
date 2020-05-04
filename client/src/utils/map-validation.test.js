@@ -1,6 +1,6 @@
 import {
   validateNeighbours
-} from "./map_validation";
+} from "./map-validation";
 
 describe("validateNeighbours", () => {
   test("Sanity should pass", () => {

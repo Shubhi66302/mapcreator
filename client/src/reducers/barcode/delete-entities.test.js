@@ -11,7 +11,7 @@ import {
 } from "utils/test-helper";
 import { addChargers } from "actions/charger";
 import { addPPSes } from "actions/pps.js";
-import { addPPSQueue } from "actions/actions";
+import { addPPSQueue,mapTileClick } from "actions/actions";
 
 import vanilla3x3 from "test-data/test-maps/3x3-vanilla.json";
 import { normalizeMap } from "utils/normalizr";
@@ -73,6 +73,75 @@ describe("deleteChargerData", () => {
       [1, 1, 1],
       [1, 1, 1],
       [1, 1, 1],
+      [0, 0, 0]
+    ]);
+    expect(newState["1,1"].size_info).toEqual([750, 750, 750, 750]);
+    expect(newState["1,0"].size_info).toEqual([750, 750, 750, 750]);
+  });
+  test("should delete charger related data in barcodes with charger on adjacent barcode", async () => {
+    var store = configureStore(
+      // arguments are mapJson, currentFloor, selectedMapTiles
+      makeStateApp(singleFloorVanilla, 1, { "1,1": true })
+    );
+    await store.dispatch(addChargers({ charger_direction: 0 }));
+    // select 2,1 
+    // add new charger with charger direction 2 on 2,1.
+    await store.dispatch(mapTileClick("2,1"));
+    await store.dispatch(addChargers({ charger_direction: 0}));
+    const state = store.getState();
+    var initialState = state.normalizedMap.entities.barcode;
+    // delete charger 1
+    var newState = deleteChargerData(initialState, {
+      type: "DELETE-CHARGER-DATA",
+      value: { chargerDetails: state.normalizedMap.entities.charger[1] }
+    });
+    // Sp coordinate(enrty point coordinate) is 500,500
+    // Charger coordinate is "1,1"
+    // Previously connected coordinate to 1,1 is 1,0
+    expect(newState["500,500"]).toBe(undefined);
+    expect(newState["1,1"].adjacency).toBe(undefined);
+    // Neighbours of charger should not have adjacency (added while adding charger)
+    expect(newState["2,1"].adjacency).toEqual(
+      [ 
+        [501,501],
+        [1,1],
+        [2,2],
+        null
+      ]
+    );
+    expect(newState["1,2"].adjacency).toBe(undefined);
+    expect(newState["0,1"].adjacency).toBe(undefined);
+
+    expect(newState["1,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]);
+    expect(newState["1,0"].adjacency).toBe(undefined);
+    // check neighbour structure of all old neighbours of charger
+    expect(newState["1,0"].neighbours).toEqual([
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]);
+    expect(newState["0,1"].neighbours).toEqual([
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]);
+    expect(newState["1,2"].neighbours).toEqual([
+      [1, 1, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+      [1, 1, 1]
+    ]);
+    expect(newState["2,1"].neighbours).toEqual([
+      [1, 1, 0],
+      [1, 1, 1],
+      [1, 0, 0],
       [0, 0, 0]
     ]);
     expect(newState["1,1"].size_info).toEqual([750, 750, 750, 750]);

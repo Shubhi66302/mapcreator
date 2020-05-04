@@ -4,7 +4,7 @@ import {
   checkIfRackMovementAllowedToCoordinateFromNeighbours,
   validateChargerCoordinate,
   validateBidirectionalMovementBetween2Coordinates
-} from "./charger_data_sanity";
+} from "./charger-data-sanity";
 import { singleFloorVanilla, singleFloorVanillaCharger, makeState } from "./test-helper";
 
 describe("checkIfRackMovementAllowedToCoordinateFromNeighbours", () => {

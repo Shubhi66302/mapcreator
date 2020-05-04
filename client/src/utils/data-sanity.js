@@ -1,6 +1,6 @@
-import { validateChargersLayout } from "./charger_data_sanity";
-import { validateNeighbours } from "./map_validation";
-import { validateAllPpses } from "./pps_validation";
+import { validateChargersLayout } from "./charger-data-sanity";
+import { validateNeighbours } from "./map-validation";
+import { validateAllPpses } from "./pps-validation";
 
 export const runCompleteDataSanity = (normalizedMap) => {
   var barcodesDict = normalizedMap.entities.barcode;
