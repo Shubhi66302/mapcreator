@@ -1,5 +1,5 @@
 import {
-  getNeighbouringBarcodes,
+  getNeighbouringBarcodesWithNbFilter,
   coordinateKeyToTupleOfIntegers,
   tupleOfIntegersToCoordinateKey,
   getNeighbourBarcodeIncludingDisconnectedInDirection
@@ -137,9 +137,10 @@ export const getUpdatedBarcodes = (
         neighbourIndir
       );
       const barcodeInfo = newState[neighbourIndirTileId];
-      const neighbours = getNeighbouringBarcodes(
+      const neighbours = getNeighbouringBarcodesWithNbFilter(
         neighbourIndirTileId,
-        newState
+        newState,
+        [[0,0,0]]
       );
       const size = transitBarcodeInfo.size_info[dir];
       const updatedBarcodeInfo = getUpdatedBarcodeInfo(

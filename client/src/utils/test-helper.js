@@ -157,3 +157,15 @@ export const addQueueSelectedTilesToState = (store, tilesList) => {
   tilesList.forEach(tile => store.dispatch(mapTileClick(tile)));
   return store;
 };
+
+// Map with one transit barcode
+// 2,0        1,0       0,0
+// 2,1        1,1       0,1
+// 2,2        1,2       0,2
+export var singleFloorVanillaDisAllowBotMovement = (() => {
+  var normalizedMap = normalizeMap(singleFloorVanilla.toJS());
+  // Modify adjacency and size info of neighbours of transit barcode
+  normalizedMap.entities.barcode["0,2"].neighbours = [[1,0,0],[0,0,0],[0,0,0],[1,1,1]];
+  normalizedMap.entities.barcode["0,1"].neighbours = [[1,1,1],[0,0,0],[1,0,0],[1,1,1]];
+  return fromJS(denormalizeMap(normalizedMap));
+})();
