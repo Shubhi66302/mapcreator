@@ -202,10 +202,11 @@ export const IsValidPpsDirection = (
     barcodesDict,
     filters
   );
-
-  for (let i = 0; i < neighbours.length; i++) {
-    if (neighbours[i] != null)
-      direction = i;
+  if(neighbours != null){
+    for (let i = 0; i < neighbours.length; i++) {
+      if (neighbours[i] != null)
+        direction = i;
+    }
   }
   oppositeDirection = getOppositeDirection(direction);
 
@@ -274,7 +275,7 @@ export const getCoordinateBeforePps = (
   let tempQueueCoordinate;
   for (let i = 0; i < queue_barcodes.length; i++) {
     tempQueueCoordinate = implicitBarcodeToCoordinate(queue_barcodes[i]);
-    if (coordinate == tempQueueCoordinate) {
+    if (coordinate == tempQueueCoordinate && i > 0) {
       coordinateBeforePps = implicitBarcodeToCoordinate(queue_barcodes[i - 1]);
       break;
     }
