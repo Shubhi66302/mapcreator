@@ -6,15 +6,20 @@ export const mapSanityResult = (barcodesDict) => {
   var neighbourStructureConsistency = checkNeighbourStructureConsistency(barcodesDict);
   var ifAisleToStorageAndVisavis = checkIfAisleToStorageAndVisavis(barcodesDict);
   var deadGridPositions = checkDeadGridPositions(barcodesDict);
+  var alignmentOfCoordinates = validateAlignmentOfCoordinates(barcodesDict);
   if(neighbourStructureConsistency.length != 0){
     sanity.push({"check_neighbour_structure_consistency" : neighbourStructureConsistency});
   }
   if(ifAisleToStorageAndVisavis.length != 0){
     sanity.push({"check_if_aisle_to_storage_and_visavis" : ifAisleToStorageAndVisavis});
   }
-  if(deadGridPositions != 0){
+  if(deadGridPositions.length != 0){
     sanity.push({"is_dead_grid_positions" : deadGridPositions});
-  }else if(sanity.length == 0){
+  }
+  if(alignmentOfCoordinates.length != 0){
+    sanity.push({"number_of_wrongly_aligned_barcodes": alignmentOfCoordinates.length,"wrongly_aligned_barcodes" : alignmentOfCoordinates});
+  }
+  else if(sanity.length == 0){
     sanity.push({"finalResult":true});
   }
   return sanity;
@@ -231,4 +236,54 @@ export const getExistingNeighbourInDirection = (coordinateKey, direction) => {
   }else {
     return tupleOfIntegersToCoordinateKey([x+1,y]);
   }
+};
+
+export const validateAlignmentOfCoordinates = (barcodesDict) => {
+  var wronglyAlignedCoordinates = [];
+  for (var coordinateKey in barcodesDict) {
+    var neighbourInRight = getNeighbourInDirection(coordinateKey,1,barcodesDict);
+    var neighbourInSouth = getNeighbourInDirection(coordinateKey,2,barcodesDict);
+    var neighbourInLeft = getNeighbourInDirection(coordinateKey,3,barcodesDict);
+    var neighbourInNorth = getNeighbourInDirection(coordinateKey,0,barcodesDict);
+    var coordinate = coordinateKeyToTupleOfIntegers(barcodesDict[coordinateKey].coordinate);
+    var worldCoordinate = barcodesDict[coordinate].world_coordinate;
+    var [x,y] = JSON.parse(worldCoordinate);
+    var wronglyAlignedPerCoordinate = [];
+    if(neighbourInRight != null){
+      var rightWorldCoordinate = barcodesDict[neighbourInRight].world_coordinate;
+      var worldCoordinateR = JSON.parse(rightWorldCoordinate);
+      var rightNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInRight].coordinate);
+      if(worldCoordinateR[1] != y){
+        wronglyAlignedPerCoordinate.push({"right": rightNeighbourCoordinate});
+      };
+    };
+    if(neighbourInLeft != null){
+      var leftWorldCoordinate = barcodesDict[neighbourInLeft].world_coordinate;
+      var worldCoordinateL = JSON.parse(leftWorldCoordinate);
+      var leftNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInLeft].coordinate);
+      if(worldCoordinateL[1] != y){
+        wronglyAlignedPerCoordinate.push({"left":leftNeighbourCoordinate});
+      };
+    };
+    if(neighbourInNorth != null){
+      var northWorldCoordinate = barcodesDict[neighbourInNorth].world_coordinate;
+      var worldCoordinateN = JSON.parse(northWorldCoordinate);
+      var nouthNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInNorth].coordinate);
+      if(worldCoordinateN[0] != x){
+        wronglyAlignedPerCoordinate.push({"north":nouthNeighbourCoordinate});
+      };
+    }
+    if(neighbourInSouth != null){
+      var southWorldCoordinate = barcodesDict[neighbourInSouth].world_coordinate;
+      var worldCoordinateS = JSON.parse(southWorldCoordinate);
+      var southNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInSouth].coordinate);
+      if(worldCoordinateS[0] != x){
+        wronglyAlignedPerCoordinate.push({"south":southNeighbourCoordinate});
+      };
+    };
+    if(wronglyAlignedPerCoordinate.length != 0){
+      wronglyAlignedCoordinates.push([coordinate,wronglyAlignedPerCoordinate]);
+    }
+  };
+  return wronglyAlignedCoordinates;
 };
