@@ -246,6 +246,7 @@ export const validateAlignmentOfCoordinates = (barcodesDict) => {
     var neighbourInLeft = getNeighbourInDirection(coordinateKey,3,barcodesDict);
     var neighbourInNorth = getNeighbourInDirection(coordinateKey,0,barcodesDict);
     var coordinate = coordinateKeyToTupleOfIntegers(barcodesDict[coordinateKey].coordinate);
+    var refWorldCoordinate = barcodesDict[coordinateKey].world_coordinate_reference_neighbour;
     var worldCoordinate = barcodesDict[coordinate].world_coordinate;
     var [x,y] = JSON.parse(worldCoordinate);
     var wronglyAlignedPerCoordinate = [];
@@ -254,7 +255,7 @@ export const validateAlignmentOfCoordinates = (barcodesDict) => {
       var worldCoordinateR = JSON.parse(rightWorldCoordinate);
       var rightNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInRight].coordinate);
       if(worldCoordinateR[1] != y){
-        wronglyAlignedPerCoordinate.push({"right": rightNeighbourCoordinate});
+        wronglyAlignedPerCoordinate.push({"east": rightNeighbourCoordinate});
       };
     };
     if(neighbourInLeft != null){
@@ -262,7 +263,7 @@ export const validateAlignmentOfCoordinates = (barcodesDict) => {
       var worldCoordinateL = JSON.parse(leftWorldCoordinate);
       var leftNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInLeft].coordinate);
       if(worldCoordinateL[1] != y){
-        wronglyAlignedPerCoordinate.push({"left":leftNeighbourCoordinate});
+        wronglyAlignedPerCoordinate.push({"west":leftNeighbourCoordinate});
       };
     };
     if(neighbourInNorth != null){
@@ -282,7 +283,13 @@ export const validateAlignmentOfCoordinates = (barcodesDict) => {
       };
     };
     if(wronglyAlignedPerCoordinate.length != 0){
-      wronglyAlignedCoordinates.push([coordinate,wronglyAlignedPerCoordinate]);
+      wronglyAlignedCoordinates.push(
+        {
+          "coordinate_wrongly_aligned":coordinate,
+          "world_coordinate_reference_neighbour":refWorldCoordinate,
+          "wrongly_aligned_with":wronglyAlignedPerCoordinate
+        }
+      );
     }
   };
   return wronglyAlignedCoordinates;

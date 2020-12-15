@@ -91,15 +91,19 @@ export const addWorldCoordinateToMap = normalizedMap => {
     barcodeKeys.forEach(barcodeKey => {
       currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
     });
-    const tileToWorldCoordinateMap = getTileIdToWorldCoordMapFunc(
+    const {tileIdToWorldCoordinateMap : tileIdToWorldCoordinateMap,
+      neighbourWithValidWorldCoordinate : neighbourWithValidWorldCoordinate} = getTileIdToWorldCoordMapFunc(
       currentFloorBarcodeDict
     );
+
     for (var barcode in currentFloorBarcodeDict) {
       var barcodeInfo = currentFloorBarcodeDict[barcode];
-      const worldCoordinate = tileToWorldCoordinateMap[barcode];
+      const worldCoordinate = tileIdToWorldCoordinateMap[barcode];
+      const wcReferenceNeighbour = neighbourWithValidWorldCoordinate[barcode];
       barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${
         worldCoordinate.y
       }]`;
+      barcodeInfo["world_coordinate_reference_neighbour"] = wcReferenceNeighbour;
       currentFloorBarcodeDict[barcode] = barcodeInfo;
     }
     newbarcodeDict = { ...newbarcodeDict, ...currentFloorBarcodeDict };

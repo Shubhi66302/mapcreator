@@ -299,37 +299,58 @@ describe("validateAlignmentOfCoordinates", () => {
         coordinate: "1,2",
         neighbours: [[1, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
         adjacency: [[500,500], [0,2], null, [2,2]],
-        world_coordinate : "[4,2]"
+        world_coordinate : "[4,2]",
+        world_coordinate_reference_neighbour:"0,0"
       },
       "1,1": {
         coordinate: "1,1",
         neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
         adjacency: [null, null, [500,500], null],
-        world_coordinate: "[3,8]"
+        world_coordinate: "[3,8]",
+        world_coordinate_reference_neighbour:"1,2"
       },
       "0,2": {
         coordinate: "0,2",
         neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
-        world_coordinate: "[1,2]"
+        world_coordinate: "[1,2]",
+        world_coordinate_reference_neighbour:"1,1"
       },
       "2,2": {
         coordinate: "2,2",
         neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
-        world_coordinate: "[3,1]"
+        world_coordinate: "[3,1]",
+        world_coordinate_reference_neighbour:"0,2"
       },
       "500,500": {
         coordinate: "500,500",
         neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
         adjacency: [[1,1], null, [1,2], null],
-        world_coordinate: "[4,9]"
+        world_coordinate: "[4,9]",
+        world_coordinate_reference_neighbour:"1,2"
       }
     };
     var neighbourBarcodes = validateAlignmentOfCoordinates(barcodesDict);
     expect(neighbourBarcodes).toMatchObject([
-      [[1, 2], [{"left": [2, 2]}]],
-      [[1, 1], [{"south": [500, 500]}]],
-      [[2, 2], [{"right": [1, 2]}]],
-      [[500, 500], [{"north": [1, 1]}]]
+      {
+        "coordinate_wrongly_aligned": [1, 2],
+        "world_coordinate_reference_neighbour": "0,0",
+        "wrongly_aligned_with": [{"west": [2, 2]}]
+      },
+      {
+        "coordinate_wrongly_aligned": [1, 1],
+        "world_coordinate_reference_neighbour": "1,2",
+        "wrongly_aligned_with": [{"south": [500, 500]}]
+      },
+      {
+        "coordinate_wrongly_aligned": [2, 2],
+        "world_coordinate_reference_neighbour": "0,2",
+        "wrongly_aligned_with": [{"east": [1, 2]}]
+      },
+      {
+        "coordinate_wrongly_aligned": [500, 500],
+        "world_coordinate_reference_neighbour": "1,2",
+        "wrongly_aligned_with": [{"north": [1, 1]}]
+      }
     ]);
   });
   test("Sanity should pass", () => {
@@ -343,29 +364,34 @@ describe("validateAlignmentOfCoordinates", () => {
         coordinate: "1,2",
         neighbours: [[1, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
         adjacency: [[500,500], [0,2], null, [2,2]],
-        world_coordinate : "[2,2]"
+        world_coordinate : "[2,2]",
+        world_coordinate_reference_neighbour:"0,0"
       },
       "1,1": {
         coordinate: "1,1",
         neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
         adjacency: [null, null, [500,500], null],
-        world_coordinate: "[2,8]"
+        world_coordinate: "[2,8]",
+        world_coordinate_reference_neighbour:"500,500"
       },
       "0,2": {
         coordinate: "0,2",
         neighbours: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
-        world_coordinate: "[1,2]"
+        world_coordinate: "[1,2]",
+        world_coordinate_reference_neighbour:"1,1"
       },
       "2,2": {
         coordinate: "2,2",
         neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
-        world_coordinate: "[3,2]"
+        world_coordinate: "[3,2]",
+        world_coordinate_reference_neighbour:"0,2"
       },
       "500,500": {
         coordinate: "500,500",
         neighbours: [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
         adjacency: [[1,1], null, [1,2], null],
-        world_coordinate: "[2,9]"
+        world_coordinate: "[2,9]",
+        world_coordinate_reference_neighbour:"1,2"
       }
     };
     var neighbourBarcodes = validateAlignmentOfCoordinates(barcodesDict);

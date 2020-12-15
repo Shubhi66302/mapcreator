@@ -22,6 +22,7 @@ var getNeighbourWithValidWorldCoord = (
         var nWorldCoordinate =
           coordinateToWorldCoorinateMapInitial[nBarcodeKey];
         return {
+          nbarcode:nBarcodeKey,
           direction: neighbourDir,
           worldcoordinate: nWorldCoordinate,
           distanceInfo: distanceInfo
@@ -73,9 +74,11 @@ export const getWorldCoordUsingNeighbour = (
 
 export const getTileIdToWorldCoordMapFunc = barcodes => {
   var tileIdToWorldCoordinateMapInitial = {};
+  var neighbourWithValidWorldCoordinate = {};
   const startBarcode = Object.keys(barcodes)[0];
   var worldCoordinate = { x: 0, y: 0 };
   tileIdToWorldCoordinateMapInitial[startBarcode] = worldCoordinate;
+  neighbourWithValidWorldCoordinate[startBarcode] = "0,0";
   const totalBarcodes = Object.keys(barcodes).length;
   var totalBarcodesWithDefinedWorldCoord = 1;
   while (totalBarcodesWithDefinedWorldCoord < totalBarcodes) {
@@ -99,17 +102,19 @@ export const getTileIdToWorldCoordMapFunc = barcodes => {
           totalBarcodesWithDefinedWorldCoord =
             totalBarcodesWithDefinedWorldCoord + 1;
           tileIdToWorldCoordinateMapInitial[barcode] = worldCoordinate;
+          neighbourWithValidWorldCoordinate[barcode] = neighbourWithWorldCoordinate.nbarcode;
         }
       }
     }
   }
-  return tileIdToWorldCoordinateMapInitial;
+  return {tileIdToWorldCoordinateMap : tileIdToWorldCoordinateMapInitial,
+    neighbourWithValidWorldCoordinate : neighbourWithValidWorldCoordinate};
 };
 
 export const getTileIdToWorldCoordMap = createSelector(
   getCurrentFloorBarcodes,
   barcodes => {
-    return getTileIdToWorldCoordMapFunc(barcodes);
+    return getTileIdToWorldCoordMapFunc(barcodes).tileIdToWorldCoordinateMap;
   }
 );
 
