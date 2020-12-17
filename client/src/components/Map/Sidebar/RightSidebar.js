@@ -13,6 +13,7 @@ import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode"
 import AddBarcode from "components/Map/Forms/AddBarcode";
 import AddFloor from "components/Map/Forms/AddFloor";
 import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
+import UpdateDirection from "components/Map/Forms/UpdateDirection";
 import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
 import AddElevator from "components/Map/Forms/AddElevator";
 import AddZone from "components/Map/Forms/AddZone";
@@ -61,6 +62,7 @@ class RightSidebar extends Component {
               AssignEmergencyBarcode,
               AddBarcode,
               RemoveBarcode,
+              UpdateDirection,
               AddPPSQueue,
               AddHighwayQueue,
               ModifyDistanceBwBarcodes,
