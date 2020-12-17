@@ -1,4 +1,4 @@
-const BASENAME = "https://mapcreator.labs.greyorange.com" || "";
+const BASENAME = process.env.REACT_APP_BASENAME || "";
 const getMap = mapId => fetch(`${BASENAME}/api/map/${mapId}`);
 const updateMap = (mapId, map) =>
   fetch(`${BASENAME}/api/map/${mapId}`, {
