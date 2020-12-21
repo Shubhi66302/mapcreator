@@ -21,7 +21,7 @@ const schema = {
   }
 };
 
-const AddPPS = ({ onSubmit, disabled }) => (
+const UpdateDirection = ({ onSubmit, disabled }) => (
   <BaseJsonForm
     disabled={disabled}
     schema={schema}
@@ -41,4 +41,4 @@ export default connect(
       dispatch(modifyMultipleNeighbours(formData));
     }
   })
-)(AddPPS);
+)(UpdateDirection);
