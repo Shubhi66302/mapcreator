@@ -181,7 +181,6 @@ const modifyNeighbours = (tileId, values) => dispatch => {
 const modifyMultipleNeighbours = (values) => (dispatch, getState) => {
   const {
     selection: { mapTiles },
-    currentFloor
   } = getState();
 
   dispatch({
