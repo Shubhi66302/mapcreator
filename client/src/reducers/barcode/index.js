@@ -77,19 +77,17 @@ export default (state = {}, action) => {
 
     case "MODIFY-MULTI-BARCODE-NEIGHBOURS": {
       let { mapTiles, values } = action.value;
-      console.log(action);
       let newState = {};
       Object.keys(mapTiles).forEach((tileId) => {
         var newBarcode = _.cloneDeep(state[tileId]);
         var matches = values.neighbours.match(/(\d),(\d),(\d)/);
-          newBarcode.neighbours[values.pick_direction] = [
-            parseInt(matches[1]),
-            parseInt(matches[2]),
-            parseInt(matches[3])
-          ];
+        newBarcode.neighbours[values.pick_direction] = [
+          parseInt(matches[1]),
+          parseInt(matches[2]),
+          parseInt(matches[3])
+        ];
         newState[tileId] = { ...state[tileId], neighbours: newBarcode.neighbours };
       });
-      console.log(newState);
       return Object.assign({}, state, newState);
     }
 

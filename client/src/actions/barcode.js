@@ -179,18 +179,18 @@ const modifyNeighbours = (tileId, values) => dispatch => {
 };
 
 const modifyMultipleNeighbours = (values) => (dispatch, getState) => {
-    const {
-      selection: { mapTiles },
-      currentFloor
-    } = getState();
+  const {
+    selection: { mapTiles },
+    currentFloor
+  } = getState();
 
-    dispatch({
-      type: "MODIFY-MULTI-BARCODE-NEIGHBOURS",
-      value: {
-        mapTiles,
-        values
-      }
-    });
+  dispatch({
+    type: "MODIFY-MULTI-BARCODE-NEIGHBOURS",
+    value: {
+      mapTiles,
+      values
+    }
+  });
   dispatch(clearTiles);
 };
 
