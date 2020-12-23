@@ -1,5 +1,6 @@
 import { number, object, string, array } from "yup";
 import _ from "lodash";
+import * as constants from "../constants";
 
 const directions = [0, 1, 2, 3];
 const directionNames = ["Top", "Right", "Bottom", "Left"];
@@ -88,14 +89,10 @@ export const yupCoordinateListSchema = array()
   )
   .min(1, "Atleast one coordinate required");
 
-
 //default schema to select MSU while creating MAP
-const msuDimensions = [null, 97.9, 131.8];
-const msuDimensionsNames = ["Select One", "97.9 * 97.9", "131.8 * 131.8"];
-export const msuDimensionAndNames = _.zip(msuDimensions, msuDimensionsNames);
-let barcodeDistance12x = [null, 1220];
-const barcodeDistance12xNames = ["Select One", "1220 mm"];
-export const barcodeDistance12xAndNames = _.zip(barcodeDistance12x, barcodeDistance12xNames);
-let barcodeDistance15x = [null, 1500, 1560];
-const barcodeDistance15xNames = ["Select One", "1500 mm", "1560 mm"];
-export const barcodeDistance15xAndNames = _.zip(barcodeDistance15x, barcodeDistance15xNames);
+
+export const msuDimensionAndNames = _.zip(constants.MSUDIMENSIONS, constants.MSUDIMENSIONSNAMES);
+
+export const barcodeDistance12xAndNames = _.zip(constants.BARCODEDISTANCE12X, constants.BARCODEDISTANCE12XNAMES);
+
+export const barcodeDistance15xAndNames = _.zip(constants.BARCODEDISTANCE15X, constants.BARCODEDISTANCE15XNAMES);

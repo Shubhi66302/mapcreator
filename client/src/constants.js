@@ -69,6 +69,13 @@ export const DIRECTIONALITY_SPRITES_MAP = {
 
 // Constants for map charger_location
 export var CHARGER_DISTANCE = 205;
+export const OPTION_DEFAULTS = {"key": "Select One", "value": null};
+export const MSUDIMENSIONS = [OPTION_DEFAULTS.value, 97.9, 131.8];
+export const MSUDIMENSIONSNAMES = [OPTION_DEFAULTS.key, "97.9 * 97.9", "131.8 * 131.8"];
+export const BARCODEDISTANCE12X = [OPTION_DEFAULTS.value, 1220];
+export const BARCODEDISTANCE12XNAMES = [OPTION_DEFAULTS.key, "1220 mm"];
+export const BARCODEDISTANCE15X = [OPTION_DEFAULTS.value, 1500, 1560];
+export const BARCODEDISTANCE15XNAMES = [OPTION_DEFAULTS.key, "1500 mm", "1560 mm"];
 
 // Viewport
 export var VIEWPORT_MAX_SIZE_PADDING_RATIO = 2;
