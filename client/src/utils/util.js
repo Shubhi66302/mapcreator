@@ -230,11 +230,14 @@ export var createFloorFromCoordinateData = ({
   row_end,
   column_start,
   column_end,
+  msu_dimensions,
+  barcode_distances,
   floor_id
 }) => {
   // be careful to satisfy json schema
   // iterate and fill up map_values
   var map_values = [];
+  var size = parseInt(barcode_distances / 2);
   for (var row = row_start; row <= row_end; row++) {
     for (var column = column_start; column <= column_end; column++) {
       var barcode = encode_barcode(row, column);
@@ -246,7 +249,8 @@ export var createFloorFromCoordinateData = ({
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         coordinate: `${column},${row}`,
         blocked: false,
-        size_info: [750, 750, 750, 750]
+        size_info: [size, size, size, size],
+        msu_dimensions: msu_dimensions
       };
       if (row == row_start) {
         unit.neighbours[0] = [0, 0, 0];
@@ -278,7 +282,9 @@ export var createMapFromCoordinateData = (
   row_start,
   row_end,
   column_start,
-  column_end
+  column_end,
+  msu_dimensions,
+  barcode_distances
 ) => {
   return {
     elevators: [],
@@ -297,6 +303,8 @@ export var createMapFromCoordinateData = (
         row_end,
         column_start,
         column_end,
+        msu_dimensions,
+        barcode_distances,
         floor_id: 1
       })
     ]

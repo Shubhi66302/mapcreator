@@ -76,7 +76,7 @@ describe("createFloorFromCoordinateData", () => {
 
 describe("createMapFromCoordinateData", () => {
   test("create map that passes json schema validation", () => {
-    var map = createMapFromCoordinateData(0, 10, 0, 10);
+    var map = createMapFromCoordinateData(0, 10, 0, 10, 97.9, 1220);
     var result = mapValidate(map);
     expect(map.zones).toEqual([
       {
