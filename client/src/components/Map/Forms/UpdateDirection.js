@@ -8,7 +8,8 @@ import { directionSchema } from "utils/forms";
 const neighboursSchema = {
   type: "string",
   title: "Neighbours",
-  default: "1,1,1"
+  default: "1,1,1",
+  pattern: "^[01], *[01], *[01]$"
 };
 
 const schema = {
