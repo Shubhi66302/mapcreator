@@ -178,6 +178,21 @@ const modifyNeighbours = (tileId, values) => dispatch => {
   dispatch(clearTiles);
 };
 
+const modifyMultipleNeighbours = (values) => (dispatch, getState) => {
+  const {
+    selection: { mapTiles },
+  } = getState();
+
+  dispatch({
+    type: "MODIFY-MULTI-BARCODE-NEIGHBOURS",
+    value: {
+      mapTiles,
+      values
+    }
+  });
+  dispatch(clearTiles);
+};
+
 const shiftBarcode = ({ tileId, direction, distance }) => dispatch => {
   try {
     return dispatch({
@@ -231,6 +246,7 @@ export {
   removeBarcodes,
   modifyDistanceBetweenBarcodes,
   modifyNeighbours,
+  modifyMultipleNeighbours,
   shiftBarcode,
   addTransitBarcode,
   locateBarcode
