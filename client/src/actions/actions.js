@@ -26,6 +26,7 @@ import {
   deleteMap as deleteMapApi,
   getSampleRacksJson
 } from "utils/api";
+import { implicitBarcodeToCoordinate } from "../utils/util";
 
 //import runSanityReducer from "reducers/reducer";
 
@@ -191,7 +192,7 @@ export const addPPSQueue = () => (dispatch, getState) => {
       entities: { pps }
     }
   } = state;
-
+  
   var ppscoordiantes = _.map(pps, "coordinate");
   var queuebarcodes = _.keys(mapTiles);
   var intersectionresult = ppscoordiantes.filter(
@@ -200,18 +201,25 @@ export const addPPSQueue = () => (dispatch, getState) => {
 
   if (intersectionresult.length == 1) {
     var pps_id = _.findKey(pps, { coordinate: intersectionresult[0] });
-
+    var current_queue_coordinates = _.map(pps[pps_id].queue_barcodes,(barcode) => implicitBarcodeToCoordinate(barcode));
     var queue_barcodes_array = getOrderedQueueCoordinates(mapTiles);
     var asBarcodes = queue_barcodes_array.map(asCoordinate =>
       coordinateKeyToBarcodeSelector(state, { tileId: asCoordinate })
     );
+    var asCurrentQueueBarcodes = current_queue_coordinates.map(asCoordinate =>
+      coordinateKeyToBarcodeSelector(state, { tileId: asCoordinate })
+    );
+    
+    
     dispatch({
       type: "ADD-QUEUE-BARCODES-TO-PPS",
       value: {
         tiles: asBarcodes,
         pps_id: pps_id,
         coordinates: queue_barcodes_array,
-        pps_coordinate: pps[pps_id].coordinate
+        pps_coordinate: pps[pps_id].coordinate,
+        current_queue_barcodes:asCurrentQueueBarcodes,
+        current_queue_coordinates : current_queue_coordinates
       }
     });
   }

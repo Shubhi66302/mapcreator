@@ -6,7 +6,7 @@ describe("ppsReducer", () => {
     const state = { "1": { pps_id: 1, coordinate: "1,1" } };
     const newState = ppsReducer(state, {
       type: "ADD-QUEUE-BARCODES-TO-PPS",
-      value: {pps_id:1,tiles: ["001.002", "001.001", "001.003"] }
+      value: {pps_id:1,tiles: ["001.002", "001.001", "001.003"] , current_queue_barcodes: []}
     });
     expect(newState).toMatchObject({
       "1": {

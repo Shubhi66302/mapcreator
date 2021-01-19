@@ -11,10 +11,10 @@ export const addPPSQueue = (state = {}, action) => {
   if (error) {
     throw new Error(`Cannot add queue: ${reason}`);
   }
+  var current_queue_coordinates = action.value.current_queue_coordinates;
   var newState = _.cloneDeep(state);
   for (var i = 0; i < tileIds.length; i++) {
     var tileId = tileIds[i];
-
     if (newState[tileId].neighbours) {
       var QueueDirection;
       if (i == tileIds.length - 1) {
@@ -23,8 +23,8 @@ export const addPPSQueue = (state = {}, action) => {
         QueueDirection = getDirection(tileId, tileIds[i + 1], newState);
       }
       var allNeighbours = getNeighbouringBarcodes(tileId, state);
-      var nonQueueNeighbours = _.filter(allNeighbours, function(tile) {
-        return tile != null && !_.includes(tileIds, tile.coordinate);
+      var nonQueueNeighbours = _.filter(allNeighbours, function (tile) {
+        return tile != null && !_.includes([...tileIds, ...current_queue_coordinates], tile.coordinate);
       });
       // disallow movement to all neighbours which are queue barcodes and not in queue direction.
       allNeighbours.forEach((nb, idx) => {
@@ -32,6 +32,9 @@ export const addPPSQueue = (state = {}, action) => {
           newState[tileId].neighbours[idx][2] = 0;
         }
       });
+      if (QueueDirection != 5) {
+        newState[tileId].neighbours[QueueDirection][2] = 1;
+      }
       if (i != 0) {
         if (QueueDirection != 5) {
           newState[tileId].neighbours[QueueDirection][1] = 1;
@@ -39,7 +42,9 @@ export const addPPSQueue = (state = {}, action) => {
           let Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
 
           for (let j = 0; j < Remaining.length; j++) {
-            newState[tileId].neighbours[Remaining[j]][2] = 0;
+            if (!_.includes(nonQueueNeighbours, Remaining[j])) {
+              newState[tileId].neighbours[Remaining[j]][2] = 0;
+            }
           }
 
           nonQueueNeighbours.forEach(neighbouringTileIdobject => {
@@ -74,7 +79,10 @@ export const addPPSQueue = (state = {}, action) => {
         // disable movement from starting barcode to other non-queue barcodes
         let Remaining = _.difference([0, 1, 2, 3], [QueueDirection]);
         for (let j = 0; j < Remaining.length; j++) {
-          newState[tileId].neighbours[Remaining[j]][2] = 0;
+          // in case of multi-entry pps queue , we need to disable neighbours which are not already a part of mult-entry queue 
+          if (!_.includes(nonQueueNeighbours, Remaining[j])) {
+            newState[tileId].neighbours[Remaining[j]][2] = 0;
+          }
         }
       }
     }

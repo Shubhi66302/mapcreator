@@ -25,7 +25,8 @@ describe("addPPSQueue", () => {
       value: {
         pps_id: "1",
         coordinates: ["1,2", "1,1", "1,0", "0,0", "0,1"],
-        pps_coordinate: "1,0"
+        pps_coordinate: "1,0",
+        current_queue_coordinates: []
       }
     };
     var newState = addPPSQueue(state, action);
@@ -96,7 +97,8 @@ describe("addPPSQueue", () => {
       value: {
         pps_id: "1",
         coordinates: ["1,1", "2,1", "2,0", "1,0", "0,0"],
-        pps_coordinate: "1,0"
+        pps_coordinate: "1,0",
+        current_queue_coordinates: []
       }
     };
     var newState = addPPSQueue(state, action);
@@ -157,7 +159,8 @@ describe("addPPSQueue", () => {
       value: {
         pps_id: "1",
         coordinates: ["1,1", "2,1", "2,0", "1,0", "0,0", "0,1", "0,2"],
-        pps_coordinate: "0,0"
+        pps_coordinate: "0,0",
+        current_queue_coordinates: []
       }
     };
     var newState = addPPSQueue(state, action);
@@ -219,7 +222,8 @@ describe("addPPSQueue", () => {
       value: {
         pps_id: "1",
         coordinates: ["2,2", "2,1", "2,0", "1,0"],
-        pps_coordinate: "2,0"
+        pps_coordinate: "2,0",
+        current_queue_coordinates: []
       }
     };
     var newState = addPPSQueue(state, action);
