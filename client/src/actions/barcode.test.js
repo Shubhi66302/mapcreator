@@ -55,6 +55,47 @@ describe("addNewBarcode", () => {
     expect(dispatchedActions[2]).toMatchObject(clearTiles);
   });
 });
+
+describe("addNewMultipleBarcode", () => {
+  const { addNewMultipleBarcode, createNewBarcode } = barcode;
+  test("should add barcode with multiple neighbour when adding to periphery", async () => {
+    const { clearTiles } = actions;
+    const initialState = makeState(singleFloorVanilla, 1);
+    const store = mockStore(initialState);
+    await store.dispatch(
+      addNewMultipleBarcode({
+        direction: 2,
+        tileId: "[\"2,2\"]"
+      })
+    );
+    const dispatchedActions = store.getActions();
+    expect(dispatchedActions).toHaveLength(3);
+    expect(dispatchedActions[0]).toMatchObject({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [
+        {
+          ...initialState.normalizedMap.entities.barcode["2,2"],
+          neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]]
+        },
+        createNewBarcode({
+          coordinate: "2,3",
+          neighbours: [[1, 1, 1], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+          barcode: "003.002",
+          size_info: Array(4).fill(DEFAULT_BOT_WITH_RACK_THRESHOLD)
+        })
+      ]
+    });
+    expect(dispatchedActions[1]).toMatchObject({
+      type: "ADD-ENTITIES-TO-FLOOR",
+      value: {
+        currentFloor: 1,
+        floorKey: "map_values",
+        ids: ["2,3"]
+      }
+    });
+    expect(dispatchedActions[2]).toMatchObject(clearTiles);
+  });
+});
 // TODO: test for removeBarcodes
 
 describe("addTransitBarcode", () => {

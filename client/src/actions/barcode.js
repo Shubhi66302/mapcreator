@@ -120,6 +120,56 @@ const addNewBarcode = formData => (dispatch, getState) => {
   return Promise.resolve();
 };
 
+const addNewMultipleBarcode = formData => (dispatch, getState) => {
+  const state = getState();
+  const { tileId, direction } = formData;
+  var tileIdArr = JSON.parse(tileId);
+  tileIdArr.map((val) => {
+    const nbTileId = getNeighbourTiles(val)[direction];
+    const nbBarcode = getBarcode(state, { tileId: val });
+    // new barcode will be connected to all neighbour barcodes that it has
+    const nbNeighboursTileIds = getNeighbourTiles(nbTileId);
+    const oldBarcodes = [];
+    const nbNeighbourStructure = [];
+    const nbSizeInfo = nbBarcode.size_info;
+    nbNeighboursTileIds.forEach((nbNbTileId, idx) => {
+      const nbNbBarcode = getBarcode(state, { tileId: nbNbTileId });
+      if (nbNbBarcode) {
+        oldBarcodes.push(
+          addNeighbourToBarcode(nbNbBarcode, (idx + 2) % 4, nbTileId)
+        );
+        nbNeighbourStructure.push([1, 1, 1]);
+      } else {
+        nbNeighbourStructure.push([0, 0, 0]);
+      }
+    });
+    const newBarcode = createNewBarcode({
+      coordinate: nbTileId,
+      neighbours: nbNeighbourStructure,
+      barcode: implicitCoordinateKeyToBarcode(nbTileId),
+      size_info: nbSizeInfo
+    });
+
+    // add to barcodes
+    dispatch({
+      type: "ADD-MULTIPLE-BARCODE",
+      value: [...oldBarcodes, newBarcode]
+    });
+    // add to floor
+    dispatch(
+      addEntitiesToFloor({
+        currentFloor: state.currentFloor,
+        floorKey: "map_values",
+        entities: [newBarcode],
+        idField: "coordinate"
+      })
+    );
+  });
+  // clear selection
+  dispatch(clearTiles);
+  return Promise.resolve();
+};
+
 const removeBarcodes = (dispatch, getState) => {
   const {
     selection: { mapTiles },
@@ -243,6 +293,7 @@ const locateBarcode = barcodeString => async (dispatch, getState) => {
 export {
   createNewBarcode,
   addNewBarcode,
+  addNewMultipleBarcode,
   removeBarcodes,
   modifyDistanceBetweenBarcodes,
   modifyNeighbours,

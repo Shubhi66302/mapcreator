@@ -192,6 +192,33 @@ export const getNeighbourBarcodeIncludingDisconnectedInDirection = (
   return neighbouringBarcodes[direction];
 };
 
+export var checkValidDirection = (emptyDirTileIdListObj) => {
+  var emptyDirTileIdDirObj = {};
+  var emptyDirTileIdList = [];
+  var directions = {};
+  Object.keys(emptyDirTileIdListObj).forEach(function(key, index) {
+    if(index == 0) {
+      emptyDirTileIdListObj[key].forEach(function(val) {
+        directions[val[0]] = val[0];
+        emptyDirTileIdDirObj[val[0]] = [];
+        emptyDirTileIdDirObj[val[0]].push(val);
+      });
+    } else {
+      emptyDirTileIdListObj[key].forEach(function(val) {
+        if(directions[val[0]] != undefined) {
+          emptyDirTileIdDirObj[val[0]].push(val);
+        }
+      });
+    }
+  });
+  Object.keys(directions).forEach(function(val) {
+    if(emptyDirTileIdDirObj[val].length == Object.keys(emptyDirTileIdListObj).length) {
+      emptyDirTileIdList.push(emptyDirTileIdDirObj[val]);
+    }
+  });
+  return emptyDirTileIdList.length > 0 ? emptyDirTileIdList : [];
+};
+
 export var isValidCoordinateKey = coordinateKey =>
   /^\d*,\d*$/.test(coordinateKey);
 

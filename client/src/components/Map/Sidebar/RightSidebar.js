@@ -11,6 +11,7 @@ import AssignZone from "components/Map/Forms/AssignZone";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
 import AddBarcode from "components/Map/Forms/AddBarcode";
+import AddMultiBarcode from "components/Map/Forms/AddMultiBarcode";
 import AddFloor from "components/Map/Forms/AddFloor";
 import RemoveBarcode from "components/Map/Forms/RemoveBarcode";
 import UpdateDirection from "components/Map/Forms/UpdateDirection";
@@ -61,6 +62,7 @@ class RightSidebar extends Component {
               AssignODSExcluded,
               AssignEmergencyBarcode,
               AddBarcode,
+              AddMultiBarcode,
               RemoveBarcode,
               UpdateDirection,
               AddPPSQueue,
