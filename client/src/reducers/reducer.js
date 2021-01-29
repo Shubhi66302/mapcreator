@@ -134,6 +134,14 @@ const queueModeReducer = (state = false, action) => {
   return state;
 };
 
+const multiQueueModeReducer = (state = false, action) => {
+  switch (action.type) {
+    case "TOGGLE-MULTI-QUEUE-MODE":
+      return !state;
+  }
+  return state;
+};
+
 const zoneViewModeReducer = (state = false, action) => {
   switch (action.type) {
     case "TOGGLE-ZONE-VIEW-MODE":
@@ -154,6 +162,7 @@ export const baseSelectionReducer = combineReducers({
   mapTiles: selectedMapTilesReducer,
   distanceTiles: selectedDistanceTilesReducer,
   queueMode: queueModeReducer,
+  multiQueueMode: multiQueueModeReducer,
   zoneViewMode: zoneViewModeReducer,
   directionViewMode: directionViewModeReducer,
   metaKey: (e = false) => e,
@@ -174,6 +183,7 @@ export const selectionReducer = (
     metaKey: false,
     shiftKey: false,
     queueMode: false,
+    multiQueueMode: false,
     zoneViewMode: false,
     directionViewMode: false
   },
@@ -189,6 +199,12 @@ export const selectionReducer = (
     case "SHIFT-KEY-DOWN":
       return { ...state, shiftKey: true };
     case "TOGGLE-QUEUE-MODE":
+      return {
+        ...state,
+        mapTiles: {},
+        distanceTiles: {}
+      };
+    case "TOGGLE-MULTI-QUEUE-MODE":
       return {
         ...state,
         mapTiles: {},

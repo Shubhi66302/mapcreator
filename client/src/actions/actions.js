@@ -218,6 +218,7 @@ export const addPPSQueue = () => (dispatch, getState) => {
         pps_id: pps_id,
         coordinates: queue_barcodes_array,
         pps_coordinate: pps[pps_id].coordinate,
+        multi_queue_mode: state.selection.multiQueueMode != undefined ? state.selection.multiQueueMode : false,
         current_queue_barcodes:asCurrentQueueBarcodes,
         current_queue_coordinates : current_queue_coordinates
       }

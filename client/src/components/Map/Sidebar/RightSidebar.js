@@ -24,6 +24,7 @@ import AddTransitBarcode from "components/Map/Forms/AddTransitBarcode";
 import LocateBarcode from "components/Map/Forms/LocateBarcode";
 import {
   QueueCheckbox,
+  MultiQueueCheckbox,
   ZoneViewCheckbox,
   DirectionViewCheckbox
 } from "./Checkboxes";
@@ -35,7 +36,7 @@ class RightSidebar extends Component {
   };
 
   render() {
-    const { queueMode, zoneViewMode, directionViewMode, dispatch } = this.props;
+    const { queueMode, multiQueueMode, zoneViewMode, directionViewMode, dispatch } = this.props;
     const { open } = this.state;
 
     return (
@@ -88,6 +89,14 @@ class RightSidebar extends Component {
               <QueueCheckbox
                 val={queueMode}
                 onChange={() => dispatch({ type: "TOGGLE-QUEUE-MODE" })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <MultiQueueCheckbox
+                val={multiQueueMode}
+                onChange={() => dispatch({ type: "TOGGLE-MULTI-QUEUE-MODE" })}
               />
             </div>
           </div>

@@ -183,6 +183,7 @@ describe("addPPSQueue", () => {
           tiles: ["002.002", "002.001", "001.001"],
           pps_id: "2",
           coordinates: ["2,2", "1,2", "1,1"],
+          multi_queue_mode: false,
           pps_coordinate: "1,1",
           current_queue_barcodes : [],
           current_queue_coordinates : []

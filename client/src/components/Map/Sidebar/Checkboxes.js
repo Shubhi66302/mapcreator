@@ -21,6 +21,25 @@ const QueueCheckbox = ({ val, onChange }) => (
   </label>
 );
 
+const MultiQueueCheckbox = ({ val, onChange }) => (
+  <label
+    style={{
+      textAlign: "-webkit-center",
+      margin: "3% 5% 3% 5%",
+      color: "orange"
+    }}
+  >
+    Multi Queue mode:
+    <input
+      style={{ marginLeft: "10px" }}
+      name="multiqueuemode"
+      type="checkbox"
+      checked={val}
+      onChange={onChange}
+    />
+  </label>
+);
+
 const ZoneViewCheckbox = ({ val, onChange }) => (
   <div>
     <ReactTooltip effect="solid" delayShow={100} />
@@ -76,4 +95,4 @@ const DirectionViewCheckbox = ({ val, onChange }) => (
   </div>
 );
 
-export { QueueCheckbox, ZoneViewCheckbox, DirectionViewCheckbox };
+export { MultiQueueCheckbox, QueueCheckbox, ZoneViewCheckbox, DirectionViewCheckbox };
