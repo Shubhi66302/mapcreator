@@ -1,4 +1,4 @@
-import { addEntitiesToFloor, clearTiles } from "./actions";
+import { addEntitiesToFloor, removeEntitiesToFloor, clearTiles } from "./actions";
 import {
   coordinateKeyToBarcodeSelector,
   getIdsForNewEntities
@@ -43,6 +43,34 @@ export const addOdsExcludeds = formData => (dispatch, getState) => {
       floorKey: "odsExcludeds",
       entities: odsExcluded,
       idField: "ods_excluded_id"
+    })
+  );
+  dispatch(clearTiles);
+  return Promise.resolve();
+};
+
+export const removeOdsExcludeds = () => (dispatch, getState) => {
+  const state = getState();
+  const { currentFloor } = state;
+  const odsExcluded = state.normalizedMap.entities.odsExcluded;
+  var odsExcludedToRemove = [];
+  const mapTiles = state.selection.mapTiles;
+  Object.keys(mapTiles).forEach((barcode) => {
+    Object.keys(odsExcluded).forEach((ods) => {
+      if(barcode === odsExcluded[ods].coordinate) {
+        odsExcludedToRemove.push(parseInt(ods));
+      }
+    });
+  });
+  dispatch({
+    type: "DELETE-MULTIPLE-ODS-EXCLUDED-BY-ID",
+    value: odsExcludedToRemove
+  });
+  dispatch(
+    removeEntitiesToFloor({
+      currentFloor,
+      floorKey: "odsExcludeds",
+      ids: odsExcludedToRemove || []
     })
   );
   dispatch(clearTiles);

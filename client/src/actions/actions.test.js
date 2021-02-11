@@ -100,6 +100,26 @@ describe("addEntitiesToFloor", () => {
   });
 });
 
+describe("removeEntitiesToFloor", () => {
+  const { removeEntitiesToFloor } = actions;
+  test("should have a list of ids for a list of entities", () => {
+    expect(
+      removeEntitiesToFloor({
+        currentFloor: 1,
+        floorKey: "ppses",
+        ids: [1,2]
+      })
+    ).toEqual({
+      type: "REMOVE-ENTITIES-FROM-FLOOR",
+      value: {
+        currentFloor: 1,
+        floorKey: "ppses",
+        ids: [1,2]
+      }
+    });
+  });
+});
+
 describe("toggleStorable", () => {
   const { toggleStorable, clearTiles } = actions;
   test("should dispatch assign storable action and also clear tiles action", async () => {

@@ -33,10 +33,25 @@ export const getMainTileSpriteData = createSelector(
   getTileBoundingBox,
   getTileSpriteScale,
   state => state.selection.zoneViewMode,
-  (barcode, boundingBox, { xScale, yScale }, zoneViewMode) => {
+  state => state.normalizedMap.entities.odsExcluded || {},
+  (barcode, boundingBox, { xScale, yScale }, zoneViewMode, odsExcluded) => {
     var tileSprite = constants.NORMAL;
     // don't show storables in zone view mode; otherwise their darker color messes with the tint
     if (barcode.store_status && !zoneViewMode) tileSprite = constants.STORABLE;
+    if (barcode.special && !zoneViewMode) tileSprite = constants.SPECIAL;
+    if (barcode.blocked && !zoneViewMode) tileSprite = constants.BLOCKED;
+    Object.keys(odsExcluded).forEach((ods) => {
+      if(barcode.coordinate === odsExcluded[ods].coordinate && !zoneViewMode && odsExcluded[ods].excluded) {
+        var odsDirection = odsExcluded[ods].ods_tuple.split("--")[1];
+        switch(odsDirection) {
+          case "0": tileSprite = constants.ODS_EXCLUDED_TOP; break; 
+          case "1": tileSprite = constants.ODS_EXCLUDED_RIGHT; break; 
+          case "2": tileSprite = constants.ODS_EXCLUDED_BOTTOM; break; 
+          case "3": tileSprite = constants.ODS_EXCLUDED_LEFT; break;
+          default: tileSprite = constants.ODS_EXCLUDED;
+        }
+      }
+    });
     return {
       name: tileSprite,
       x: boundingBox.left,

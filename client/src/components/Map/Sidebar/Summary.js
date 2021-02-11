@@ -9,6 +9,7 @@ import {
 } from "utils/selectors";
 import _ from "lodash";
 import CopyJSONsCard from "./CopyJSONsCard";
+import LegendsCard from "./LegendsCard";
 
 const Summary = ({
   chargerDict,
@@ -117,6 +118,7 @@ const Summary = ({
           })}
         </NonCollapsibleBaseCard>
       }
+      <LegendsCard />
       <CopyJSONsCard />
     </div>
   );

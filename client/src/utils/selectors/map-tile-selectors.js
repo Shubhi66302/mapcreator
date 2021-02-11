@@ -16,10 +16,25 @@ import {
 export const tileNameWithoutEntityDataSelector = createSelector(
   getBarcode,
   state => state.selection.zoneViewMode,
-  (barcode, zoneViewMode) => {
+  state => state.normalizedMap.entities.odsExcluded || {},
+  (barcode, zoneViewMode, odsExcluded) => {
     var tileSprite = constants.NORMAL;
     // don't show storables in zone view mode; otherwise their darker color messes with the tint
     if (barcode.store_status && !zoneViewMode) tileSprite = constants.STORABLE;
+    if (barcode.special && !zoneViewMode) tileSprite = constants.SPECIAL;
+    if (barcode.blocked && !zoneViewMode) tileSprite = constants.BLOCKED;
+    Object.keys(odsExcluded).forEach((ods) => {
+      if(barcode.coordinate === odsExcluded[ods].coordinate && !zoneViewMode && odsExcluded[ods].excluded) {
+        var odsDirection = odsExcluded[ods].ods_tuple.split("--")[1];
+        switch(odsDirection) {
+          case "0": tileSprite = constants.ODS_EXCLUDED_TOP; break; 
+          case "1": tileSprite = constants.ODS_EXCLUDED_RIGHT; break; 
+          case "2": tileSprite = constants.ODS_EXCLUDED_BOTTOM; break; 
+          case "3": tileSprite = constants.ODS_EXCLUDED_LEFT; break;
+          default: tileSprite = constants.ODS_EXCLUDED;
+        }
+      }
+    });
     return tileSprite;
   }
 );
@@ -62,6 +77,10 @@ export const getQueueMap = createSelector(
 
 const entitySelectorHelperData = {
   pps: ["pps", constants.PPS],
+  pps_top: ["pps_top", constants.PPS_TOP],
+  pps_right: ["pps_right", constants.PPS_RIGHT],
+  pps_bottom: ["pps_bottom", constants.PPS_BOTTOM],
+  pps_left: ["pps_left", constants.PPS_LEFT],
   charger: ["charger", constants.CHARGER],
   dockPoint: ["dockPoint", constants.DOCK_POINT],
   ods: ["ods", constants.ODS_EXCLUDED],
@@ -79,7 +98,7 @@ const entitySelectorHelperData = {
 };
 
 // all entities except elevator have one coordinate per entity
-const defaultGetCoordinatesFromEntity = e => [e.coordinate];
+const defaultGetCoordinatesFromEntity = e => [e];
 
 export const getParticularEntityMap = createCachedSelector(
   getParticularEntity,
@@ -93,7 +112,20 @@ export const getParticularEntityMap = createCachedSelector(
     ] = entitySelectorHelperData[entityName];
     var list = Object.entries(particularEntities).map(([, val]) => val);
     var coordinateKeys = _.flatten(list.map(e => getCoordinatesFromEntity(e)));
-    coordinateKeys.forEach(key => (ret[key] = entitySprite));
+    coordinateKeys.forEach(key => {
+      if(key.pick_direction != undefined) {
+        switch(key.pick_direction) {
+          case 0: ret[key.coordinate] = constants.PPS_TOP; break;
+          case 1: ret[key.coordinate] = constants.PPS_RIGHT; break;
+          case 2: ret[key.coordinate] = constants.PPS_BOTTOM; break;
+          case 3: ret[key.coordinate] = constants.PPS_LEFT; break;
+        }
+      } else if(key.coordinate != undefined) {
+        ret[key.coordinate] = entitySprite;
+      } else {
+        ret[key] = entitySprite;
+      }
+    });
     return ret;
   }
 )((state, { entityName }) => entityName);

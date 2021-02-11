@@ -154,6 +154,19 @@ export const addEntitiesToFloor = ({
   }
 });
 
+export const removeEntitiesToFloor = ({
+  currentFloor,
+  floorKey,
+  ids
+}) => ({
+  type: "REMOVE-ENTITIES-FROM-FLOOR",
+  value: {
+    currentFloor,
+    floorKey,
+    ids: ids
+  }
+});
+
 // If all selections are storable -> converted to non-storable
 // If all/some selections are non-storable -> converted to storable
 export const toggleStorable = () => (dispatch, getState) => {

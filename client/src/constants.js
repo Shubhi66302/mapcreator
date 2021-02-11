@@ -48,13 +48,23 @@ export var SPRITESHEET_PATH = `${
 // TODO: add distance tile logic also
 export var NORMAL = "normal.png";
 export var SELECTED = "selected.png";
+export var SPECIAL = "special.png";
+export var BLOCKED = "tblocked.png";
 export var STORABLE = "storable.png";
 export var PPS = "pps.png";
+export var PPS_TOP = "pps-0.png";
+export var PPS_RIGHT = "pps-1.png";
+export var PPS_BOTTOM = "pps-2.png";
+export var PPS_LEFT = "pps-3.png";
 export var CHARGER = "charger.png";
 export var CHARGER_ENTRY = "charger-entry.png";
 export var QUEUE = "queue.png";
 export var DOCK_POINT = "normal.png";
-export var ODS_EXCLUDED = "normal.png";
+export var ODS_EXCLUDED = "ods.png";
+export var ODS_EXCLUDED_TOP = "ods-0.png";
+export var ODS_EXCLUDED_RIGHT = "ods-1.png";
+export var ODS_EXCLUDED_BOTTOM = "ods-2.png";
+export var ODS_EXCLUDED_LEFT = "ods-3.png";
 export var EMERGENCY_EXIT = "emergency-exit.png";
 export var ELEVATOR = "elevator.png";
 export var BARCODE_DOT_SPRITE = "dot.png";
@@ -80,3 +90,46 @@ export const BARCODEDISTANCE15XNAMES = [OPTION_DEFAULTS.key, "1500 mm", "1560 mm
 // Viewport
 export var VIEWPORT_MAX_SIZE_PADDING_RATIO = 2;
 export var DEFAULT_BOT_WITH_RACK_THRESHOLD = 750;
+
+//Legends
+export const LEGENDSMAP = [
+  {
+    name: "Barcode",
+    representedBy: "B",
+    colorCode: "#dcdcdc"
+  },
+  {
+    name: "Storable",
+    representedBy: "S",
+    colorCode: "#bf9000"
+  },
+  {
+    name: "PPS Position",
+    representedBy: "P",
+    colorCode: "#6fa8dc"
+  },
+  {
+    name: "ODS Barcode",
+    representedBy: "O",
+    colorCode: "#fa1001"
+  },
+  {
+    name: "Special Barcode",
+    representedBy: "SB",
+    colorCode: "#741b47"
+  },
+  {
+    name: "Queue Barcode",
+    representedBy: "Q",
+    colorCode: "#2ce841"
+  },
+  {
+    name: "Blocked",
+    representedBy: "X",
+    colorCode: "#000"
+  },
+  {
+    name: "Movement Direction",
+    icon: "111.png"
+  }
+];

@@ -65,8 +65,8 @@ describe("getParticularEntityMap", () => {
     var state = makeState(twoFloors, 1);
     var entityMap = getParticularEntityMap(state, { entityName: "pps" });
     expect(entityMap).toMatchObject({
-      "1,0": constants.PPS,
-      "1,1": constants.PPS
+      "1,0": constants.PPS_TOP,
+      "1,1": constants.PPS_TOP
     });
   });
   test("should get correct entity map for fire emergency", () => {
@@ -149,8 +149,8 @@ describe("specialTileSpritesMapSelector", () => {
       "2,2": constants.CHARGER,
       "0,2": constants.EMERGENCY_EXIT,
       "0,1": constants.EMERGENCY_EXIT,
-      "1,0": constants.PPS,
-      "1,1": constants.PPS
+      "1,0": constants.PPS_TOP,
+      "1,1": constants.PPS_TOP
     });
   });
   test("should give correct map for 3x3 test map with some selected tiles", () => {
@@ -160,8 +160,8 @@ describe("specialTileSpritesMapSelector", () => {
       "2,2": constants.SELECTED,
       "0,2": constants.EMERGENCY_EXIT,
       "0,1": constants.EMERGENCY_EXIT,
-      "1,0": constants.PPS,
-      "1,1": constants.PPS,
+      "1,0": constants.PPS_TOP,
+      "1,1": constants.PPS_TOP,
       "2,0": constants.SELECTED
     });
   });
