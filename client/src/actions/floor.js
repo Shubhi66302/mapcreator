@@ -8,14 +8,18 @@ export const addFloor = ({
   row_start,
   row_end,
   column_start,
-  column_end
+  column_end,
+  msu_dimensions,
+  barcode_distances
 }) => (dispatch, getState) => {
   var floorData = createFloorFromCoordinateData({
     floor_id,
     row_start,
     row_end,
     column_start,
-    column_end
+    column_end,
+    msu_dimensions,
+    barcode_distances
   });
   var barcodes = getBarcodes(getState());
   // show error if a barcode already exists

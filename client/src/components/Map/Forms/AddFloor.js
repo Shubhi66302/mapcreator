@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { FormikedInput } from "components/InlineTextInput";
+import { FormikedInput, FormikedSelectInput } from "components/InlineTextInput";
 import ButtonForm from "./Util/ButtonForm";
 import { addFloor } from "actions/floor";
 import SweetAlertError from "components/SweetAlertError";
 import { withFormik, Field } from "formik";
 import { object, ref } from "yup";
-import { yupPosIntSchema, yupNonNegIntSchema } from "utils/forms";
+import { yupPosIntSchema, yupNonNegIntSchema, msuDimensionAndNames, yupMSUMappingSchema, barcodeDistance15xAndNames, barcodeDistance12xAndNames } from "utils/forms";
 
 // form html
 // not using BaseForm as more advanced validation needed
-const InnerForm = ({ handleSubmit, isSubmitting }) => {
+const InnerForm = ({ handleSubmit, isSubmitting, values }) => {
+  const checkDimensions = (msu_dimensions) => {
+    return msu_dimensions == 97.9 ? barcodeDistance12xAndNames : barcodeDistance15xAndNames;
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <Field
@@ -19,6 +23,26 @@ const InnerForm = ({ handleSubmit, isSubmitting }) => {
         label="Floor Id"
         type="text"
       />
+      <Field
+        name="msu_dimensions"
+        component={props => (
+          <FormikedSelectInput
+            {...props}
+            valuesAndLabels={msuDimensionAndNames}
+          />
+        )}
+        label="MSU dimension"
+      />
+      {values.msu_dimensions && <Field
+        name="barcode_distances"
+        component={props => (
+          <FormikedSelectInput
+            {...props}
+            valuesAndLabels={checkDimensions(values.msu_dimensions)}
+          />
+        )}
+        label="Barcode Distances"
+      />}
       <Field
         name="row_start"
         component={FormikedInput}
@@ -57,10 +81,14 @@ const Form = withFormik({
     row_start: "",
     row_end: "",
     column_start: "",
-    column_end: ""
+    column_end: "",
+    msu_dimensions: "",
+    barcode_distances: ""
   }),
   validationSchema: () => {
     return object().shape({
+      msu_dimensions: yupMSUMappingSchema,
+      barcode_distances: yupMSUMappingSchema,
       floor_id: yupPosIntSchema,
       row_start: yupNonNegIntSchema,
       row_end: yupNonNegIntSchema.min(ref("row_start")),
