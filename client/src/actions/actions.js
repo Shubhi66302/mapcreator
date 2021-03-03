@@ -6,7 +6,8 @@ import {
   getDragSelectedTiles,
   distanceTileSpritesSelector,
   coordinateKeyToBarcodeSelector,
-  getMapId
+  getMapId,
+  getTileIdToWorldCoordMapFunc
 } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 import {runCompleteDataSanity} from "../utils/data-sanity";
@@ -254,8 +255,9 @@ export const addHighwayQueue = () => (dispatch, getState) => {
 
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   // denormalize it
-  const mapObj = denormalizeMap(normalizedMap);
+  const mapObj = denormalizeMap(withWorldCoordinate);
   return updateMap(mapObj.id, mapObj.map)
     .then(handleErrors)
     .then(res => res.json())
@@ -266,7 +268,8 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
 
 export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   var { normalizedMap } = getState();
-  const exportedJson = exportMap(normalizedMap, singleFloor);
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  const exportedJson = exportMap(withWorldCoordinate, singleFloor);
   var zip = new JSZip();
   Object.keys(exportedJson).forEach(fileName => {
     zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
@@ -281,7 +284,8 @@ export const copyJSONToClipboard = (fieldName, singleFloor = false) => (
   getState
 ) => {
   var { normalizedMap } = getState();
-  const exportedJson = exportMap(normalizedMap, singleFloor);
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  const exportedJson = exportMap(withWorldCoordinate, singleFloor);
   if (exportedJson[fieldName]) {
     copy(JSON.stringify(exportedJson[fieldName]));
   } else dispatch(setErrorMessage("Invalid JSON file name"));
@@ -304,8 +308,9 @@ export const editSpecialBarcode = ({ coordinate, new_barcode }) => ({
 });
 
 export const createMapCopy = ({ name }) => (dispatch, getState) => {
-  const state = getState();
-  return createMap(denormalizeMap(state.normalizedMap).map, name)
+  const { normalizedMap } = getState();
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  return createMap(denormalizeMap(withWorldCoordinate).map, name)
     .then(handleErrors)
     .then(res => res.json())
     .then(id =>
@@ -325,6 +330,48 @@ export const deleteMap = (id, history) => dispatch => {
 export const runSanity = () => (dispatch, getState) => {
   //return runSanityReducer("NONE");
   const { normalizedMap } = getState();
-  var CompleteDataSanity = runCompleteDataSanity(normalizedMap);
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  var CompleteDataSanity = runCompleteDataSanity(withWorldCoordinate);
   return dispatch(setSuccessMessage(JSON.stringify(CompleteDataSanity, undefined, 4)));
+};
+
+const addWorldCoordinateAndDenormalize = normalizedMap => {
+  var withWorldCoordinate = addWorldCoordinateToMap(normalizedMap);
+  return withWorldCoordinate;
+};
+
+// adds the key "world_coordinate" to the normalized map.
+// This is a derived value, so by default is not stored. However
+// while exporting, it is required to be present explicitly
+export const addWorldCoordinateToMap = normalizedMap => {
+  var entities = normalizedMap.entities;
+  const oldBarcodeDict = entities.barcode;
+  const floorInfo = entities.floor;
+  var newbarcodeDict = {};
+  for (var floorId in floorInfo) {
+    var currentFloorBarcodeDict = {};
+    const barcodeKeys = floorInfo[floorId].map_values;
+    barcodeKeys.forEach(barcodeKey => {
+      currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
+    });
+    const {tileIdToWorldCoordinateMap : tileIdToWorldCoordinateMap,
+      neighbourWithValidWorldCoordinate : neighbourWithValidWorldCoordinate} = getTileIdToWorldCoordMapFunc(
+      currentFloorBarcodeDict
+    );
+
+    for (var barcode in currentFloorBarcodeDict) {
+      var barcodeInfo = currentFloorBarcodeDict[barcode];
+      const worldCoordinate = tileIdToWorldCoordinateMap[barcode];
+      const wcReferenceNeighbour = neighbourWithValidWorldCoordinate[barcode];
+      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${
+        worldCoordinate.y
+      }]`;
+      barcodeInfo["world_coordinate_reference_neighbour"] = wcReferenceNeighbour;
+      currentFloorBarcodeDict[barcode] = barcodeInfo;
+    }
+    newbarcodeDict = { ...newbarcodeDict, ...currentFloorBarcodeDict };
+  }
+  entities.barcode = newbarcodeDict;
+  normalizedMap.entities = entities;
+  return normalizedMap;
 };

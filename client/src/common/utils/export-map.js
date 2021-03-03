@@ -1,17 +1,10 @@
 // exports mapcreator's represention of map (map.json schema) to multiple output
 // json files (map.json, pps.json, fire_emergency.json etc.)
-import { getTileIdToWorldCoordMapFunc } from "utils/selectors";
 import { denormalizeMap } from "utils/normalizr";
 
-const addWorldCoordinateAndDenormalize = normalizedMap => {
-  var withWorldCoordinate = addWorldCoordinateToMap(normalizedMap);
-  // denormalize it
-  const mapObj = denormalizeMap(withWorldCoordinate);
-  return mapObj.map;
-};
-
-export default (normalizedMap, singleFloor = false) => {
-  var map = addWorldCoordinateAndDenormalize(normalizedMap);
+export default (withWorldCoordinate, singleFloor = false) => {
+  var mapObj = denormalizeMap(withWorldCoordinate);
+  var map = mapObj.map;
   var ret = {};
   ret.elevator = map.elevators;
   // Why is this like this?
@@ -75,40 +68,4 @@ export default (normalizedMap, singleFloor = false) => {
     ret[outKey] = convert(list);
   });
   return ret;
-};
-
-// adds the key "world_coordinate" to the normalized map.
-// This is a derived value, so by default is not stored. However
-// while exporting, it is required to be present explicitly
-export const addWorldCoordinateToMap = normalizedMap => {
-  var entities = normalizedMap.entities;
-  const oldBarcodeDict = entities.barcode;
-  const floorInfo = entities.floor;
-  var newbarcodeDict = {};
-  for (var floorId in floorInfo) {
-    var currentFloorBarcodeDict = {};
-    const barcodeKeys = floorInfo[floorId].map_values;
-    barcodeKeys.forEach(barcodeKey => {
-      currentFloorBarcodeDict[barcodeKey] = oldBarcodeDict[barcodeKey];
-    });
-    const {tileIdToWorldCoordinateMap : tileIdToWorldCoordinateMap,
-      neighbourWithValidWorldCoordinate : neighbourWithValidWorldCoordinate} = getTileIdToWorldCoordMapFunc(
-      currentFloorBarcodeDict
-    );
-
-    for (var barcode in currentFloorBarcodeDict) {
-      var barcodeInfo = currentFloorBarcodeDict[barcode];
-      const worldCoordinate = tileIdToWorldCoordinateMap[barcode];
-      const wcReferenceNeighbour = neighbourWithValidWorldCoordinate[barcode];
-      barcodeInfo["world_coordinate"] = `[${worldCoordinate.x},${
-        worldCoordinate.y
-      }]`;
-      barcodeInfo["world_coordinate_reference_neighbour"] = wcReferenceNeighbour;
-      currentFloorBarcodeDict[barcode] = barcodeInfo;
-    }
-    newbarcodeDict = { ...newbarcodeDict, ...currentFloorBarcodeDict };
-  }
-  entities.barcode = newbarcodeDict;
-  normalizedMap.entities = entities;
-  return normalizedMap;
 };
