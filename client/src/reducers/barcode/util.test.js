@@ -34,6 +34,7 @@ describe("getDirection", () => {
           tileId: "1,0",
           direction: 1,
           newBarcode: "003.003",
+          sector: 0,
           distance: 750
         })
       );
@@ -69,6 +70,7 @@ describe("getDirection", () => {
           tileId: "1,1",
           direction: 0,
           newBarcode: "003.003",
+          sector: 0,
           distance: 750
         })
       );

@@ -294,7 +294,7 @@ describe("getMapId", () => {
   const { getMapId } = selectors;
   test("should give map id", () => {
     var state = makeState(singleFloorVanilla, 1);
-    expect(getMapId(state)).toEqual(31);
+    expect(getMapId(state)).toEqual(3943);
   });
 });
 

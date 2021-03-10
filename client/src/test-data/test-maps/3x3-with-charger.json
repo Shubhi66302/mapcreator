@@ -145,6 +145,7 @@
             "store_status": 0,
             "zone": "defzone",
             "barcode": "003.003",
+            "sector": 0,
             "botid": "null",
             "neighbours": [
               [1, 1, 1],

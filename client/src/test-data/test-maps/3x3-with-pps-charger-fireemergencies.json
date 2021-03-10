@@ -168,8 +168,9 @@
     ],
     "elevators": [],
     "zones": [],
-    "sector": 0,
-    "queueDatas": []
+    "sectors": [],
+    "queueDatas": [],
+    "sectorBarcodeMapping": []
   },
   "createdAt": "2018-09-17T11:01:26.022Z",
   "updatedAt": "2018-09-17T11:01:26.022Z"

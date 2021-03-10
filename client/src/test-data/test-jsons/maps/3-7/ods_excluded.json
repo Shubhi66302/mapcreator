@@ -1,1 +1,7 @@
-{"ods_excluded_list":[]}
+{
+	"ods_excluded_list":[
+	  {"excluded":true,"ods_tuple":"010.010--0"},
+	  {"excluded":true,"ods_tuple":"010.010--1"},
+	  {"excluded":true,"ods_tuple":"010.011--1"}
+	]
+}

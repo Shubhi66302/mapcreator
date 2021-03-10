@@ -12,6 +12,7 @@ describe("normalizeMap", () => {
     expect(entities).not.toHaveProperty("elevator");
     expect(entities).not.toHaveProperty("zone");
     expect(entities).not.toHaveProperty("queueData");
+    expect(entities).not.toHaveProperty("sectorBarcodeMapping");
     expect(lenKeys(entities.barcode)).toBe(9);
     expect(lenKeys(entities.charger)).toBe(1);
     expect(lenKeys(entities.pps)).toBe(2);

@@ -1,13 +1,8 @@
 {
-  "id": 31,
+  "id": 3943,
   "name": "3x3-vanilla",
   "map": {
-    "elevators": [],
-    "zones": [{"zone_id": "defzone", "paused": false, "blocked": false}],
-    "sectors": [{"sector_id": 0, "paused": false, "blocked": false}],
-    "sectorBarcodeMapping": [],
-    "sectorMxUPreferences": {},
-    "queueDatas": [],
+    "id": 3943,
     "floors": [
       {
         "floor_id": 1,
@@ -118,8 +113,133 @@
           }
         ]
       }
-    ]
+    ],
+    "elevators":[],
+    "zones": [{"zone_id": "defzone", "paused": false, "blocked": false}],
+    "sectors": [{"sector_id": "0", "paused": false, "blocked": false}],
+    "sectorBarcodeMapping": [],
+    "sectorMxUPreferences": {},
+    "queueDatas": [],
+    "schemaPath": {}
   },
+  "floors": [
+      {
+        "floor_id": 1,
+        "chargers": [],
+        "ppses": [],
+        "odsExcludeds": [],
+        "dockPoints": [],
+        "fireEmergencies": [],
+        "map_values": [
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "000.000",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "0,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "000.001",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "1,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "000.002",
+            "botid": "null",
+            "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+            "coordinate": "2,0",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "001.000",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "0,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "001.001",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            "coordinate": "1,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "001.002",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+            "coordinate": "2,1",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "002.000",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
+            "coordinate": "0,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "002.001",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
+            "coordinate": "1,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          },
+          {
+            "store_status": 0,
+            "zone": "defzone",
+            "sector": 0,
+            "barcode": "002.002",
+            "botid": "null",
+            "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
+            "coordinate": "2,2",
+            "blocked": false,
+            "size_info": [750, 750, 750, 750]
+          }
+        ]
+      }
+    ],
   "createdAt": "2018-09-17T11:08:15.809Z",
-  "updatedAt": "2018-09-17T11:08:15.809Z"
+  "updatedAt": "2018-09-17T11:08:15.809Z",
+  "elevators":[],
+  "zones": [{"zone_id": "defzone", "paused": false, "blocked": false}],
+  "sectors": [{"sector_id": "0", "paused": false, "blocked": false}],
+  "sectorBarcodeMapping": [],
+  "sectorMxUPreferences": {},
+  "queueDatas": [],
+  "schemaPath": {}
 }

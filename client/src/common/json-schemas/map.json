@@ -20,36 +20,6 @@
       "type": "array",
       "items": { "$ref": "sector" }
     },
-    "sectorBarcodeMapping": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["sector_barcode_mapping_id", "coordinates", "data"],
-        "properties": {
-          "sector_barcode_mapping_id": { "type": "array" },
-          "coordinates": {
-            "type": "object",
-            "items": { "$ref": "definitions#/coordinateKey" }
-          },
-          "data": { "$ref": "sectorBarcodeMapping" }
-        }
-      }
-    },
-    "sectorMxUPreferences": {
-      "type": "object",
-      "items": {
-        "type": "object",
-        "required": ["sector_mxu_preferences", "coordinates", "data"],
-        "properties": {
-          "sector_mxu_preferences": { "type": "array" },
-          "coordinates": {
-            "type": "object",
-            "items": { "$ref": "definitions#/coordinateKey" }
-          },
-          "data": { "$ref": "sectorMxUPreferences" }
-        }
-      }
-    },
     "queueDatas": {
       "type": "array",
       "items": {

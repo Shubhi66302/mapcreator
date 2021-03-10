@@ -9,11 +9,6 @@ const elevator = new schema.Entity(
 );
 const zone = new schema.Entity("zone", {}, { idAttribute: "zone_id" });
 const sector = new schema.Entity("sector", {}, { idAttribute: "sector_id" });
-const sectorBarcodeMapping = new schema.Entity(
-  "sectorBarcodeMapping",
-  {},
-  { idAttribute: "sector_barcode_mapping_id" }
-);
 const sectorMxUPreferences = new schema.Entity(
   "sectorMxUPreferences",
   {},
@@ -60,7 +55,6 @@ const mapSchema = new schema.Entity("map", {
   elevators: [elevator],
   zones: [zone],
   sectors: [sector],
-  sectorBarcodeMapping: [sectorBarcodeMapping],
   sectorMxUPreferences: [sectorMxUPreferences],
   queueDatas: [queueData],
   floors: [floor]
