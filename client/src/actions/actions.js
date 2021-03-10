@@ -119,14 +119,46 @@ export const clearMap = {
   type: "CLEAR-MAP"
 };
 
-export const fetchMap = mapId => dispatch => {
-  dispatch(clearMap);
+export const setSectorsBarcodeMapping = (dispatch, getState) => {
+  const state = getState();
+  const normalizedMap = state.normalizedMap;
+  normalizedMap.entities.sectorBarcodeMapping = {};
+  Object.keys(normalizedMap.entities.barcode).forEach((key) => {
+    if(normalizedMap.entities.barcode[key].sector == undefined) normalizedMap.entities.barcode[key].sector = 0;
+    if(normalizedMap.entities.sectorBarcodeMapping[normalizedMap.entities.barcode[key].sector] == undefined) normalizedMap.entities.sectorBarcodeMapping[normalizedMap.entities.barcode[key].sector] = [];
+    normalizedMap.entities.sectorBarcodeMapping[normalizedMap.entities.barcode[key].sector].push("[" + key + "]");
+  });
+  delete normalizedMap.entities.sectorBarcodeMapping[undefined];
+  return normalizedMap.entities.sectorBarcodeMapping;
+};
+
+export const setSectorsMxUPreferences = (getState) => {
+  const state = getState();
+  const normalizedMap = state.normalizedMap;
+  var mapId = getMapId(state);
+  var sectorMxUPreferences = {};
   return getMap(mapId)
+    .then(handleErrors)
+    .then(res => res.json())
+    .then(map => {
+      sectorMxUPreferences = map.map.sectorMxUPreferences;
+      if(sectorMxUPreferences[undefined] != undefined) {
+        setSectorsMxUPreferences(getState);
+      }
+      normalizedMap.entities.sectorMxUPreferences = sectorMxUPreferences;
+      normalizedMap.entities.map.dummy.sectorMxUPreferences = sectorMxUPreferences;
+    });
+};
+
+export const fetchMap = mapId => (dispatch, getState) => {
+  dispatch(clearMap);
+  return getMap(parseInt(mapId))
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
     .then(() => dispatch(setViewportClamp))
     .then(() => dispatch(fitToViewport))
+    .then(() => setSectorsMxUPreferences(getState))
     .catch(error => console.warn(error)); // eslint-disable-line no-console
 };
 
@@ -258,21 +290,30 @@ export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   // denormalize it
   const mapObj = denormalizeMap(withWorldCoordinate);
+  mapObj.sectorMxUPreferences = withWorldCoordinate.entities.map.dummy.sectorMxUPreferences;
   return updateMap(mapObj.id, mapObj.map)
     .then(handleErrors)
     .then(res => res.json())
     .then(map => dispatch(newMap(map)))
     .then(onSuccess)
+    .then(() => setSectorsMxUPreferences(getState))
     .catch(onError);
 };
 
 export const downloadMap = (singleFloor = false) => (dispatch, getState) => {
   var { normalizedMap } = getState();
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  setSectorsBarcodeMapping(dispatch, getState);
   const exportedJson = exportMap(withWorldCoordinate, singleFloor);
   var zip = new JSZip();
   Object.keys(exportedJson).forEach(fileName => {
-    zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
+    if(fileName != "sector") {
+      if(fileName == "sectorBarcodeMapping") {
+        zip.file("sectors.json", JSON.stringify(exportedJson[fileName]));
+      } else {
+        zip.file(`${fileName}.json`, JSON.stringify(exportedJson[fileName]));
+      }
+    }
   });
   return zip.generateAsync({ type: "blob" }).then(content => {
     saveAs(content, Object.keys(normalizedMap.entities.mapObj)[0] + ".zip");
@@ -283,6 +324,7 @@ export const copyJSONToClipboard = (fieldName, singleFloor = false) => (
   dispatch,
   getState
 ) => {
+  setSectorsBarcodeMapping(dispatch, getState);
   var { normalizedMap } = getState();
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   const exportedJson = exportMap(withWorldCoordinate, singleFloor);

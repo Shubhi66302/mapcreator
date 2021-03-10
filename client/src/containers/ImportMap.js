@@ -74,6 +74,7 @@ class ImportMap extends Component {
             ["pps", "pps.json", "ppsJson"],
             ["charger", "charger.json", "chargerJson"],
             ["zone", "zone.json", "zoneJson"],
+            ["sector", "sector.json", "sectorJson"],
             ["ods_excluded", "ods_excluded.json", "odsExcludedJson"],
             ["fire_emergency", "fire_emergency.json", "fireEmergencyJson"],
             ["elevator", "elevator.json", "elevatorJson"]

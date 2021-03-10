@@ -54,6 +54,7 @@ export {
   getParticularEntity,
   specialTileSpritesMapSelector,
   getZoneToColorMap,
+  getSectorToColorMap,
   tileTintSelector
 } from "./map-tile-selectors";
 

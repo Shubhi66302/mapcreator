@@ -4,6 +4,9 @@
   "map": {
     "elevators": [],
     "zones": [{"zone_id": "defzone", "paused": false, "blocked": false}],
+    "sectors": [{"sector_id": 0, "paused": false, "blocked": false}],
+    "sectorBarcodeMapping": [],
+    "sectorMxUPreferences": {},
     "queueDatas": [],
     "floors": [
       {
@@ -17,6 +20,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "000.000",
             "botid": "null",
             "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
@@ -27,6 +31,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "000.001",
             "botid": "null",
             "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -37,6 +42,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "000.002",
             "botid": "null",
             "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
@@ -47,6 +53,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "001.000",
             "botid": "null",
             "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
@@ -57,6 +64,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "001.001",
             "botid": "null",
             "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -67,6 +75,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "001.002",
             "botid": "null",
             "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
@@ -77,6 +86,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "002.000",
             "botid": "null",
             "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
@@ -87,6 +97,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "002.001",
             "botid": "null",
             "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
@@ -97,6 +108,7 @@
           {
             "store_status": 0,
             "zone": "defzone",
+            "sector": 0,
             "barcode": "002.002",
             "botid": "null",
             "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],

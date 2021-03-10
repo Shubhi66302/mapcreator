@@ -11,7 +11,9 @@ var convertFileNames = map => ({
   mapJson: map.map,
   elevatorJson: map.elevator,
   zoneJson: map.zone,
+  sectorJson: map.sector,
   queueDataJson: map.queue_data,
+  sectorBarcodeMappingJson: map.sectorBarcodeMapping,
   chargerJson: map.charger,
   ppsJson: map.pps,
   fireEmergencyJson: map.fire_emergency,
@@ -59,7 +61,17 @@ describe("export good maps", () => {
       ],
       url: "/api/zonerec"
     });
+    expect(exported.sector).toMatchObject({
+      header: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      type: "POST",
+      data: [],
+      url: "/api/sectorrec"
+    });
     expect(exported.queue_data).toHaveLength(0);
+    expect(exported.sectorBarcodeMapping).toHaveLength(1);
     expect(exported.dock_point).toHaveLength(0);
 
     // import it again to verify
@@ -102,9 +114,11 @@ describe("export good maps", () => {
     expect(exported.charger).toHaveLength(24);
     expect(exported.pps).toHaveLength(36);
     expect(exported.zone.data).toHaveLength(17);
+    expect(exported.sector.data).toHaveLength(0);
     expect(exported.elevator).toHaveLength(0);
     expect(exported.fire_emergency).toHaveLength(0);
     expect(exported.queue_data).toHaveLength(0);
+    expect(exported.sectorBarcodeMapping).toHaveLength(1);
     expect(exported.dock_point).toHaveLength(0);
     expect(exported.ods_excluded).toMatchObject({ ods_excluded_list: [] });
     for (let ppsInstance of exported.pps) {

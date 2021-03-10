@@ -94,6 +94,7 @@ storiesOf("BarcodeViewPopup", module).add("default", () => (
     barcode={{
       store_status: 0,
       zone: "defzone",
+      sector: 0,
       barcode: "000.000",
       botid: "null",
       neighbours: [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],

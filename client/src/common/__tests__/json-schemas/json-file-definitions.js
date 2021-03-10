@@ -5,6 +5,7 @@ import pps from "common/json-schemas/pps.json";
 import odsExcluded from "common/json-schemas/odsExcluded.json";
 import queueData from "common/json-schemas/queueData.json";
 import zone from "common/json-schemas/zone.json";
+import sector from "common/json-schemas/sector.json";
 import elevator from "common/json-schemas/elevator.json";
 import dockPoint from "common/json-schemas/dockPoint.json";
 import fireEmergencySchema from "common/json-schemas/fireEmergency.json";
@@ -20,6 +21,7 @@ var ajv = new Ajv({
     odsExcluded,
     queueData,
     zone,
+    sector,
     elevator,
     dockPoint,
     fireEmergencySchema,
@@ -136,6 +138,24 @@ describe("zone.json", () => {
     test("continental", () => {
       var zoneJson = require("test-data/test-jsons/maps/continental/zone.json");
       var result = validate(zoneJson);
+      expect(validate.errors).toBeNull();
+      expect(result).toBe(true);
+    });
+  });
+});
+
+describe("sector.json", () => {
+  var validate = ajv.getSchema("sector_json");
+  describe("valid sector.json", () => {
+    test("3-7 sector.json", () => {
+      var sectorJson = require("test-data/test-jsons/maps/3-7/sector.json");
+      var result = validate(sectorJson);
+      expect(validate.errors).toBeNull();
+      expect(result).toBe(true);
+    });
+    test("continental", () => {
+      var sectorJson = require("test-data/test-jsons/maps/continental/sector.json");
+      var result = validate(sectorJson);
       expect(validate.errors).toBeNull();
       expect(result).toBe(true);
     });

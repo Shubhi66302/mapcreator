@@ -6,6 +6,7 @@ import {
   getCurrentFloorBarcodes,
   specialTileSpritesMapSelector,
   getZoneToColorMap,
+  getSectorToColorMap,
   getAllSpritesData
 } from "../utils/selectors";
 import { dummyState } from "reducers/util";
@@ -60,6 +61,29 @@ export var tileIdsUpdate = (container, state, prevState) => {
   return container;
 };
 
+// called whenever tileIds change.
+export var tileIdsSectorUpdate = (container, state, prevState) => {
+  var prevBarcodes = getCurrentFloorBarcodes(prevState);
+  var barcodes = getCurrentFloorBarcodes(state);
+  // add explicit check for zone view since we'll need to render when it changes...
+  if (
+    prevBarcodes === barcodes &&
+    prevState.selection.sectorViewMode === state.selection.sectorViewMode &&
+    prevState.selection.directionViewMode ===
+      state.selection.directionViewMode &&
+    getSectorToColorMap(prevState) === getSectorToColorMap(state)
+  )
+    return; // nothing to do.
+  // remove childrend and set spritemap to empty... actually pretty efficient.
+  container.removeChildren();
+  container.spriteMap = {};
+  for (var barcodeId in barcodes) {
+    const barcodeInfo = barcodes[barcodeId];
+    createOrUpdateAllSprites(container, state, barcodeInfo.coordinate);
+  }
+  return container;
+};
+
 // updater that does all the entity (pps, charger, queue etc.) and selected tile rendering.
 // almost always run...
 export var tileSpriteUpdate = (container, state, prevState) => {
@@ -93,6 +117,7 @@ export var tileSpriteUpdate = (container, state, prevState) => {
 var allUpdates = (container, state) => {
   var prevState = container.prevState || dummyState;
   tileIdsUpdate(container, state, prevState);
+  tileIdsSectorUpdate(container, state, prevState);
   tileSpriteUpdate(container, state, prevState);
   container.prevState = state;
 };

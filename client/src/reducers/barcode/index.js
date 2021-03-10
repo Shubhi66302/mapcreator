@@ -107,6 +107,15 @@ export default (state = {}, action) => {
       return { ...state, ...newState };
     }
 
+    case "ASSIGN-SECTOR": {
+      const { sector_id, mapTiles } = action.value;
+      let newState = {};
+      Object.keys(mapTiles).forEach(
+        key => (newState[key] = { ...state[key], sector: parseInt(sector_id) })
+      );
+      return { ...state, ...newState };
+    }
+
     case "ADD-ELEVATOR":
       return addElevator(state, action);
 

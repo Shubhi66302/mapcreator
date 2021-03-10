@@ -1,9 +1,10 @@
 require("dotenv").config({ path: ".env.test" });
 import zoneSchema from "common/json-schemas/zone.json";
+import sectorSchema from "common/json-schemas/sector.json";
 import definitionsSchema from "common/json-schemas/definitions.json";
 
 var Ajv = require("ajv");
-var ajv = new Ajv({ schemas: [zoneSchema, definitionsSchema] }); // options can be passed, e.g. {allErrors: true}
+var ajv = new Ajv({ schemas: [zoneSchema, sectorSchema, definitionsSchema] }); // options can be passed, e.g. {allErrors: true}
 var validate = ajv.getSchema("zone");
 
 describe("valid zone", () => {

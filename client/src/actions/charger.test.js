@@ -27,6 +27,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "0,0",
           barcode: "000.000",
           zone: "defzone",
+          sector: 0,
           store_status: 0,
           blocked: false
         },
@@ -37,6 +38,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "1,0",
           barcode: "000.001",
           zone: "defzone",
+          sector: 0,
           adjacency: [null, [0, 0], [12, 12], [2, 0]],
           store_status: 0,
           blocked: false
@@ -48,6 +50,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "1,1",
           barcode: "001.001",
           zone: "defzone",
+          sector: 0,
           adjacency: [[12, 12], [0, 1], [1, 2], [2, 1]],
           store_status: 0,
           blocked: false
@@ -59,6 +62,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "12,12",
           barcode: "012.012",
           zone: "defzone",
+          sector: 0,
           adjacency: [[1, 0], null, [1, 1], null],
           special: true,
           store_status: 0,
@@ -71,6 +75,7 @@ describe("createAllChargerBarcodes", () => {
           coordinate: "2,0",
           barcode: "000.002",
           zone: "defzone",
+          sector: 0,
           store_status: 0,
           blocked: false
         }
@@ -97,6 +102,7 @@ describe("createAllChargerBarcodes", () => {
       coordinate: "0,1",
       barcode: "001.000",
       zone: "defzone",
+      sector: 0,
       store_status: 0,
       blocked: false
     });

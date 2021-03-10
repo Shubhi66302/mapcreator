@@ -9,6 +9,9 @@ import currentFloorReducer from "./currentFloor";
 import mapReducer from "./map";
 import elevatorReducer from "./elevator";
 import zoneReducer from "./zone";
+import sectorReducer from "./sector";
+import sectorBarcodeMappingReducer from "./sectorBarcodeMapping";
+import sectorMxUPreferencesReducer from "./sectorMxUPreferences";
 import charger from "./charger";
 import { successMessageReducer, errorMessageReducer } from "./message";
 import _ from "lodash";
@@ -29,6 +32,9 @@ export const entitiesReducer = combineReducers({
   floor: floorReducer,
   map: mapReducer,
   zone: zoneReducer,
+  sector: sectorReducer,
+  sectorBarcodeMapping: sectorBarcodeMappingReducer,
+  sectorMxUPreferences: sectorMxUPreferencesReducer,
   // TODO: make reducers for these
   mapObj: m => m || null
 });
@@ -97,6 +103,7 @@ export const selectedDistanceTilesReducer = (state = {}, action) => {
   switch (action.type) {
     case "CLEAR-MAP":
     case "NEW-MAP":
+    case "UPDATE-SECTORS-MAPPING":
     case "CLEAR-SELECTED-TILES":
     case "CLICK-OUTSIDE-TILES":
     // should deselect if a map tile is clicked
@@ -113,6 +120,7 @@ export const selectedMapTilesReducer = (state = {}, action) => {
   switch (action.type) {
     case "CLEAR-MAP":
     case "NEW-MAP":
+    case "UPDATE-SECTORS-MAPPING":
     case "CLEAR-SELECTED-TILES":
     case "CLICK-OUTSIDE-TILES":
     // should deselect if a distance tile is selected
@@ -150,6 +158,14 @@ const zoneViewModeReducer = (state = false, action) => {
   return state;
 };
 
+const sectorViewModeReducer = (state = false, action) => {
+  switch (action.type) {
+    case "TOGGLE-SECTOR-VIEW-MODE":
+      return !state;
+  }
+  return state;
+};
+
 const directionViewModeReducer = (state = false, action) => {
   switch (action.type) {
     case "TOGGLE-DIRECTION-VIEW-MODE":
@@ -164,6 +180,7 @@ export const baseSelectionReducer = combineReducers({
   queueMode: queueModeReducer,
   multiQueueMode: multiQueueModeReducer,
   zoneViewMode: zoneViewModeReducer,
+  sectorViewMode: sectorViewModeReducer,
   directionViewMode: directionViewModeReducer,
   metaKey: (e = false) => e,
   shiftKey: (e = false) => e
@@ -185,6 +202,7 @@ export const selectionReducer = (
     queueMode: false,
     multiQueueMode: false,
     zoneViewMode: false,
+    sectorViewMode: false,
     directionViewMode: false
   },
   action

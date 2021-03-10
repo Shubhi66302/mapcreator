@@ -34,6 +34,7 @@ const createNewBarcode = ({ coordinate, neighbours, barcode, size_info }) => ({
   neighbours,
   blocked: false,
   zone: "defzone",
+  sector: 0,
   store_status: 0,
   size_info,
   botid: "null"

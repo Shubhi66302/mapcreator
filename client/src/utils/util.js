@@ -271,6 +271,7 @@ export var createFloorFromCoordinateData = ({
       var unit = {
         store_status: 0,
         zone: "defzone",
+        sector: 0,
         barcode,
         botid: "null",
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -323,6 +324,15 @@ export var createMapFromCoordinateData = (
         paused: false
       }
     ],
+    sectors: [
+      {
+        sector_id: 0,
+        blocked: false,
+        paused: false
+      }
+    ],
+    sectorBarcodeMapping: [{}],
+    sectorMxUPreferences: {},
     queueDatas: [],
     floors: [
       createFloorFromCoordinateData({
@@ -405,4 +415,17 @@ export const zoneToColorMapper = zones => {
     zoneToColoroMap[zoneIds[i]] = colors[i];
   }
   return zoneToColoroMap;
+};
+
+// uses random color library to generate random colors and maps each sector to color
+export const sectorToColorMapper = sectors => {
+  const colors = randomColor({
+    count: Object.keys(sectors).length
+  });
+  const sectorIds = Object.keys(sectors);
+  const sectorToColoroMap = {};
+  for (var i = 0; i < colors.length; i++) {
+    sectorToColoroMap[sectorIds[i]] = colors[i];
+  }
+  return sectorToColoroMap;
 };

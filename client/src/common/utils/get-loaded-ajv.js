@@ -7,6 +7,7 @@ import pps from "common/json-schemas/pps.json";
 import odsExcluded from "common/json-schemas/odsExcluded.json";
 import queueData from "common/json-schemas/queueData.json";
 import zone from "common/json-schemas/zone.json";
+import sector from "common/json-schemas/sector.json";
 import elevator from "common/json-schemas/elevator.json";
 import dockPoint from "common/json-schemas/dockPoint.json";
 import fireEmergencySchema from "common/json-schemas/fireEmergency.json";
@@ -26,6 +27,7 @@ export default () =>
       odsExcluded,
       queueData,
       zone,
+      sector,
       elevator,
       dockPoint,
       fireEmergencySchema,

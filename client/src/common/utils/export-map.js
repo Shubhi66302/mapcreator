@@ -17,7 +17,18 @@ export default (withWorldCoordinate, singleFloor = false) => {
     data: map.zones.map(zone => ({ zonerec: zone })),
     url: "/api/zonerec"
   };
+  ret.sector = {
+    header: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    type: "POST",
+    data: map.sectors ? map.sectors.map(sector => ({ sectorrec: sector })) : [],
+    url: "/api/sectorrec"
+  };
   ret.queue_data = map.queueDatas.map(({ data }) => data);
+  ret.sectorBarcodeMapping = [withWorldCoordinate.entities.sectorBarcodeMapping];
+  ret.sectorMxUPreferences = withWorldCoordinate.entities.sectorMxUPreferences;
   // convert coordinates to strings first!
   ret.map = map.floors.map(({ floor_id, map_values }) => ({
     floor_id,

@@ -85,6 +85,13 @@ describe("createMapFromCoordinateData", () => {
         paused: false
       }
     ]);
+    expect(map.sectors).toEqual([
+      {
+        sector_id: 0,
+        blocked: false,
+        paused: false
+      }
+    ]);
     expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
   });
@@ -229,6 +236,7 @@ describe("getNeighbouringBarcodes", () => {
       {
         store_status: 0,
         zone: "defzone",
+        sector: 0,
         barcode: "001.000",
         botid: "null",
         neighbours: [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
@@ -241,6 +249,7 @@ describe("getNeighbouringBarcodes", () => {
       {
         store_status: 0,
         zone: "defzone",
+        sector: 0,
         barcode: "002.001",
         botid: "null",
         neighbours: [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],

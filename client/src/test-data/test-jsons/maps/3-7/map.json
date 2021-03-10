@@ -4,6 +4,7 @@
       {
         "barcode": "010.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -14,6 +15,7 @@
       {
         "barcode": "010.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -24,6 +26,7 @@
       {
         "barcode": "010.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -34,6 +37,7 @@
       {
         "barcode": "010.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -114,6 +118,7 @@
       {
         "barcode": "011.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -124,6 +129,7 @@
       {
         "barcode": "011.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -134,6 +140,7 @@
       {
         "barcode": "011.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -144,6 +151,7 @@
       {
         "barcode": "011.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -224,6 +232,7 @@
       {
         "barcode": "012.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -234,6 +243,7 @@
       {
         "barcode": "012.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -244,6 +254,7 @@
       {
         "barcode": "012.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 0], [1, 1, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -254,6 +265,7 @@
       {
         "barcode": "012.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 0], [1, 1, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -334,6 +346,7 @@
       {
         "barcode": "013.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -344,6 +357,7 @@
       {
         "barcode": "013.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -354,6 +368,7 @@
       {
         "barcode": "013.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 0], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -364,6 +379,7 @@
       {
         "barcode": "013.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 0], [1, 1, 0], [1, 1, 1], [1, 1, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -444,6 +460,7 @@
       {
         "barcode": "014.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -454,6 +471,7 @@
       {
         "barcode": "014.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -464,6 +482,7 @@
       {
         "barcode": "014.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -474,6 +493,7 @@
       {
         "barcode": "014.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -554,6 +574,7 @@
       {
         "barcode": "015.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -564,6 +585,7 @@
       {
         "barcode": "015.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -574,6 +596,7 @@
       {
         "barcode": "015.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -584,6 +607,7 @@
       {
         "barcode": "015.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -594,6 +618,7 @@
       {
         "barcode": "015.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -604,6 +629,7 @@
       {
         "barcode": "015.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -614,6 +640,7 @@
       {
         "barcode": "015.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -624,6 +651,7 @@
       {
         "barcode": "015.017",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -634,6 +662,7 @@
       {
         "barcode": "015.018",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -644,6 +673,7 @@
       {
         "barcode": "015.019",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -654,6 +684,7 @@
       {
         "barcode": "015.020",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -664,6 +695,7 @@
       {
         "barcode": "016.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -674,6 +706,7 @@
       {
         "adjacency": [[11, 15], [10, 16], [11, 17], [31, 31]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         "barcode": "016.011",
         "botid": "null",
@@ -685,6 +718,7 @@
       {
         "adjacency": [[12, 15], [31, 31], [12, 17], [13, 16]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 0, 0], [1, 1, 0], [1, 0, 0], [1, 0, 0]],
         "barcode": "016.012",
         "botid": "null",
@@ -696,6 +730,7 @@
       {
         "barcode": "016.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -706,6 +741,7 @@
       {
         "barcode": "016.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -716,6 +752,7 @@
       {
         "barcode": "016.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -726,6 +763,7 @@
       {
         "barcode": "016.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -776,6 +814,7 @@
       {
         "barcode": "017.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -786,6 +825,7 @@
       {
         "barcode": "017.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -796,6 +836,7 @@
       {
         "barcode": "017.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 0, 0], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -806,6 +847,7 @@
       {
         "barcode": "017.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -816,6 +858,7 @@
       {
         "barcode": "017.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -826,6 +869,7 @@
       {
         "barcode": "017.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -836,6 +880,7 @@
       {
         "barcode": "017.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -886,6 +931,7 @@
       {
         "barcode": "018.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -896,6 +942,7 @@
       {
         "barcode": "018.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 0, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -906,6 +953,7 @@
       {
         "adjacency": [[12, 17], [11, 18], [12, 19], [30, 30]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 0]],
         "barcode": "018.012",
         "botid": "null",
@@ -917,6 +965,7 @@
       {
         "adjacency": [[13, 17], [30, 30], [13, 19], [14, 18]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "018.013",
         "botid": "null",
@@ -928,6 +977,7 @@
       {
         "barcode": "018.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -938,6 +988,7 @@
       {
         "barcode": "018.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -948,6 +999,7 @@
       {
         "barcode": "018.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -998,6 +1050,7 @@
       {
         "barcode": "019.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1008,6 +1061,7 @@
       {
         "barcode": "019.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1018,6 +1072,7 @@
       {
         "barcode": "019.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1028,6 +1083,7 @@
       {
         "barcode": "019.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1038,6 +1094,7 @@
       {
         "barcode": "019.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1048,6 +1105,7 @@
       {
         "barcode": "019.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1058,6 +1116,7 @@
       {
         "barcode": "019.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1108,6 +1167,7 @@
       {
         "barcode": "020.010",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1118,6 +1178,7 @@
       {
         "barcode": "020.011",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1128,6 +1189,7 @@
       {
         "barcode": "020.012",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1138,6 +1200,7 @@
       {
         "barcode": "020.013",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1148,6 +1211,7 @@
       {
         "barcode": "020.014",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1158,6 +1222,7 @@
       {
         "barcode": "020.015",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1168,6 +1233,7 @@
       {
         "barcode": "020.016",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1178,6 +1244,7 @@
       {
         "barcode": "020.017",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1188,6 +1255,7 @@
       {
         "barcode": "020.018",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1198,6 +1266,7 @@
       {
         "barcode": "020.019",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1208,6 +1277,7 @@
       {
         "barcode": "020.020",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
         "size_info": [750, 750, 750, 750],
         "botid": "null",
@@ -1218,6 +1288,7 @@
       {
         "adjacency": [null, [12, 18], null, [13, 18]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
         "barcode": "030.030",
         "botid": "null",
@@ -1230,6 +1301,7 @@
       {
         "adjacency": [null, [11, 16], null, [12, 16]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
         "barcode": "031.031",
         "botid": "null",
@@ -1242,6 +1314,7 @@
       {
         "barcode": "013.021",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
@@ -1252,6 +1325,7 @@
       {
         "barcode": "013.023",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
@@ -1262,6 +1336,7 @@
       {
         "barcode": "013.022",
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "size_info": [750, 750, 750, 750],
         "botid": null,
@@ -1277,6 +1352,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.040",
         "botid": "null",
@@ -1287,6 +1363,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.041",
         "botid": "null",
@@ -1297,6 +1374,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.042",
         "botid": "null",
@@ -1307,6 +1385,7 @@
       {
         "adjacency": [null, [42, 40], [60, 60], [44, 40]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 0], [1, 1, 1]],
         "size_info": [750, 750, 885, 750],
         "botid": "null",
@@ -1318,6 +1397,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.044",
         "botid": "null",
@@ -1328,6 +1408,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.045",
         "botid": "null",
@@ -1338,6 +1419,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.046",
         "botid": "null",
@@ -1348,6 +1430,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.047",
         "botid": "null",
@@ -1358,6 +1441,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.048",
         "botid": "null",
@@ -1368,6 +1452,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "040.049",
         "botid": "null",
@@ -1378,6 +1463,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "040.050",
         "botid": "null",
@@ -1388,6 +1474,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.040",
         "botid": "null",
@@ -1398,6 +1485,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.041",
         "botid": "null",
@@ -1408,6 +1496,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 0, 0]],
         "barcode": "041.042",
         "botid": "null",
@@ -1418,6 +1507,7 @@
       {
         "adjacency": [[60, 60], [42, 41], [43, 42], [44, 41]],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0]],
         "size_info": [205, 750, 750, 750],
         "botid": "null",
@@ -1429,6 +1519,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.044",
         "botid": "null",
@@ -1439,6 +1530,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.045",
         "botid": "null",
@@ -1449,6 +1541,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.046",
         "botid": "null",
@@ -1459,6 +1552,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.047",
         "botid": "null",
@@ -1469,6 +1563,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.048",
         "botid": "null",
@@ -1479,6 +1574,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "041.049",
         "botid": "null",
@@ -1489,6 +1585,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "041.050",
         "botid": "null",
@@ -1499,6 +1596,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.040",
         "botid": "null",
@@ -1509,6 +1607,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "012.011",
         "botid": "null",
@@ -1519,6 +1618,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.042",
         "botid": "null",
@@ -1529,6 +1629,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.043",
         "botid": "null",
@@ -1539,6 +1640,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.044",
         "botid": "null",
@@ -1549,6 +1651,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.045",
         "botid": "null",
@@ -1559,6 +1662,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.046",
         "botid": "null",
@@ -1569,6 +1673,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.047",
         "botid": "null",
@@ -1579,6 +1684,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.048",
         "botid": "null",
@@ -1589,6 +1695,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "042.049",
         "botid": "null",
@@ -1599,6 +1706,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "042.050",
         "botid": "null",
@@ -1609,6 +1717,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.040",
         "botid": "null",
@@ -1619,6 +1728,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.041",
         "botid": "null",
@@ -1629,6 +1739,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.042",
         "botid": "null",
@@ -1639,6 +1750,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.043",
         "botid": "null",
@@ -1649,6 +1761,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.044",
         "botid": "null",
@@ -1659,6 +1772,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.045",
         "botid": "null",
@@ -1669,6 +1783,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.046",
         "botid": "null",
@@ -1679,6 +1794,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.047",
         "botid": "null",
@@ -1689,6 +1805,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.048",
         "botid": "null",
@@ -1699,6 +1816,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "043.049",
         "botid": "null",
@@ -1709,6 +1827,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "043.050",
         "botid": "null",
@@ -1719,6 +1838,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.040",
         "botid": "null",
@@ -1729,6 +1849,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.041",
         "botid": "null",
@@ -1739,6 +1860,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.042",
         "botid": "null",
@@ -1749,6 +1871,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.043",
         "botid": "null",
@@ -1759,6 +1882,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.044",
         "botid": "null",
@@ -1769,6 +1893,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.045",
         "botid": "null",
@@ -1779,6 +1904,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.046",
         "botid": "null",
@@ -1789,6 +1915,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.047",
         "botid": "null",
@@ -1799,6 +1926,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.048",
         "botid": "null",
@@ -1809,6 +1937,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "044.049",
         "botid": "null",
@@ -1819,6 +1948,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "044.050",
         "botid": "null",
@@ -1829,6 +1959,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.040",
         "botid": "null",
@@ -1839,6 +1970,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.041",
         "botid": "null",
@@ -1849,6 +1981,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.042",
         "botid": "null",
@@ -1859,6 +1992,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.043",
         "botid": "null",
@@ -1869,6 +2003,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.044",
         "botid": "null",
@@ -1879,6 +2014,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.045",
         "botid": "null",
@@ -1889,6 +2025,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.046",
         "botid": "null",
@@ -1899,6 +2036,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.047",
         "botid": "null",
@@ -1909,6 +2047,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.048",
         "botid": "null",
@@ -1919,6 +2058,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "045.049",
         "botid": "null",
@@ -1929,6 +2069,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "045.050",
         "botid": "null",
@@ -1939,6 +2080,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.040",
         "botid": "null",
@@ -1949,6 +2091,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.041",
         "botid": "null",
@@ -1959,6 +2102,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.042",
         "botid": "null",
@@ -1969,6 +2113,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.043",
         "botid": "null",
@@ -1979,6 +2124,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.044",
         "botid": "null",
@@ -1989,6 +2135,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.045",
         "botid": "null",
@@ -1999,6 +2146,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.046",
         "botid": "null",
@@ -2009,6 +2157,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.047",
         "botid": "null",
@@ -2019,6 +2168,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.048",
         "botid": "null",
@@ -2029,6 +2179,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "046.049",
         "botid": "null",
@@ -2039,6 +2190,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "046.050",
         "botid": "null",
@@ -2049,6 +2201,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.040",
         "botid": "null",
@@ -2059,6 +2212,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.041",
         "botid": "null",
@@ -2069,6 +2223,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.042",
         "botid": "null",
@@ -2079,6 +2234,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.043",
         "botid": "null",
@@ -2089,6 +2245,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.044",
         "botid": "null",
@@ -2099,6 +2256,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.045",
         "botid": "null",
@@ -2109,6 +2267,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.046",
         "botid": "null",
@@ -2119,6 +2278,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.047",
         "botid": "null",
@@ -2129,6 +2289,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "047.048",
         "botid": "null",
@@ -2139,6 +2300,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "016.019",
         "botid": "null",
@@ -2149,6 +2311,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "047.050",
         "botid": "null",
@@ -2159,6 +2322,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.040",
         "botid": "null",
@@ -2169,6 +2333,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.041",
         "botid": "null",
@@ -2179,6 +2344,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.042",
         "botid": "null",
@@ -2189,6 +2355,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.043",
         "botid": "null",
@@ -2199,6 +2366,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.044",
         "botid": "null",
@@ -2209,6 +2377,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.045",
         "botid": "null",
@@ -2219,6 +2388,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.046",
         "botid": "null",
@@ -2229,6 +2399,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.047",
         "botid": "null",
@@ -2239,6 +2410,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.048",
         "botid": "null",
@@ -2249,6 +2421,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "048.049",
         "botid": "null",
@@ -2259,6 +2432,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "048.050",
         "botid": "null",
@@ -2269,6 +2443,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.040",
         "botid": "null",
@@ -2279,6 +2454,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.041",
         "botid": "null",
@@ -2289,6 +2465,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.042",
         "botid": "null",
@@ -2299,6 +2476,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.043",
         "botid": "null",
@@ -2309,6 +2487,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.044",
         "botid": "null",
@@ -2319,6 +2498,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.045",
         "botid": "null",
@@ -2329,6 +2509,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.046",
         "botid": "null",
@@ -2339,6 +2520,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.047",
         "botid": "null",
@@ -2349,6 +2531,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.048",
         "botid": "null",
@@ -2359,6 +2542,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         "barcode": "049.049",
         "botid": "null",
@@ -2369,6 +2553,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
         "barcode": "049.050",
         "botid": "null",
@@ -2379,6 +2564,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.040",
         "botid": "null",
@@ -2389,6 +2575,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.041",
         "botid": "null",
@@ -2399,6 +2586,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.042",
         "botid": "null",
@@ -2409,6 +2597,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.043",
         "botid": "null",
@@ -2419,6 +2608,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.044",
         "botid": "null",
@@ -2429,6 +2619,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.045",
         "botid": "null",
@@ -2439,6 +2630,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.046",
         "botid": "null",
@@ -2449,6 +2641,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.047",
         "botid": "null",
@@ -2459,6 +2652,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.048",
         "botid": "null",
@@ -2469,6 +2663,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
         "barcode": "050.049",
         "botid": "null",
@@ -2479,6 +2674,7 @@
       {
         "size_info": [750, 750, 750, 750],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 1], [1, 1, 1], [0, 0, 0], [0, 0, 0]],
         "barcode": "050.050",
         "botid": "null",
@@ -2489,6 +2685,7 @@
       {
         "adjacency": [[43, 40], null, [43, 41], null],
         "zone": "defzone",
+        "sector": 0,
         "neighbours": [[1, 1, 0], [0, 0, 0], [1, 1, 0], [0, 0, 0]],
         "size_info": [205, 1000, 205, 1000],
         "botid": "null",

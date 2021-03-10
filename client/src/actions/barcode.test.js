@@ -131,6 +131,7 @@ describe("addTransitBarcode", () => {
           coordinate: "999,1",
           neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
           barcode: "003.003",
+          sector: 0,
           size_info: [750, 375, 750, 375],
           adjacency: [null, [0, 1], null, [1, 1]]
         })
@@ -165,20 +166,20 @@ describe("addTransitBarcode", () => {
       value: [
         {
           ...initialState.normalizedMap.entities.barcode["1,0"],
-          adjacency: [null, [0, 0], [999, 1], [2, 0]],
+          sector: 0,
           size_info: [750, 750, 375, 750]
         },
         {
           ...initialState.normalizedMap.entities.barcode["1,1"],
           adjacency: [[999, 1], [0, 1], [1, 2], [2, 1]],
-          size_info: [375, 750, 750, 750]
+          sector: 0
         },
         createNewBarcode({
           coordinate: "999,1",
           neighbours: [[1, 1, 1], [0, 0, 0], [1, 1, 1], [0, 0, 0]],
           barcode: "003.003",
-          size_info: [375, 750, 375, 750],
-          adjacency: [[1, 0], null, [1, 1], null]
+          sector: 0,
+          size_info: [375, 750, 375, 750]
         })
       ]
     });
@@ -240,6 +241,7 @@ describe("addTransitBarcode", () => {
           coordinate: "999,1",
           neighbours: [[1, 1, 1], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
           barcode: "003.003",
+          sector: 0,
           size_info: [750, 375, 750, 375],
           adjacency: [[1, 3], [0, 1], null, [1, 1]]
         })
@@ -300,6 +302,7 @@ describe("addTransitBarcode", () => {
           coordinate: "999,1",
           neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]], // connected in all 4 directions
           barcode: "003.003",
+          sector: 0,
           size_info: [750, 375, 750, 375],
           adjacency: [[1, 3], [0, 1], [1, 4], [1, 1]]
         })
@@ -344,6 +347,7 @@ describe("addTransitBarcode", () => {
           coordinate: "999,1",
           neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
           barcode: "003.003",
+          sector: 0,
           size_info: [750, 350, 750, 400],
           adjacency: [[1, 3], [0, 1], null, [1, 1]]
         })
@@ -393,6 +397,7 @@ describe("addTransitBarcode", () => {
           coordinate: "999,1",
           neighbours: [[0, 0, 0], [1, 1, 0], [0, 0, 0], [1, 1, 0]],
           barcode: "003.003",
+          sector: 0,
           size_info: [750, 375, 750, 375],
           adjacency: [null, [0, 1], null, [1, 1]]
         })
@@ -424,6 +429,7 @@ describe("addTransitBarcode", () => {
         tileId: "1,1",
         direction: 1,
         newBarcode: "003.003",
+        sector: 0,
         distance: 1500
       })
     );

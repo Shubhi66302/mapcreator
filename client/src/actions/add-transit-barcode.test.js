@@ -31,7 +31,8 @@ describe("getUpdatedBarcodes", () => {
     neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
     size_info: [750, 375, 750, 375],
     store_status: 0,
-    zone: "defzone"
+    zone: "defzone",
+    sector: 0
   };
   const updatedBarcodes = getUpdatedBarcodes(
     transitBarcodeInfo,
@@ -95,7 +96,8 @@ describe("getUpdatedBarcodes", () => {
     neighbours: [[0, 0, 0], [1, 1, 1], [0, 0, 0], [1, 1, 1]],
     size_info: [750, 375, 750, 375],
     store_status: 0,
-    zone: "defzone"
+    zone: "defzone",
+    sector: 0
   };
   const updatedBarcodes = getUpdatedBarcodes(
     transitBarcodeInfo,

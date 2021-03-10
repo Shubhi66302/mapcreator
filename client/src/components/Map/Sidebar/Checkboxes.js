@@ -67,6 +67,33 @@ const ZoneViewCheckbox = ({ val, onChange }) => (
   </div>
 );
 
+const SectorViewCheckbox = ({ val, onChange }) => (
+  <div>
+    <ReactTooltip effect="solid" delayShow={100} />
+    <label
+      style={{
+        textAlign: "-webkit-center",
+        margin: "0% 5% 3% 5%",
+        color: "orange"
+      }}
+    >
+      Sector View:
+      <input
+        style={{ marginLeft: "10px" }}
+        name="sectorview"
+        type="checkbox"
+        checked={val}
+        onChange={onChange}
+      />
+      <i
+        className="fa fa-question-circle"
+        style={{ marginLeft: "10px", color: "darkgrey" }}
+        data-tip="See summary tab in left sidebar for sector color legend."
+      />
+    </label>
+  </div>
+);
+
 const DirectionViewCheckbox = ({ val, onChange }) => (
   <div>
     <DirectionViewTooltip />
@@ -95,4 +122,4 @@ const DirectionViewCheckbox = ({ val, onChange }) => (
   </div>
 );
 
-export { MultiQueueCheckbox, QueueCheckbox, ZoneViewCheckbox, DirectionViewCheckbox };
+export { MultiQueueCheckbox, QueueCheckbox, ZoneViewCheckbox, SectorViewCheckbox, DirectionViewCheckbox };

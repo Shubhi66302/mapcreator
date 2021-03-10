@@ -5,7 +5,9 @@ import BaseCard from "./BaseCard";
 import {
   getParticularEntity,
   getStorableCoordinatesCount,
-  getZoneToColorMap
+  getZoneToColorMap,
+  getSectorToColorMap,
+  getBarcodes
 } from "utils/selectors";
 import _ from "lodash";
 import CopyJSONsCard from "./CopyJSONsCard";
@@ -16,7 +18,9 @@ const Summary = ({
   ppsDict,
   elevatorDict,
   storables,
-  zoneToColorMap
+  zoneToColorMap,
+  sectorToColorMap,
+  barcodes
 }) => {
   const chargers = Object.entries(chargerDict).map(([, val]) => val);
   const ppses = Object.entries(ppsDict).map(([, val]) => val);
@@ -40,7 +44,8 @@ const Summary = ({
   ];
 
   const nonCollapsibleEntityMap = [
-    { name: "Storables", count: storables, isCollapsible: false, entity: {} }
+    { name: "Storables", count: storables, isCollapsible: false, entity: {} },
+    { name: "Total Barcodes", count: Object.keys(barcodes).length, isCollapsible: false, entity: {} }
   ];
 
   const typEntityMap = entityMap.map(e => {
@@ -101,6 +106,35 @@ const Summary = ({
     </BaseCard>
   );
 
+  const sectorJsx = (
+    <BaseCard
+      key="sector"
+      title={`Sectors: ${Object.keys(sectorToColorMap).length}`}
+      isCollapsible={true}
+    >
+      <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+        {Object.entries(sectorToColorMap).map(([sector, color]) => (
+          <li key={sector}>
+            <div style={{ width: "100%", overflow: "hidden" }}>
+              <div
+                style={{
+                  float: "left",
+                  height: "20px",
+                  width: "20px",
+                  backgroundColor: color,
+                  borderWidth: "1px",
+                  borderStyle: "solid",
+                  marginRight: "10px"
+                }}
+              />
+              <span>{sector}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </BaseCard>
+  );
+
   return (
     <div className="pt-3">
       <h4 className="menu-title">{title}</h4>
@@ -108,6 +142,7 @@ const Summary = ({
         <NonCollapsibleBaseCard title={title}>
           {entityJsx}
           {zoneJsx}
+          {sectorJsx}
           {nonCollapsibleEntityMap.map((e, idx) => {
             return (
               <p key={idx} style={{ marginLeft: "15%" }}>
@@ -143,5 +178,7 @@ export default connect(state => ({
   ppsDict: getParticularEntity(state, { entityName: "pps" }),
   elevatorDict: getParticularEntity(state, { entityName: "elevator" }),
   storables: getStorableCoordinatesCount(state),
-  zoneToColorMap: getZoneToColorMap(state)
+  barcodes: getBarcodes(state),
+  zoneToColorMap: getZoneToColorMap(state),
+  sectorToColorMap: getSectorToColorMap(state)
 }))(Summary);

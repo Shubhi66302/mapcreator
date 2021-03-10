@@ -70,6 +70,7 @@
     ],
     "elevators": [],
     "zones": [],
+    "sector": 0,
     "queueDatas": []
   },
   "createdAt": "2020-04-17T11:19:22.022Z",

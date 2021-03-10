@@ -13,6 +13,7 @@ describe("valid barcodeWithStringCoordinate", () => {
     var barcode = {
       blocked: false,
       zone: "defzone",
+      sector: 0,
       coordinate: "[15, 12]",
       store_status: 0,
       barcode: "012.015",
@@ -26,6 +27,7 @@ describe("valid barcodeWithStringCoordinate", () => {
     var barcode = {
       blocked: false,
       zone: "defzone",
+      sector: 0,
       coordinate: "[15, 12]",
       store_status: 0,
       barcode: "012.015",
@@ -42,6 +44,7 @@ describe("invalid barcodeWithStringCoordinate", () => {
     var barcode = {
       blocked: false,
       zone: "defzone",
+      sector: 0,
       store_status: 0,
       barcode: "012.015",
       neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -55,6 +58,7 @@ describe("invalid barcodeWithStringCoordinate", () => {
     var barcode = {
       blocked: false,
       zone: "defzone",
+      sector: 0,
       coordinate: [15, 12],
       store_status: 0,
       barcode: "012.015",

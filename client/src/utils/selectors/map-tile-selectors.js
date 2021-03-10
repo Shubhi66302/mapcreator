@@ -10,17 +10,19 @@ import * as constants from "../../constants";
 import {
   tupleOfIntegersToCoordinateKey,
   getNeighbouringBarcodes,
-  zoneToColorMapper
+  zoneToColorMapper,
+  sectorToColorMapper
 } from "../util";
 
 export const tileNameWithoutEntityDataSelector = createSelector(
   getBarcode,
   state => state.selection.zoneViewMode,
+  state => state.selection.sectorViewMode,
   state => state.normalizedMap.entities.odsExcluded || {},
-  (barcode, zoneViewMode, odsExcluded) => {
+  (barcode, zoneViewMode, sectorViewMode, odsExcluded) => {
     var tileSprite = constants.NORMAL;
     // don't show storables in zone view mode; otherwise their darker color messes with the tint
-    if (barcode.store_status && !zoneViewMode) tileSprite = constants.STORABLE;
+    if (barcode.store_status && !zoneViewMode && !sectorViewMode) tileSprite = constants.STORABLE;
     if (barcode.special && !zoneViewMode) tileSprite = constants.SPECIAL;
     if (barcode.blocked && !zoneViewMode) tileSprite = constants.BLOCKED;
     Object.keys(odsExcluded).forEach((ods) => {
@@ -188,23 +190,32 @@ export const specialTileSpritesMapSelector = createSelector(
   tileEntitySpritesMapSelector,
   state => state.selection.mapTiles,
   state => state.selection.zoneViewMode,
-  (entitySpritesMap, selectedMapTiles, zoneViewMode) => {
+  state => state.selection.sectorViewMode,
+  (entitySpritesMap, selectedMapTiles, zoneViewMode, sectorViewMode) => {
     var ret = {};
     Object.keys(selectedMapTiles).forEach(
       key => (ret[key] = constants.SELECTED)
     );
     // if in zone view, don't render any entities, just selections; otherwise they mess with the tint
-    if (zoneViewMode) return ret;
+    if (zoneViewMode || sectorViewMode) return ret;
     return { ...entitySpritesMap, ...ret };
   }
 );
 
 export const getZones = state => state.normalizedMap.entities.zone || {};
+export const getSectors = state => state.normalizedMap.entities.sector || {};
 export const getZoneToColorMap = createSelector(
   getZones,
   zones => {
     const newZoneMap = zoneToColorMapper(zones);
     return newZoneMap;
+  }
+);
+export const getSectorToColorMap = createSelector(
+  getSectors,
+  sectors => {
+    const newSectorMap = sectorToColorMapper(sectors);
+    return newSectorMap;
   }
 );
 
@@ -214,10 +225,12 @@ export function strToHex(s) {
 
 export const tileTintSelector = createSelector(
   getZoneToColorMap,
+  getSectorToColorMap,
   getBarcode,
   state => state.selection.zoneViewMode,
-  (zoneToColorMap, barcode, zoneViewMode) =>
+  state => state.selection.sectorViewMode,
+  (zoneToColorMap, sectorToColorMap, barcode, zoneViewMode, sectorViewMode) =>
     zoneViewMode
       ? strToHex(zoneToColorMap[barcode.zone] || "#ffffff")
-      : 0xffffff
+      : (sectorViewMode ? strToHex(sectorToColorMap[barcode.sector] || "#ffffff") : 0xffffff)
 );

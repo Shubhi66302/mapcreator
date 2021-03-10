@@ -8,7 +8,10 @@ describe("DELETE-ELEVATOR", () => {
         floors: [1],
         id: "dummy",
         queueDatas : [],
-        zones: ["defzone"]
+        zones: ["defzone"],
+        sectors: [0],
+        sectorBarcodeMapping: [],
+        sectorMxUPreferences: {}
       }
     };
     // var state = createState(complicated3x3ElevatorMap);

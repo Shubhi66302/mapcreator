@@ -95,6 +95,7 @@ describe("barcodeWithoutCoordinate", () => {
       var barcode = {
         blocked: false,
         zone: "defzone",
+        sector: 0,
         store_status: 0,
         barcode: "012.015",
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -110,6 +111,7 @@ describe("barcodeWithoutCoordinate", () => {
         blocked: false,
         store_status: 0,
         zone: "defzone",
+        sector: 0,
         adjacency: [[11, 15], [10, 16], [11, 17], [31, 31]],
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         barcode: "016.011",
@@ -124,6 +126,7 @@ describe("barcodeWithoutCoordinate", () => {
         blocked: false,
         store_status: 0,
         zone: "defzone",
+        sector: 0,
         adjacency: [[11, 15], [10, 16], [11, 17], [31, 31]],
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         barcode: "016.011",
@@ -137,6 +140,7 @@ describe("barcodeWithoutCoordinate", () => {
       var barcode = {
         blocked: false,
         zone: "defzone",
+        sector: 0,
         barcode: "016.011",
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
@@ -153,6 +157,7 @@ describe("barcodeWithoutCoordinate", () => {
       var barcode = {
         blocked: false,
         zone: "defzone",
+        sector: 0,
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         size_info: [750, 750, 750, 750],
@@ -164,6 +169,7 @@ describe("barcodeWithoutCoordinate", () => {
       var barcode = {
         blocked: false,
         zone: "defzone",
+        sector: 0,
         barcode: "016.011",
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],

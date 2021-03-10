@@ -8,6 +8,7 @@ import ToggleStorable from "components/Map/Forms/ToggleStorable";
 import AddPPSQueue from "components/Map/Forms/AddPPSQueue";
 import AddHighwayQueue from "components/Map/Forms/AddHighwayQueue";
 import AssignZone from "components/Map/Forms/AssignZone";
+import AssignSector from "components/Map/Forms/AssignSector";
 import AssignODSExcluded from "components/Map/Forms/AssignODSExcluded";
 import RemoveODSExcluded from "components/Map/Forms/RemoveODSExcluded";
 import AssignEmergencyBarcode from "components/Map/Forms/AssignEmergencyBarcode";
@@ -19,14 +20,17 @@ import UpdateDirection from "components/Map/Forms/UpdateDirection";
 import ModifyDistanceBwBarcodes from "components/Map/Forms/ModifyDistanceBwBarcodes";
 import AddElevator from "components/Map/Forms/AddElevator";
 import AddZone from "components/Map/Forms/AddZone";
+import AddSector from "components/Map/Forms/AddSector";
 import EditSpecialBarcode from "components/Map/Forms/EditSpecialBarcodes";
 import ShiftBarcode from "components/Map/Forms/ShiftBarcode";
 import AddTransitBarcode from "components/Map/Forms/AddTransitBarcode";
 import LocateBarcode from "components/Map/Forms/LocateBarcode";
+import SectorMSUMapping from "components/Map/Forms/SectorMSUMapping";
 import {
   QueueCheckbox,
   MultiQueueCheckbox,
   ZoneViewCheckbox,
+  SectorViewCheckbox,
   DirectionViewCheckbox
 } from "./Checkboxes";
 
@@ -37,7 +41,7 @@ class RightSidebar extends Component {
   };
 
   render() {
-    const { queueMode, multiQueueMode, zoneViewMode, directionViewMode, dispatch } = this.props;
+    const { queueMode, multiQueueMode, zoneViewMode, sectorViewMode, directionViewMode, dispatch } = this.props;
     const { open } = this.state;
 
     return (
@@ -60,8 +64,11 @@ class RightSidebar extends Component {
               AddCharger,
               AssignDockPoint,
               AddZone,
+              AddSector,
               AssignZone,
+              AssignSector,
               AssignODSExcluded,
+              SectorMSUMapping,
               RemoveODSExcluded,
               AssignEmergencyBarcode,
               AddBarcode,
@@ -106,7 +113,21 @@ class RightSidebar extends Component {
             <div className="col">
               <ZoneViewCheckbox
                 val={zoneViewMode}
-                onChange={() => dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" })}
+                onChange={() => { 
+                  if(sectorViewMode) dispatch({ type: "TOGGLE-SECTOR-VIEW-MODE" }); 
+                  dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" });
+                }}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <SectorViewCheckbox
+                val={sectorViewMode}
+                onChange={() => {
+                  if(zoneViewMode) dispatch({ type: "TOGGLE-ZONE-VIEW-MODE" });
+                  dispatch({ type: "TOGGLE-SECTOR-VIEW-MODE" });
+                }}
               />
             </div>
           </div>

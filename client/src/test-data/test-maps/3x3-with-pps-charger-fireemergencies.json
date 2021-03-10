@@ -168,6 +168,7 @@
     ],
     "elevators": [],
     "zones": [],
+    "sector": 0,
     "queueDatas": []
   },
   "createdAt": "2018-09-17T11:01:26.022Z",

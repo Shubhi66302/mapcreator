@@ -54,6 +54,9 @@ export const dummyState = {
       ],
       elevators: [],
       zones: [],
+      sectors: [],
+      sectorBarcodeMapping: [],
+      sectorMxUPreferences: {},
       queueDatas: []
     }
   }),
@@ -65,6 +68,7 @@ export const dummyState = {
     metaKey: false,
     queueMode: false,
     zoneViewMode: false,
+    sectorViewMode: false,
     directionViewMode: false
   },
   selectedArea: null,

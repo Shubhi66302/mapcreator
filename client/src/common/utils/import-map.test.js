@@ -78,6 +78,16 @@ describe("import good maps", () => {
     expect(result).toBe(true);
   });
 
+  test("import 3-7 map with single element array style sector.json", () => {
+    var map = importMap({
+      ...threeSevenJsons,
+      sectorJson: [threeSevenJsons.sectorJson]
+    });
+    var result = mapValidate(map);
+    expect(mapValidate.errors).toBeNull();
+    expect(result).toBe(true);
+  });
+
   test("import 3-7 map with queue_data.json also present", () => {
     var map = importMap({
       ...threeSevenJsons,
@@ -145,6 +155,7 @@ describe("import bad maps", () => {
             {
               blocked: false,
               zone: "defzone",
+              sector: 0,
               coordinate: "[15, 12]",
               store_status: 0,
               barcode: "012.015",
@@ -160,6 +171,7 @@ describe("import bad maps", () => {
             {
               blocked: false,
               zone: "defzone",
+              sector: 0,
               coordinate: "[15,12]",
               store_status: 0,
               barcode: "017.018",

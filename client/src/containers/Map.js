@@ -47,6 +47,7 @@ class Map extends Component {
       successMessage,
       queueMode,
       zoneViewMode,
+      sectorViewMode,
       directionViewMode
     } = this.props;
 
@@ -83,6 +84,7 @@ class Map extends Component {
               dispatch={dispatch}
               queueMode={queueMode}
               zoneViewMode={zoneViewMode}
+              sectorViewMode={sectorViewMode}
               directionViewMode={directionViewMode}
             />
             <div className="row py-1">
@@ -181,5 +183,6 @@ export default connect(state => ({
   successMessage: state.successMessage,
   errorMessage: state.errorMessage,
   zoneViewMode: state.selection.zoneViewMode,
+  sectorViewMode: state.selection.sectorViewMode,
   directionViewMode: state.selection.directionViewMode
 }))(Map);
