@@ -67,6 +67,10 @@ export const mapChangeReducer = (state = dummyState.normalizedMap, action) => {
     case "CLEAR-MAP":
       return dummyState.normalizedMap;
     case "NEW-MAP":
+      var map = action.value.map;
+      if(map.sectorBarcodeMapping == undefined) map.sectorBarcodeMapping = [];
+      if(map.sectorMxUPreferences == undefined) map.sectorMxUPreferences = {};
+      if(map.sectors == undefined) map.sectors = [];
       return normalizeMap(action.value);
   }
   return state;

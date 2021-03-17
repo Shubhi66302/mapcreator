@@ -288,9 +288,10 @@ export const addHighwayQueue = () => (dispatch, getState) => {
 export const saveMap = (onError, onSuccess) => (dispatch, getState) => {
   const { normalizedMap } = getState();
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  setSectorsBarcodeMapping(dispatch, getState);
   // denormalize it
   const mapObj = denormalizeMap(withWorldCoordinate);
-  mapObj.sectorMxUPreferences = withWorldCoordinate.entities.map.dummy.sectorMxUPreferences;
+  mapObj.sectorMxUPreferences = withWorldCoordinate.entities.map.dummy.sectorMxUPreferences != undefined ? withWorldCoordinate.entities.map.dummy.sectorMxUPreferences : {};
   return updateMap(mapObj.id, mapObj.map)
     .then(handleErrors)
     .then(res => res.json())
