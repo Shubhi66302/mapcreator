@@ -326,7 +326,7 @@ export var createMapFromCoordinateData = (
     ],
     sectors: [
       {
-        sector_id: 0,
+        sector_id: "0",
         blocked: false,
         paused: false
       }

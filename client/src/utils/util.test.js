@@ -87,7 +87,7 @@ describe("createMapFromCoordinateData", () => {
     ]);
     expect(map.sectors).toEqual([
       {
-        sector_id: 0,
+        sector_id: "0",
         blocked: false,
         paused: false
       }
