@@ -22,7 +22,7 @@ export default (state = {}, action) => {
       return addKey(state, "zones", action.value.zone_id);
     }
     case "ADD-SECTOR": {
-      return addKey(state, "sectors", action.value.sector_id);
+      return addKey(state, "sectors", action.value.sector_id.toString());
     }
     case "SECTOR-BARCODE-MAPPING": {
       const { entities } = action.value;

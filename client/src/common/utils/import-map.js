@@ -68,6 +68,10 @@ export default ({
     validate("map_json", mapJson);
   }
 
+  if(!map.sectorBarcodeMapping) map.sectorBarcodeMapping = [];
+  if(!map.sectorMxUPreferences) map.sectorMxUPreferences = {};
+  if(!map.sectors) map.sectors = [];
+
   // convert coordinate to numbers before adding!
   map["floors"] = mapJson.map(({ floor_id, map_values }) => ({
     floor_id,
@@ -79,7 +83,9 @@ export default ({
     fireEmergencies: [],
     odsExcludeds: [],
     ppses: [],
-    dockPoints: []
+    dockPoints: [],
+    sectorBarcodeMapping: [],
+    sectorMxUPreferences: {}
   }));
   // assert that floors do not have barcodes with same coordinate
   var floors_barcodes = map.floors.map(({ map_values }) =>
