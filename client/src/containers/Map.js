@@ -21,6 +21,7 @@ import CopyMap from "components/Map/Forms/CopyMap";
 import DeleteMap from "components/Map/Forms/DeleteMap";
 import SampleRacksJson from "components/Map/SampleRacksJson";
 import { runSanity } from "actions/actions";
+const pendo = window.pendo;
 
 class Map extends Component {
   state = {
@@ -38,6 +39,13 @@ class Map extends Component {
     } = this.props;
     dispatch(fetchMap(id));
   };
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.nMap.entities.mapObj != this.props.nMap.entities.mapObj && Object.keys(this.props.nMap.entities.mapObj)[0] != 1) {
+      const mapId = this.props.nMap ? Object.entries(this.props.nMap.entities.mapObj)[0][1].id : 0;
+      pendo.initialize({visitor: {id: mapId, full_name: this.props.nMap.entities.mapObj[mapId].name}, account: {id: "MAPCREATOR"}});
+    }
+  }
 
   render() {
     const {
