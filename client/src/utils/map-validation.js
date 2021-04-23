@@ -238,50 +238,44 @@ export const getExistingNeighbourInDirection = (coordinateKey, direction) => {
   }
 };
 
+export const getExistingNeighboursWithBotMoment = (neighbours) => {
+  let returnIndex = [];
+  neighbours.forEach((val, index) => {
+    if(val[1] == 1) {
+      returnIndex.push(index);
+    }
+  });
+  return returnIndex;
+};
+
 export const validateAlignmentOfCoordinates = (barcodesDict) => {
   var wronglyAlignedCoordinates = [];
+  var directions = {
+    0: "north",
+    1: "east",
+    2: "south",
+    3: "west"
+  };
   for (var coordinateKey in barcodesDict) {
-    var neighbourInRight = getNeighbourInDirection(coordinateKey,1,barcodesDict);
-    var neighbourInSouth = getNeighbourInDirection(coordinateKey,2,barcodesDict);
-    var neighbourInLeft = getNeighbourInDirection(coordinateKey,3,barcodesDict);
-    var neighbourInNorth = getNeighbourInDirection(coordinateKey,0,barcodesDict);
+    var neighbours = getExistingNeighboursWithBotMoment(barcodesDict[coordinateKey].neighbours);
     var coordinate = coordinateKeyToTupleOfIntegers(barcodesDict[coordinateKey].coordinate);
     var refWorldCoordinate = barcodesDict[coordinateKey].world_coordinate_reference_neighbour;
     var worldCoordinate = barcodesDict[coordinate].world_coordinate;
     var [x,y] = JSON.parse(worldCoordinate);
     var wronglyAlignedPerCoordinate = [];
-    if(neighbourInRight != null){
-      var rightWorldCoordinate = barcodesDict[neighbourInRight].world_coordinate;
-      var worldCoordinateR = JSON.parse(rightWorldCoordinate);
-      var rightNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInRight].coordinate);
-      if(worldCoordinateR[1] != y){
-        wronglyAlignedPerCoordinate.push({"east": rightNeighbourCoordinate});
-      };
-    };
-    if(neighbourInLeft != null){
-      var leftWorldCoordinate = barcodesDict[neighbourInLeft].world_coordinate;
-      var worldCoordinateL = JSON.parse(leftWorldCoordinate);
-      var leftNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInLeft].coordinate);
-      if(worldCoordinateL[1] != y){
-        wronglyAlignedPerCoordinate.push({"west":leftNeighbourCoordinate});
-      };
-    };
-    if(neighbourInNorth != null){
-      var northWorldCoordinate = barcodesDict[neighbourInNorth].world_coordinate;
-      var worldCoordinateN = JSON.parse(northWorldCoordinate);
-      var nouthNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInNorth].coordinate);
-      if(worldCoordinateN[0] != x){
-        wronglyAlignedPerCoordinate.push({"north":nouthNeighbourCoordinate});
-      };
-    }
-    if(neighbourInSouth != null){
-      var southWorldCoordinate = barcodesDict[neighbourInSouth].world_coordinate;
-      var worldCoordinateS = JSON.parse(southWorldCoordinate);
-      var southNeighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInSouth].coordinate);
-      if(worldCoordinateS[0] != x){
-        wronglyAlignedPerCoordinate.push({"south":southNeighbourCoordinate});
-      };
-    };
+    neighbours.forEach((val) => {
+      var neighbourInDir = getNeighbourInDirection(coordinateKey,val,barcodesDict);
+      if(neighbourInDir != null) {
+        var worldCoordinateInDir = barcodesDict[neighbourInDir].world_coordinate;
+        var worldCoordinateParsed = JSON.parse(worldCoordinateInDir);
+        var neighbourCoordinate = coordinateKeyToTupleOfIntegers(barcodesDict[neighbourInDir].coordinate);
+        if((val % 2 == 0 && worldCoordinateParsed[0] != x) || (val % 2 == 1 && worldCoordinateParsed[1] != y)) {
+          let wronglyAlignedPerCoordinateObj = {};
+          wronglyAlignedPerCoordinateObj[directions[val]] = neighbourCoordinate;
+          wronglyAlignedPerCoordinate.push(wronglyAlignedPerCoordinateObj);
+        }
+      }
+    });
     if(wronglyAlignedPerCoordinate.length != 0){
       wronglyAlignedCoordinates.push(
         {
