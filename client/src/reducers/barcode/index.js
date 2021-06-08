@@ -7,7 +7,7 @@ import { modifyDistanceBetweenBarcodes } from "./distance-between-barcodes";
 import {
   deleteChargerData,
   deletePPSQueue,
-  deleteElevator
+  deleteElevator,
 } from "./delete-entities";
 import shiftBarcode from "./shift-barcode";
 import { getNeighbouringBarcodesIncludingDisconnected } from "../../utils/util";
@@ -26,6 +26,33 @@ export default (state = {}, action) => {
       for (let tileId of selectedTiles) {
         newState[tileId] = { ...state[tileId], store_status: makeStorable };
       }
+      return Object.assign({}, state, newState);
+    }
+    case "SHOW-PATH": {
+      const { path, showPath } = action.value;
+
+      let newState = {};
+      var i = 0;
+
+      while (i < path.length) {
+        newState[path[i]] = { ...state[path[i]], path_status: showPath[i] };
+        i++;
+      }
+
+      return Object.assign({}, state, newState);
+    }
+    case "MISALIGNED": {
+      const { misaligned_node, node_status } = action.value;
+      let newState = {};
+      var j = 0;
+      while (j < misaligned_node.length) {
+        newState[misaligned_node[j]] = {
+          ...state[misaligned_node[j]],
+          node_status: node_status,
+        };
+        j++;
+      }
+
       return Object.assign({}, state, newState);
     }
 
@@ -68,7 +95,7 @@ export default (state = {}, action) => {
         newBarcode.neighbours[idx] = [
           parseInt(matches[1]),
           parseInt(matches[2]),
-          parseInt(matches[3])
+          parseInt(matches[3]),
         ];
         newBarcode.size_info[idx] = parseInt(values[key].sizeInfo);
       });
@@ -84,16 +111,19 @@ export default (state = {}, action) => {
         newBarcode.neighbours[values.pick_direction] = [
           parseInt(matches[1]),
           parseInt(matches[2]),
-          parseInt(matches[3])
+          parseInt(matches[3]),
         ];
-        newState[tileId] = { ...state[tileId], neighbours: newBarcode.neighbours };
+        newState[tileId] = {
+          ...state[tileId],
+          neighbours: newBarcode.neighbours,
+        };
       });
       return Object.assign({}, state, newState);
     }
 
     case "ADD-FLOOR": {
       const { map_values } = action.value;
-      const keys = map_values.map(barcode => barcode.coordinate);
+      const keys = map_values.map((barcode) => barcode.coordinate);
       const newBarcodesObj = _.fromPairs(_.zip(keys, map_values));
       return { ...state, ...newBarcodesObj };
     }
@@ -102,7 +132,7 @@ export default (state = {}, action) => {
       const { zone_id, mapTiles } = action.value;
       let newState = {};
       Object.keys(mapTiles).forEach(
-        key => (newState[key] = { ...state[key], zone: zone_id })
+        (key) => (newState[key] = { ...state[key], zone: zone_id })
       );
       return { ...state, ...newState };
     }
@@ -111,7 +141,8 @@ export default (state = {}, action) => {
       const { sector_id, mapTiles } = action.value;
       let newState = {};
       Object.keys(mapTiles).forEach(
-        key => (newState[key] = { ...state[key], sector: parseInt(sector_id) })
+        (key) =>
+          (newState[key] = { ...state[key], sector: parseInt(sector_id) })
       );
       return { ...state, ...newState };
     }

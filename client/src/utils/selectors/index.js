@@ -196,3 +196,7 @@ export const getMapId = state =>
 
 export const getMapName = state =>
   Object.values(state.normalizedMap.entities.mapObj)[0].name;
+
+export const getNormalizedMap = (state) => state.normalizedMap;
+
+

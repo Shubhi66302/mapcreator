@@ -21,10 +21,14 @@ export const tileNameWithoutEntityDataSelector = createSelector(
   state => state.normalizedMap.entities.odsExcluded || {},
   (barcode, zoneViewMode, sectorViewMode, odsExcluded) => {
     var tileSprite = constants.NORMAL;
+    // console.log(barcode.path_status , " path_status ")
     // don't show storables in zone view mode; otherwise their darker color messes with the tint
     if (barcode.store_status && !zoneViewMode && !sectorViewMode) tileSprite = constants.STORABLE;
     if (barcode.special && !zoneViewMode) tileSprite = constants.SPECIAL;
     if (barcode.blocked && !zoneViewMode) tileSprite = constants.BLOCKED;
+    if ( barcode.path_status > 0 && !zoneViewMode && !sectorViewMode) tileSprite = constants.PATH;
+    if ( barcode.node_status > 0 && !zoneViewMode && !sectorViewMode) tileSprite = constants.QUEUE;
+
     Object.keys(odsExcluded).forEach((ods) => {
       if(barcode.coordinate === odsExcluded[ods].coordinate && !zoneViewMode && odsExcluded[ods].excluded) {
         var odsDirection = odsExcluded[ods].ods_tuple.split("--")[1];

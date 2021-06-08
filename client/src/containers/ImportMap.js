@@ -12,7 +12,7 @@ class ImportMap extends Component {
     name: "",
     error: undefined
   };
-
+  
   onRead = stateKey => json => {
     // should do validation here or not? probably not, just do it once submit is pressed
     this.setState({ [stateKey]: json });
@@ -43,8 +43,9 @@ class ImportMap extends Component {
       .then(id => history.push(`/map/${id}`))
       .catch(error => this.setState({ error }));
   };
-
+  
   render() {
+    // console.log(" State ",this.state);
     const { error } = this.state;
     return (
       <div className="container">

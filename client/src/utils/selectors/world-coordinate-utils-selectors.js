@@ -95,6 +95,8 @@ export const getTileIdToWorldCoordMapFunc = barcodes => {
           tileIdToWorldCoordinateMapInitial
         );
         if (neighbourWithWorldCoordinate != undefined) {
+         
+          
           worldCoordinate = getWorldCoordUsingNeighbour(
             distanceInfo,
             neighbourWithWorldCoordinate

@@ -59,6 +59,7 @@ export var PPS_LEFT = "pps-3.png";
 export var CHARGER = "charger.png";
 export var CHARGER_ENTRY = "charger-entry.png";
 export var QUEUE = "queue.png";
+export var PATH = "dead.png";
 export var DOCK_POINT = "normal.png";
 export var ODS_EXCLUDED = "ods.png";
 export var ODS_EXCLUDED_TOP = "ods-0.png";
@@ -131,5 +132,6 @@ export const LEGENDSMAP = [
   {
     name: "Movement Direction",
     icon: "111.png"
-  }
+  },
+
 ];

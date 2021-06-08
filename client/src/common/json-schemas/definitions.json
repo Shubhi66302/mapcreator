@@ -29,6 +29,7 @@
       "blocked": { "type": "boolean" },
       "zone": { "type": "string" },
       "store_status": { "type": "integer" },
+      "path_status": { "type": "integer" },
       "barcode": { "$ref": "definitions#/barcodeString" },
       "neighbours": {
         "description": "eg. [[1,1,1], [1,1,0], [0,0,0], null]",

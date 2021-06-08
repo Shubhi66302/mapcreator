@@ -255,7 +255,6 @@ export const selectionReducer = (
           },
           0
         );
-
         return { ...state, mapTiles: { ...state.mapTiles, [tileId]: a + 1 } };
       }
 

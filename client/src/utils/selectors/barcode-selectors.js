@@ -75,9 +75,11 @@ export const getExistingBarcodesAndCoordinates = createSelector(
   barcodeInfoList => {
     var barcodes = {};
     var coordinates = {};
+
     for (var key in barcodeInfoList) {
       if (barcodeInfoList.hasOwnProperty(key)) {
         barcodes[barcodeInfoList[key].barcode] = true;
+
         coordinates[
           coordinateKeyToTupleOfIntegers(barcodeInfoList[key].coordinate)
         ] = true;
@@ -90,6 +92,7 @@ export const getExistingBarcodesAndCoordinates = createSelector(
 // start from top right corner
 export const getNewBarcode = createSelector(
   getExistingBarcodesAndCoordinates,
+
   existingBarcodesAndCoordinates => {
     const existingBarcodes = existingBarcodesAndCoordinates.barcodes;
     for (var i = 999; i > 0; i--) {

@@ -86,7 +86,7 @@ describe("direction", () => {
 
 describe("barcodeWithoutCoordinate", () => {
   var ajv = new Ajv({
-    schemas: [definitions]
+    schemas: [definitions],
   }); // options can be passed, e.g. {allErrors: true}
   var validate = ajv.getSchema("definitions#/barcodeWithoutCoordinate");
   describe("valid barcodes", () => {
@@ -100,7 +100,7 @@ describe("barcodeWithoutCoordinate", () => {
         barcode: "012.015",
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         size_info: [750, 750, 750, 750],
-        botid: "null"
+        botid: "null",
       };
       expect(validate(barcode)).toBe(true);
     });
@@ -115,7 +115,7 @@ describe("barcodeWithoutCoordinate", () => {
         adjacency: [[11, 15], [10, 16], [11, 17], [31, 31]],
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         barcode: "016.011",
-        size_info: [750, 750, 750, 885]
+        size_info: [750, 750, 750, 885],
       };
       expect(validate(barcode)).toBe(true);
     });
@@ -131,7 +131,7 @@ describe("barcodeWithoutCoordinate", () => {
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 0]],
         barcode: "016.011",
         size_info: [750, 750, 750, 885],
-        special: true
+        special: true,
       };
       expect(validate(barcode)).toBe(true);
     });
@@ -145,7 +145,7 @@ describe("barcodeWithoutCoordinate", () => {
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         size_info: [750, 750, 750, 750],
-        botid: "null"
+        botid: "null",
       };
       expect(validate(barcode)).toBe(true);
     });
@@ -161,7 +161,7 @@ describe("barcodeWithoutCoordinate", () => {
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         size_info: [750, 750, 750, 750],
-        botid: "null"
+        botid: "null",
       };
       expect(validate(barcode)).toBe(false);
     });
@@ -174,7 +174,7 @@ describe("barcodeWithoutCoordinate", () => {
         store_status: 0,
         neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
         size_info: [750, 750, 750, "a", "b"],
-        botid: "null"
+        botid: "null",
       };
       expect(validate(barcode)).toBe(false);
     });

@@ -5,6 +5,9 @@ import AddPPS from "components/Map/Forms/AddPPS";
 import AddCharger from "components/Map/Forms/AddCharger";
 import AssignDockPoint from "components/Map/Forms/AssignDockPoint";
 import ToggleStorable from "components/Map/Forms/ToggleStorable";
+import ShowPath from "components/Map/Forms/ShowPath";
+import Misaligned from "components/Map/Forms/MisalignedNode";
+import Exclude from "components/Map/Forms/ExcludeNode";
 import AddPPSQueue from "components/Map/Forms/AddPPSQueue";
 import AddHighwayQueue from "components/Map/Forms/AddHighwayQueue";
 import AssignZone from "components/Map/Forms/AssignZone";
@@ -80,6 +83,9 @@ class RightSidebar extends Component {
               ModifyDistanceBwBarcodes,
               AddFloor,
               AddElevator,
+              ShowPath,
+              Misaligned,
+              Exclude,
               EditSpecialBarcode,
               ShiftBarcode,
               AddTransitBarcode

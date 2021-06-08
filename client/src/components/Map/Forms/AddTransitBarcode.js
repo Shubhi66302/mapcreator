@@ -45,6 +45,7 @@ const TransitBarcode = ({ onSubmit, disabled, initialData }) => (
 export default connect(
   state => {
     const mapTilesArr = Object.keys(state.selection.mapTiles);
+    
     if (mapTilesArr.length != 1) {
       return { disabled: true };
     }
@@ -53,6 +54,7 @@ export default connect(
       tileId: tileId
     });
     const newBarcode = getNewBarcode(state);
+    
     return {
       disabled: false,
       initialData: {

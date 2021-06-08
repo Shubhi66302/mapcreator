@@ -62,7 +62,8 @@ export const getNeighbourInDirection = (coordinateKey,direction,barcodesDict) =>
     var coordinate;
     if(barcodesDict[coordinateKey].adjacency == undefined){
       var transPortInfoInDir = barcodesDict[coordinateKey].neighbours[direction];
-      if(transPortInfoInDir == [0,0,0]){
+      if(transPortInfoInDir[0] == 0){
+        
         return null;
       }else{
         coordinate = getNeighbourTiles(coordinateKey)[direction];

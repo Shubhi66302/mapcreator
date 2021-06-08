@@ -31,10 +31,12 @@ export const floorMiddleware = store => next => action => {
       return store.getState();
     }
   }
+
   return next(action);
 };
 
 export const errorPopupMiddleware = () => next => action => {
+  
   try {
     return next(action);
   } catch (e) {
