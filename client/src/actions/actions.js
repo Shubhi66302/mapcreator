@@ -12,7 +12,7 @@ import {
   getNormalizedMap,
   getBarcodes,
 } from "utils/selectors";
-import { denormalizeMap } from "utils/normalizr";
+import { denormalizeMap, formatMapWithDataSuffix } from "utils/normalizr";
 import { runCompleteDataSanity } from "../utils/data-sanity";
 import { loader as PIXILoader } from "pixi.js";
 import JSZip from "jszip";
@@ -29,6 +29,7 @@ import {
   createMap,
   deleteMap as deleteMapApi,
   getSampleRacksJson,
+  requestValidation as requestValidationApi
 } from "utils/api";
 import { implicitBarcodeToCoordinate } from "../utils/util";
 import { locateBarcode } from "../actions/barcode";
@@ -454,6 +455,21 @@ export const deleteMap = (id, history) => (dispatch) => {
   return deleteMapApi(id)
     .then(handleErrors)
     .then(() => history.push("/"))
+    .catch((error) => dispatch(setErrorMessage(error)));
+};
+
+export const requestValidation = (id, email, map_updated_time, history) => (dispatch, getState) => {
+  var { normalizedMap } = getState();
+  var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
+  setSectorsBarcodeMapping(dispatch, getState);
+  const exportedJson = exportMap(withWorldCoordinate, false);
+  var payload = formatMapWithDataSuffix(id, exportedJson, map_updated_time);
+  payload['email'] = email;
+  return requestValidationApi(payload)
+    .then(handleErrors)
+    .then(res => res.text())
+    .then((res) => dispatch(setSuccessMessage(res)))
+    .then(() => dispatch(fetchMap(id)))
     .catch((error) => dispatch(setErrorMessage(error)));
 };
 

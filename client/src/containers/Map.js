@@ -19,6 +19,7 @@ import BarcodeViewPopup from "components/Map/BarcodeViewPopup";
 import ChangeFloorDropdown from "components/Map/Forms/ChangeFloorDropdown";
 import CopyMap from "components/Map/Forms/CopyMap";
 import DeleteMap from "components/Map/Forms/DeleteMap";
+import RequestValidation from "components/Map/Forms/RequestValidation";
 import SampleRacksJson from "components/Map/SampleRacksJson";
 import { runSanity } from "actions/actions";
 const pendo = window.pendo;
@@ -75,15 +76,17 @@ class Map extends Component {
               onConfirm={() => dispatch(clearSuccessMessage())}
             />
             <div className="row justify-content-between">
-              <div className="col">
+              <div className="col-5">
                 <h3 className="display-5">
                   {nMap ? nMap.entities.mapObj[mapId].name : "..."}
                 </h3>
               </div>
-              <div className="col">
+              <div className="col-7">
                 <div className="float-right">
                   <SampleRacksJson />
                   <DeleteMap />
+                  <RequestValidation />
+                  <span className={nMap && nMap.entities.mapObj[mapId].sanity ? "btn btn-success" : "btn btn-danger"}>{nMap && nMap.entities.mapObj[mapId].sanity ? "Valid" : "Invalid"}</span>
                 </div>
               </div>
             </div>

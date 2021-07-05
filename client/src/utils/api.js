@@ -24,6 +24,13 @@ const deleteMap = mapId =>
     headers: { "Content-Type": "application/json" }
   });
 
+const requestValidation = payload =>
+  fetch(`${BASENAME}/api/requestValidation`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+});
+
 const getMaps = query => fetch(`${BASENAME}/api/maps?str=${query}`);
 const getAllMaps = () => fetch(`${BASENAME}/api/maps`);
 
@@ -34,6 +41,7 @@ export {
   updateMap,
   createMap,
   deleteMap,
+  requestValidation,
   getMaps,
   getAllMaps,
   getSampleRacksJson

@@ -34,3 +34,7 @@
 pre {
   text-align: left;
 }
+
+button.validate-req:disabled {
+  cursor: not-allowed;
+}

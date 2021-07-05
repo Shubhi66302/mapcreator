@@ -4,6 +4,8 @@ import { Map } from "server/models/index";
 import wrap from "express-async-handler";
 import getRacksJson from "server/scripts/make-racks-json";
 import sequelize, { Op } from "sequelize";
+import { requestValidation } from "./verifier-apis";
+import moment from "moment";
 // HACK: adding cors to fetch data from storybook. should remove this later.
 import cors from "cors";
 const app = express();
@@ -50,7 +52,7 @@ app.get(
   "/api/maps",
   wrap(async (req, res) => {
     var str = req.query.str;
-    const attributes = ["id", "name", "createdAt", "updatedAt"];
+    const attributes = ["id", "name", "createdAt", "updatedAt", "sanity", "validationRequested"];
     const order = [["updatedAt", "DESC"]];
     let maps;
     if (str) {
@@ -95,7 +97,7 @@ app.post(
     if (!validate(reqMap)) {
       throw new Error(JSON.stringify(validate.errors));
     }
-    await map.update({ map: reqMap });
+    await map.update({ map: reqMap, validationRequested: false, sanity: false});
     // send back the new map?
     var newMap = await Map.findByPk(id);
     res.json(newMap.toJSON());
@@ -126,6 +128,52 @@ app.get(
     if (!map) throw new Error(`could not find map for id ${id}`);
     var racksJson = await getRacksJson(id);
     res.json(racksJson);
+  })
+);
+
+// Request validation of a Map
+app.post(
+  "/api/requestValidation",
+  wrap(async (req, res) => {
+    const { map_creator_id, email } = req.body;
+    var map = await Map.findByPk(map_creator_id);
+
+    if (!email) {
+      throw new Error("Email ID is required");
+    }
+    // call verifier API for validation
+    requestValidation(req.body)
+    .then(response => {
+        if (response.status === 202) {
+          return response.text();
+        } 
+        return "Internal server error";
+    })
+    .then(async (ver_res) => {
+      await map.update({ validationRequested: true},{ silent: true });
+      res.send(ver_res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  })
+);
+
+// verifier request after validation
+app.post(
+  "/api/updateSanityStatus",
+  wrap(async (req, res) => {
+    const { map_id, map_updated_time, sanity_status } = req.body;
+    var map = await Map.findByPk(map_id);
+    var format = "YYYY-MM-DD HH:mm:ssZ";
+    var current_updated_time = moment(map.updatedAt).utc().format(format);
+
+    if (map_updated_time !== current_updated_time) {
+      res.send("Map has been changed");
+    } else {
+      await map.update({ sanity: sanity_status, validationRequested: false});
+      res.send("ok");
+    }
   })
 );
 

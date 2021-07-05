@@ -1,5 +1,6 @@
 // normalization and denormalization fns, also schema
 import { normalize, schema, denormalize } from "normalizr";
+import moment from "moment";
 
 const barcode = new schema.Entity("barcode", {}, { idAttribute: "coordinate" });
 const elevator = new schema.Entity(
@@ -84,4 +85,21 @@ export var denormalizeMap = normalizedMap => {
   // remove id from map
   delete denormalizedMapObj.map.id;
   return denormalizedMapObj;
+};
+
+export var formatMapWithDataSuffix = (mapId, exportedJson, map_updated_time = null) => {
+  var format = "YYYY-MM-DD HH:mm:ssZ";
+  map_updated_time = moment(map_updated_time).utc().format(format);
+  var payload = {'map_creator_id': mapId, 'map_updated_time': map_updated_time};
+  Object.keys(exportedJson).forEach((keyName) => {
+    if(['elevator', 'zone', 'sector', 'map', 'charger', 'pps'].indexOf(keyName) > -1){
+      if(keyName !== 'map'){
+        payload[keyName+"_data"] = typeof exportedJson[keyName]['data'] !== "undefined" ? exportedJson[keyName]['data'] : [];
+      } else {
+        payload[keyName+"_data"] = exportedJson[keyName].length == 1 ? exportedJson[keyName][0]['map_values'] : exportedJson[keyName];
+      }
+    }
+  });
+
+  return payload;
 };

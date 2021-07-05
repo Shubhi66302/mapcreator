@@ -1,5 +1,7 @@
 require("dotenv").config();
 import "babel-polyfill";
+global.fetch = require("node-fetch");
+
 const path = require("path");
 const express = require("express");
 

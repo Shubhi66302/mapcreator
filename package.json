@@ -19,6 +19,7 @@
     "moment": "^2.22.2",
     "mongoose": "^5.2.1",
     "mongoose-plugin-autoinc": "^1.1.9",
+    "node-fetch": "^2.6.1",
     "pg": "^7.4.3",
     "sequelize": "^5.9.2",
     "sequelize-cli": "^5.5.0",

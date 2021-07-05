@@ -22,7 +22,7 @@ class DeleteMap extends Component {
     return (
       <ButtonForm
         buttonText="Delete Map"
-        btnClass="btn-outline-danger"
+        btnClass="btn-outline-danger mr-1"
         wrapInButtonGroup={false}
         show={show}
         toggle={this.toggle}
