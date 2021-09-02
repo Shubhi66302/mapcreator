@@ -53,8 +53,11 @@ export const checkIfRackMovementAllowedToCoordinateFromNeighbours = (chargerGrid
   var solutionDict = {};
   solutionDict["isRackMovementAllowed"] = false;
   solutionDict["invalidNeigbbours"] = [];
+  
+  
+  const neighboursLen = (neighbours === null)? 0 : neighbours.length;
 
-  for (var i = 0; i < neighbours.length; i++) {
+  for (var i = 0; i < neighboursLen; i++) {
     var neighbour = neighbours[i];
     if (neighbour != null) {
       const coordinateToNeighbourDirection = getDirection(chargerGridCoordinate, neighbour.coordinate, barcodeDict);

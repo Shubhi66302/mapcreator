@@ -102,11 +102,10 @@ export const getNeighbouringBarcodesIncludingDisconnected = (
 };
 // only considers barcodes that are actually connected. i.e. [0,0,0] neighbours are assumed null
 export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
-
   return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
     [0, 0, 0],
     [1, 0, 0]
-  ]);
+  ]);;
 };
 
 export const getNeighbouringCoordinateKeys = (coordinateKey, barcodesDict) => {

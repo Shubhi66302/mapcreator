@@ -464,7 +464,7 @@ export const runSanity = () => (dispatch, getState) => {
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   var CompleteDataSanity = runCompleteDataSanity(withWorldCoordinate);
 
-  // console.log("CompleteDataSanity ", CompleteDataSanity);
+  // console.log("CompleteDataSanity  data", CompleteDataSanity);
   return dispatch(
     setSuccessMessage(JSON.stringify(CompleteDataSanity, undefined, 4))
   );
