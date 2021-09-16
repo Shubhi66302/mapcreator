@@ -54,18 +54,18 @@ class BaseForm extends Component {
       if(Object.keys(sectorMxUPreferences).length > 0) {
         Object.keys(sectorMxUPreferences).forEach((key) => {
           var sectors = [];
-          sectorMxUPreferences[key].forEach((val) => {
+          Object.values(sectorMxUPreferences[key]).forEach((val) => {
             sectors.push({label: val.toString(), value: val.toString()});
           });
           multiSchema[Object.keys(multiSchema).length] = {
-            rack_id: { type: "string", title: "Rack ID", value: key },
+            rack_id: { type: "string", title: "Rack Type", value: key },
             sectors: { type: "string", title: "Sectors", value: sectors }
           };
         });
       } else {
         multiSchema = {...this.state.multiSchema};
         multiSchema[Object.keys(multiSchema).length] = {
-          rack_id: { type: "string", title: "Rack ID", value: "" },
+          rack_id: { type: "string", title: "Rack Type", value: "" },
           sectors: { type: "string", title: "Sectors", value: "" }
         };
       }
@@ -121,7 +121,7 @@ class BaseForm extends Component {
                 <div className="form-group field">
                   <div className="row">
                     <div className="col-6 col-lg-6 col-sm-6 col-md-6">
-                      Rack ID
+                      Rack Type
                     </div>
                     <div className="col-6 col-lg-6 col-sm-6 col-md-6">
                       Sectors

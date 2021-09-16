@@ -12,7 +12,7 @@ const schema = (sectorDict, sectorMxUPreferences) => {
     type: "object",
     required: ["rack_id", "sectors"],
     properties: {
-      rack_id: { type: "string", title: "Rack ID", value: "" },
+      rack_id: { type: "string", title: "Rack Type", value: "" },
       sectors: { type: "array", title: "Sectors", value: "", sectors: sectorEnum, default: defaultSector }
     },
     sectorMxUPreferences: sectorMxUPreferences
