@@ -11,31 +11,25 @@ export default (withWorldCoordinate, singleFloor = false) => {
   ret.zone = {
     header: {
       "content-type": "application/json",
-      accept: "application/json"
+      accept: "application/json",
     },
     type: "POST",
-    data: map.zones.map(zone => ({ zonerec: zone })),
-    url: "/api/zonerec"
+    data: map.zones.map((zone) => ({ zonerec: zone })),
+    url: "/api/zonerec",
   };
-  ret.sector = {
-    header: {
-      "content-type": "application/json",
-      accept: "application/json"
-    },
-    type: "POST",
-    data: map.sectors ? map.sectors.map(sector => ({ sectorrec: sector })) : [],
-    url: "/api/sectorrec"
-  };
+  ret.sector = map.sectors,
   ret.queue_data = map.queueDatas.map(({ data }) => data);
-  ret.sectorBarcodeMapping = [withWorldCoordinate.entities.sectorBarcodeMapping];
+  ret.sectorBarcodeMapping = [
+    withWorldCoordinate.entities.sectorBarcodeMapping,
+  ];
   ret.sectorMxUPreferences = withWorldCoordinate.entities.sectorMxUPreferences;
   // convert coordinates to strings first!
   ret.map = map.floors.map(({ floor_id, map_values }) => ({
     floor_id,
     map_values: map_values.map(({ coordinate, ...rest }) => ({
       ...rest,
-      coordinate: `[${coordinate}]`
-    }))
+      coordinate: `[${coordinate}]`,
+    })),
   }));
   // make single floor if required
   if (singleFloor && ret.map.length == 1) {
@@ -45,16 +39,16 @@ export default (withWorldCoordinate, singleFloor = false) => {
   // don't forget dock_point.json and queue_data.json even though not used
   // charger and pps need to have id attached
   [
-    ["charger", "chargers", e => e, null],
-    ["pps", "ppses", e => e, null],
-    ["fire_emergency", "fireEmergencies", e => e, "fire_emergency_id"],
+    ["charger", "chargers", (e) => e, null],
+    ["pps", "ppses", (e) => e, null],
+    ["fire_emergency", "fireEmergencies", (e) => e, "fire_emergency_id"],
     [
       "ods_excluded",
       "odsExcludeds",
-      e => ({ ods_excluded_list: e }),
-      "ods_excluded_id"
+      (e) => ({ ods_excluded_list: e }),
+      "ods_excluded_id",
     ],
-    ["dock_point", "dockPoints", e => e, "dock_field"]
+    ["dock_point", "dockPoints", (e) => e, "dock_field"],
   ].forEach(([outKey, floorKey, convert, idFieldNotRequired]) => {
     // start with empty list
     var list = [];
@@ -64,13 +58,13 @@ export default (withWorldCoordinate, singleFloor = false) => {
       // we already have id present for each thing. remove it if it's not supposed
       // to be present in output json files
       if (idFieldNotRequired) {
-        things = things.map(thing => {
+        things = things.map((thing) => {
           delete thing[idFieldNotRequired];
           return thing;
         });
       }
       // remove 'coordinate' field which was just used internally for mapcreator for indexing.
-      things = things.map(thing => {
+      things = things.map((thing) => {
         delete thing.coordinate;
         return thing;
       });

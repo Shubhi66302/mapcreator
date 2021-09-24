@@ -4,12 +4,12 @@ import { getDirectionIncludingDisconnected } from "../reducers/barcode/util";
 
 export const getCanvasSize = () => ({
   width: window.innerWidth,
-  height: window.innerHeight - 120
+  height: window.innerHeight - 120,
 });
 
-export var handleErrors = response => {
+export var handleErrors = (response) => {
   if (!response.ok) {
-    return response.text().then(text => Promise.reject(text));
+    return response.text().then((text) => Promise.reject(text));
   }
   return response;
 };
@@ -33,13 +33,13 @@ export function encode_barcode(row, column) {
 }
 
 // ordered array (top, right, left, down) of neighbour tiles
-export const getNeighbourTiles = tileId => {
+export const getNeighbourTiles = (tileId) => {
   var tileCoordinate = coordinateKeyToTupleOfIntegers(tileId);
   var neighbours = [];
   for (var delta of [[0, -1], [-1, 0], [0, 1], [1, 0]]) {
     var neighbour = [
       tileCoordinate[0] + delta[0],
-      tileCoordinate[1] + delta[1]
+      tileCoordinate[1] + delta[1],
     ];
     neighbours.push(tupleOfIntegersToCoordinateKey(neighbour));
   }
@@ -59,17 +59,19 @@ export const getNeighbouringBarcodesWithNbFilter = (
   var curBarcode = barcodesDict[coordinateKey];
   if (!curBarcode) {
     return null;
-  };
+  }
   // if adjacency is present, use that instead.
   if (curBarcode.adjacency) {
-    return curBarcode.adjacency.map(val => {
+    return curBarcode.adjacency.map((val) => {
       if (!val) return val;
       return barcodesDict[tupleOfIntegersToCoordinateKey(val)];
     });
   }
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
   return neighbourTileKeys.map((tileKey, idx) =>
-    nbFilters.some(nbFilter => _.isEqual(nbFilter, curBarcode.neighbours[idx]))
+    nbFilters.some((nbFilter) =>
+      _.isEqual(nbFilter, curBarcode.neighbours[idx])
+    )
       ? null
       : barcodesDict[tileKey]
   );
@@ -86,13 +88,13 @@ export const getNeighbouringBarcodesIncludingDisconnected = (
   let nbBarcodes = [null, null, null, null];
   // if adjacency is present, use that.
   if (curBarcode.adjacency) {
-    nbBarcodes = curBarcode.adjacency.map(val => {
+    nbBarcodes = curBarcode.adjacency.map((val) => {
       if (!val) return val;
       return barcodesDict[tupleOfIntegersToCoordinateKey(val)];
     });
   }
   // if nbBarcodes is null somewhere, then try to check if neighbour is [1,0,0]. If so, use tile key for that.
-  [0, 1, 2, 3].forEach(idx => {
+  [0, 1, 2, 3].forEach((idx) => {
     if (nbBarcodes[idx] == null && curBarcode.neighbours[idx][0] == 1) {
       // assume its the tile key barcode
       nbBarcodes[idx] = barcodesDict[neighbourTileKeys[idx]];
@@ -104,78 +106,94 @@ export const getNeighbouringBarcodesIncludingDisconnected = (
 export const getNeighbouringBarcodes = (coordinateKey, barcodesDict) => {
   return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
     [0, 0, 0],
-    [1, 0, 0]
-  ]);;
+    [1, 0, 0],
+  ]);
 };
 
 export const getNeighbouringCoordinateKeys = (coordinateKey, barcodesDict) => {
   return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
     [0, 0, 0],
-    [1, 0, 0]
-  ]).map(elm => (elm == null ? null : elm.coordinate));
+    [1, 0, 0],
+  ]).map((elm) => (elm == null ? null : elm.coordinate));
 };
 
-export const getNeighbouringCoordinateKeysIncludingDisconnected = (coordinateKey, barcodesDict) => {
+export const getNeighbouringCoordinateKeysIncludingDisconnected = (
+  coordinateKey,
+  barcodesDict
+) => {
   return getNeighbouringBarcodesWithNbFilter(coordinateKey, barcodesDict, [
     [0, 0, 0],
-  ]).map(elm => (elm == null ? null : elm.coordinate));
+  ]).map((elm) => (elm == null ? null : elm.coordinate));
 };
 
-
 export const getNeighboursThatAllowAccess = (coordinateKey, barcodesDict) => {
-  var neighbours = getNeighbouringBarcodesIncludingDisconnected(coordinateKey, barcodesDict);
+  var neighbours = getNeighbouringBarcodesIncludingDisconnected(
+    coordinateKey,
+    barcodesDict
+  );
   var neighboursThatAllowAccess = [];
   for (let neighbour of neighbours) {
     if (neighbour != null) {
-      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(coordinateKey, neighbour.coordinate, barcodesDict);
-      const opp_coordinate_to_neighbour_direction = (coordinate_to_neighbour_direction + 2) % 4;
+      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(
+        coordinateKey,
+        neighbour.coordinate,
+        barcodesDict
+      );
+      const opp_coordinate_to_neighbour_direction =
+        (coordinate_to_neighbour_direction + 2) % 4;
       const neighbour_ns = neighbour.neighbours;
-      const neighbour_to_coordinate_ns = neighbour_ns[opp_coordinate_to_neighbour_direction];
+      const neighbour_to_coordinate_ns =
+        neighbour_ns[opp_coordinate_to_neighbour_direction];
       const neighbourToCoordinateBotMovement = neighbour_to_coordinate_ns[1];
       const neighbourToCoordinateRackMovement = neighbour_to_coordinate_ns[2];
-      if (neighbourToCoordinateBotMovement == 1 || neighbourToCoordinateRackMovement == 1) {
+      if (
+        neighbourToCoordinateBotMovement == 1 ||
+        neighbourToCoordinateRackMovement == 1
+      ) {
         neighboursThatAllowAccess.push(neighbour);
-      }
-      else {
+      } else {
         neighboursThatAllowAccess.push(null);
       }
-
-
-    }
-
-    else {
-
+    } else {
       neighboursThatAllowAccess.push(neighbour);
     }
-  };
+  }
   return neighboursThatAllowAccess;
 };
 
-export const getNeighboursThatAllowAccessWithLiftState = (coordinateKey, barcodesDict,liftState) => {
-  var neighbours = getNeighbouringBarcodesIncludingDisconnected(coordinateKey, barcodesDict);
+export const getNeighboursThatAllowAccessWithLiftState = (
+  coordinateKey,
+  barcodesDict,
+  liftState
+) => {
+  var neighbours = getNeighbouringBarcodesIncludingDisconnected(
+    coordinateKey,
+    barcodesDict
+  );
   var neighboursThatAllowAccess = [];
   for (let neighbour of neighbours) {
     if (neighbour != null) {
-      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(coordinateKey, neighbour.coordinate, barcodesDict);
-      const opp_coordinate_to_neighbour_direction = (coordinate_to_neighbour_direction + 2) % 4;
+      const coordinate_to_neighbour_direction = getDirectionIncludingDisconnected(
+        coordinateKey,
+        neighbour.coordinate,
+        barcodesDict
+      );
+      const opp_coordinate_to_neighbour_direction =
+        (coordinate_to_neighbour_direction + 2) % 4;
       const neighbour_ns = neighbour.neighbours;
-      const neighbour_to_coordinate_ns = neighbour_ns[opp_coordinate_to_neighbour_direction];
-      const neighbourToCoordinateLiftStateMovement = neighbour_to_coordinate_ns[liftState+1];
-      if (neighbourToCoordinateLiftStateMovement == 1 ) {
+      const neighbour_to_coordinate_ns =
+        neighbour_ns[opp_coordinate_to_neighbour_direction];
+      const neighbourToCoordinateLiftStateMovement =
+        neighbour_to_coordinate_ns[liftState + 1];
+      if (neighbourToCoordinateLiftStateMovement == 1) {
         neighboursThatAllowAccess.push(neighbour);
-      }
-      else {
+      } else {
         neighboursThatAllowAccess.push(null);
       }
-
-
-    }
-
-    else {
-
+    } else {
       neighboursThatAllowAccess.push(neighbour);
     }
-  };
+  }
   return neighboursThatAllowAccess;
 };
 
@@ -196,7 +214,7 @@ export var checkValidDirection = (emptyDirTileIdListObj) => {
   var emptyDirTileIdList = [];
   var directions = {};
   Object.keys(emptyDirTileIdListObj).forEach(function(key, index) {
-    if(index == 0) {
+    if (index == 0) {
       emptyDirTileIdListObj[key].forEach(function(val) {
         directions[val[0]] = val[0];
         emptyDirTileIdDirObj[val[0]] = [];
@@ -204,43 +222,46 @@ export var checkValidDirection = (emptyDirTileIdListObj) => {
       });
     } else {
       emptyDirTileIdListObj[key].forEach(function(val) {
-        if(directions[val[0]] != undefined) {
+        if (directions[val[0]] != undefined) {
           emptyDirTileIdDirObj[val[0]].push(val);
         }
       });
     }
   });
   Object.keys(directions).forEach(function(val) {
-    if(emptyDirTileIdDirObj[val].length == Object.keys(emptyDirTileIdListObj).length) {
+    if (
+      emptyDirTileIdDirObj[val].length ==
+      Object.keys(emptyDirTileIdListObj).length
+    ) {
       emptyDirTileIdList.push(emptyDirTileIdDirObj[val]);
     }
   });
   return emptyDirTileIdList.length > 0 ? emptyDirTileIdList : [];
 };
 
-export var isValidCoordinateKey = coordinateKey =>
+export var isValidCoordinateKey = (coordinateKey) =>
   /^\d*,\d*$/.test(coordinateKey);
 
-export var implicitBarcodeToCoordinateTuple = barcode => {
+export var implicitBarcodeToCoordinateTuple = (barcode) => {
   const coordinateKey = implicitBarcodeToCoordinate(barcode);
   return coordinateKeyToTupleOfIntegers(coordinateKey);
 };
 
-export var coordinateKeyToTupleOfIntegers = coordinateKey => {
+export var coordinateKeyToTupleOfIntegers = (coordinateKey) => {
   // '12,3' => [12, 3]
   if (!isValidCoordinateKey(coordinateKey)) {
     throw new Error(`${coordinateKey} does not match coordinateKey pattern.`);
   }
-  return coordinateKey.split(",").map(val => parseInt(val));
+  return coordinateKey.split(",").map((val) => parseInt(val));
 };
 
 // implicit conversion. used for eg. getting new barcode's barcode
-export var implicitCoordinateKeyToBarcode = coordinateKey => {
+export var implicitCoordinateKeyToBarcode = (coordinateKey) => {
   var [x, y] = coordinateKeyToTupleOfIntegers(coordinateKey);
   return encode_barcode(y, x);
 };
 
-export var tupleOfIntegersToCoordinateKey = tuple => {
+export var tupleOfIntegersToCoordinateKey = (tuple) => {
   return `${tuple[0]},${tuple[1]}`;
 };
 // gets unique ids for number of entities
@@ -248,7 +269,7 @@ export var tupleOfIntegersToCoordinateKey = tuple => {
 export const getIdsForEntities = (numEntities = 0, existingEntities = {}) => {
   var startId = Object.keys(existingEntities).length + 1;
   // https://stackoverflow.com/questions/36947847/how-to-generate-range-of-numbers-from-0-to-n-in-es2015-only
-  return [...Array(numEntities).keys()].map(idx => idx + startId);
+  return [...Array(numEntities).keys()].map((idx) => idx + startId);
 };
 
 export var createFloorFromCoordinateData = ({
@@ -258,7 +279,7 @@ export var createFloorFromCoordinateData = ({
   column_end,
   msu_dimensions,
   barcode_distances,
-  floor_id
+  floor_id,
 }) => {
   // be careful to satisfy json schema
   // iterate and fill up map_values
@@ -277,7 +298,7 @@ export var createFloorFromCoordinateData = ({
         coordinate: `${column},${row}`,
         blocked: false,
         size_info: [size, size, size, size],
-        msu_dimensions: msu_dimensions
+        msu_dimensions: msu_dimensions,
       };
       if (row == row_start) {
         unit.neighbours[0] = [0, 0, 0];
@@ -301,7 +322,7 @@ export var createFloorFromCoordinateData = ({
     odsExcludeds: [],
     dockPoints: [],
     fireEmergencies: [],
-    map_values
+    map_values,
   };
 };
 
@@ -320,15 +341,11 @@ export var createMapFromCoordinateData = (
       {
         zone_id: "defzone",
         blocked: false,
-        paused: false
-      }
+        paused: false,
+      },
     ],
     sectors: [
-      {
-        sector_id: "0",
-        blocked: false,
-        paused: false
-      }
+      {},
     ],
     sectorBarcodeMapping: [{}],
     sectorMxUPreferences: {},
@@ -341,9 +358,9 @@ export var createMapFromCoordinateData = (
         column_end,
         msu_dimensions,
         barcode_distances,
-        floor_id: 1
-      })
-    ]
+        floor_id: 1,
+      }),
+    ],
   };
 };
 
@@ -360,15 +377,15 @@ export const addNeighbourToBarcode = (barcode, direction, nbCoordinate) => {
     ...barcode,
     // https://medium.com/@giltayar/immutably-setting-a-value-in-a-js-array-or-how-an-array-is-also-an-object-55337f4d6702
     neighbours: Object.assign([...barcode.neighbours], {
-      [direction]: [1, 1, 1]
-    })
+      [direction]: [1, 1, 1],
+    }),
   };
   if (barcode.adjacency) {
     return {
       ...withoutAdjacency,
       adjacency: Object.assign([...barcode.adjacency], {
-        [direction]: coordinateKeyToTupleOfIntegers(nbCoordinate)
-      })
+        [direction]: coordinateKeyToTupleOfIntegers(nbCoordinate),
+      }),
     };
   }
   return withoutAdjacency;
@@ -382,15 +399,15 @@ export const deleteNeighbourFromBarcode = (
   const withoutAdjacency = {
     ...barcode,
     neighbours: Object.assign([...barcode.neighbours], {
-      [direction]: [doesNeighbourExist ? 1 : 0, 0, 0]
-    })
+      [direction]: [doesNeighbourExist ? 1 : 0, 0, 0],
+    }),
   };
   if (barcode.adjacency) {
     return {
       ...withoutAdjacency,
       adjacency: Object.assign([...barcode.adjacency], {
-        [direction]: null
-      })
+        [direction]: null,
+      }),
     };
   }
   return withoutAdjacency;
@@ -398,15 +415,15 @@ export const deleteNeighbourFromBarcode = (
 
 // Func used to convert barcode to coordinate.
 // "500.143" => "143,500"
-export const implicitBarcodeToCoordinate = barcode => {
+export const implicitBarcodeToCoordinate = (barcode) => {
   var [X, Y] = barcode.split(".");
   return parseInt(Y) + "," + parseInt(X);
 };
 
 // uses random color library to generate random colors and maps each zone to color
-export const zoneToColorMapper = zones => {
+export const zoneToColorMapper = (zones) => {
   const colors = randomColor({
-    count: Object.keys(zones).length
+    count: Object.keys(zones).length,
   });
   const zoneIds = Object.keys(zones);
   const zoneToColoroMap = {};
@@ -417,9 +434,9 @@ export const zoneToColorMapper = zones => {
 };
 
 // uses random color library to generate random colors and maps each sector to color
-export const sectorToColorMapper = sectors => {
+export const sectorToColorMapper = (sectors) => {
   const colors = randomColor({
-    count: Object.keys(sectors).length
+    count: Object.keys(sectors).length,
   });
   const sectorIds = Object.keys(sectors);
   const sectorToColoroMap = {};

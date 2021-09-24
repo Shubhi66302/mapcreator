@@ -4,40 +4,55 @@ import _ from "lodash";
 import {
   getBarcode,
   getBarcodes,
-  currentFloorBarcodeToCoordinateKeySelector
+  currentFloorBarcodeToCoordinateKeySelector,
 } from "./barcode-selectors";
 import * as constants from "../../constants";
 import {
   tupleOfIntegersToCoordinateKey,
   getNeighbouringBarcodes,
   zoneToColorMapper,
-  sectorToColorMapper
+  sectorToColorMapper,
 } from "../util";
 
 export const tileNameWithoutEntityDataSelector = createSelector(
   getBarcode,
-  state => state.selection.zoneViewMode,
-  state => state.selection.sectorViewMode,
-  state => state.normalizedMap.entities.odsExcluded || {},
+  (state) => state.selection.zoneViewMode,
+  (state) => state.selection.sectorViewMode,
+  (state) => state.normalizedMap.entities.odsExcluded || {},
   (barcode, zoneViewMode, sectorViewMode, odsExcluded) => {
     var tileSprite = constants.NORMAL;
-    // console.log(barcode.path_status , " path_status ")
     // don't show storables in zone view mode; otherwise their darker color messes with the tint
-    if (barcode.store_status && !zoneViewMode && !sectorViewMode) tileSprite = constants.STORABLE;
+    if (barcode.store_status && !zoneViewMode && !sectorViewMode)
+      tileSprite = constants.STORABLE;
     if (barcode.special && !zoneViewMode) tileSprite = constants.SPECIAL;
     if (barcode.blocked && !zoneViewMode) tileSprite = constants.BLOCKED;
-    if ( barcode.path_status > 0 && !zoneViewMode && !sectorViewMode) tileSprite = constants.PATH;
-    if ( barcode.node_status > 0 && !zoneViewMode && !sectorViewMode) tileSprite = constants.QUEUE;
+    if (barcode.path_status > 0 && !zoneViewMode && !sectorViewMode)
+      tileSprite = constants.PATH;
+    if (barcode.node_status > 0 && !zoneViewMode && !sectorViewMode)
+      tileSprite = constants.QUEUE;
 
     Object.keys(odsExcluded).forEach((ods) => {
-      if(barcode.coordinate === odsExcluded[ods].coordinate && !zoneViewMode && odsExcluded[ods].excluded) {
+      if (
+        barcode.coordinate === odsExcluded[ods].coordinate &&
+        !zoneViewMode &&
+        odsExcluded[ods].excluded
+      ) {
         var odsDirection = odsExcluded[ods].ods_tuple.split("--")[1];
-        switch(odsDirection) {
-          case "0": tileSprite = constants.ODS_EXCLUDED_TOP; break; 
-          case "1": tileSprite = constants.ODS_EXCLUDED_RIGHT; break; 
-          case "2": tileSprite = constants.ODS_EXCLUDED_BOTTOM; break; 
-          case "3": tileSprite = constants.ODS_EXCLUDED_LEFT; break;
-          default: tileSprite = constants.ODS_EXCLUDED;
+        switch (odsDirection) {
+          case "0":
+            tileSprite = constants.ODS_EXCLUDED_TOP;
+            break;
+          case "1":
+            tileSprite = constants.ODS_EXCLUDED_RIGHT;
+            break;
+          case "2":
+            tileSprite = constants.ODS_EXCLUDED_BOTTOM;
+            break;
+          case "3":
+            tileSprite = constants.ODS_EXCLUDED_LEFT;
+            break;
+          default:
+            tileSprite = constants.ODS_EXCLUDED;
         }
       }
     });
@@ -53,7 +68,7 @@ export const tileSpriteNamesWithoutEntityData = createSelector(
     // TODO: should replace it with a 'x' sprite
     var spriteNames = barcode.barcode
       .split("")
-      .map(char =>
+      .map((char) =>
         char !== "." ? `${char}.png` : constants.BARCODE_DOT_SPRITE
       );
     return [tileName, ...spriteNames, constants.BARCODE_CENTRE_SPRITE];
@@ -63,11 +78,11 @@ export const tileSpriteNamesWithoutEntityData = createSelector(
 export const getParticularEntity = (state, { entityName }) =>
   state.normalizedMap.entities[entityName] || {};
 
-const getQueueData = state => state.normalizedMap.entities.queueData || {};
+const getQueueData = (state) => state.normalizedMap.entities.queueData || {};
 
 export const getQueueMap = createSelector(
   getQueueData,
-  queueData => {
+  (queueData) => {
     var ret = {};
     var queueCoordinates = [].concat(
       ...Object.entries(queueData).map(([, { coordinates }]) => coordinates)
@@ -75,7 +90,7 @@ export const getQueueMap = createSelector(
     // make unique
     var queueCoordinatesWithoutDuplicates = new Set(queueCoordinates);
     queueCoordinatesWithoutDuplicates.forEach(
-      v1 => (ret[v1] = constants.QUEUE)
+      (v1) => (ret[v1] = constants.QUEUE)
     );
     return ret;
   }
@@ -96,15 +111,15 @@ const entitySelectorHelperData = {
   elevator: [
     "elevator",
     constants.ELEVATOR,
-    e =>
+    (e) =>
       e.coordinate_list.map(({ coordinate }) =>
         tupleOfIntegersToCoordinateKey(coordinate)
-      )
-  ]
+      ),
+  ],
 };
 
 // all entities except elevator have one coordinate per entity
-const defaultGetCoordinatesFromEntity = e => [e];
+const defaultGetCoordinatesFromEntity = (e) => [e];
 
 export const getParticularEntityMap = createCachedSelector(
   getParticularEntity,
@@ -114,19 +129,29 @@ export const getParticularEntityMap = createCachedSelector(
     const [
       ,
       entitySprite,
-      getCoordinatesFromEntity = defaultGetCoordinatesFromEntity
+      getCoordinatesFromEntity = defaultGetCoordinatesFromEntity,
     ] = entitySelectorHelperData[entityName];
     var list = Object.entries(particularEntities).map(([, val]) => val);
-    var coordinateKeys = _.flatten(list.map(e => getCoordinatesFromEntity(e)));
-    coordinateKeys.forEach(key => {
-      if(key.pick_direction != undefined) {
-        switch(key.pick_direction) {
-          case 0: ret[key.coordinate] = constants.PPS_TOP; break;
-          case 1: ret[key.coordinate] = constants.PPS_RIGHT; break;
-          case 2: ret[key.coordinate] = constants.PPS_BOTTOM; break;
-          case 3: ret[key.coordinate] = constants.PPS_LEFT; break;
+    var coordinateKeys = _.flatten(
+      list.map((e) => getCoordinatesFromEntity(e))
+    );
+    coordinateKeys.forEach((key) => {
+      if (key.pick_direction != undefined) {
+        switch (key.pick_direction) {
+          case 0:
+            ret[key.coordinate] = constants.PPS_TOP;
+            break;
+          case 1:
+            ret[key.coordinate] = constants.PPS_RIGHT;
+            break;
+          case 2:
+            ret[key.coordinate] = constants.PPS_BOTTOM;
+            break;
+          case 3:
+            ret[key.coordinate] = constants.PPS_LEFT;
+            break;
         }
-      } else if(key.coordinate != undefined) {
+      } else if (key.coordinate != undefined) {
         ret[key.coordinate] = entitySprite;
       } else {
         ret[key] = entitySprite;
@@ -136,7 +161,7 @@ export const getParticularEntityMap = createCachedSelector(
   }
 )((state, { entityName }) => entityName);
 
-export const getChargerEntryMap = state => {
+export const getChargerEntryMap = (state) => {
   var chargerEntities = getParticularEntity(state, { entityName: "charger" });
   var barcodesDict = getBarcodes(state);
   var ret = {};
@@ -157,13 +182,13 @@ export const getChargerEntryMap = state => {
   return ret;
 };
 
-export const getPpsQueueMap = state => {
+export const getPpsQueueMap = (state) => {
   var PpsEntities = getParticularEntity(state, { entityName: "pps" });
   var ret = {};
   Object.entries(PpsEntities).forEach(([, { coordinate, queue_barcodes }]) => {
     _.forEach(queue_barcodes, function(queue_barcode) {
       var qb_coordinate = currentFloorBarcodeToCoordinateKeySelector(state, {
-        barcode: queue_barcode
+        barcode: queue_barcode,
       });
 
       if (qb_coordinate != coordinate) {
@@ -176,9 +201,9 @@ export const getPpsQueueMap = state => {
 
 // creates map of tileId -> spriteName for all special tiles i.e. tile which
 // have some entity (charger, pps, queue etc.)
-export const tileEntitySpritesMapSelector = state => {
+export const tileEntitySpritesMapSelector = (state) => {
   var ret = {};
-  Object.keys(entitySelectorHelperData).forEach(key => {
+  Object.keys(entitySelectorHelperData).forEach((key) => {
     ret = { ...ret, ...getParticularEntityMap(state, { entityName: key }) };
   });
   // queue also
@@ -192,13 +217,13 @@ export const tileEntitySpritesMapSelector = state => {
 
 export const specialTileSpritesMapSelector = createSelector(
   tileEntitySpritesMapSelector,
-  state => state.selection.mapTiles,
-  state => state.selection.zoneViewMode,
-  state => state.selection.sectorViewMode,
+  (state) => state.selection.mapTiles,
+  (state) => state.selection.zoneViewMode,
+  (state) => state.selection.sectorViewMode,
   (entitySpritesMap, selectedMapTiles, zoneViewMode, sectorViewMode) => {
     var ret = {};
     Object.keys(selectedMapTiles).forEach(
-      key => (ret[key] = constants.SELECTED)
+      (key) => (ret[key] = constants.SELECTED)
     );
     // if in zone view, don't render any entities, just selections; otherwise they mess with the tint
     if (zoneViewMode || sectorViewMode) return ret;
@@ -206,19 +231,29 @@ export const specialTileSpritesMapSelector = createSelector(
   }
 );
 
-export const getZones = state => state.normalizedMap.entities.zone || {};
-export const getSectors = state => state.normalizedMap.entities.sector || {};
+export const getZones = (state) => state.normalizedMap.entities.zone || {};
+export const getSectors = (state) => {
+  const FLoor = state.currentFloor;
+  const sectors =
+    state.normalizedMap.entities.sector === undefined ||
+    _.isEmpty(state.normalizedMap.entities.sector)
+      ? state.normalizedMap.entities.floor[FLoor].sectors || {}
+      : state.normalizedMap.entities.sector || {};
+  return sectors;
+};
+
 export const getZoneToColorMap = createSelector(
   getZones,
-  zones => {
+  (zones) => {
     const newZoneMap = zoneToColorMapper(zones);
     return newZoneMap;
   }
 );
 export const getSectorToColorMap = createSelector(
   getSectors,
-  sectors => {
+  (sectors) => {
     const newSectorMap = sectorToColorMapper(sectors);
+
     return newSectorMap;
   }
 );
@@ -231,10 +266,9 @@ export const tileTintSelector = createSelector(
   getZoneToColorMap,
   getSectorToColorMap,
   getBarcode,
-  state => state.selection.zoneViewMode,
-  state => state.selection.sectorViewMode,
+  (state) => state.selection.zoneViewMode,
+  (state) => state.selection.sectorViewMode,
   (zoneToColorMap, sectorToColorMap, barcode, zoneViewMode, sectorViewMode) =>
     zoneViewMode
-      ? strToHex(zoneToColorMap[barcode.zone] || "#ffffff")
-      : (sectorViewMode ? strToHex(sectorToColorMap[barcode.sector] || "#ffffff") : 0xffffff)
+      ? strToHex(zoneToColorMap[barcode.zone] || "#ffffff"): sectorViewMode? strToHex(sectorToColorMap[barcode.sector] || "#ffffff"): 0xffffff
 );

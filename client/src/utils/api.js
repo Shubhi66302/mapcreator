@@ -1,13 +1,13 @@
 const BASENAME = process.env.REACT_APP_BASENAME || "";
 // const BASENAME = "https://mapcreator.labs.greyorange.com" || "";
-const getMap = mapId => fetch(`${BASENAME}/api/map/${mapId}`);
+const getMap = (mapId) => fetch(`${BASENAME}/api/map/${mapId}`);
 const updateMap = (mapId, map) =>
   fetch(`${BASENAME}/api/map/${mapId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      map
-    })
+      map,
+    }),
   });
 const createMap = (denormalizedMap, name) =>
   fetch(`${BASENAME}/api/createMap`, {
@@ -15,26 +15,27 @@ const createMap = (denormalizedMap, name) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       map: denormalizedMap,
-      name
-    })
+      name,
+    }),
   });
-const deleteMap = mapId =>
+const deleteMap = (mapId) =>
   fetch(`${BASENAME}/api/deleteMap/${mapId}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
   });
 
-const requestValidation = payload =>
+const requestValidation = (payload) =>
   fetch(`${BASENAME}/api/requestValidation`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-});
+    body: JSON.stringify(payload),
+  });
 
-const getMaps = query => fetch(`${BASENAME}/api/maps?str=${query}`);
+const getMaps = (query) => fetch(`${BASENAME}/api/maps?str=${query}`);
 const getAllMaps = () => fetch(`${BASENAME}/api/maps`);
 
-const getSampleRacksJson = mapId => fetch(`${BASENAME}/api/racksJson/${mapId}`);
+const getSampleRacksJson = (mapId) =>
+  fetch(`${BASENAME}/api/racksJson/${mapId}`);
 
 export {
   getMap,
@@ -44,5 +45,5 @@ export {
   requestValidation,
   getMaps,
   getAllMaps,
-  getSampleRacksJson
+  getSampleRacksJson,
 };

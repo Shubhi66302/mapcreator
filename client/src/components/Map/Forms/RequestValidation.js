@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ButtonForm from "./Util/ButtonForm";
 import { requestValidation } from "actions/actions";
 import { connect } from "react-redux";
-import { getMapId, getMapName, getNormalizedMap } from "utils/selectors";
+import { getMapId, getNormalizedMap } from "utils/selectors";
 import { withRouter } from "react-router-dom";
 
 class RequestValidation extends Component {
@@ -12,17 +12,17 @@ class RequestValidation extends Component {
   };
   toggle = () => this.setState({ show: !this.state.show });
   onSubmit = () => {
-    const { dispatch, history, mapId, nMap } = this.props;
+    const { dispatch, mapId, nMap } = this.props;
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(emailRegex.test(this.state.email)){
-      dispatch(requestValidation(mapId, this.state.email, nMap.entities.mapObj[mapId].updatedAt, history));
+      dispatch(requestValidation(mapId, this.state.email, nMap.entities.mapObj[mapId].updatedAt));
     } else {
       this.setState({ invalid: "Invalid Email ID!" });
     }
     this.toggle();
   };
   render() {
-    const { show, email, invalid } = this.state;
+    const { show, email } = this.state;
     const { mapId, nMap } = this.props;
     return (
       <ButtonForm

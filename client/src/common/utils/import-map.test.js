@@ -1,6 +1,9 @@
 require("dotenv").config({ path: ".env.test" });
 import getLoadedAjv from "./get-loaded-ajv";
-import importMap, { detectSingleFloor, getOdsExcludedBarcode } from "./import-map";
+import importMap, {
+  detectSingleFloor,
+  getOdsExcludedBarcode,
+} from "./import-map";
 import continentalJsons from "test-data/test-jsons/maps/continental/all";
 import continental2MapJson from "test-data/test-jsons/continental-2-map.json";
 import threeSevenJsons from "test-data/test-jsons/maps/3-7/all";
@@ -73,9 +76,10 @@ describe("import good maps", () => {
   test("import 3-7 map with single element array style zone.json", () => {
     var map = importMap({
       ...threeSevenJsons,
-      zoneJson: [threeSevenJsons.zoneJson]
+      zoneJson: [threeSevenJsons.zoneJson],
     });
     var result = mapValidate(map);
+    // console.log("map..." , map , "\n" , "res..." , result, '\n' , "zone....." ,threeSevenJsons.zoneJson )
     //expect(mapValidate.errors).toBeNull();
     result = true;
     expect(result).toBe(true);
@@ -84,9 +88,23 @@ describe("import good maps", () => {
   test("import 3-7 map with single element array style sector.json", () => {
     var map = importMap({
       ...threeSevenJsons,
-      sectorJson: [threeSevenJsons.sectorJson]
+      sectorJson: [
+        {
+          "0": [
+            "[10,10]",
+            "[11,10]",
+            "[12,10]"
+          ],
+          "2": [
+            "[13,10]",
+            "[14,10]",
+            "[15,10]"
+          ]
+        }
+      ]
     });
     var result = mapValidate(map);
+    // console.log("map..." , map , "\n" , "res..." , result)
     result = true;
     //expect(mapValidate.errors).toBeNull();
     expect(result).toBe(true);
@@ -97,9 +115,11 @@ describe("import good maps", () => {
       ...threeSevenJsons,
       queueDataJson: [
         [["012.012", 3], ["012.013", 3], ["012.014", 4]],
-        [["012.015", 4]]
-      ]
+        [["012.015", 4]],
+      ],
     });
+    // console.log("map..." , map , "\n" , "res..." , result, '\n' , "zone....." ,threeSevenJsons.queueDataJson )
+
     var result = mapValidate(map);
     result = true;
     //expect(mapValidate.errors).toBeNull();
@@ -122,11 +142,12 @@ describe("import good maps", () => {
     var map = importMap({
       ...threeSevenJsons,
       odsExcludedJson: {
-        "ods_excluded_list":[
-          {"excluded":true,"ods_tuple":"010.010--0"},
-          {"excluded":true,"ods_tuple":"010.010--1"},
-          {"excluded":true,"ods_tuple":"010.011--1"}
-        ]}
+        ods_excluded_list: [
+          { excluded: true, ods_tuple: "010.010--0" },
+          { excluded: true, ods_tuple: "010.010--1" },
+          { excluded: true, ods_tuple: "010.011--1" },
+        ],
+      },
     });
     var result = mapValidate(map);
     //expect(mapValidate.errors).toBeNull();
@@ -167,9 +188,9 @@ describe("import bad maps", () => {
               barcode: "012.015",
               neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
               size_info: [750, 750, 750, 750],
-              botid: "null"
-            }
-          ]
+              botid: "null",
+            },
+          ],
         },
         {
           floor_id: 2,
@@ -183,11 +204,11 @@ describe("import bad maps", () => {
               barcode: "017.018",
               neighbours: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
               size_info: [750, 750, 750, 750],
-              botid: "null"
-            }
-          ]
-        }
-      ]
+              botid: "null",
+            },
+          ],
+        },
+      ],
     };
     expect(() => importMap(badMap)).toThrowError(
       /Duplicate barcodes having same coordinate found in map\.json/
@@ -197,7 +218,11 @@ describe("import bad maps", () => {
 
 describe("getOdsExcludedBarcode", () => {
   test("good ods tuple", () => {
-    expect(getOdsExcludedBarcode({ods_tuple: "000.000--0", excluded: true})).toBe("000.000");
-    expect(getOdsExcludedBarcode({ods_tuple: "001.002--1", excluded: true})).toBe("001.002");
+    expect(
+      getOdsExcludedBarcode({ ods_tuple: "000.000--0", excluded: true })
+    ).toBe("000.000");
+    expect(
+      getOdsExcludedBarcode({ ods_tuple: "001.002--1", excluded: true })
+    ).toBe("001.002");
   });
 });

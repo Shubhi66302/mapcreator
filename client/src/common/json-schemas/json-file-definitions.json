@@ -84,33 +84,9 @@
   },
   "sector_json": {
     "$id": "sector_json",
-    "description": "Weird http data fields",
-    "type": "object",
-    "required": ["header", "url", "data", "type"],
-    "properties": {
-      "header": {
-        "type": "object",
-        "required": ["content-type", "accept"],
-        "properties": {
-          "content-type": { "type": "string" },
-          "accept": { "type": "string" }
-        }
-      },
-      "url": { "type": "string" },
-      "data": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["sectorrec"],
-          "properties": {
-            "sectorrec": {
-              "$ref": "sector"
-            }
-          }
-        }
-      },
-      "type": { "type": "string" }
-    }
+    "description": "legacy for importing sector.json that are array instead of objects",
+    "type": "array",
+    "items": { "$ref": "sector" }
   },
   "single_array_sector_json": {
     "$id": "single_array_sector_json",

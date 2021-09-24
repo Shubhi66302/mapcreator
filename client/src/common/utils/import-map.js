@@ -5,10 +5,10 @@ import getLoadedAjv from "common/utils/get-loaded-ajv";
 import {
   parseCoordinateString,
   findFloorIndex,
-  findCoordinateForBarcode
+  findCoordinateForBarcode,
 } from "common/utils/util";
-
-const prettyAjvError = errors => JSON.stringify(errors[0], undefined, 2);
+import _ from "lodash";
+const prettyAjvError = (errors) => JSON.stringify(errors[0], undefined, 2);
 
 var ajv = getLoadedAjv();
 const validate = (schemaName, jsonFile, throwError = true) => {
@@ -23,11 +23,17 @@ const validate = (schemaName, jsonFile, throwError = true) => {
   return true;
 };
 
+export var findFloorbyCoordinate = (floors, coordinate) =>
+  _.findIndex(floors, ({ map_values }) =>
+    map_values.some((barcode) => barcode.coordinate == coordinate)
+  );
+
 // exported for testing
-export const getOdsExcludedBarcode = ({ods_tuple}) => ods_tuple.match(/^(.+)--\d$/)[1];
+export const getOdsExcludedBarcode = ({ ods_tuple }) =>
+  ods_tuple.match(/^(.+)--\d$/)[1];
 
 // if floor_id is present, then its multifloor
-export const detectSingleFloor = mapJson =>
+export const detectSingleFloor = (mapJson) =>
   Array.isArray(mapJson) &&
   mapJson.length > 0 &&
   mapJson[0].floor_id == undefined;
@@ -39,57 +45,60 @@ export default ({
   fireEmergencyJson = [],
   odsExcludedJson = { ods_excluded_list: [] },
   ppsJson = [],
+  sectorJson = [],
   dockPointJson = [],
   queueDataJson = [],
   zoneJson = {
     header: {
       "content-type": "application/json",
-      accept: "application/json"
+      accept: "application/json",
     },
     type: "POST",
     data: [],
-    url: "/api/zonerec"
-  }
+    url: "/api/zonerec",
+  },
 }) => {
   // the resulting map
   var map = {};
   // map.json is required
   if (!mapJson) throw new Error("map.json is required");
+
   // check if mapJson is valid and add it to map. should first detect if single or multi floor
   if (detectSingleFloor(mapJson)) {
     validate("single_floor_map_json", mapJson);
     mapJson = [
       {
         floor_id: 1,
-        map_values: mapJson
-      }
+        map_values: mapJson,
+      },
     ];
   } else {
     validate("map_json", mapJson);
   }
 
-  if(!map.sectorBarcodeMapping) map.sectorBarcodeMapping = [];
-  if(!map.sectorMxUPreferences) map.sectorMxUPreferences = {};
-  if(!map.sectors) map.sectors = [];
+  if (!map.sectorBarcodeMapping) map.sectorBarcodeMapping = [];
+  if (!map.sectorMxUPreferences) map.sectorMxUPreferences = {};
+  if (!map.sectors) map.sectors = [];
 
   // convert coordinate to numbers before adding!
   map["floors"] = mapJson.map(({ floor_id, map_values }) => ({
     floor_id,
     map_values: map_values.map(({ coordinate, ...rest }) => ({
       ...rest,
-      coordinate: parseCoordinateString(coordinate)
+      coordinate: parseCoordinateString(coordinate),
     })),
     chargers: [],
     fireEmergencies: [],
     odsExcludeds: [],
     ppses: [],
+    sectors: [],
     dockPoints: [],
     sectorBarcodeMapping: [],
-    sectorMxUPreferences: {}
+    sectorMxUPreferences: {},
   }));
   // assert that floors do not have barcodes with same coordinate
   var floors_barcodes = map.floors.map(({ map_values }) =>
-    map_values.map(map_value => map_value.coordinate)
+    map_values.map((map_value) => map_value.coordinate)
   );
   var concated = [].concat(...floors_barcodes);
   var uniqueCoordinateSet = new Set(concated);
@@ -111,15 +120,15 @@ export default ({
   // check elevator and zone jsons and queue data and add
   // zone and elevator already have ids
   [
-    [elevatorJson, "elevator_json", "elevators", e => e, null],
+    [elevatorJson, "elevator_json", "elevators", (e) => e, null],
     [
       zoneJson,
       "zone_json",
       "zones",
-      e => e.data.map(({ zonerec }) => zonerec),
-      null
+      (e) => e.data.map(({ zonerec }) => zonerec),
+      null,
     ],
-    [queueDataJson, "queue_data_json", "queueDatas", e => e, "queue_data_id"]
+    [queueDataJson, "queue_data_json", "queueDatas", (e) => e, "queue_data_id"],
   ].forEach(([jsonFile, schemaName, key, convert, idField]) => {
     validate(schemaName, jsonFile);
     var elms = convert(jsonFile);
@@ -137,7 +146,7 @@ export default ({
         data: elm,
         coordinates: elm.map(([barcode]) =>
           findCoordinateForBarcode(allMapValues, barcode)
-        )
+        ),
       }));
     } else if (idField)
       elms = elms.map((elm, idx) => ({ ...elm, [idField]: idx + 1 }));
@@ -154,36 +163,37 @@ export default ({
       chargerJson,
       "charger_json",
       "chargers",
-      e => e,
+      (e) => e,
       "charger_location",
-      "charger_id"
+      "charger_id",
     ],
     [
       fireEmergencyJson,
       "fire_emergency_json",
       "fireEmergencies",
-      e => e,
+      (e) => e,
       "barcode",
-      "fire_emergency_id"
+      "fire_emergency_id",
     ],
     [
       odsExcludedJson,
       "ods_excluded_json",
       "odsExcludeds",
-      e => e.ods_excluded_list,
+      (e) => e.ods_excluded_list,
       getOdsExcludedBarcode,
-      "ods_excluded_id"
+      "ods_excluded_id",
     ],
-    [ppsJson, "pps_json", "ppses", e => e, "location", "pps_id"],
+    [ppsJson, "pps_json", "ppses", (e) => e, "location", "pps_id"],
+    // [sectorJson, "sector_json", "sectors", (e) => e, "sector_id"],
     // TODO: not tested dock_point jsons, should probably do that
     [
       dockPointJson,
       "dock_point_json",
       "dockPoints",
-      e => e,
+      (e) => e,
       "position",
-      "dock_point_id"
-    ]
+      "dock_point_id",
+    ],
   ].forEach(
     ([jsonFile, schemaName, key, convert, barcodeFindFnOrString, idField]) => {
       validate(schemaName, jsonFile);
@@ -191,13 +201,15 @@ export default ({
       // to that floor
       var listOfThings = convert(jsonFile);
       listOfThings.forEach((thing, idx) => {
-        var barcode = typeof barcodeFindFnOrString == "string" ? thing[barcodeFindFnOrString]: barcodeFindFnOrString(thing);
+        var barcode =
+          typeof barcodeFindFnOrString == "string"
+            ? thing[barcodeFindFnOrString]
+            : barcodeFindFnOrString(thing);
+
         var floorIdx = findFloorIndex(map.floors, barcode);
         if (floorIdx == -1)
           throw new Error(
-            `Could not find floor for barcode ${
-              barcode
-            } referenced in ${schemaName}`
+            `Could not find floor for barcode ${barcode} referenced in ${schemaName}`
           );
         // assign coordinate to thing. this will be used throughout mapcreator to find its position instead of barcode
         thing.coordinate = findCoordinateForBarcode(
@@ -208,6 +220,37 @@ export default ({
         if (idField && !thing[idField]) thing[idField] = idx + 1;
         map.floors[floorIdx][key].push(thing);
       });
+    }
+  );
+
+  [[sectorJson, "sector_json", "sectors", (e) => e, "sector_id"]].forEach(
+    ([jsonFile, schemaName, key, convert, idField]) => {
+      validate(schemaName, jsonFile);
+      // go through list of things and find correct floor for them, and then add
+      // to that floor
+      var listOfThings = convert(jsonFile);
+      // console.log("listOfThings" , Object.values(listOfThings) ,"type" ,typeof(Object.values(listOfThings)))
+      for (const thing of Object.values(listOfThings)) {
+        // console.log("thing" , thing , "type" , typeof(thing))
+        Object.entries(thing).forEach(([sector_id, arr]) => {
+          var obj = { sector_id: arr };
+          if (arr !== undefined && arr.length !== 0) {
+            var coordinate = arr[0]
+              .split(" ")
+              .toString()
+              .replace("[", "")
+              .replace("]", "");
+            var floorIdx = findFloorbyCoordinate(map.floors, coordinate);
+            if (floorIdx == -1)
+              throw new Error(
+                `Could not find floor for coordinate ${coordinate} referenced in ${schemaName} ${idField} ${sector_id}`
+              );
+
+            map.floors[floorIdx][key].push(obj);
+          }
+        });
+        //
+      }
     }
   );
   // TODO: should we run validation here also? it should definitely be done at server

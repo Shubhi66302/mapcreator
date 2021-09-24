@@ -458,13 +458,13 @@ export const deleteMap = (id, history) => (dispatch) => {
     .catch((error) => dispatch(setErrorMessage(error)));
 };
 
-export const requestValidation = (id, email, map_updated_time, history) => (dispatch, getState) => {
+export const requestValidation = (id, email, map_updated_time) => (dispatch, getState) => {
   var { normalizedMap } = getState();
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   setSectorsBarcodeMapping(dispatch, getState);
   const exportedJson = exportMap(withWorldCoordinate, false);
   var payload = formatMapWithDataSuffix(id, exportedJson, map_updated_time);
-  payload['email'] = email;
+  payload["email"] = email;
   return requestValidationApi(payload)
     .then(handleErrors)
     .then(res => res.text())

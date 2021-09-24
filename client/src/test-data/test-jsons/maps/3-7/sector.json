@@ -1,12 +1,14 @@
-{
-  "header": {
-    "content-type": "application/json",
-    "accept": "application/json"
-  },
-  "type": "POST",
-  "data": [
-    { "sectorrec": { "paused": false, "blocked": false, "sector_id": "0" } },
-    { "sectorrec": { "paused": false, "blocked": false, "sector_id": "1" } }
-  ],
-  "url": "/api/sectorrec"
-}
+[
+  {
+    "0": [
+      "[10,10]",
+      "[11,10]",
+      "[12,10]"
+    ],
+    "2": [
+      "[13,10]",
+      "[14,10]",
+      "[15,10]"
+    ]
+  }
+]

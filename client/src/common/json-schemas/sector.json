@@ -1,15 +1,15 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "$id": "sector",
-  "title": "Zone schema",
+  "title": "Sector schema",
   "description":
     "Describes single sector only. sector.json file schema is different",
-  "type": "object",
-  "required": ["sector_id", "blocked", "paused"],
-  "additionalProperties": false,
-  "properties": {
-    "sector_id": { "type": "string" },
-    "blocked": { "type": "boolean" },
-    "paused": { "type": "boolean" }
-  }
+    "type": "object",
+    "required": [],
+    "additionalProperties": true,
+    "properties": {
+      "sector_id": { "type": "string" },
+      "blocked": { "type": "boolean" },
+      "paused": { "type": "boolean" }
+    }
 }

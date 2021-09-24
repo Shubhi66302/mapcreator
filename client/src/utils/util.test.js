@@ -86,11 +86,7 @@ describe("createMapFromCoordinateData", () => {
       }
     ]);
     expect(map.sectors).toEqual([
-      {
-        sector_id: "0",
-        blocked: false,
-        paused: false
-      }
+      {}
     ]);
     //expect(mapValidate.errors).toBeNull();
     //expect(result).toBe(true);

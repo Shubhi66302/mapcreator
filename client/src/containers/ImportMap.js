@@ -40,6 +40,7 @@ class ImportMap extends Component {
     createMap(imported, name)
       .then(handleErrors)
       .then(res => res.json())
+
       .then(id => history.push(`/map/${id}`))
       .catch(error => this.setState({ error }));
   };
