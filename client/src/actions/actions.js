@@ -243,7 +243,7 @@ export const showPath = () => (dispatch, getState) => {
     showPath.push(barcode[base].path_status + show);
   }
 
-  while (coor != base) {
+  while (barcode[coor]["world_coordinate_reference_neighbour"] != "0,0") {
     path.push(coor);
 
     const bcp = barcode[coor].path_status;
@@ -458,7 +458,10 @@ export const deleteMap = (id, history) => (dispatch) => {
     .catch((error) => dispatch(setErrorMessage(error)));
 };
 
-export const requestValidation = (id, email, map_updated_time) => (dispatch, getState) => {
+export const requestValidation = (id, email, map_updated_time) => (
+  dispatch,
+  getState
+) => {
   var { normalizedMap } = getState();
   var withWorldCoordinate = addWorldCoordinateAndDenormalize(normalizedMap);
   setSectorsBarcodeMapping(dispatch, getState);
@@ -467,7 +470,7 @@ export const requestValidation = (id, email, map_updated_time) => (dispatch, get
   payload["email"] = email;
   return requestValidationApi(payload)
     .then(handleErrors)
-    .then(res => res.text())
+    .then((res) => res.text())
     .then((res) => dispatch(setSuccessMessage(res)))
     .then(() => dispatch(fetchMap(id)))
     .catch((error) => dispatch(setErrorMessage(error)));
@@ -556,7 +559,6 @@ export const misaligned = () => (dispatch, getState) => {
   const barcodes = state.normalizedMap.entities.barcode;
 
   var j = 0;
-
   var count = Object.keys(CompleteDataSanity.mapSanity);
   while (
     CompleteDataSanity.mapSanity[j].wrongly_aligned_barcodes == undefined
@@ -615,10 +617,10 @@ export const misaligned = () => (dispatch, getState) => {
 };
 
 const backTrack = (coor, barcode) => {
-  const base = Object.keys(barcode)[0];
+  const base = "0,0";
   const path = [];
 
-  while (coor != base) {
+  while (barcode[coor]["world_coordinate_reference_neighbour"] != base) {
     const neighbour = barcode[coor]["world_coordinate_reference_neighbour"];
     coor = neighbour;
     path.push(coor);
@@ -633,6 +635,7 @@ const misaligned_cal = (coors, barcode, coordinates) => {
   // console.log(coors);
 
   const node1 = backTrack(coors[0].toString(), barcode);
+
   const node2 = backTrack(coors[1].toString(), barcode);
 
   // console.log(node1, node2);
@@ -651,7 +654,7 @@ const misaligned_cal = (coors, barcode, coordinates) => {
   }
   // console.log("debugger statement 2",Date(Date.now()).toString() )
   alert(prev_state);
-  
+
   return prev_state;
 };
 
