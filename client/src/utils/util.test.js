@@ -85,9 +85,7 @@ describe("createMapFromCoordinateData", () => {
         paused: false
       }
     ]);
-    expect(map.sectors).toEqual([
-      {}
-    ]);
+    expect(map.sectors).toEqual([]);
     //expect(mapValidate.errors).toBeNull();
     //expect(result).toBe(true);
   });

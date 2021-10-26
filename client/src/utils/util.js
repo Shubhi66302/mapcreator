@@ -344,9 +344,7 @@ export var createMapFromCoordinateData = (
         paused: false,
       },
     ],
-    sectors: [
-      {},
-    ],
+    sectors: [],
     sectorBarcodeMapping: [{}],
     sectorMxUPreferences: {},
     queueDatas: [],
