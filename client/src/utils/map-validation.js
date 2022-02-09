@@ -389,7 +389,7 @@ export const validateAlignmentOfCoordinates = (barcodesDict) => {
     var wronglyAlignedPerCoordinate = [];
     [0,1,2,3].forEach((val) => {
       
-      var neighbourInDir = (neighbours[val] === null)? null : neighbours[val].coordinate;
+      var neighbourInDir = (neighbours[val] === null || neighbours[val] === undefined)? null : neighbours[val].coordinate;
 
       if (neighbourInDir != null) {
         var worldCoordinateInDir =
