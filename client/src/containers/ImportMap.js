@@ -10,41 +10,43 @@ import _ from "lodash";
 class ImportMap extends Component {
   state = {
     name: "",
-    error: undefined
+    error: undefined,
   };
-  
-  onRead = stateKey => json => {
+
+  onRead = (stateKey) => (json) => {
     // should do validation here or not? probably not, just do it once submit is pressed
     this.setState({ [stateKey]: json });
   };
 
-  onError = error => this.setState({ error });
+  onError = (error) => this.setState({ error });
 
-  onClear = stateKey => () => {
+  onClear = (stateKey) => () => {
     this.setState({ [stateKey]: undefined });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
     // validate the import by converting everything into the map using import function
     let imported;
     try {
       imported = importMap(_.omit(this.state, ["name", "error"]));
     } catch (error) {
+      console.log(error.message);
       this.setState({ error: error.message });
       return;
     }
     // save
+    // console.log(imported);
     const { name } = this.state;
     const { history } = this.props;
     createMap(imported, name)
       .then(handleErrors)
-      .then(res => res.json())
+      .then((res) => res.json())
 
-      .then(id => history.push(`/map/${id}`))
-      .catch(error => this.setState({ error }));
+      .then((id) => history.push(`/map/${id}`))
+      .catch((error) => this.setState({ error }));
   };
-  
+
   render() {
     // console.log(" State ",this.state);
     const { error } = this.state;
@@ -67,7 +69,7 @@ class ImportMap extends Component {
                 id="name"
                 className="form-control"
                 value={this.state.name}
-                onChange={e => this.setState({ name: e.target.value })}
+                onChange={(e) => this.setState({ name: e.target.value })}
               />
             </div>
           </div>
@@ -79,7 +81,7 @@ class ImportMap extends Component {
             ["sector", "sector.json", "sectorJson"],
             ["ods_excluded", "ods_excluded.json", "odsExcludedJson"],
             ["fire_emergency", "fire_emergency.json", "fireEmergencyJson"],
-            ["elevator", "elevator.json", "elevatorJson"]
+            ["elevator", "elevator.json", "elevatorJson"],
           ].map(([idField, label, stateKey], idx) => (
             <JSONFileInput
               onClear={this.onClear(stateKey)}

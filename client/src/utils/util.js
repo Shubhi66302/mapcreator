@@ -22,7 +22,7 @@ function stringify_number(input_number) {
   } else if (input_number < 1000) {
     return input_number.toString();
   } else {
-    return undefined;
+    return nput_number.toString();
   }
 }
 

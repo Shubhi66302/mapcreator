@@ -68,9 +68,10 @@ const mapObjSchema = new schema.Entity("mapObj", {
 });
 
 // expects mapObj (with updatedAt etc.)
-export var normalizeMap = mapObj => {
+export var normalizeMap = (mapObj) => {
   // hack: add dummy id to map field
   // using parseJson(JSON.stringify()) to create deep copy so argument is not mutated
+  //   console.log("JSON.stringify(mapObj)", mapObj);
   var newMap = JSON.parse(JSON.stringify(mapObj));
   newMap.map.id = "dummy";
   return normalize(newMap, mapObjSchema);

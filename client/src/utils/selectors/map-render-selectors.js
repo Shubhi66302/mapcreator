@@ -186,33 +186,33 @@ export const getDirectionalitySpritesData = createSelector(
 );
 
 export const getAllSpritesData = createSelector(
-  getMainTileSpriteData,
-  getBarcodeDigitSpritesData,
-  getDirectionalitySpritesData,
-  tileToWorldCoordinate,
-  getTileSpriteScale,
-  state => state.selection.directionViewMode,
-  (
-    mainSpriteData,
-    barcodeDigitSpritesData,
-    directionalitySpritesData,
-    { x: centreX, y: centreY },
-    { xScale, yScale },
-    directionViewMode
-  ) => {
-    const baseData = {
-      main: mainSpriteData,
-      ...barcodeDigitSpritesData,
-      // the centre x sprite
-      centre: {
-        name: constants.BARCODE_CENTRE_SPRITE,
-        x: centreX,
-        y: centreY,
-        xScale,
-        yScale
-      }
-    };
-    if (directionViewMode) return { ...baseData, ...directionalitySpritesData };
-    return baseData;
-  }
-);
+         getMainTileSpriteData,
+         getDirectionalitySpritesData,
+         tileToWorldCoordinate,
+         getTileSpriteScale,
+         (state) => state.selection.directionViewMode,
+         (
+           mainSpriteData,
+           barcodeDigitSpritesData,
+           directionalitySpritesData,
+           { x: centreX, y: centreY },
+           { xScale, yScale },
+           directionViewMode
+         ) => {
+           const baseData = {
+             main: mainSpriteData,
+             ...barcodeDigitSpritesData,
+             // the centre x sprite
+             centre: {
+               name: constants.BARCODE_CENTRE_SPRITE,
+               x: centreX,
+               y: centreY,
+               xScale,
+               yScale,
+             },
+           };
+           if (directionViewMode)
+             return { ...baseData, ...directionalitySpritesData };
+           return baseData;
+         }
+       );

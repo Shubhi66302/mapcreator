@@ -40,10 +40,15 @@ app.post(
 app.get(
   "/api/map/:id",
   wrap(async (req, res) => {
-    const { id } = req.params;
-    var map = await Map.findByPk(id);
-    if (!map) throw new Error(`could not find map for id ${id}`);
-    res.json(map.toJSON());
+    try {
+      const { id } = req.params;
+      var map = await Map.findByPk(id);
+      console.log("map", map);
+      if (!map) throw new Error(`could not find map for id ${id}`);
+      return res.json(map.toJSON());
+    } catch (e) {
+      console.log("e", e);
+    }
   })
 );
 

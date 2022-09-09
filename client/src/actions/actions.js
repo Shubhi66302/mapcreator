@@ -167,7 +167,9 @@ export const setSectorsMxUPreferences = (getState) => {
 export const fetchMap = (mapId) => (dispatch, getState) => {
   dispatch(clearMap);
   return getMap(parseInt(mapId))
-    .then(handleErrors)
+    .then((res) => {
+      return handleErrors(res);
+    })
     .then((res) => res.json())
     .then((map) => dispatch(newMap(map)))
     .then(() => dispatch(setViewportClamp))

@@ -188,12 +188,12 @@ class Map extends Component {
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   nMap: state.normalizedMap,
   queueMode: state.selection.queueMode,
   successMessage: state.successMessage,
   errorMessage: state.errorMessage,
   zoneViewMode: state.selection.zoneViewMode,
   sectorViewMode: state.selection.sectorViewMode,
-  directionViewMode: state.selection.directionViewMode
+  directionViewMode: state.selection.directionViewMode,
 }))(Map);
