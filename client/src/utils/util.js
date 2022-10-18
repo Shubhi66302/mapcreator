@@ -19,11 +19,7 @@ function stringify_number(input_number) {
     return "00".concat(input_number.toString());
   } else if (input_number < 100) {
     return "0".concat(input_number.toString());
-  } else if (input_number < 1000) {
-    return input_number.toString();
-  } else {
-    return input_number.toString();
-  }
+  } else return input_number.toString();
 }
 
 export function encode_barcode(row, column) {
@@ -68,6 +64,14 @@ export const getNeighbouringBarcodesWithNbFilter = (
     });
   }
   var neighbourTileKeys = getNeighbourTiles(coordinateKey);
+  var ress = neighbourTileKeys.map((tileKey, idx) =>
+    nbFilters.some((nbFilter) =>
+      _.isEqual(nbFilter, curBarcode.neighbours[idx])
+    )
+      ? null
+      : barcodesDict[tileKey]
+  );
+  console.log("resss,,,,", ress);
   return neighbourTileKeys.map((tileKey, idx) =>
     nbFilters.some((nbFilter) =>
       _.isEqual(nbFilter, curBarcode.neighbours[idx])

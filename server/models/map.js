@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       map: DataTypes.JSON,
-      // validationRequested: DataTypes.BOOLEAN,
-      //   sanity: DataTypes.BOOLEAN,
+      validationRequested: DataTypes.BOOLEAN,
+      sanity: DataTypes.BOOLEAN,
     },
     {}
   );
